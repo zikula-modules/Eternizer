@@ -1,0 +1,60 @@
+/**
+* This file contains different styles for links
+* adding an icon by a given class.
+*/
+
+#eternizer .activate {
+  font-size: 0;
+  background: url(../../../images/icons/extrasmall/greenled.gif) no-repeat 0 50%;
+  padding: 9px;
+}
+#eternizer .add {
+  font-size: 0;
+  background: url(../../../images/icons/extrasmall/edit_add.gif) no-repeat 0 50%;
+  padding: 9px;
+}
+#eternizer .cancel {
+  font-size: 0;
+  background: url(../../../images/icons/extrasmall/cancel.gif) no-repeat 0 50%;
+  padding: 9px;
+}
+#eternizer .comment {
+  font-size: 0;
+  background: url(../../../images/icons/extrasmall/comment.gif) no-repeat 0 50%;
+  padding: 9px;
+}
+#eternizer .delete {
+  font-size: 0;
+  background: url(../../../images/icons/extrasmall/14_layer_deletelayer.gif) no-repeat 0 50%;
+  padding: 9px;
+}
+#eternizer .deleterow {
+  font-size: 0;
+  background: url(../../../images/icons/extrasmall/delete_table_row.gif) no-repeat 0 50%;
+  padding: 9px;
+}
+#eternizer .edit {
+  font-size: 0;
+  background: url(../../../images/icons/extrasmall/edit.gif) no-repeat 0 50%;
+  padding: 9px;
+}
+#eternizer .moderate {
+  font-size: 0;
+  background: url(../../../images/icons/extrasmall/redled.gif) no-repeat 0 50%;
+  padding: 9px;
+}
+#eternizer .move {
+  font-size: 0;
+  background: url(../../../images/icons/extrasmall/move.gif) no-repeat 0 50%;
+  padding: 9px;
+}
+#eternizer .ok {
+  font-size: 0;
+  background: url(../../../images/icons/extrasmall/ok.gif) no-repeat 0 50%;
+  padding: 9px;
+}
+#eternizer .undo {
+  font-size: 0;
+  background: url(../../../images/icons/extrasmall/edit_undo.gif) no-repeat 0 50%;
+  padding: 9px;
+}
