@@ -26,7 +26,7 @@ class Eternizer_Import_pnBook
 
     function display()
     {
-    	$pnr = $render = & FormUtil::newpnForm('Eternizer');
+    	$render = FormUtil::newpnForm('Eternizer');
 
     	Loader::requireOnce('modules/Eternizer/classes/Eternizer_import_importHandler.class.php');
 
@@ -50,7 +50,7 @@ class Eternizer_Import_pnBook
 
     	foreach ($res as $item) {
     		$obj = array();
-    		
+
             if (isset($item['uid']) && $item['uid'] > 1) {
                 $item['name'] = pnUserGetVar('uname', $item['uid']);
                 $item['city'] = pnUserGetVar('user_from', $item['uid']);

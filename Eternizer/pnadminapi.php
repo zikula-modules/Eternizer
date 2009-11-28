@@ -21,31 +21,30 @@
  */
 function Eternizer_adminapi_changeStatus($args)
 {
-	if (!isset($args['id']) || (!is_numeric($args['id']) && !is_array($args['id']))) {
-		return LogUtil::registerError('ID?!');
-	}
+    if (!isset($args['id']) || (!is_numeric($args['id']) && !is_array($args['id']))) {
+        return LogUtil::registerError('ID?!');
+    }
 
-	if (array_search($args['status'], array('M', 'A')) === false) {
-		return LogUtil::registerError('STATUS!?');
-	}
+    if (array_search($args['status'], array('M', 'A')) === false) {
+        return LogUtil::registerError('STATUS!?');
+    }
 
-	if (is_numeric($args['id'])) {
-		$args['id'] = array($args['id']);
-	}
+    if (is_numeric($args['id'])) {
+        $args['id'] = array($args['id']);
+    }
 
-	if (!SecurityUtil::checkPermission('Eternizer::', (is_numeric($args['id'])?$args['id']:'').'::', ACCESS_DELETE)) {
-		return LogUtil::registerPermissionError();
-	}
+    if (!SecurityUtil::checkPermission('Eternizer::', (is_numeric($args['id']) ? $args['id'] : '') . '::', ACCESS_DELETE)) {
+        return LogUtil::registerPermissionError();
+    }
 
-	$objs = array();
-	foreach ($args['id'] as $id) {
-		$objs[] = array('id' => $id,
-					  'obj_status' => $args['status']);
-	}
+    $objs = array();
+    foreach ($args['id'] as $id) {
+        $objs[] = array('id' => $id, 'obj_status' => $args['status']);
+    }
 
-	DBUtil::updateObjectArray($objs, 'Eternizer_entry');
+    DBUtil::updateObjectArray($objs, 'Eternizer_entry');
 
-	return true;
+    return true;
 }
 
 /**
@@ -55,30 +54,31 @@ function Eternizer_adminapi_changeStatus($args)
  * @param	(mixed)	id
  * @return	(bool)
  */
-function Eternizer_adminapi_DelEntry($args) {
+function Eternizer_adminapi_DelEntry($args)
+{
+    $dom = ZLanguage::getModuleDomain('Eternizer');
+    if (!isset($args['id']) || (!is_numeric($args['id']) && !is_array($args['id']))) {
+        return LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom));
+    }
 
-	if (!isset($args['id']) || (!is_numeric($args['id']) && !is_array($args['id']))) {
-		return LogUtil::registerError(_MODARGSERROR);
-	}
+    if (is_numeric($args['id'])) {
+        $args['id'] = array($args['id']);
+    }
 
-	if (is_numeric($args['id'])) {
-		$args['id'] = array($args['id']);
-	}
+    if (!SecurityUtil::checkPermission('Eternizer::', (is_numeric($args['id']) ? $args['id'] : '') . '::', ACCESS_DELETE)) {
+        return LogUtil::registerPermissionError();
+    }
 
-	if (!SecurityUtil::checkPermission('Eternizer::', (is_numeric($args['id'])?$args['id']:'').'::', ACCESS_DELETE)) {
-		return LogUtil::registerPermissionError();
-	}
+    DBUtil::deleteObjectsFromKeyArray(array_flip($args['id']), 'Eternizer_entry');
 
-	DBUtil::deleteObjectsFromKeyArray(array_flip($args['id']), 'Eternizer_entry');
+    pnModCallHooks('item', 'delete', $args['id'], array('module' => 'Eternizer'));
 
-	pnModCallHooks('item', 'delete', $args['id'], array('module' => 'Eternizer'));
-
-	return true;
+    return true;
 }
 
 /**
  * Edit an entry
- * 
+ *
  * @author  Philipp Niethammer <webmaster@nochwer.de>
  * @param	(int)		$args['id']
  * @param	(text)		$args['text']
@@ -86,43 +86,44 @@ function Eternizer_adminapi_DelEntry($args) {
  * @param	(array)		$args['profile']
  * @return	(bool)
  */
-function Eternizer_adminapi_EditEntry($args) {
+function Eternizer_adminapi_EditEntry($args)
+{
+    $dom = ZLanguage::getModuleDomain('Eternizer');
+    if (!isset($args['id']) || !is_numeric($args['id'])) {
+        return LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom));
+    }
 
-	if (!isset($args['id']) || !is_numeric($args['id'])) {
-		return LogUtil::registerError(_MODARGSERROR);
-	}
+    if (!SecurityUtil::checkPermission('Eternizer::', $args['id'] . '::', ACCESS_MODERATE)) {
+        return LogUtil::registerPermissionError();
+    }
 
-	if (!SecurityUtil::checkPermission('Eternizer::', $args['id'].'::', ACCESS_MODERATE)) {
-		return LogUtil::registerPermissionError();
-	}
+    if (!$args['text']) {
+        return LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom));
+    }
 
-	if (!$args['text']) {
-		return LogUtil::registerError(_MODARGSERROR);
-	}
+    $profile = pnModGetVar('Eternizer', 'profile');
 
-	$profile = pnModGetVar('Eternizer', 'profile');
-
-	$attr = array();
+    $attr = array();
     foreach ($profile as $k => $v) {
-	    if (isset($args['profile'][$k])) {
-	        $attr[$k] = $args['profile'][$k];
-	    }
-	}
+        if (isset($args['profile'][$k])) {
+            $attr[$k] = $args['profile'][$k];
+        }
+    }
 
-	if (count($attr) > 0) {
-	    $args['__ATTRIBUTES__'] = $attr;
-	}
-	unset($args['profile']);
-	
-	if (!SecurityUtil::checkPermission('Eternizer::', $args['id'].'::', ACCESS_EDIT)) {
-	    $args = array('comment' => $args['comment'], 'id' => $args['id']);
-	}
+    if (count($attr) > 0) {
+        $args['__ATTRIBUTES__'] = $attr;
+    }
+    unset($args['profile']);
 
-	DBUtil::updateObject($args, 'Eternizer_entry');
+    if (!SecurityUtil::checkPermission('Eternizer::', $args['id'] . '::', ACCESS_EDIT)) {
+        $args = array('comment' => $args['comment'], 'id' => $args['id']);
+    }
 
-	pnModCallHooks('item', 'update', $args['id'], array('module' => 'Eternizer'));
+    DBUtil::updateObject($args, 'Eternizer_entry');
 
-	return true;
+    pnModCallHooks('item', 'update', $args['id'], array('module' => 'Eternizer'));
+
+    return true;
 }
 
 /**
@@ -132,21 +133,23 @@ function Eternizer_adminapi_EditEntry($args) {
  * @param	(int)		$args['id']
  * @return	(array)		array with infos or false
  */
-function Eternizer_adminapi_GetEntry($args) {
-	if (!isset($args['id']) || !is_numeric($args['id'])) {
-		return LogUtil::registerError(_MODARGSERROR);
-	}
+function Eternizer_adminapi_GetEntry($args)
+{
+    $dom = ZLanguage::getModuleDomain('Eternizer');
+    if (!isset($args['id']) || !is_numeric($args['id'])) {
+        return LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom));
+    }
 
-	if (!SecurityUtil::checkPermission('Eternizer::', $args['id'].'::', ACCESS_EDIT)) {
-		return LogUtil::registerPermissionError();
-	}
+    if (!SecurityUtil::checkPermission('Eternizer::', $args['id'] . '::', ACCESS_EDIT)) {
+        return LogUtil::registerPermissionError();
+    }
 
-	$entry = DBUtil::selectObjectByID('Eternizer_entry', $args['id']);
+    $entry = DBUtil::selectObjectByID('Eternizer_entry', $args['id']);
 
-	$entry['profile'] = $entry['__ATTRIBUTES__'];
-	unset($entry['__ATTRIBUTES__']);
+    $entry['profile'] = $entry['__ATTRIBUTES__'];
+    unset($entry['__ATTRIBUTES__']);
 
-	return $entry;
+    return $entry;
 }
 
 /**
@@ -154,35 +157,37 @@ function Eternizer_adminapi_GetEntry($args) {
  *
  * @return array Array of items
  */
-function Eternizer_adminapi_getEntries($args) {
-	if (!SecurityUtil::checkPermission('Eternizer::', $args['id'].'::', ACCESS_MODERATE)) {
-		return LogUtil::registerPermissionError();
-	}
+function Eternizer_adminapi_getEntries($args)
+{
+    if (!SecurityUtil::checkPermission('Eternizer::', $args['id'] . '::', ACCESS_MODERATE)) {
+        return LogUtil::registerPermissionError();
+    }
 
-	$order = pnModGetVar('Eternizer', 'order');
+    $order = pnModGetVar('Eternizer', 'order');
 
-	$pntable =& pnDBGetTables();
-	$bookcolumn = &$pntable['Eternizer_entry_column'];
+    $pntable = & pnDBGetTables();
+    $bookcolumn = &$pntable['Eternizer_entry_column'];
 
-	$order = $bookcolumn['cr_date'] . " " . ($order == 'desc'?'DESC':'ASC');
+    $order = $bookcolumn['cr_date'] . " " . ($order == 'desc' ? 'DESC' : 'ASC');
 
-	$perms = array('realm' => 0,
-                  'component_left'   => 'Eternizer',
-                  'component_middle' => '',
-                  'component_right'  => '',
-                  'instance_left'    => 'id',
-                  'instance_middle'  => '',
-                  'instance_right'   => '',
-                  'level'            => ACCESS_MODERATE);
+    $perms = array(
+        'realm' => 0,
+        'component_left' => 'Eternizer',
+        'component_middle' => '',
+        'component_right' => '',
+        'instance_left' => 'id',
+        'instance_middle' => '',
+        'instance_right' => '',
+        'level' => ACCESS_MODERATE);
 
-	$list = DBUtil::selectObjectArray('Eternizer_entry', '', $order, -1, -1, '', $perms);
+    $list = DBUtil::selectObjectArray('Eternizer_entry', '', $order, -1, -1, '', $perms);
 
-	foreach (array_keys($list) as $k) {
-		$list[$k]['profile'] = $list[$k]['__ATTRIBUTES__'];
-		unset($list[$k]['__ATTRIBUTES__']);
-	}
+    foreach (array_keys($list) as $k) {
+        $list[$k]['profile'] = $list[$k]['__ATTRIBUTES__'];
+        unset($list[$k]['__ATTRIBUTES__']);
+    }
 
-	return $list;
+    return $list;
 }
 
 /**
@@ -192,28 +197,29 @@ function Eternizer_adminapi_getEntries($args) {
  */
 function Eternizer_adminapi_getlinks()
 {
+    $dom = ZLanguage::getModuleDomain('Eternizer');
     $links = array();
 
-    pnModLangLoad('Eternizer', 'admin');
-    pnModLangLoad('Eternizer', 'import');
-
     if (SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_ADMIN)) {
-        $links[] = array('url' => pnModURL('Eternizer', 'admin', 'main'),
-                         'text' => _ETERNIZER_ADMIN_MAIN,
-                         'title' => _ETERNIZER_ADMIN_MAIN_TITLE,
-                         'id' => 'Eternizer_main');
-        $links[] = array('url' => pnModURL('Eternizer', 'admin', 'adminView'),
-                         'text' => _ETERNIZER_ADMIN_ADMINVIEW,
-                         'title' => _ETERNIZER_ADMIN_ADMINVIEW_TITLE,
-                         'id' => 'Eternizer_adminview');
+        $links[] = array(
+            'url' => pnModURL('Eternizer', 'admin', 'main'),
+            'text' => __('Start', $dom),
+            'title' => __('Administration start page', $dom),
+            'id' => 'Eternizer_main');
+        $links[] = array(
+            'url' => pnModURL('Eternizer', 'admin', 'adminView'),
+            'text' => __('Admin view', $dom),
+            'title' => __('Administrative guestbook view', $dom),
+            'id' => 'Eternizer_adminview');
         $links[] = array('url' => pnModURL('Eternizer', 'admin', 'config'),
-                         'text' => _ETERNIZER_ADMIN_CONFIG,
-                         'title' => _ETERNIZER_ADMIN_CONFIG_TITLE,
+                         'text' => __('Configuration', $dom),
+                         'title' => __("_Eternizer's configuration", $dom),
                          'id' => 'Eternizer_config');
         $links[] = array('url' => pnModURL('Eternizer', 'import', 'main'),
-                         'text' => _ETERNIZER_IMPORT,
-                         'title' => _ETERNIZER_IMPORT_TITLE,
-                         'id' => 'Eternizer_import');
+                         'text' => __('Import', $dom),
+                         'title' => __('Import from other guestbooks', $dom),
+                         'id' => 'Eternizer_import')
+        ;
     }
 
     return $links;

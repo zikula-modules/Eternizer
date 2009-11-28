@@ -4,7 +4,7 @@
  *
  * @copyright (c) 2008, philipp
  * @link http://www.postnuke.com
- * @version $Id: $
+ * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  * @package PostNuke
  * @subpackage Eternizer
@@ -28,7 +28,7 @@ function Eternizer_searchapi_options($args)
         $pnRender = new pnRender('Eternizer');
         return $pnRender->fetch('Eternizer_search_options.tpl');
     }
-    
+
     return '';
 }
 /**
@@ -36,6 +36,9 @@ function Eternizer_searchapi_options($args)
  **/
 function Eternizer_searchapi_search($args)
 {
+    $dom = ZLanguage::getModuleDomain('Eternizer');
+
+    // TODO A - if we use the new search module from Daniel will this break?
     pnModDBInfoLoad('Search');
     $pntable = pnDBGetTables();
     $table = $pntable['Eternizer_entry'];
@@ -48,7 +51,7 @@ function Eternizer_searchapi_search($args)
                                     null);
 
     $where .= " AND $column[obj_status] = 'A'";
-                                    
+
     $sessionId = session_id();
     // define the permission filter to apply
     $permFilter = array(array('realm'          => 0,
@@ -59,7 +62,7 @@ function Eternizer_searchapi_search($args)
     // get the result set
     $objArray = DBUtil::selectObjectArray('Eternizer_entry', $where, 'id', 1, -1, '', $permFilter);
     if ($objArray === false) {
-        return LogUtil::registerError (_GETFAILED);
+        return LogUtil::registerError (__('Error! Could not load items.', $dom));
     }
 
     $insertSql = "INSERT INTO  $searchTable
@@ -85,7 +88,7 @@ function Eternizer_searchapi_search($args)
         . '\'' . DataUtil::formatForStore($sessionId) . '\')';
         $insertResult = DBUtil::executeSQL($sql);
         if (!$insertResult) {
-            return LogUtil::registerError (_GETFAILED);
+            return LogUtil::registerError (__('Error! Could not load items.', $dom));
         }
     }
 

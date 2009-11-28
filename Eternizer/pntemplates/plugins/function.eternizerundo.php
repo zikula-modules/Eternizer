@@ -38,5 +38,3 @@ function smarty_function_eternizerundo ($params, &$smarty) {
 	return $out;
 }
 
-
-?>

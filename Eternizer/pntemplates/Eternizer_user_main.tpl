@@ -9,12 +9,12 @@
 <!--[*  User main area	                                                             *]-->
 <!--[*  ---------------------------------------------------------------------------- *]-->
 
-<!--[pnml name=_ETERNIZER_TITLE assign=title]-->
+<!--[gt text="Guestbook assign=title"]-->
 <!--[pnpagesetvar name=title value=$title]-->
 <!--[insert name="getstatusmsg"]-->
 
 <div id="eternizer">
-  <h2><!--[pnml name=_ETERNIZER_TITLE]--></h2>
+  <h2><!--[gt text="Guestbook"]--></h2>
   <!--[$form]-->
 
   <div id="eternizer-entries" class="pn-clearfix">

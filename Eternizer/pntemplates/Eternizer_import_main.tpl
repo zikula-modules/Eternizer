@@ -14,14 +14,14 @@
 
 <form class="pn-adminform" action="<!--[pnmodurl modname="Eternizer" type="import" func="display"]-->" method="post">
   <dl class="pn-adminformrow">
-    <dt><!--[pnml name="_ETERNIZER_IMPORT_FROM"]--></dt>
+    <dt><!--[gt text="Import from"]--></dt>
     <!--[foreach from=$books key="name" item="name"]-->
     <dd><input type="radio" name="plugin" value="<!--[$name]-->" /> <!--[$name]--> </dd>
     <!--[/foreach]-->
   </dl>
 
   <div class="pn-adminformbuttons">
-    <input type="submit" value="<!--[pnml name='_CONTINUE']-->" />
+    <input type="submit" value="<!--[gt text='Continue']-->" />
   </div>
 </form>
 

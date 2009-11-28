@@ -21,8 +21,9 @@ class Eternizer_admin_configHandler
 	}
 
     function initialize(&$render) {
+        $dom = ZLanguage::getModuleDomain('Eternizer');
     	if (!SecurityUtil::checkPermission(($this->init?'':'Eternizer').'::', '::', ACCESS_ADMIN)) {
-    		return $render->pnFormSetErrorMsg(_MODULENOAUTH);
+    		return $render->pnFormSetErrorMsg(__('Sorry! No authorization to access this module.', $dom));
     	}
 
     	if (!$this->init) {
@@ -32,67 +33,67 @@ class Eternizer_admin_configHandler
     	}
 
     	$modvars['orderItems'] 		= array(array(	'value' => 'asc',
-    												'text'	=> _ETERNIZER_ORDER_ASC),
+    												'text'	=> __('ascending', $dom)),
     										array(	'value'	=> 'desc',
-    												'text' 	=> _ETERNIZER_ORDER_DESC));
+    												'text' 	=> __('descending', $dom)));
 
         $modvars['spammodeItems']   = array(array(	'value' => '0',
-    												'text'	=> _NO),
+    												'text'	=> __('No', $dom)),
     										array(	'value' => '1',
-    												'text'	=> _ETERNIZER_SPAMMODE_GUESTS_MODERATE),
+    												'text'	=> __('Guests only, Moderate', $dom)),
     										array(	'value' => '2',
-    												'text'	=> _ETERNIZER_SPAMMODE_GUESTS_REJECT),
+    												'text'	=> __('Guests only, Reject', $dom)),
     										array(  'value' => '3',
-    										        'text'  => _ETERNIZER_SPAMMODE_ALL_MODERATE),
+    										        'text'  => __('All, Moderate', $dom)),
     										array(  'value' => '4',
-    										        'text'  => _ETERNIZER_SPAMMODE_ALL_REJECT));
-    										
+    										        'text'  => __('All, Reject', $dom)));
+
     	$modvars['moderateItems']	= array(array(	'value' => '0',
-    												'text'	=> _NO),
+    												'text'	=> __('No', $dom)),
     										array(	'value' => '1',
-    												'text'	=> _ETERNIZER_MODERATE_GUESTS),
+    												'text'	=> __('Guests only', $dom)),
     										array(	'value' => '2',
-    												'text'	=> _ETERNIZER_MODERATE_ALL));
+    												'text'	=> __('All users', $dom)));
 
     	$modvars['wwactionItems'] 	= array(array(	'value'	=> 'nothing',
-    												'text' 	=> _ETERNIZER_WWACTION_NOTHING),
+    												'text' 	=> __('no', $dom)),
     										array(	'value'	=> 'truncate',
-    												'text' 	=> _ETERNIZER_WWACTION_TRUNCATE),
+    												'text' 	=> __('truncate', $dom)),
     										array(	'value'	=> 'wrap',
-    												'text'	=> _ETERNIZER_WWACTION_WRAP));
+    												'text'	=> __('wrap', $dom)));
 
 		$modvars['pnnotify_available'] = (bool) pnModAvailable('pn_notify');
 
 		$selects['mandatoryItems']	= array(array(	'value'	=> 0,
-												'text'	=> _OPTIONAL),
+												'text'	=> __('Optional', $dom)),
 										array(	'value'	=> 1,
-												'text'	=> _GUESTS),
+												'text'	=> __('anonymous users', $dom)),
 										array(	'value'	=> 2,
-												'text'	=> _ALL));
+												'text'	=> __('All', $dom)));
 	    $selects['typeItems'] = array(array(    'value'    => 'name',
-	                                       'text'     => _NAME),
+	                                       'text'     => __('Name', $dom)),
 	                             array(    'value'    => 'mail',
-	                                       'text'     => _EMAIL),
+	                                       'text'     => __('E-mail address', $dom)),
 	                             array(    'value'	  => 'url',
-	                                       'text'     => _URL),
+	                                       'text'     => __('URL', $dom)),
 	                             array(    'value'    => 'text',
-	                                       'text'     => _ETERNIZER_TEXT));
-	                             
+	                                       'text'     => __('Text', $dom)));
+
 	    $selects['titlefieldItems'] = array();
 	    foreach ($modvars['profile'] as $k => $v) {
 	        $selects['titlefieldItems'][] = array('value' => $k, 'text' => pnML($v['title']));
 	    }
-        
+
         $profileItems = pnModAPIFunc('Profile', 'user', 'getallactive');
 		pnModLangLoad('Profile', 'user');
-		$selects['profileItems'] = array(array('value' => '0', 'text' => _NO));
+		$selects['profileItems'] = array(array('value' => '0', 'text' => __('No', $dom)));
 		foreach ($profileItems as $field) {
 			if ($field['prop_viewby'] == 0 && $field['prop_displaytype'] < 2) {
 				$selects['profileItems'][] = array('value' => $field['prop_label'],
 				                                    'text'  => pnML($field['prop_label']));
 			}
 		}
-		
+
 		$modvars['init'] = $this->init;
 
 		$render->assign($modvars);
@@ -127,22 +128,22 @@ class Eternizer_admin_configHandler
       		    if (!empty($v['title']))
       		        $profile[] = $v;
       		}
-      		
+
       		$posarray = array();
 		    foreach (array_keys($profile) as $k) {
 		        if (!empty($profile[$k]['title'])) {
 		            $posarray[$profile[$k]['pos']] = $k;
 		        }
 		    }
-		    
+
 		    ksort($posarray);
-		
+
 		    $sortprofile = array();
 		    foreach ($posarray as $k) {
 		        $sortprofile[$k] = $profile[$k];
 		    }
 		    $profile =& $sortprofile;
-		    
+
       		unset($data['profile']);
       		foreach ($data as $k => $v) {
   				pnModSetVar('Eternizer', $k, $v);

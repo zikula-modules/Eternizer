@@ -4,15 +4,19 @@
  *
  * @copyright (c) 2008, philipp
  * @link http://code.zikula.org/eternizer
- * @version $Id: $
+ * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  * @package Zikula
  * @subpackage Eternizer
 */
 
+$dom = ZLanguage::getModuleDomain('Eternizer');
 $modversion['name']           = 'Eternizer';
 $modversion['version']        = '1.0'; //not more than 10 chars
-$modversion['description']    = _ETERNIZER_DESC;
+$modversion['description']    = __('A modern guestbook for Zikula', $dom);
+$modversion['displayname']    = __('Eternizer', $dom);
+//! module url must be different from displayname, even if just in casing
+$modversion['url']    = __('eternizer', $dom);
 
 $modversion['credits']        = 'pndocs/credits.txt';
 $modversion['help']           = 'pndocs/install.txt';
@@ -35,4 +39,3 @@ $modversion['dependencies']   = array(array('modname'    => 'spamFree',
                                             'status'     => PNMODULE_DEPENDENCY_RECOMMENDED
                                             )
                                       );
-?>

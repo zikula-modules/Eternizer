@@ -4,7 +4,7 @@
  *
  * @copyright (c) 2008, philipp
  * @link http://code.zikula.org/eternizer
- * @version $Id: $
+ * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  * @package Zikula
  * @subpackage Eternizer
@@ -28,9 +28,10 @@ function Eternizer_listblock_init()
  */
 function Eternizer_listblock_info()
 {
+    $dom = ZLanguage::getModuleDomain('Eternizer');
     return array('text_type'      => 'List',
                  'module'         => 'Eternizer',
-                 'text_type_long' => 'Show list Eternizer items',
+                 'text_type_long' => __('Show list Eternizer items', $dom),
                  'allow_multiple' => true,
                  'form_content'   => false,
                  'form_refresh'   => false,
@@ -82,7 +83,7 @@ function Eternizer_listblock_display($blockinfo)
  */
 function Eternizer_listblock_modify($blockinfo)
 {
-    $render =& new pnRender('Eternizer');
+    $render = new pnRender('Eternizer');
 
 	$vars = pnBlockVarsFromContent($blockinfo['content']);
 
@@ -114,5 +115,3 @@ function Eternizer_listblock_update($blockinfo)
 
     return $blockinfo;
 }
-
-?>

@@ -18,18 +18,18 @@
 <div class="row">
   <!--[pnformlabel for="profile_$id" text=$item.title]-->
   <!--[if $item.type eq 'mail']-->
-  <!--[pnformemailinput id="profile_$id" group="profile" text=$item.value maxLength=255 mandatory=$item.mandatory readOnly=$profileReadonly]-->
+  <!--[pnformemailinput id="profile_$id" group="profile" text=$item.value maxLength='255' mandatory=$item.mandatory readOnly=$profileReadonly]-->
   <!--[elseif $item.type eq 'url']-->
-  <!--[pnformurlinput id="profile_$id" group="profile" text=$item.value maxLength=255 mandatory=$item.mandatory readOnly=$profileReadonly]-->
+  <!--[pnformurlinput id="profile_$id" group="profile" text=$item.value maxLength='255' mandatory=$item.mandatory readOnly=$profileReadonly]-->
   <!--[else]-->
-  <!--[pnformtextinput id="profile_$id" group="profile" text=$item.value maxLength=255 mandatory=$item.mandatory readOnly=$profileReadonly]-->
+  <!--[pnformtextinput id="profile_$id" group="profile" text=$item.value maxLength='255' mandatory=$item.mandatory readOnly=$profileReadonly]-->
   <!--[/if]-->
 </div>
 <!--[/foreach]-->
 
 <div class="row">
-  <!--[pnformlabel for=text text=_ETERNIZER_TEXT]-->
-  <!--[pnformtextinput id=text textMode="multiline" mandatory=1 rows="5" cols="40" readOnly=$modonly]-->
+  <!--[pnformlabel for='text' __text='Text']-->
+  <!--[pnformtextinput id='text' textMode="multiline" mandatory='1' rows="5" cols="40" readOnly=$modonly]-->
   <!--[if !$modonly]-->
   <!--[if $bbcode]-->
   <!--[pnmodfunc modname=bbcode type=user func=bbcodes textfieldid=text images=0]--><br />
@@ -41,8 +41,8 @@
 </div>
 
 <div class="row">
-  <!--[pnformlabel for=comment text=_ETERNIZER_COMMENT]-->
-  <!--[pnformtextinput id=comment textMode="multiline" mandatory=0 rows=5 cols=40]-->
+  <!--[pnformlabel for='comment' __text='Comment']-->
+  <!--[pnformtextinput id='comment' textMode="multiline" mandatory='0' rows='5' cols='40']-->
 
   <!--[if $bbcode]-->
   <!--[pnmodfunc modname=bbcode type=user func=bbcodes textfieldid=comment images=0]--><br />
@@ -53,8 +53,8 @@
 </div>
 
 <div class="buttonrow">
-  <!--[pnformbutton commandName="update" text="_UPDATE"]-->
-  <!--[pnformbutton commandName="cancel" text="_CANCEL"]-->
+  <!--[pnformbutton commandName="update" __text="Update"]-->
+  <!--[pnformbutton commandName="cancel" __text="Cancel"]-->
 </div>
 
 <!--[/pnform]-->

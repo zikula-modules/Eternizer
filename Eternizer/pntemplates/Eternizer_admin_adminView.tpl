@@ -2,7 +2,7 @@
 
 <!--[eternizerundo assign="undo"]-->
 <!--[if $undo ne '']-->
-<a href="<!--[$undo]-->"><!--[pnml name=_UNDO]--></a>
+<a href="<!--[$undo]-->"><!--[gt text="_UNDO"]--></a>
 <!--[/if]-->
 
 <form action="<!--[pnmodurl modname=Eternizer type=admin func=adminViewRedirect]-->" method="post">
@@ -26,11 +26,11 @@
     <dd><!--[$item.text|truncate:200]--></dd>
     <!--[/foreach]-->
   </dl>
-  <p><!--[pnml name=_ETERNIZER_SELECTED]-->:
-    <input type="submit" name="action[activate]" value="<!--[pnml name="_ETERNIZER_ACTIVATE"]-->" />
-    <input type="submit" name="action[moderate]" value="<!--[pnml name="_ETERNIZER_MODERATE"]-->" />
+  <p><!--[gt text="Selected"]-->:
+    <input type="submit" name="action[activate]" value="<!--[gt text="Activate"]-->" />
+    <input type="submit" name="action[moderate]" value="<!--[gt text="Moderate"]-->" />
     <!--[if $rights.delete]-->
-    <input type="submit" name="action[delete]" value="<!--[pnml name="_DELETE"]-->" />
+    <input type="submit" name="action[delete]" value="<!--[gt text="Delete"]-->" />
     <!--[/if]-->
   </p>
 </form>

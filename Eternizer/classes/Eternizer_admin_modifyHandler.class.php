@@ -28,14 +28,14 @@ class Eternizer_admin_modifyHandler {
     	}
 
 		$entry = pnModAPIFunc('Eternizer', 'admin', 'GetEntry', array('id'	=> $this->id));
-		
+
 	    $profile = pnModGetVar('Eternizer', 'profile');
 		if ($entry['cr_uid'] > 1) {
 		    foreach (array_keys($profile) as $k) {
 		        $profile[$k]['value'] = $entry['profile'][$k];
 		        if ($profile[$k]['mandatory'] < 2)
 		            $profile[$k]['mandatory'] = 0;
-		    }		    
+		    }
 		} else {
 		    foreach (array_keys($profile) as $k) {
 		        $profile[$k]['value'] = $entry['profile'][$k];
@@ -65,7 +65,7 @@ class Eternizer_admin_modifyHandler {
       		foreach ($data['profile'] as $k => $v) {
       			$profile[substr($k, 8)] = $v;
       		}
-            
+
       		if (SecurityUtil::checkPermission('Eternizer::', $this->id.'::', ACCESS_EDIT)) {
       		    $obj = array('text'	=> $data['text'],
     			             'comment' => $data['comment'],
@@ -86,4 +86,3 @@ class Eternizer_admin_modifyHandler {
     	}
   	}
 }
-?>

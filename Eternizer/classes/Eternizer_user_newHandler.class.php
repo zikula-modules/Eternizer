@@ -38,8 +38,8 @@ class Eternizer_user_newHandler {
 		            $profile[$k]['value'] = pnUserGetVar($profile[$k]['profile'], -1, '');
 		        if ($profile[$k]['mandatory'] < 2)
 		            $profile[$k]['mandatory'] = 0;
-		        $profile[$k]['readonly'] = $ro && !empty($profile[$k]['value']); 
-		    }		    
+		        $profile[$k]['readonly'] = $ro && !empty($profile[$k]['value']);
+		    }
 		} else {
 		    foreach (array_keys($profile) as $k) {
 		        $profile[$k]['value'] = '';
@@ -61,7 +61,7 @@ class Eternizer_user_newHandler {
     	case 'create':
     		if (!$render->pnFormIsValid())
         	    return false;
-        	
+
       		$data = $render->pnFormGetValues();
 
       		$profile = array();
@@ -82,4 +82,3 @@ class Eternizer_user_newHandler {
     	}
   	}
 }
-?>

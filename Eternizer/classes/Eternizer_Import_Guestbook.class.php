@@ -26,7 +26,7 @@ class Eternizer_Import_Guestbook
 
     function display()
     {
-    	$pnr = $render = & FormUtil::newpnForm('Eternizer');
+    	$render = FormUtil::newpnForm('Eternizer');
 
     	Loader::requireOnce('modules/Eternizer/classes/Eternizer_import_importHandler.class.php');
 

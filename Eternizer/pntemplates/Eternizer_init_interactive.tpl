@@ -1,10 +1,10 @@
-<h2><!--[pnml name="_ETERNIZER_INIT"]--></h2>
+<h2><!--[gt text="Installation of Eternizer"]--></h2>
 
 <!--[insert name="getstatusmsg"]-->
 
 <p style="text-align: center">
-    <!--[pnml name="_ETERNIZER_INIT_WELCOME" html="1"]--><br /><br />
-    <a href="<!--[pnmodurl modname=Eternizer type=init func=step2]-->" title="<!--[ pnml name="_CONTINUE"]-->">
-        <!--[pnml name="_CONTINUE"]-->
+    <!--[gt text="Welcome to the interactive installation of Eternizer"]--><br /><br />
+    <a href="<!--[pnmodurl modname=Eternizer type=init func=step2]-->" title="<!--[gt text="Continue"]-->">
+        <!--[gt text="Continue"]-->
     </a>
 </p>

@@ -10,6 +10,7 @@
  * @subpackage Eternizer
 */
 
+// need to find a better way to load pnForm here since the path changes and we also use autoloading in Zikula 1.3.0
 Loader::requireOnce('includes/pnForm.php');
 Loader::requireOnce('modules/Eternizer/pnincludes/wordwrap.php');
 
@@ -31,15 +32,15 @@ function Eternizer_user_main($args) {
 	$perpage = FormUtil::getPassedValue('perpage', $args['perpage'], 'G');
 
 	$config = pnModGetVar('Eternizer');
-	if (!empty($perpage)) 
+	if (!empty($perpage))
 	    $config['perpage'] = $perpage;
-	
+
 	$entries = pnModAPIFunc('Eternizer', 'user', 'GetEntries',
 				array('startnum' => $startnum-1,
 					 'perpage' 	=> $perpage));
 
 	$pnRender = pnRender::getInstance('Eternizer', false);
-	
+
 	$count = pnModAPIFunc('Eternizer', 'user', 'CountEntries');
 
 	$pnRender->assign('startnum', $startnum);
@@ -55,16 +56,16 @@ function Eternizer_user_main($args) {
 			$act['text'] = Eternizer_WWAction($act['text']);
 			$act['text'] = nl2br($act['text']);
 			$act['comment'] = nl2br($act['comment']);
-			
+
 			$act['right_moderate'] = SecurityUtil::checkPermission('Eternizer::', $act['id'] . '::', ACCESS_MODERATE);
 			$act['right_edit'] = SecurityUtil::checkPermission('Eternizer::', $act['id'] . '::', ACCESS_EDIT);
 			$act['right_delete'] = SecurityUtil::checkPermission('Eternizer::', $act['id'] . '::', ACCESS_DELETE);
-			
+
 			$profile = array();
 			foreach (array_keys($config['profile']) as $pk) {
-			    $profile[$pk] = $act['profile'][$pk]; 
+			    $profile[$pk] = $act['profile'][$pk];
 			}
-			
+
 			$act['profile'] = $profile;
 
 			$pnRender->assign($act);

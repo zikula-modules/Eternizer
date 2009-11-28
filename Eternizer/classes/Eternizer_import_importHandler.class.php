@@ -47,10 +47,9 @@ class Eternizer_import_importHandler
       						  'data'	=> $data['data'],
       						  'deactivate'	=> $data['deactivate'],
       						  'delete'	=> $data['delete']));
-      					
+
       	default:
       		return $render->pnFormRedirect(pnModURL('Eternizer', 'import', 'main'));
     	}
   	}
 }
-?>

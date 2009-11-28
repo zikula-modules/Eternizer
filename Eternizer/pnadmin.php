@@ -11,6 +11,8 @@
  * @subpackage Eternizer
  */
 
+
+// TODO A - need a better way to load this, it will break from 1.3.0 otherwise... we use autoloaders in Zikula 1.3.0 and there is no /includes/ dir
 Loader::requireOnce('includes/pnForm.php');
 
 /**
@@ -19,23 +21,24 @@ Loader::requireOnce('includes/pnForm.php');
  * @param string		$path		File
  * @return bool
  */
-function is__writeable($path) {
-	if ($path{strlen($path)-1}=='/')
-		return is__writable($path.uniqid(mt_rand()).'.tmp');
+function is__writeable($path)
+{
+    if ($path{strlen($path) - 1} == '/')
+        return is__writable($path . uniqid(mt_rand()) . '.tmp');
 
-	if (file_exists($path)) {
-		if (!($f = @fopen($path, 'r+')))
-			return false;
+    if (file_exists($path)) {
+        if (!($f = @fopen($path, 'r+')))
+            return false;
 
-		fclose($f);
-		return true;
-	}
+        fclose($f);
+        return true;
+    }
 
-	if (!($f = @fopen($path, 'w')))
-		return false;
-	fclose($f);
-	unlink($path);
-	return true;
+    if (!($f = @fopen($path, 'w')))
+        return false;
+    fclose($f);
+    unlink($path);
+    return true;
 }
 
 /**
@@ -44,13 +47,14 @@ function is__writeable($path) {
  * @author	Philipp Niethammer <webmaster@nochwer.de
  * @return	output
  */
-function Eternizer_admin_main () {
-	if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_ADMIN))
-		return LogUtil::registerPermissionError();
+function Eternizer_admin_main()
+{
+    if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_ADMIN))
+        return LogUtil::registerPermissionError();
 
-	$pnRender = pnRender::getInstance('Eternizer', false);
+    $pnRender = pnRender::getInstance('Eternizer', false);
 
-	return $pnRender->fetch('Eternizer_admin_main.tpl');
+    return $pnRender->fetch('Eternizer_admin_main.tpl');
 }
 
 /**
@@ -59,18 +63,20 @@ function Eternizer_admin_main () {
  * @author	Philipp Niethammer <webmaster@nochwer.de>
  * @return	output
  */
-function Eternizer_admin_config () {
-	$render = & FormUtil::newpnForm('Eternizer');
+function Eternizer_admin_config()
+{
+    $render = FormUtil::newpnForm('Eternizer');
 
-	Loader::requireOnce('modules/Eternizer/classes/Eternizer_admin_configHandler.class.php');
+    Loader::requireOnce('modules/Eternizer/classes/Eternizer_admin_configHandler.class.php');
 
-	$modinfo = pnModGetInfo(pnModGetIDFromName('Eternizer'));
+    $modinfo = pnModGetInfo(pnModGetIDFromName('Eternizer'));
     $newestversion = file('http://www.guite.de/downloads/Eternizer_version.txt');
-    if (!$newestversion) $newestversion = array(0 => $modinfo['version']);
+    if (!$newestversion)
+        $newestversion = array(0 => $modinfo['version']);
 
     $render->assign('newestversion', trim($newestversion[0]));
 
-	return $render->pnFormExecute('Eternizer_admin_config.tpl', new Eternizer_admin_configHandler());
+    return $render->pnFormExecute('Eternizer_admin_config.tpl', new Eternizer_admin_configHandler());
 }
 
 /**
@@ -81,30 +87,32 @@ function Eternizer_admin_config () {
  */
 function Eternizer_admin_adminView()
 {
-	$stati = array(	'A' => _ETERNIZER_ACTIVE,
-					'M' => _ETERNIZER_MODERATED);
-	if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_MODERATE))
-		return LogUtil::registerPermissionError();
+    $dom = ZLanguage::getModuleDomain('Eternizer');
+    $stati = array('A' => __('Active', $dom), 'M' => __('Moderated', $dom));
+    if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_MODERATE))
+        return LogUtil::registerPermissionError();
 
-	$list = pnModAPIFunc('Eternizer', 'admin', 'getEntries');
+    $list = pnModAPIFunc('Eternizer', 'admin', 'getEntries');
 
-	foreach (array_keys($list) as $k) {
-		$list[$k]['rights'] = array('modify' => SecurityUtil::checkPermission('Eternizer::', $list[$k]['id'].'::', ACCESS_EDIT),
-									'delete' => SecurityUtil::checkPermission('Eternizer::', $list[$k]['id'].'::', ACCESS_DELETE));
-		$list[$k]['status'] = $stati[$list[$k]['obj_status']];
-	}
+    foreach (array_keys($list) as $k) {
+        $list[$k]['rights'] = array(
+            'modify' => SecurityUtil::checkPermission('Eternizer::', $list[$k]['id'] . '::', ACCESS_EDIT),
+            'delete' => SecurityUtil::checkPermission('Eternizer::', $list[$k]['id'] . '::', ACCESS_DELETE));
+        $list[$k]['status'] = $stati[$list[$k]['obj_status']];
+    }
 
-	$rights = array('modify' => SecurityUtil::checkPermission('Eternizer::', '*::', ACCESS_EDIT),
-					'delete' => SecurityUtil::checkPermission('Eternizer::', '*::', ACCESS_DELETE));
+    $rights = array(
+        'modify' => SecurityUtil::checkPermission('Eternizer::', '*::', ACCESS_EDIT),
+        'delete' => SecurityUtil::checkPermission('Eternizer::', '*::', ACCESS_DELETE));
 
-	$pnRender = pnRender::getInstance('Eternizer', false);
+    $pnRender = pnRender::getInstance('Eternizer', false);
 
-	$pnRender->assign('goback', DataUtil::encode(pnModURL('Eternizer', 'admin', 'adminView')));
-	$pnRender->assign('config', pnModGetVar('Eternizer'));
-	$pnRender->assign('list', $list);
-	$pnRender->assign('rights', $rights);
+    $pnRender->assign('goback', DataUtil::encode(pnModURL('Eternizer', 'admin', 'adminView')));
+    $pnRender->assign('config', pnModGetVar('Eternizer'));
+    $pnRender->assign('list', $list);
+    $pnRender->assign('rights', $rights);
 
-	return $pnRender->fetch('Eternizer_admin_adminView.tpl');
+    return $pnRender->fetch('Eternizer_admin_adminView.tpl');
 }
 
 /**
@@ -112,29 +120,32 @@ function Eternizer_admin_adminView()
  */
 function Eternizer_admin_adminViewRedirect()
 {
-	$action = array_keys(FormUtil::getPassedValue('action', '', 'P'));
-	$selected = array_keys(FormUtil::getPassedValue('selected', '', 'P'));
+    $action = array_keys(FormUtil::getPassedValue('action', '', 'P'));
+    $selected = array_keys(FormUtil::getPassedValue('selected', '', 'P'));
     $goback = DataUtil::encode(pnModURL('Eternizer', 'admin', 'adminView'));
-	switch(reset($action)) {
-	case 'delete':
-		$url = pnModURL('Eternizer', 'admin', 'suppress', array('id' => $selected,
-		                                                        'goback' => $goback));
-		break;
-	case 'activate':
-		$url = pnModURL('Eternizer', 'admin', 'changeStatus', array('status' => 'A',
-																'id'	=> $selected,
-		                                                        'goback' => $goback));
-		break;
-	case 'moderate':
-		$url = pnModURL('Eternizer', 'admin', 'changeStatus', array('status' => 'M',
-																'id' => $selected,
-		                                                        'goback' => $goback));
-		break;
-	default:
-		$url = pnModURL('Eternizer', 'admin', 'adminView');
-	}
+    switch (reset($action)) {
+        case 'delete':
+            $url = pnModURL('Eternizer', 'admin', 'suppress', array(
+                'id' => $selected,
+                'goback' => $goback));
+            break;
+        case 'activate':
+            $url = pnModURL('Eternizer', 'admin', 'changeStatus', array(
+                'status' => 'A',
+                'id' => $selected,
+                'goback' => $goback));
+            break;
+        case 'moderate':
+            $url = pnModURL('Eternizer', 'admin', 'changeStatus', array(
+                'status' => 'M',
+                'id' => $selected,
+                'goback' => $goback));
+            break;
+        default:
+            $url = pnModURL('Eternizer', 'admin', 'adminView');
+    }
 
-	return pnRedirect($url);
+    return pnRedirect($url);
 }
 
 /**
@@ -142,26 +153,26 @@ function Eternizer_admin_adminViewRedirect()
  */
 function Eternizer_admin_changeStatus()
 {
-	$id = FormUtil::getPassedValue('id');
-	$status = FormUtil::getPassedValue('status');
+    $id = FormUtil::getPassedValue('id');
+    $status = FormUtil::getPassedValue('status');
 
-	if (array_search($status, array('M', 'A')) === false) {
-		return LogUtil::registerError('ARGSERROR', '', pnModURL('Eternizer', 'user', 'main'));
-	}
+    if (array_search($status, array('M', 'A')) === false) {
+        return LogUtil::registerError('ARGSERROR', '', pnModURL('Eternizer', 'user', 'main'));
+    }
 
-	if (empty($id) || (!is_numeric($id) && !is_array($id))) {
-		return LogUtil::registerError('ARGSERROR', '', pnModURL('Eternizer', 'user', 'main'));
-	}
+    if (empty($id) || (!is_numeric($id) && !is_array($id))) {
+        return LogUtil::registerError('ARGSERROR', '', pnModURL('Eternizer', 'user', 'main'));
+    }
 
-	if (!SecurityUtil::checkPermission('Eternizer::', (is_numeric($id)?$id:'').'::', ACCESS_MODERATE))
-		return LogUtil::registerPermissionError();
+    if (!SecurityUtil::checkPermission('Eternizer::', (is_numeric($id) ? $id : '') . '::', ACCESS_MODERATE))
+        return LogUtil::registerPermissionError();
 
-	pnModAPIFunc('Eternizer', 'admin', 'changeStatus', compact('id', 'status'));
+    pnModAPIFunc('Eternizer', 'admin', 'changeStatus', compact('id', 'status'));
 
-	$url = DataUtil::decode(FormUtil::getPassedValue('goback'));
-	if (empty($url))
-	    $url = pnModURL('Eternizer', 'user', 'main');
-	return pnRedirect($url);
+    $url = DataUtil::decode(FormUtil::getPassedValue('goback'));
+    if (empty($url))
+        $url = pnModURL('Eternizer', 'user', 'main');
+    return pnRedirect($url);
 }
 
 /**
@@ -170,24 +181,27 @@ function Eternizer_admin_changeStatus()
  * @author	Philipp Niethammer <webmaster@nochwer.de>
  * @return	output
  */
-function Eternizer_admin_suppress () {
-	$id = FormUtil::getPassedValue('id');
+function Eternizer_admin_suppress()
+{
+    $dom = ZLanguage::getModuleDomain('Eternizer');
+    $id = FormUtil::getPassedValue('id');
 
-	if (empty($id) || (!is_numeric($id) && !is_array($id))) {
-		return LogUtil::registerError(_MODARGSERROR, '', pnModURL('Eternizer', 'user', 'main'));
-	}
+    if (empty($id) || (!is_numeric($id) && !is_array($id))) {
+        return LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom), '', pnModURL('Eternizer', 'user', 'main'));
+    }
 
-	if (!SecurityUtil::checkPermission('Eternizer::', (is_numeric($id)?$id:'').'::', ACCESS_DELETE))
-		return LogUtil::registerPermissionError();
+    if (!SecurityUtil::checkPermission('Eternizer::', (is_numeric($id) ? $id : '') . '::', ACCESS_DELETE))
+        return LogUtil::registerPermissionError();
 
-	$pnRender = pnRender::getInstance('Eternizer', false);
+    $pnRender = pnRender::getInstance('Eternizer', false);
     $url = DataUtil::decode(FormUtil::getPassedValue('goback'));
-	if (empty($url))
-	    $url = pnModURL('Eternizer', 'user', 'main');
-	$pnRender->assign('goback', FormUtil::getPassedValue('goback'));
-	$pnRender->assign('cancelurl', $url);
-	$pnRender->assign('id', $id);
-	return $pnRender->fetch('Eternizer_admin_suppress.tpl');
+    if (empty($url)) {
+        $url = pnModURL('Eternizer', 'user', 'main');
+    }
+    $pnRender->assign('goback', FormUtil::getPassedValue('goback'));
+    $pnRender->assign('cancelurl', $url);
+    $pnRender->assign('id', $id);
+    return $pnRender->fetch('Eternizer_admin_suppress.tpl');
 }
 
 /**
@@ -195,21 +209,22 @@ function Eternizer_admin_suppress () {
  * Delete an entry
  * @return	output
  */
-function Eternizer_admin_delete () {
-	$id = FormUtil::getPassedValue('id');
+function Eternizer_admin_delete()
+{
+    $id = FormUtil::getPassedValue('id');
 
-	if (empty($id) || (!is_numeric($id) && !is_array($id))) {
-        LogUtil::registerError(_MODARGSERROR, '', pnModURL('Eternizer', 'user', 'main'));
+    if (empty($id) || (!is_numeric($id) && !is_array($id))) {
+        LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom), '', pnModURL('Eternizer', 'user', 'main'));
     }
-	if (!SecurityUtil::checkPermission('Eternizer::', (is_numeric($id)?$id:'').'::', ACCESS_DELETE))
-		return LogUtil::registerPermissionError();
+    if (!SecurityUtil::checkPermission('Eternizer::', (is_numeric($id) ? $id : '') . '::', ACCESS_DELETE))
+        return LogUtil::registerPermissionError();
 
-	pnModAPIFunc('Eternizer', 'admin', 'DelEntry', array('id' => $id));
-	
-	$url = DataUtil::decode(FormUtil::getPassedValue('goback'));
-	if (empty($url))
-	    $url = pnModURL('Eternizer', 'user', 'main');
-	return pnRedirect($url);
+    pnModAPIFunc('Eternizer', 'admin', 'DelEntry', array('id' => $id));
+
+    $url = DataUtil::decode(FormUtil::getPassedValue('goback'));
+    if (empty($url))
+        $url = pnModURL('Eternizer', 'user', 'main');
+    return pnRedirect($url);
 }
 
 /**
@@ -217,15 +232,15 @@ function Eternizer_admin_delete () {
  * Show the Modify-Form
  * @return	output
  */
-function Eternizer_admin_modify () {
-		if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_MODERATE)) {
+function Eternizer_admin_modify()
+{
+    if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_MODERATE)) {
         return LogUtil::registerPermissionError();
     }
 
-    $render = & FormUtil::newpnForm('Eternizer');
+    $render = FormUtil::newpnForm('Eternizer');
 
-	Loader::requireOnce('modules/Eternizer/classes/Eternizer_admin_modifyHandler.class.php');
+    Loader::requireOnce('modules/Eternizer/classes/Eternizer_admin_modifyHandler.class.php');
 
-	return $render->pnFormExecute('Eternizer_admin_modify.tpl', new Eternizer_admin_modifyHandler());
+    return $render->pnFormExecute('Eternizer_admin_modify.tpl', new Eternizer_admin_modifyHandler());
 }
-?>

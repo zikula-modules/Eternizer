@@ -38,7 +38,7 @@ function smarty_function_eternizergravatar($params, &$smarty)
         $smarty->trigger_error('gravatar: attribute email required');
         return false;
     }
-    
+
     $email = html_entity_decode($email);
 
 	if (!isset($rating)) $rating = false;
@@ -55,12 +55,10 @@ function smarty_function_eternizergravatar($params, &$smarty)
 		$out .= "&default=".urlencode($default);
 	if($border && $border != '')
 		$out .= "&border=".$border;
-	
+
 	if (!empty($assign)) {
 	    $smarty->assign($assign, pnVarPrepForDisplay($out));
 	} else {
 	    return pnVarPrepForDisplay($out);
 	}
 }
-
-?>

@@ -14,20 +14,20 @@
 <!--[pnform cssClass="et_form"]-->
 <!--[foreach from=$profile key=id item=item]-->
 <div class="row">
-  <!--[pnformlabel for="profile_$id" text=$item.title]-->
+  <!--[pnformlabel for="profile_$id" __text=$item.title]-->
   <!--[if $item.type eq 'mail']-->
-  <!--[pnformemailinput id="profile_$id" group="profile" text=$item.value maxLength=255 mandatory=$item.mandatory readOnly=$item.readonly]-->
+  <!--[pnformemailinput id="profile_$id" group="profile" __text=$item.value maxLength='255' mandatory=$item.mandatory readOnly=$item.readonly]-->
   <!--[elseif $item.type eq 'url']-->
-  <!--[pnformurlinput id="profile_$id" group="profile" text=$item.value maxLength=255 mandatory=$item.mandatory readOnly=$item.readonly]-->
+  <!--[pnformurlinput id="profile_$id" group="profile" __text=$item.value maxLength='255' mandatory=$item.mandatory readOnly=$item.readonly]-->
   <!--[else]-->
-  <!--[pnformtextinput id="profile_$id" group="profile" text=$item.value maxLength=255 mandatory=$item.mandatory readOnly=$item.readonly]-->
+  <!--[pnformtextinput id="profile_$id" group="profile" __text=$item.value maxLength='255' mandatory=$item.mandatory readOnly=$item.readonly]-->
   <!--[/if]-->
 </div>
 <!--[/foreach]-->
 
 <div class="row">
-  <!--[pnformlabel for=text text=_ETERNIZER_TEXT"]-->
-  <!--[pnformtextinput id=text textMode="multiline" mandatory=1 rows="5" cols="40"]-->
+  <!--[pnformlabel for='text' __text='Text"']-->
+  <!--[pnformtextinput id='text' textMode="multiline" mandatory='1' rows="5" cols="40"]-->
 
   <!--[if $bbcode]-->
   <!--[pnmodfunc modname=bbcode type=user func=bbcodes textfieldid=text]--><br />
@@ -40,8 +40,8 @@
 <!--[eternizerantispam group=extra]-->
 
 <div class="buttonrow">
-  <!--[pnformbutton commandName="create" text="_CREATE"]-->
-  <!--[pnformbutton commandName="cancel" text="_CANCEL"]-->
+  <!--[pnformbutton commandName="create" __text="Create"]-->
+  <!--[pnformbutton commandName="cancel" __text="Cancel"]-->
 </div>
 
 <!--[/pnform]-->

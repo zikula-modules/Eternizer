@@ -9,7 +9,7 @@
 <!--[*  Suppress the deletion of an entry		                                     *]-->
 <!--[*  ---------------------------------------------------------------------------- *]-->
 
-<!--[pnml name="_CONFIRMDELETE"]--><br />
-<a href="<!--[pnmodurl modname="Eternizer" type="admin" func="delete" id="$id" goback=$goback]-->"><!--[pnml name="_YES"]--></a>
+<!--[gt text="Confirm deletion?"]--><br />
+<a href="<!--[pnmodurl modname="Eternizer" type="admin" func="delete" id=$id goback=$goback]-->"><!--[gt text="Yes"]--></a>
 <!--[pnmodurl modname="Eternizer" type="user" func="main" assign=defurl]-->
-<a href="<!--[$cancelurl]-->"><!--[pnml name="_NO"]--></a>
+<a href="<!--[$cancelurl]-->"><!--[gt text="No"]--></a>

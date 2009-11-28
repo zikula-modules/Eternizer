@@ -11,37 +11,39 @@
  * @subpackage Eternizer
  */
 
+// need a better way to load this - from 1.3 we use autoloading
 Loader::requireOnce('includes/pnForm.php');
 
 function Eternizer_init_getDefaultConfig()
 {
+    $dom = ZLanguage::getModuleDomain('Eternizer');
 	$profile = array(
 	            array(
 					'pos'         => 1, //Position in formular. ASC
-					'title'       => '_NAME',
+					'title'       => __('Name', $dom),
 	                'type'        => 'name', //Field type
 	                'mandatory'   => 2, //0 optional, 1 guests, 2 all
 	                'profile'     => '_UREALNAME'), //field name in profile
 	            array(
 	                'pos'		  => 2,
-	                'title'		  => '_EMAIL',
+	                'title'		  => __('E-mail address', $dom),
 	                'type'		  => 'mail',
 	                'mandatory'	  => 2,
 	                'profile'	  => '_UFAKEMAIL'),
 	            array(
 					'pos'         => 3,
-	                'title'		  => '_ETERNIZER_HOMEPAGE',
+	                'title'		  => __('Homepage', $dom),
 	                'type'		  => 'url',
 	                'mandatory'	  => 0,
 	                'profile'     => '_YOURHOMEPAGE'),
 	            array(
 	                'pos'         => 4,
-	                'title'       => '_ETERNIZER_LOCATION',
+	                'title'       => __('Location', $dom),
 	                'type'        => 'text',
 	                'mandatory'   => 0,
 	                'profile'	  => '_YLOCATION')
 	          );
-	          
+
 	$config = array('perpage'		=> 10,
 					'order'			=> 'desc',
 	                'spammode'		=> 1,
@@ -67,9 +69,9 @@ function Eternizer_init() {
 	// Forget about configuration.. It is defect
 	pnModDelVar('Eternizer');
 	$config = Eternizer_init_getDefaultConfig();
-	foreach ($config as $k => $v) 
+	foreach ($config as $k => $v)
 	    pnModSetVar('Eternizer', $k, $v);
-	
+
 	// Initialisation successful
 	return true;
 }
@@ -83,7 +85,7 @@ function Eternizer_upgrade($oldversion) {
     case '1.0':
 	    break;
 	}
-	
+
 	return true;
 }
 
@@ -130,7 +132,7 @@ function Eternizer_init_step2()
         return LogUtil::registerPermissionError();
     }
 
-    $render = & FormUtil::newpnForm('Eternizer');
+    $render = FormUtil::newpnForm('Eternizer');
 
 	Loader::requireOnce('modules/Eternizer/classes/Eternizer_admin_configHandler.class.php');
 
@@ -155,4 +157,3 @@ function Eternizer_init_step3()
     return $pnRender->fetch('Eternizer_init_step3.tpl');
 }
 
-?>

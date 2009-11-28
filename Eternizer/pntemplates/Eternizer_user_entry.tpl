@@ -31,7 +31,7 @@
     <dl>
       <!--[foreach from=$profile key=pid item=value]-->
       <!--[if $value != '' && $pid != $config.titlefield]-->
-      <dt><!--[pnml name=$config.profile.$pid.title]--></dt>
+      <dt><!--[$config.profile.$pid.title]--></dt>
       <dd>
         <!--[if $config.profile.$pid.type eq 'mail']-->
         <a href="mailto:<!--[$value]-->"><!--[$value]--></a>
@@ -46,19 +46,19 @@
     </dl>
 
     <!--[if $right_comment && !$right_edit]-->
-    <a class="comment" href="<!--[pnmodurl modname=Eternizer type=admin func=modify id=$id]-->" title="<!--[pnml name=_ETERNIZER_COMMENT_TITLE]-->"><!--[pnml name=_ETERNIZER_COMMENT]--></a>
+    <a class="comment" href="<!--[pnmodurl modname=Eternizer type=admin func=modify id=$id]-->" title="<!--[gt text="Comment this entry"]-->"><!--[gt text="Comment"]--></a>
     <!--[/if]-->
     <!--[if $right_edit]-->
-    <a class="edit" href="<!--[pnmodurl modname=Eternizer type=admin func=modify id=$id]-->" title="<!--[pnml name=_ETERNIZER_EDIT_TITLE]-->"><!--[pnml name=_EDIT]--></a>
+    <a class="edit" href="<!--[pnmodurl modname=Eternizer type=admin func=modify id=$id]-->" title="<!--[gt text="Edit this entry"]-->"><!--[gt text="Edit"]--></a>
     <!--[/if]-->
     <!--[if $right_delete]-->
-    <a class="delete" href="<!--[pnmodurl modname=Eternizer type=admin func=suppress id=$id]-->" title="<!--[pnml name=_ETERNIZER_DELETE_TITLE]-->"><!--[pnml name=_DELETE]--></a>
+    <a class="delete" href="<!--[pnmodurl modname=Eternizer type=admin func=suppress id=$id]-->" title="<!--[gt text="Delete this entry"]-->"><!--[gt text="Delete"]--></a>
     <!--[/if]-->
   </div>
   <div class="entry-text">
     <!--[$text]-->
     <!--[if $comment]-->
-    <p style="margin-top: 2em;" class="entry-comment"><strong class="entry-comment-label"><!--[pnml name=_ETERNIZER_COMMENT]-->:</strong><br />
+    <p style="margin-top: 2em;" class="entry-comment"><strong class="entry-comment-label"><!--[gt text="Comment"]-->:</strong><br />
       <!--[$comment]-->
     </p>
     <!--[/if]-->

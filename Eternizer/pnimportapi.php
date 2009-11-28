@@ -4,7 +4,7 @@
  *
  * @copyright (c) 2008, philipp
  * @link http://code.zikula.org/eternizer
- * @version $Id: $
+ * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  * @package Zikula
  * @subpackage Eternizer
@@ -85,6 +85,7 @@ function Eternizer_importapi_getInstalledBooks ($args) {
  */
 function Eternizer_importapi_import($args)
 {
+    $dom = ZLanguage::getModuleDomain('Eternizer');
 	if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_ADMIN)) {
 		return LogUtil::registerPermissionError();
 	}
@@ -92,7 +93,7 @@ function Eternizer_importapi_import($args)
 	$obj =& pnModAPIFunc('Eternizer', 'import', 'getObject', array('name' => $args['plugin']));
 
 	if (!is_object($obj)) {
-		return LogUtil::registerError(_MODARGSERROR);
+		return LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom));
 	}
 
 	if ($args['config']) {
@@ -120,7 +121,7 @@ function Eternizer_importapi_import($args)
 
 			$items[] = $i;
 		}
-		
+
 		DBUtil::insertObjectArray($items, 'Eternizer_entry', 'id', true);
 	}
 
@@ -132,7 +133,7 @@ function Eternizer_importapi_import($args)
 		$obj->delete();
 	}
 
-	LogUtil::registerStatus(_ETERNIZER_IMPORTED);
+	LogUtil::registerStatus(__('Import successful.', $dom));
 
 	return true;
 }
@@ -151,7 +152,7 @@ function Eternizer_importapi_from_guestbook ($args) {
 	extract($args);
 
 	if (!pnSecAuthAction(0, 'Eternizer::', '::', ACCESS_ADMIN)) {
-        return SetErrorMsg(_MODULENOAUTH);
+        return SetErrorMsg(__('Sorry! No authorization to access this module.', $dom));
     }
 
 
@@ -195,4 +196,3 @@ function Eternizer_importapi_from_guestbook ($args) {
 	return true;
 }
 */
-?>
