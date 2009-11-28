@@ -1,7 +1,5 @@
 <!--[ $Id$ ]-->
-
 <!--[pnformvalidationsummary]-->
-
 <!--[pnform cssClass="z-form"]-->
 <div>
     <fieldset>
