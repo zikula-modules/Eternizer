@@ -6,7 +6,7 @@
  * @link http://www.guite.de
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @author	Philipp Niethammer <webmaster@nochwer.de>
+ * @author    Philipp Niethammer <webmaster@nochwer.de>
  * @package Zikula
  * @subpackage Eternizer
  */
@@ -18,24 +18,24 @@ Loader::requireOnce('includes/pnForm.php');
 /**
  * replace for php core function "is_writeable()"
  *
- * @param string		$path		File
+ * @param string        $path        File
  * @return bool
  */
 function is__writeable($path)
 {
     if ($path{strlen($path) - 1} == '/')
-        return is__writable($path . uniqid(mt_rand()) . '.tmp');
+    return is__writable($path . uniqid(mt_rand()) . '.tmp');
 
     if (file_exists($path)) {
         if (!($f = @fopen($path, 'r+')))
-            return false;
+        return false;
 
         fclose($f);
         return true;
     }
 
     if (!($f = @fopen($path, 'w')))
-        return false;
+    return false;
     fclose($f);
     unlink($path);
     return true;
@@ -44,13 +44,13 @@ function is__writeable($path)
 /**
  * Show the main administration page
  *
- * @author	Philipp Niethammer <webmaster@nochwer.de
- * @return	output
+ * @author    Philipp Niethammer <webmaster@nochwer.de
+ * @return    output
  */
 function Eternizer_admin_main()
 {
     if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_ADMIN))
-        return LogUtil::registerPermissionError();
+    return LogUtil::registerPermissionError();
 
     $pnRender = pnRender::getInstance('Eternizer', false);
 
@@ -60,8 +60,8 @@ function Eternizer_admin_main()
 /**
  * Show the configuration Variables
  *
- * @author	Philipp Niethammer <webmaster@nochwer.de>
- * @return	output
+ * @author    Philipp Niethammer <webmaster@nochwer.de>
+ * @return    output
  */
 function Eternizer_admin_config()
 {
@@ -72,7 +72,7 @@ function Eternizer_admin_config()
     $modinfo = pnModGetInfo(pnModGetIDFromName('Eternizer'));
     $newestversion = file('http://www.guite.de/downloads/Eternizer_version.txt');
     if (!$newestversion)
-        $newestversion = array(0 => $modinfo['version']);
+    $newestversion = array(0 => $modinfo['version']);
 
     $render->assign('newestversion', trim($newestversion[0]));
 
@@ -82,15 +82,15 @@ function Eternizer_admin_config()
 /**
  * Show a shorted list of entries ("Admin view")
  *
- * @author	Philipp Niethammer <webmaster@nochwer.de>
- * @return pnRender output
+ * @author    Philipp Niethammer <webmaster@nochwer.de>
+ * @return    pnRender output
  */
 function Eternizer_admin_adminView()
 {
     $dom = ZLanguage::getModuleDomain('Eternizer');
     $stati = array('A' => __('Active', $dom), 'M' => __('Moderated', $dom));
     if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_MODERATE))
-        return LogUtil::registerPermissionError();
+    return LogUtil::registerPermissionError();
 
     $list = pnModAPIFunc('Eternizer', 'admin', 'getEntries');
 
@@ -157,29 +157,29 @@ function Eternizer_admin_changeStatus()
     $status = FormUtil::getPassedValue('status');
 
     if (array_search($status, array('M', 'A')) === false) {
-        return LogUtil::registerError('ARGSERROR', '', pnModURL('Eternizer', 'user', 'main'));
+        return LogUtil::registerArgsError(pnModURL('Eternizer', 'user', 'main'));
     }
 
     if (empty($id) || (!is_numeric($id) && !is_array($id))) {
-        return LogUtil::registerError('ARGSERROR', '', pnModURL('Eternizer', 'user', 'main'));
+        return LogUtil::registerArgsError(pnModURL('Eternizer', 'user', 'main'));
     }
 
     if (!SecurityUtil::checkPermission('Eternizer::', (is_numeric($id) ? $id : '') . '::', ACCESS_MODERATE))
-        return LogUtil::registerPermissionError();
+    return LogUtil::registerPermissionError();
 
     pnModAPIFunc('Eternizer', 'admin', 'changeStatus', compact('id', 'status'));
 
     $url = DataUtil::decode(FormUtil::getPassedValue('goback'));
     if (empty($url))
-        $url = pnModURL('Eternizer', 'user', 'main');
+    $url = pnModURL('Eternizer', 'user', 'main');
     return pnRedirect($url);
 }
 
 /**
  * Ask if realy delete
  *
- * @author	Philipp Niethammer <webmaster@nochwer.de>
- * @return	output
+ * @author    Philipp Niethammer <webmaster@nochwer.de>
+ * @return    output
  */
 function Eternizer_admin_suppress()
 {
@@ -187,11 +187,11 @@ function Eternizer_admin_suppress()
     $id = FormUtil::getPassedValue('id');
 
     if (empty($id) || (!is_numeric($id) && !is_array($id))) {
-        return LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom), '', pnModURL('Eternizer', 'user', 'main'));
+        return LogUtil::registerArgsError();
     }
 
     if (!SecurityUtil::checkPermission('Eternizer::', (is_numeric($id) ? $id : '') . '::', ACCESS_DELETE))
-        return LogUtil::registerPermissionError();
+    return LogUtil::registerPermissionError();
 
     $pnRender = pnRender::getInstance('Eternizer', false);
     $url = DataUtil::decode(FormUtil::getPassedValue('goback'));
@@ -207,30 +207,30 @@ function Eternizer_admin_suppress()
 /**
  * Delete
  * Delete an entry
- * @return	output
+ * @return    output
  */
 function Eternizer_admin_delete()
 {
     $id = FormUtil::getPassedValue('id');
 
     if (empty($id) || (!is_numeric($id) && !is_array($id))) {
-        LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom), '', pnModURL('Eternizer', 'user', 'main'));
+        LogUtil::registerArgsError();
     }
     if (!SecurityUtil::checkPermission('Eternizer::', (is_numeric($id) ? $id : '') . '::', ACCESS_DELETE))
-        return LogUtil::registerPermissionError();
+    return LogUtil::registerPermissionError();
 
     pnModAPIFunc('Eternizer', 'admin', 'DelEntry', array('id' => $id));
 
     $url = DataUtil::decode(FormUtil::getPassedValue('goback'));
     if (empty($url))
-        $url = pnModURL('Eternizer', 'user', 'main');
+    $url = pnModURL('Eternizer', 'user', 'main');
     return pnRedirect($url);
 }
 
 /**
  * Modify
  * Show the Modify-Form
- * @return	output
+ * @return    output
  */
 function Eternizer_admin_modify()
 {

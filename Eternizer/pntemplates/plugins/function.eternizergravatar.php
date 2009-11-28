@@ -8,8 +8,8 @@
  * http://www.markwest.me.uk/Article37.phtml
  *
  * based on gravatar plugin for Wordpress
- *	Author: Tom Werner
- *	Author URI: http://www.mojombo.com/
+ *    Author: Tom Werner
+ *    Author URI: http://www.mojombo.com/
  *
  * Available parameters:
  *   - email:    E-mail address of the user to get the gravatar for
@@ -17,8 +17,8 @@
  *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out
  *
  * Example
- *	<!--[pnusergetvar name=email uid=$info.aid assign=email]-->
- *	<img src="<!--[gravatar email=$email]-->" alt="" />
+ *    <!--[pnusergetvar name=email uid=$info.aid assign=email]-->
+ *    <img src="<!--[gravatar email=$email]-->" alt="" />
  *
  *
  * @author       Mark West
@@ -41,24 +41,24 @@ function smarty_function_eternizergravatar($params, &$smarty)
 
     $email = html_entity_decode($email);
 
-	if (!isset($rating)) $rating = false;
-	if (!isset($size)) $size = false;
-	if (!isset($default)) $default = false;
-	if (!isset($border)) $border = false;
+    if (!isset($rating)) $rating = false;
+    if (!isset($size)) $size = false;
+    if (!isset($default)) $default = false;
+    if (!isset($border)) $border = false;
 
-	$out = 'http://www.gravatar.com/avatar.php?gravatar_id='.md5($email);
-	if($rating && $rating != '')
-		$out .= "&rating=".$rating;
-	if($size && $size != '')
-		$out .="&size=".$size;
-	if($default && $default != '')
-		$out .= "&default=".urlencode($default);
-	if($border && $border != '')
-		$out .= "&border=".$border;
+    $out = 'http://www.gravatar.com/avatar.php?gravatar_id='.md5($email);
+    if($rating && $rating != '')
+    $out .= "&rating=".$rating;
+    if($size && $size != '')
+    $out .="&size=".$size;
+    if($default && $default != '')
+    $out .= "&default=".urlencode($default);
+    if($border && $border != '')
+    $out .= "&border=".$border;
 
-	if (!empty($assign)) {
-	    $smarty->assign($assign, pnVarPrepForDisplay($out));
-	} else {
-	    return pnVarPrepForDisplay($out);
-	}
+    if (!empty($assign)) {
+        $smarty->assign($assign, pnVarPrepForDisplay($out));
+    } else {
+        return pnVarPrepForDisplay($out);
+    }
 }

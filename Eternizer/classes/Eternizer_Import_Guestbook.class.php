@@ -6,7 +6,7 @@
  * @link http://www.guite.de
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @author	Philipp Niethammer <webmaster@nochwer.de>
+ * @author    Philipp Niethammer <webmaster@nochwer.de>
  * @package Zikula
  * @subpackage Eternizer
  */
@@ -16,80 +16,80 @@ class Eternizer_Import_Guestbook
 
     function getName()
     {
-    	return 'Postguestbook';
+        return 'Postguestbook';
     }
 
     function available()
     {
-    	return (bool) pnModAvailable('postguestbook');
+        return (bool) pnModAvailable('postguestbook');
     }
 
     function display()
     {
-    	$render = FormUtil::newpnForm('Eternizer');
+        $render = FormUtil::newpnForm('Eternizer');
 
-    	Loader::requireOnce('modules/Eternizer/classes/Eternizer_import_importHandler.class.php');
+        Loader::requireOnce('modules/Eternizer/classes/Eternizer_import_importHandler.class.php');
 
-		return $render->pnFormExecute('Eternizer_import_Default.tpl', new Eternizer_import_importHandler(&$this));
+        return $render->pnFormExecute('Eternizer_import_Default.tpl', new Eternizer_import_importHandler(&$this));
     }
 
     function getConfig()
     {
-		$config = array('perpage'	=> pnModGetVar('postguestbook', 'entries_per_page'));
+        $config = array('perpage'    => pnModGetVar('postguestbook', 'entries_per_page'));
 
-		return $config;
+        return $config;
     }
 
     function getData()
     {
-    	pnModDBInfoLoad('Guestbook');
+        pnModDBInfoLoad('Guestbook');
 
-    	$res = DBUtil::selectObjectArray('Guestbook');
+        $res = DBUtil::selectObjectArray('Guestbook');
 
-    	$list = array();
+        $list = array();
 
-    	foreach ($res as $item) {
-    		$obj = array();
-    		foreach ($item as $k => $v) {
-    			switch ($k) {
-    			case 'comment':
-    				$obj['text'] = $v;
-    				break;
-    			case 'date':
-    				$obj['cr_date'] = DateUtil::getDatetime($v);
-    				break;
-    			case 'nukeuser':
-    				$obj['cr_uid'] = $v;
-    			default:
-    				$profile = array('name'		=> 0,
-    								'email'		=> 1,
-    								'url'	    => 2,
-    								'location'	=> 3);
+        foreach ($res as $item) {
+            $obj = array();
+            foreach ($item as $k => $v) {
+                switch ($k) {
+                    case 'comment':
+                        $obj['text'] = $v;
+                        break;
+                    case 'date':
+                        $obj['cr_date'] = DateUtil::getDatetime($v);
+                        break;
+                    case 'nukeuser':
+                        $obj['cr_uid'] = $v;
+                    default:
+                        $profile = array('name'        => 0,
+                                    'email'        => 1,
+                                    'url'        => 2,
+                                    'location'    => 3);
 
-    				$obj['profile'][$profile[$k]] = $v;
-    			}
-    		}
-    		$list[] = $obj;
-    	}
+                        $obj['profile'][$profile[$k]] = $v;
+                }
+            }
+            $list[] = $obj;
+        }
 
-    	return $list;
+        return $list;
     }
 
     function deactivate()
     {
-    	$mid = pnModGetIdFromName('Guestbook');
+        $mid = pnModGetIdFromName('Guestbook');
 
-    	return pnModAPIFunc('Modules', 'admin', 'setstate', array(	'id'	=> $mid,
-															'state'	=> PNMODULE_STATE_INACTIVE));
+        return pnModAPIFunc('Modules', 'admin', 'setstate', array(    'id'    => $mid,
+                                                            'state'    => PNMODULE_STATE_INACTIVE));
     }
 
     function delete()
     {
-    	$mid = pnModGetIdFromName('Guestbook');
+        $mid = pnModGetIdFromName('Guestbook');
 
-    	$this->deactivate();
-    	return pnModAPIFunc('Modules', 'admin', 'remove', array('id'					=> $mid,
-																'interactive_remove'	=> true));
+        $this->deactivate();
+        return pnModAPIFunc('Modules', 'admin', 'remove', array('id'                    => $mid,
+                                                                'interactive_remove'    => true));
     }
 
     function __toString() {

@@ -6,7 +6,7 @@
  * @link http://www.guite.de
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @author	Philipp Niethammer <webmaster@nochwer.de>
+ * @author    Philipp Niethammer <webmaster@nochwer.de>
  * @package Zikula
  * @subpackage Eternizer
  */
@@ -14,40 +14,40 @@
 /**
  * Run an action for long words to a string
  *
- * @author	Philipp Niethammer <webmaster@nochwer.de>
- * @param	(string)	$string
- * @return	(string)	$string
+ * @author    Philipp Niethammer <webmaster@nochwer.de>
+ * @param    (string)    $string
+ * @return    (string)    $string
  */
 function Eternizer_WWAction ($string) {
 
-	 $wwaction = pnModGetVar("Eternizer", "wwaction");
+     $wwaction = pnModGetVar("Eternizer", "wwaction");
      $wwlimit = pnModGetVar("Eternizer", "wwlimit");
 
-	 switch ($wwaction) {
-		case 'truncate':
-			$string = preg_replace_callback("~(\S{".$wwlimit.",})~", 'Eternizer_WWTruncate', $string);
-			break;
-		case 'wrap':
-			$string = preg_replace_callback("~(\S{".$wwlimit.",})~", 'Eternizer_WWWrap', $string);
+     switch ($wwaction) {
+        case 'truncate':
+            $string = preg_replace_callback("~(\S{".$wwlimit.",})~", 'Eternizer_WWTruncate', $string);
             break;
-	}
+        case 'wrap':
+            $string = preg_replace_callback("~(\S{".$wwlimit.",})~", 'Eternizer_WWWrap', $string);
+            break;
+    }
 
-	return $string;
+    return $string;
 }
 
 function Eternizer_WWTruncate ($match) {
-	$wwshortto = pnModGetVar("Eternizer", "wwshortto");
+    $wwshortto = pnModGetVar("Eternizer", "wwshortto");
 
-	$string = $match[1];
+    $string = $match[1];
 
-	if (stripos($string, '[/url]') === false && stripos($string, '[/img]') === false && stripos($string, '[/email]') === false)
-		return $string;
+    if (stripos($string, '[/url]') === false && stripos($string, '[/img]') === false && stripos($string, '[/email]') === false)
+        return $string;
 
-	return substr($string, 0, $wwshortto);
+    return substr($string, 0, $wwshortto);
 }
 
 function Eternizer_WWWrap ($match) {
-	$wwshortto = pnModGetVar("Eternizer", "wwshortto");
+    $wwshortto = pnModGetVar("Eternizer", "wwshortto");
     $string = $match[1];
     if (stripos($string, '[/url]') !== false && stripos($string, '[/img]') !== false && stripos($string, '[/email]') !== false)
         return $string;

@@ -6,7 +6,7 @@
  * @link http://www.guite.de
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @author	Philipp Niethammer <webmaster@nochwer.de>
+ * @author    Philipp Niethammer <webmaster@nochwer.de>
  * @package Zikula
  * @subpackage Eternizer
  */
@@ -17,9 +17,9 @@ Loader::loadClass('Eternizer_antispam', 'modules/Eternizer/classes');
 /**
  * GetEntries
  * Get persite entries beginning at startnum
- * @param	(int)	$args['startnum'] = -1
- * @param	(int)	$args['perpage']
- * @return	(array)	$entries		Array with entries
+ * @param    (int)    $args['startnum'] = -1
+ * @param    (int)    $args['perpage']
+ * @return   (array)  $entries        Array with entries
  */
 function Eternizer_userapi_GetEntries($args)
 {
@@ -61,7 +61,7 @@ function Eternizer_userapi_GetEntries($args)
 /**
  * CountEntries
  * Count the number of entries
- * @return	(int)				number of entries or false on error
+ * @return   (int)   number of entries or false on error
  */
 function Eternizer_userapi_CountEntries()
 {
@@ -82,10 +82,10 @@ function Eternizer_userapi_CountEntries()
 /**
  * Write a new entry
  *
- * @author	Philipp Niethammer <webmaster@nochwer.de>
- * @param	(text)		$args['text'] the text of the entry
- * @param	(array)		$args['profile'] all profile data
- * @return	(bool)		True or False on error
+ * @author   Philipp Niethammer <webmaster@nochwer.de>
+ * @param    (text)        $args['text'] the text of the entry
+ * @param    (array)       $args['profile'] all profile data
+ * @return   (bool)        True or False on error
  */
 function Eternizer_userapi_WriteEntry($args)
 {
@@ -96,7 +96,7 @@ function Eternizer_userapi_WriteEntry($args)
     $dom = ZLanguage::getModuleDomain('Eternizer');
 
     if (!$args['text']) {
-        return LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom));
+        return LogUtil::registerArgsError();
     }
 
     $profile = pnModGetVar('Eternizer', 'profile');

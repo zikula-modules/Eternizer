@@ -8,7 +8,7 @@
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  * @package Zikula
  * @subpackage Eternizer
-*/
+ */
 
 
 /**
@@ -18,7 +18,7 @@
 function Eternizer_listblock_init()
 {
     // Security
-    pnSecAddSchema('Eternizer:Listblock:', 'Block title::');
+    SecurityUtil::registerPermissionSchema('Eternizer:Listblock:', 'Block title::');
 }
 
 /**
@@ -31,7 +31,7 @@ function Eternizer_listblock_info()
     $dom = ZLanguage::getModuleDomain('Eternizer');
     return array('text_type'      => 'List',
                  'module'         => 'Eternizer',
-                 'text_type_long' => __('Show list Eternizer items', $dom),
+                 'text_type_long' => __('Show Eternizer items', $dom),
                  'allow_multiple' => true,
                  'form_content'   => false,
                  'form_refresh'   => false,
@@ -48,24 +48,21 @@ function Eternizer_listblock_display($blockinfo)
 {
     // Security check - important to do this as early as possible to avoid
     // potential security holes or just too much wasted processing.
-	// Note that we have Eternizer:Listblock: as the component.
-    if (!pnSecAuthAction(0,
-                         'Eternizer:Listblock:',
-                         "$blockinfo[title]::",
-                         ACCESS_READ)) {
-        return false;
+    // Note that we have Eternizer:Listblock: as the component.
+    if (!SecurityUtil::checkPermission('Eternizer:Listblock:', $blockinfo['title'] . '::', ACCESS_READ)) {
+        return;
     }
 
     // Get variables from content block
     $vars = pnBlockVarsFromContent($blockinfo['content']);
 
-	$numitems = is_numeric($vars['numitems'])?$vars['numitems']:pnModGetVar('Eternizer', 'itemsperpage');
-	$tpl = $vars['tpl']?$vars['tpl']:'listblock';
+    $numitems = is_numeric($vars['numitems'])?$vars['numitems']:pnModGetVar('Eternizer', 'itemsperpage');
+    $tpl = $vars['tpl']?$vars['tpl']:'listblock';
 
     // Check if the Eternizer module is available.
-	if (!pnModAvailable('Eternizer')) {
-		return false;
-	}
+    if (!pnModAvailable('Eternizer')) {
+        return false;
+    }
 
     // Populate block info and pass to theme
     $blockinfo['content'] = pnModFunc('Eternizer', 'user', 'main', array('tpl' => $tpl, 'perpage' => $numitems));
@@ -85,12 +82,12 @@ function Eternizer_listblock_modify($blockinfo)
 {
     $render = new pnRender('Eternizer');
 
-	$vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = pnBlockVarsFromContent($blockinfo['content']);
 
-	$render->assign('numitems', $vars['numitems']);
-	$render->assign('tpl', $vars['tpl']);
+    $render->assign('numitems', $vars['numitems']);
+    $render->assign('tpl', $vars['tpl']);
 
-	return $render->fetch('Eternizer_listblock_modify.tpl');
+    return $render->fetch('Eternizer_listblock_modify.tpl');
 }
 
 
@@ -106,11 +103,11 @@ function Eternizer_listblock_update($blockinfo)
     // Get current content
     $vars = pnBlockVarsFromContent($blockinfo['content']);
 
-	// alter the corresponding variable
+    // alter the corresponding variable
     $vars['numitems'] = (int) FormUtil::GetPassedValue('numitems', 5);
-    $vars['tpl']	  = FormUtil::GetPassedValue('tpl', 'listblock');
+    $vars['tpl']      = FormUtil::GetPassedValue('tpl', 'listblock');
 
-	// write back the new contents
+    // write back the new contents
     $blockinfo['content'] = pnBlockVarsToContent($vars);
 
     return $blockinfo;

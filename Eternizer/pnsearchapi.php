@@ -47,8 +47,8 @@ function Eternizer_searchapi_search($args)
     $searchColumn = $pntable['search_result_column'];
 
     $where = search_construct_where($args,
-                                    array($column['text']),
-                                    null);
+    array($column['text']),
+    null);
 
     $where .= " AND $column[obj_status] = 'A'";
 

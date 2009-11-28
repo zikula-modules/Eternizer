@@ -6,7 +6,7 @@
  * @link http://www.guite.de
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @author	Philipp Niethammer <webmaster@nochwer.de>
+ * @author    Philipp Niethammer <webmaster@nochwer.de>
  * @package Zikula
  * @subpackage Eternizer
  */
@@ -17,76 +17,77 @@ Loader::requireOnce('includes/pnForm.php');
 function Eternizer_init_getDefaultConfig()
 {
     $dom = ZLanguage::getModuleDomain('Eternizer');
-	$profile = array(
-	            array(
-					'pos'         => 1, //Position in formular. ASC
-					'title'       => __('Name', $dom),
-	                'type'        => 'name', //Field type
-	                'mandatory'   => 2, //0 optional, 1 guests, 2 all
-	                'profile'     => '_UREALNAME'), //field name in profile
-	            array(
-	                'pos'		  => 2,
-	                'title'		  => __('E-mail address', $dom),
-	                'type'		  => 'mail',
-	                'mandatory'	  => 2,
-	                'profile'	  => '_UFAKEMAIL'),
-	            array(
-					'pos'         => 3,
-	                'title'		  => __('Homepage', $dom),
-	                'type'		  => 'url',
-	                'mandatory'	  => 0,
-	                'profile'     => '_YOURHOMEPAGE'),
-	            array(
-	                'pos'         => 4,
-	                'title'       => __('Location', $dom),
-	                'type'        => 'text',
-	                'mandatory'   => 0,
-	                'profile'	  => '_YLOCATION')
-	          );
+    $profile = array(
+    array(
+          'pos'         => 1, //Position in formular. ASC
+          'title'       => __('Name', $dom),
+          'type'        => 'name', //Field type
+          'mandatory'   => 2, //0 optional, 1 guests, 2 all
+          'profile'     => '_UREALNAME'), //field name in profile
+    array(
+          'pos'         => 2,
+          'title'       => __('E-mail address', $dom),
+          'type'        => 'mail',
+          'mandatory'   => 2,
+          'profile'     => '_UFAKEMAIL'),
+    array(
+          'pos'         => 3,
+          'title'       => __('Homepage', $dom),
+          'type'        => 'url',
+          'mandatory'   => 0,
+          'profile'     => '_YOURHOMEPAGE'),
+    array(
+          'pos'         => 4,
+          'title'       => __('Location', $dom),
+          'type'        => 'text',
+          'mandatory'   => 0,
+          'profile'     => '_YLOCATION')
+    );
 
-	$config = array('perpage'		=> 10,
-					'order'			=> 'desc',
-	                'spammode'		=> 1,
-					'moderate'		=> 0,
-					'useuserprofile'=> 1,
-					'wwaction'		=> 'wrap',
-					'wwlimit'		=> 60,
-					'wwshortto'		=> 50,
-					'notify'		=> 0,
-					'notifymail'	=> pnConfigGetVar('adminmail', 'email@example.org'),
-					'profile'		=> $profile,
-	                'titlefield'    => 0);
+    $config = array('perpage'        => 10,
+                    'order'          => 'desc',
+                    'spammode'       => 1,
+                    'moderate'       => 0,
+                    'useuserprofile' => 1,
+                    'wwaction'       => 'wrap',
+                    'wwlimit'        => 60,
+                    'wwshortto'      => 50,
+                    'notify'         => 0,
+                    'notifymail'     => pnConfigGetVar('adminmail', 'email@example.org'),
+                    'profile'        => $profile,
+                    'titlefield'     => 0);
 
-	return $config;
+    return $config;
 }
 
 /**
  * @return       bool       true
  */
 function Eternizer_init() {
-	DBUtil::CreateTable('Eternizer_entry');
+    DBUtil::CreateTable('Eternizer_entry');
 
-	// Forget about configuration.. It is defect
-	pnModDelVar('Eternizer');
-	$config = Eternizer_init_getDefaultConfig();
-	foreach ($config as $k => $v)
-	    pnModSetVar('Eternizer', $k, $v);
+    // Forget about configuration.. It is defect
+    pnModDelVar('Eternizer');
+    $config = Eternizer_init_getDefaultConfig();
+    foreach ($config as $k => $v)
+    pnModSetVar('Eternizer', $k, $v);
 
-	// Initialisation successful
-	return true;
+    // Initialisation successful
+    return true;
 }
 
 /**
  * @return       bool       true
  */
 function Eternizer_upgrade($oldversion) {
-	switch ($oldversion) {
-    case '1.0a':
-    case '1.0':
-	    break;
-	}
+    switch ($oldversion) {
+        case '1.0a':
+        case '1.0':
+        case '1.1':
+            break;
+    }
 
-	return true;
+    return true;
 }
 
 
@@ -94,21 +95,19 @@ function Eternizer_upgrade($oldversion) {
  * @return       bool       true
  */
 function Eternizer_delete() {
-	DBUtil::dropTable('Eternizer_entry');
+    DBUtil::dropTable('Eternizer_entry');
 
+    pnModDelVar('Eternizer');
 
-
-	pnModDelVar('Eternizer');
-
-	// Deletion successful
-	return true;
+    // Deletion successful
+    return true;
 }
 
 /**
  * interactive installation procedure
  *
- * @author       Philipp Niethammer
- * @return       pnRender output
+ * @author Philipp Niethammer
+ * @return pnRender output
  */
 function Eternizer_init_interactiveinit()
 {
@@ -128,15 +127,15 @@ function Eternizer_init_interactiveinit()
  */
 function Eternizer_init_step2()
 {
-	if (!SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
+    if (!SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError();
     }
 
     $render = FormUtil::newpnForm('Eternizer');
 
-	Loader::requireOnce('modules/Eternizer/classes/Eternizer_admin_configHandler.class.php');
+    Loader::requireOnce('modules/Eternizer/classes/Eternizer_admin_configHandler.class.php');
 
-	return $render->pnFormExecute('Eternizer_admin_config.tpl', new Eternizer_admin_configHandler(true));
+    return $render->pnFormExecute('Eternizer_admin_config.tpl', new Eternizer_admin_configHandler(true));
 }
 
 /**
@@ -147,7 +146,7 @@ function Eternizer_init_step2()
  */
 function Eternizer_init_step3()
 {
-	if (!SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
+    if (!SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError();
     }
 

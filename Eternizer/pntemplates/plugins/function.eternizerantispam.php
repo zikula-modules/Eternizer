@@ -8,7 +8,7 @@
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  * @package Zikula
  * @subpackage Eternizer
-*/
+ */
 
 function smarty_function_eternizerantispam($params, &$smarty) {
     $spammode = pnModGetVar('Eternizer', 'spammode');
@@ -19,6 +19,6 @@ function smarty_function_eternizerantispam($params, &$smarty) {
         }
         return smarty_function_spamfree_displayform($params, $smarty);
     }
-    
+
     return '';
 }

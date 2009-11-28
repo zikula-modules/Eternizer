@@ -6,7 +6,7 @@
  * @link http://www.guite.de
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @author	Philipp Niethammer <webmaster@nochwer.de>
+ * @author    Philipp Niethammer <webmaster@nochwer.de>
  * @package Zikula
  * @subpackage Eternizer
  */
@@ -14,19 +14,19 @@
 /**
  * change status of an entry
  *
- * @author	Philipp Niethammer <webmaster@nochwer.de>
- * @param (mixed) $args['id']
- * @param (char) $args['status']
- * @return (bool)
+ * @author    Philipp Niethammer <webmaster@nochwer.de>
+ * @param     (mixed) $args['id']
+ * @param     (char)  $args['status']
+ * @return    (bool)
  */
 function Eternizer_adminapi_changeStatus($args)
 {
     if (!isset($args['id']) || (!is_numeric($args['id']) && !is_array($args['id']))) {
-        return LogUtil::registerError('ID?!');
+        return LogUtil::registerArgsError();
     }
 
     if (array_search($args['status'], array('M', 'A')) === false) {
-        return LogUtil::registerError('STATUS!?');
+        return LogUtil::registerArgsError();
     }
 
     if (is_numeric($args['id'])) {
@@ -50,15 +50,15 @@ function Eternizer_adminapi_changeStatus($args)
 /**
  * Delete an entry
  *
- * @author	Philipp Niethammer <webmaster@nochwer.de>
- * @param	(mixed)	id
- * @return	(bool)
+ * @author    Philipp Niethammer <webmaster@nochwer.de>
+ * @param     (mixed)    id
+ * @return    (bool)
  */
 function Eternizer_adminapi_DelEntry($args)
 {
     $dom = ZLanguage::getModuleDomain('Eternizer');
     if (!isset($args['id']) || (!is_numeric($args['id']) && !is_array($args['id']))) {
-        return LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom));
+        return LogUtil::registerArgsError();
     }
 
     if (is_numeric($args['id'])) {
@@ -79,18 +79,18 @@ function Eternizer_adminapi_DelEntry($args)
 /**
  * Edit an entry
  *
- * @author  Philipp Niethammer <webmaster@nochwer.de>
- * @param	(int)		$args['id']
- * @param	(text)		$args['text']
- * @param	(text)		$args['comment']
- * @param	(array)		$args['profile']
- * @return	(bool)
+ * @author   Philipp Niethammer <webmaster@nochwer.de>
+ * @param    (int)        $args['id']
+ * @param    (text)       $args['text']
+ * @param    (text)       $args['comment']
+ * @param    (array)      $args['profile']
+ * @return   (bool)
  */
 function Eternizer_adminapi_EditEntry($args)
 {
     $dom = ZLanguage::getModuleDomain('Eternizer');
     if (!isset($args['id']) || !is_numeric($args['id'])) {
-        return LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom));
+        return LogUtil::registerArgsError();
     }
 
     if (!SecurityUtil::checkPermission('Eternizer::', $args['id'] . '::', ACCESS_MODERATE)) {
@@ -98,7 +98,7 @@ function Eternizer_adminapi_EditEntry($args)
     }
 
     if (!$args['text']) {
-        return LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom));
+        return LogUtil::registerArgsError();
     }
 
     $profile = pnModGetVar('Eternizer', 'profile');
@@ -129,15 +129,15 @@ function Eternizer_adminapi_EditEntry($args)
 /**
  * Get an entry
  *
- * @author	Philipp Niethammer <webmaster@nochwer.de>
- * @param	(int)		$args['id']
- * @return	(array)		array with infos or false
+ * @author    Philipp Niethammer <webmaster@nochwer.de>
+ * @param     (int)        $args['id']
+ * @return    (array)      array with infos or false
  */
 function Eternizer_adminapi_GetEntry($args)
 {
     $dom = ZLanguage::getModuleDomain('Eternizer');
     if (!isset($args['id']) || !is_numeric($args['id'])) {
-        return LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom));
+        return LogUtil::registerArgsError();
     }
 
     if (!SecurityUtil::checkPermission('Eternizer::', $args['id'] . '::', ACCESS_EDIT)) {
@@ -204,7 +204,7 @@ function Eternizer_adminapi_getlinks()
         $links[] = array(
             'url' => pnModURL('Eternizer', 'admin', 'main'),
             'text' => __('Start', $dom),
-            'title' => __('Administration start page', $dom),
+            'title' => __('Eternizer Administration', $dom),
             'id' => 'Eternizer_main');
         $links[] = array(
             'url' => pnModURL('Eternizer', 'admin', 'adminView'),
@@ -224,5 +224,3 @@ function Eternizer_adminapi_getlinks()
 
     return $links;
 }
-
-?>
