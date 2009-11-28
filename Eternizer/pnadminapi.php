@@ -202,23 +202,18 @@ function Eternizer_adminapi_getlinks()
 
     if (SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_ADMIN)) {
         $links[] = array(
-            'url' => pnModURL('Eternizer', 'admin', 'main'),
-            'text' => __('Start', $dom),
-            'title' => __('Eternizer Administration', $dom),
-            'id' => 'Eternizer_main');
-        $links[] = array(
             'url' => pnModURL('Eternizer', 'admin', 'adminView'),
             'text' => __('Admin view', $dom),
             'title' => __('Administrative guestbook view', $dom),
             'id' => 'Eternizer_adminview');
-        $links[] = array('url' => pnModURL('Eternizer', 'admin', 'config'),
-                         'text' => __('Configuration', $dom),
-                         'title' => __("_Eternizer's configuration", $dom),
-                         'id' => 'Eternizer_config');
         $links[] = array('url' => pnModURL('Eternizer', 'import', 'main'),
                          'text' => __('Import', $dom),
                          'title' => __('Import from other guestbooks', $dom),
-                         'id' => 'Eternizer_import')
+                         'id' => 'Eternizer_import');
+        $links[] = array('url' => pnModURL('Eternizer', 'admin', 'config'),
+                         'text' => __('Settings', $dom),
+                         'title' => __("_Eternizer module configuration", $dom),
+                         'id' => 'Eternizer_config')
         ;
     }
 

@@ -1,108 +1,58 @@
 /* +++ entry */
-#eternizer-entries {
-    border: 0;
-    width: 90%;
-    margin: auto;
-}
 
-div.eternizer-entry {
-    text-align: left;
-    clear: both;
-    float: left;
-    width: 100%;
-    margin-bottom: 1em;
+.etz_bg1 {
+    background-color: #F2F2F2;
 }
-
-div.eternizer-entry div.entry-header {
-    font-size: 1.3em;
-    padding: 0.5em 2em;
-    margin-bottom: 0.2em;
-    background-color: #ccc;
-    border: 2px solid #bbb;
+.etz_bg2 {
+    background-color: #EAEAEA;
 }
-
-div.eternizer-entry div.entry-profile {
-    text-align: center;
-    padding: 0.4em;
-    float: left;
-    width: 20em;
-    background-color: #ccc;
-    border: 2px solid #bbb;
+.etz_entry {
+    border-radius: 6px;
+    -webkit-border-radius: 6px;    /* for Safari */
+    -moz-border-radius: 6px;       /* for Firefox */
+    overflow: hidden;              /* for MSIE8 */
+    color:#444444;
+    margin:15px 0;
+    overflow:hidden;
+    padding:5px 10px;
 }
-
-div.eternizer-entry div.entry-profile dl {
-    text-align: left;
-    margin: 0;
-    margin-top: 1em;
+.etz_entry .etz_author {
+    border-right: 1px solid white;
+    width:25%;
+    float:left;
+}
+.etz_entry .etz_author .etz_avatar {
+    padding:5px;
+    text-align:center;
+}
+.etz_entry dl.etz_options,
+.etz_entry dl.etz_options dd,
+.etz_entry dl.etz_options dt {
+    list-style-image:none;
+    list-style-position:outside;
+    list-style-type:none;
+    margin:0;
+    padding:5px;
+    text-align:center;
+}
+.etz_entry .etz_body {
+    background: inherit;
+    border: none;
     padding: 0;
+    color: #333333;
+    width:74%;
+    float:right;
 }
-
-div.eternizer-entry div.entry-profile dt {
-    font-size: 0.8em;
-    font-weight: normal;
+.etz_entry .etz_body .etz_info {
+    border-bottom:1px solid white;
+    height:1.5em;
+    padding:5px;
 }
-
-div.eternizer-entry div.entry-profile dd {
-    margin-left: 1em;
-    font-weight: bold;
-}
-
-div.eternizer-entry div.entry-text {
-    padding: 0.2em;
-    margin-left: 22em;
-}
-
-div.eternizer-entry div.entry-text .entry-comment {
-    padding-left: 0.7em;
-}
-
-div.eternizer-entry div.entry-text .entry-comment .entry-comment-label {
-    margin-left: -0.7em;
-}
-
-/* +++ Formular settings */ /* formrow is used to style a div containing a label and control pair */
-div.pn-module-Eternizer div.row {
-    border-top: 0px solid #ccc;
-    padding: 5px 0px 10px 0px; /* top, right, bottom, left */
-    min-height: 2em;
-}
-
-/* style for a input control contained in a div of class formrow */ /* style for a textarea control contained in a div of class formrow */
-    /* style for a select control contained in a div of class formrow */ /* style for a div contained in a div of class formrow - allows for grouping
-of a control and subsequent non label text.
-e.g. yes (radio) no (radio)*/
-div.pn-module-Eternizer div.row input,div.pn-module-Eternizer div.row textarea,div.pn-module-Eternizer div.row select,div.pn-module-Eternizer div.row label {
-    margin-left: 2em;
-    text-align: left;
-}
-
-div.pn-module-Eternizer div.row span {
-    margin-left: 2.5em;
-}
-
-/* styles to ensure that control elements inside the floated div directly above
-don't themselves float*/
-div.pn-module-Eternizer div.row div input,div.pn-module-Eternizer div.row div textarea,div.pn-module-Eternizer div.row div select {
-    float: none;
-}
-
-/* style for a label contained in a div of class formrow */
-div.pn-module-Eternizer div.row label {
-    float: left;
-    width: 23em;
-    margin-left: 5px;
-    padding: 0px 10px 0px 0px;
-    text-align: right;
-}
-
-/* styles for the buttons on a form */
-div.pn-module-Eternizer div.buttonrow {
-    text-align: left;
-    margin-left: 25em;
-}
-
-div.pn-module-Eternizer div.buttonrow input,div.pn-module-Eternizer div.buttonrow img {
-    margin: 5px;
+.etz_entry .etz_body .etz_content {
+    height:auto !important;
+    min-height:4em;
+    overflow:hidden;
+    padding:5px;
 }
 
 /* +++ configuration menu */
@@ -122,19 +72,37 @@ div.linktabs ul li.linktab {
 }
 
 /* +++ Profile settings */
-ul#profiletable li.profileheader {
-    font-weight: bold;
+ul#profiletable {
+    margin:0;
+    padding:0;
+    list-style-type: none;
 }
 
-ul#profiletable .profileheader .col1 {
-    width: 19px;
+ul#profiletable li {
+    background:transparent url(../../../images/icons/extrasmall/move.gif) no-repeat scroll 5px 50%;
+    border:1px dotted #999999;
+    margin:0.5em;
+    padding:0.2em 0.2em 0.2em 30px;
+    position:relative;
+}
+
+ul#profiletable li:hover {
+    background-color: #CFCFCF;
+}
+
+ul#profiletable li.profileheader {
+    font-weight: bold;
+    background:#CFCFCF;
 }
 
 ul#profiletable .col2 {
     width: 3em;
 }
 
-ul#profiletable .col3,ul#profiletable .col4,ul#profiletable .col5,ul#profiletable .col6 {
+ul#profiletable .col3,
+ul#profiletable .col4,
+ul#profiletable .col5,
+ul#profiletable .col6 {
     width: 20%;
 }
 
@@ -159,31 +127,7 @@ ul#profiletable .col7 {
     margin-top: 1em;
 }
 
-#eternizer .pn-pager {
+#eternizer .z-pager {
     text-align: center;
 }
 
-#eternizer .et_form {
-    border: 1px solid #EEEEEE;
-    margin: 1em 0pt;
-    padding: 1em;
-}
-
-/* Format bbcode/bbsmile formula */
-#eternizer .bbcode {
-    margin-left: 27em;
-}
-
-#eternizer .bbcode input,#eternizer .bbcode select {
-    margin-left: 0.5em;
-    width: auto;
-}
-
-#eternizer .bbcode label {
-    float: none;
-    margin-left: 0;
-}
-
-#eternizer .bb_standardsmilies,#eternizer .bb_showhidesmilies {
-    margin-left: 27em;
-}

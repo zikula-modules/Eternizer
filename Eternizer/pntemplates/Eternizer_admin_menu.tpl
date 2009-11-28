@@ -1,20 +1,18 @@
-<!--[* $Id$ *]-->
-<!--[*  ---------------------------------------------------------------------------- *]-->
-<!--[*  Author: $Author: philipp $                                                   *]-->
-<!--[*  Link: http://www.guite.de                                                    *]-->
-<!--[*  Copyright: Copyright (C) 2005 by Guite                                       *]-->
-<!--[*  License: http://www.gnu.org/copyleft/gpl.html GNU General Public License     *]-->
-<!--[*  ---------------------------------------------------------------------------- *]-->
-<!--[*  Purpose of this template:                                                    *]-->
-<!--[*  Admin header                                                                 *]-->
-<!--[*  ---------------------------------------------------------------------------- *]-->
+<!--[ $Id$ ]-->
 
-<!--[pnpageaddvar name="stylesheet" value="modules/Eternizer/pnstyle/linkicons_small.css"]-->
+<!--[if $init eq 1]-->
+<h2><!--[gt text="Installation of Eternizer"]--></h2>
+<h3><!--[gt text="Configuration"]--></h3>
+
+<!--[else]-->
 
 <!--[admincategorymenu xhtml=1]-->
-<div class="pn-adminbox">
-  <h1><!--[pnmodgetinfo modname="Eternizer" info="displayname"]--> v<!--[pnmodgetinfo modname="Eternizer" info="version"]--></h1>
-  <div class="pn-menu"><!--[moduleadminlinks modname="Eternizer"]--></div>
+<div class="z-adminbox">
+    <h1><!--[pnmodgetinfo modname="Eternizer" info="displayname"]--> v<!--[pnmodgetinfo modname="Eternizer" info="version"]--></h1>
+    <div class="z-menu"><!--[moduleadminlinks modname="Eternizer"]--></div>
 </div>
 <!--[insert name="getstatusmsg"]-->
-<div id="eternizer" class="pn-admincontainer">
+<div id="eternizer" class="z-admincontainer">
+    <div class="z-adminpageicon"><!--[pnimg modname='Eternizer' src='admin.gif' __alt='' ]--></div>
+
+    <!--[/if]-->

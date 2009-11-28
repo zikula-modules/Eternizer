@@ -1,28 +1,23 @@
-<!--[* $Id$ *]-->
-<!--[*  ----------------------------------------------------------------------------- *]-->
-<!--[*  Author: $Author: philipp $										  *]-->
-<!--[*  Link: http://www.guite.de													  *]-->
-<!--[*  Copyright: Copyright (C) 2005 by Guite										  *]-->
-<!--[*  License: http://www.gnu.org/copyleft/gpl.html GNU General Public License	  *]-->
-<!--[*  ----------------------------------------------------------------------------- *]-->
-<!--[*  Purpose of this template:													  *]-->
-<!--[*  Import Main					                                                  *]-->
-<!--[*  ----------------------------------------------------------------------------- *]-->
+<!--[ $Id$ ]-->
 
-<!--[modulestylesheet modname="Admin" stylesheet="admin.css"]-->
-<!--[include file="Eternizer_admin_menu.tpl"]-->
+<h2><!--[gt text="Eternizer Import"]--></h2>
+<!--[if $books]-->
+<form class="z-form" action="<!--[pnmodurl modname="Eternizer" type="import" func="display"]-->" method="post">
+    <fieldset>
+        <legend><!--[gt text="Import from" domain="module_eternizer"]--></legend>
 
-<form class="pn-adminform" action="<!--[pnmodurl modname="Eternizer" type="import" func="display"]-->" method="post">
-  <dl class="pn-adminformrow">
-    <dt><!--[gt text="Import from"]--></dt>
-    <!--[foreach from=$books key="name" item="name"]-->
-    <dd><input type="radio" name="plugin" value="<!--[$name]-->" /> <!--[$name]--> </dd>
-    <!--[/foreach]-->
-  </dl>
+        <div class="z-formrow">
+            <label><!--[gt text="Choose module" domain="module_eternizer"]--></label>
+            <!--[foreach from=$books key="name" item="name"]-->
+            <div><input type="radio" name="plugin" value="<!--[$name]-->" /> <!--[$name]--> </div>
+            <!--[/foreach]-->
+        </div>
+    </fieldset>
 
-  <div class="pn-adminformbuttons">
-    <input type="submit" value="<!--[gt text='Continue']-->" />
-  </div>
+    <div class="z-formbuttons">
+        <input type="submit" value="<!--[gt text='Continue' domain="module_eternizer"]-->" />
+    </div>
 </form>
-
-<!--[include file="Eternizer_admin_footer.tpl"]-->
+<!--[else]-->
+<p class="z-warningmsg"><!--[gt text="No guestbook module found" domain="module_eternizer"]--></p>
+<!--[/if]-->

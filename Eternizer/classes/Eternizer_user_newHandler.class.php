@@ -24,11 +24,12 @@ class Eternizer_user_newHandler {
     }
 
     function initialize(&$render) {
-
+        $dom = ZLanguage::getModuleDomain('Eternizer');
         $this->tpl = FormUtil::getPassedValue('tpl');
 
         if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_COMMENT)) {
-            return $this->inline?'':$render->pnFormSetErrorMsg(_MODULEAUTHERROR);
+//            return $this->inline?'':$render->pnFormSetErrorMsg(__('Sorry! No authorization to access this module.', $dom));
+            return $render->pnFormSetErrorMsg(__('Sorry! No authorization to access this module.', $dom));
         }
         $ro = (bool)(pnUserLoggedIn() && (bool)pnModGetVar('Eternizer', 'useuserprofile'));
         $profile = pnModGetVar('Eternizer', 'profile');

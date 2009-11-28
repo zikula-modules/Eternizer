@@ -35,11 +35,9 @@ function Eternizer_user_main($args) {
     if (!empty($perpage))
     $config['perpage'] = $perpage;
 
-    $entries = pnModAPIFunc('Eternizer', 'user', 'GetEntries',
-    array('startnum' => $startnum-1,
-          'perpage'     => $perpage));
+    $entries = pnModAPIFunc('Eternizer', 'user', 'GetEntries', array('startnum' => $startnum-1, 'perpage' => $perpage));
 
-    $pnRender = pnRender::getInstance('Eternizer', false);
+    $pnRender = & pnRender::getInstance('Eternizer', false, null, true);
 
     $count = pnModAPIFunc('Eternizer', 'user', 'CountEntries');
 
@@ -77,10 +75,11 @@ function Eternizer_user_main($args) {
         }
     }
 
+    $pnRender->assign('avatarpath', pnModGetVar('Users', 'avatarpath'));
     $pnRender->assign('entries', $entryhtml);
     $pnRender->assign('entryarray', $entries);
 
-    $form = pnModFunc('Eternizer', 'user', 'new', array(    'inline'    => true));
+    $form = pnModFunc('Eternizer', 'user', 'new', array( 'inline' => true));
     $pnRender->assign('form', $form===false?'':$form );
 
     if (!empty($tpl) && $pnRender->template_exists('Eternizer_user_'. DataUtil::formatForOS($tpl) .'_main.tpl')) {
@@ -99,7 +98,7 @@ function Eternizer_user_main($args) {
  */
 function Eternizer_user_new($args) {
     if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_COMMENT)) {
-        LogUtil::registerPermissionError();
+        return false;
     }
     $render = & FormUtil::newpnForm('Eternizer');
 

@@ -1,15 +1,18 @@
-<!--[* $Id$ *]-->
-<!--[*  ---------------------------------------------------------------------------- *]-->
-<!--[*  Author: $Author: philipp $                                        *]-->
-<!--[*  Link: http://www.guite.de	                                                 *]-->
-<!--[*  Copyright: Copyright (C) 2005 by Guite	                                     *]-->
-<!--[*  License: http://www.gnu.org/copyleft/gpl.html GNU General Public License	 *]-->
-<!--[*  ---------------------------------------------------------------------------- *]-->
-<!--[*  Purpose of this template:	                                                 *]-->
-<!--[*  Suppress the deletion of an entry		                                     *]-->
-<!--[*  ---------------------------------------------------------------------------- *]-->
-
-<!--[gt text="Confirm deletion?"]--><br />
-<a href="<!--[pnmodurl modname="Eternizer" type="admin" func="delete" id=$id goback=$goback]-->"><!--[gt text="Yes"]--></a>
-<!--[pnmodurl modname="Eternizer" type="user" func="main" assign=defurl]-->
-<a href="<!--[$cancelurl]-->"><!--[gt text="No"]--></a>
+<!--[ $Id$ ]-->
+<!--[include file="Eternizer_admin_menu.tpl"]-->
+<h2><!--[gt text="Delete entry"]--></h2>
+<p class="z-warningmsg"><!--[gt text="Do you really want to delete this guestbook entry?"]--></p>
+<form class="z-form" action="<!--[pnmodurl modname="Eternizer" type="admin" func="delete"]-->" method="post" enctype="application/x-www-form-urlencoded">
+    <div>
+        <input type="hidden" name="id" value="<!--[$id|pnvarprepfordisplay]-->" />
+        <input type="hidden" name="goback" value="<!--[$goback|pnvarprepfordisplay]-->" />
+        <fieldset>
+            <legend><!--[gt text="Confirmation prompt"]--></legend>
+            <div class="z-formbuttons">
+                <!--[pnbutton src='button_ok.gif' set='icons/small' __alt='Delete' __title='Delete']-->
+                <a href="<!--[$cancelurl]-->"><!--[pnimg modname='core' src='button_cancel.gif' set='icons/small' __alt='Cancel' __title='Cancel']--></a>
+            </div>
+        </fieldset>
+    </div>
+</form>
+<!--[include file="Eternizer_admin_footer.tpl"]-->

@@ -1,34 +1,35 @@
+<!--[ $Id$ ]-->
 <!--[insert name="getstatusmsg"]-->
 
-<!--[pnform cssClass="pn-adminform"]-->
+<!--[pnform cssClass="z-form"]-->
+<div>
+    <!--[pnformvalidationsummary]-->
+    <input type="hidden" name="plugin" value="<!--[$plugin]-->" />
+    <fieldset>
+        <div class="z-formrow">
+            <!--[pnformlabel for='config' __text='Import configuration']-->
+            <!--[pnformcheckbox id='config']-->
+        </div>
 
-  <!--[pnformvalidationsummary]-->
-  
-  <input type="hidden" name="plugin" value="<!--[$plugin]-->" />
+        <div class="z-formrow">
+            <!--[pnformlabel for='data' __text='Import data']-->
+            <!--[pnformcheckbox id='data']-->
+        </div>
 
-  <div class="pn-adminformrow">
-    <!--[pnformlabel for='config' __text='Import configuration']-->
-    <!--[pnformcheckbox id='config']-->
-  </div>
+        <div class="z-formrow">
+            <!--[pnformlabel for='deactivate' __text='Deactivate module']-->
+            <!--[pnformcheckbox id='deactivate']-->
+        </div>
 
-  <div class="pn-adminformrow">
-    <!--[pnformlabel for='data' __text='Import data']-->
-    <!--[pnformcheckbox id='data']-->
-  </div>
+        <div class="z-formrow">
+            <!--[pnformlabel for='delete' __text='Delete module']-->
+            <!--[pnformcheckbox id='delete']-->
+        </div>
+    </fieldset>
 
-  <div class="pn-adminformrow">
-    <!--[pnformlabel for='deactivate' __text='Deactivate module']-->
-    <!--[pnformcheckbox id='deactivate']-->
-  </div>
-
-  <div class="pn-adminformrow">
-    <!--[pnformlabel for='delete' __text='Delete module']-->
-    <!--[pnformcheckbox id='delete']-->
-  </div>
-
-  <div class="pn-adminformbuttons">
-    <!--[pnformbutton commandName="import" __text="Import"]-->
-    <!--[pnformbutton commandName="cancel" __text="Cancel"]-->
-  </div>
-
+    <div class="z-formbuttons">
+        <!--[pnformbutton commandName="import" __text="Import"]-->
+        <!--[pnformbutton commandName="cancel" __text="Cancel"]-->
+    </div>
+</div>
 <!--[/pnform]-->

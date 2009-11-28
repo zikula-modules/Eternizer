@@ -1,27 +1,20 @@
-<!--[* $Id$ *]-->
-<!--[*  ---------------------------------------------------------------------------- *]-->
-<!--[*  Author: $Author: philipp $                                        *]-->
-<!--[*  Link: http://www.guite.de	                                                 *]-->
-<!--[*  Copyright: Copyright (C) 2005 by Guite	                                     *]-->
-<!--[*  License: http://www.gnu.org/copyleft/gpl.html GNU General Public License	 *]-->
-<!--[*  ---------------------------------------------------------------------------- *]-->
-<!--[*  Purpose of this template:	                                                 *]-->
-<!--[*  User main area	                                                             *]-->
-<!--[*  ---------------------------------------------------------------------------- *]-->
+<!--[ $Id$ ]-->
 
-<!--[gt text="Guestbook assign=title"]-->
+<!--[pndebug]-->
+<!--[gt text="Guestbook" assign=title]-->
 <!--[pnpagesetvar name=title value=$title]-->
 <!--[insert name="getstatusmsg"]-->
 
 <div id="eternizer">
-  <h2><!--[gt text="Guestbook"]--></h2>
-  <!--[$form]-->
+    <h2><!--[gt text="Guestbook entries"]--> (<em class="z-sub"><a href="#pnFormForm"><!--[gt text="Add a new entry"]--></a></em>)</h2>
 
-  <div id="eternizer-entries" class="pn-clearfix">
-    <!--[foreach from=$entries item=entry]-->
-    <!--[$entry]-->
-    <!--[/foreach]-->
-  </div>
+    <div id="eternizer-entries">
+        <!--[foreach from=$entries item=entry]-->
+        <!--[$entry]-->
+        <!--[/foreach]-->
+    </div>
 
-  <!--[pager posvar="startnum" rowcount=$count limit=$config.perpage]-->
+    <!--[$form]-->
+
+    <!--[pager posvar="startnum" rowcount=$count limit=$config.perpage]-->
 </div>

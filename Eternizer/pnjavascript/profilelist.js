@@ -4,7 +4,7 @@ function eternizer_profile_sortinit() {
     Sortable.create("profiletable",
         {
             dropOnEmpty: true,
-            only: 'pn-sortable',
+            only: 'z-sortable',
             constraint: false,
             onUpdate: eternizer_profile_updatesort
     });
@@ -14,7 +14,7 @@ function eternizer_profile_sortinit() {
 function eternizer_profile_updatesort() {
     var i = 0;
     var debug = ''
-    $A(document.getElementsByClassName('pn-sortable', 'profiletable')).each(
+    $A(document.getElementsByClassName('z-sortable', 'profiletable')).each(
         function(node) {
             $(node.id+'_pos').value = i;
             i++;
