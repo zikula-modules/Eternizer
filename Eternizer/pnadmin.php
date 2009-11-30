@@ -52,7 +52,7 @@ function Eternizer_admin_main()
     if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_ADMIN))
     return LogUtil::registerPermissionError();
 
-    $pnRender = pnRender::getInstance('Eternizer', false);
+    $pnRender = & pnRender::getInstance('Eternizer', false);
 
     return $pnRender->fetch('Eternizer_admin_main.tpl');
 }
@@ -92,7 +92,11 @@ function Eternizer_admin_adminView()
     if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_MODERATE))
     return LogUtil::registerPermissionError();
 
-    $list = pnModAPIFunc('Eternizer', 'admin', 'getEntries');
+    $startnum = FormUtil::getPassedValue('startnum', $args['startnum'], 'G');
+    $perpage = FormUtil::getPassedValue('perpage', $args['perpage'], 'G');
+
+    $list = pnModAPIFunc('Eternizer', 'admin', 'getEntries', array('startnum' => $startnum-1, 'perpage' => $perpage));
+    $count = pnModAPIFunc('Eternizer', 'user', 'CountEntries');
 
     foreach (array_keys($list) as $k) {
         $list[$k]['rights'] = array(
@@ -105,8 +109,9 @@ function Eternizer_admin_adminView()
         'modify' => SecurityUtil::checkPermission('Eternizer::', '*::', ACCESS_EDIT),
         'delete' => SecurityUtil::checkPermission('Eternizer::', '*::', ACCESS_DELETE));
 
-    $pnRender = pnRender::getInstance('Eternizer', false);
-
+    $pnRender = & pnRender::getInstance('Eternizer', false);
+    $pnRender->assign('startnum', $startnum);
+    $pnRender->assign('count', $count);
     $pnRender->assign('goback', DataUtil::encode(pnModURL('Eternizer', 'admin', 'adminView')));
     $pnRender->assign('config', pnModGetVar('Eternizer'));
     $pnRender->assign('list', $list);
@@ -193,7 +198,7 @@ function Eternizer_admin_suppress()
     if (!SecurityUtil::checkPermission('Eternizer::', (is_numeric($id) ? $id : '') . '::', ACCESS_DELETE))
     return LogUtil::registerPermissionError();
 
-    $pnRender = pnRender::getInstance('Eternizer', false);
+    $pnRender = & pnRender::getInstance('Eternizer', false);
     $url = DataUtil::decode(FormUtil::getPassedValue('goback'));
     if (empty($url)) {
         $url = pnModURL('Eternizer', 'user', 'main');

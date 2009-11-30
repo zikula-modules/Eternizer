@@ -34,6 +34,7 @@
     margin:0;
     padding:2px 0;
     text-align:center;
+    overflow:hidden;
 }
 #eternizer .etz_entry .etz_body {
     background: inherit;

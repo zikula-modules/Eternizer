@@ -115,7 +115,7 @@ function Eternizer_init_interactiveinit()
         return LogUtil::registerPermissionError();
     }
 
-    $pnRender = pnRender::getInstance('Eternizer', null);
+    $pnRender = & pnRender::getInstance('Eternizer', null);
     return $pnRender->fetch('Eternizer_init_interactive.tpl');
 }
 
@@ -150,7 +150,7 @@ function Eternizer_init_step3()
         return LogUtil::registerPermissionError();
     }
 
-    $pnRender = pnRender::getInstance('Eternizer', null);
+    $pnRender = & pnRender::getInstance('Eternizer', null);
 
     $pnRender->assign('authid', SecurityUtil::generateAuthKey('Modules'));
     return $pnRender->fetch('Eternizer_init_step3.tpl');

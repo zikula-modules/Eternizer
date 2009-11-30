@@ -1,4 +1,4 @@
-<!--[ $Id$ ]-->
+<!--[* $Id$ *]-->
 <!--[pnformvalidationsummary]-->
 <!--[pnform cssClass="z-form"]-->
 <div>
@@ -22,10 +22,14 @@
             <!--[pnformtextinput id='text' textMode="multiline" mandatory='1' rows="5" cols="40"]-->
 
             <!--[if $bbcode]-->
-            <!--[pnmodfunc modname=bbcode type=user func=bbcodes textfieldid=text]--><br />
+            <div class="z-formnote">
+                <!--[pnmodfunc modname=bbcode type=user func=bbcodes textfieldid=text]-->
+            </div>
             <!--[/if]-->
             <!--[if $bbsmile]-->
-            <!--[pnmodfunc modname=bbsmile type=user func=bbsmiles textfieldid=text]-->
+            <div class="z-formnote">
+                <!--[pnmodfunc modname=bbsmile type=user func=bbsmiles textfieldid=text]-->
+            </div>
             <!--[/if]-->
         </div>
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Eternizer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-30 16:31+0000\n"
+"POT-Creation-Date: 2009-11-30 20:38+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Carsten Volmer <carsten@zikula.org>\n"
 "Language-Team: Carsten Volmer <carsten@zikula.org>\n"
@@ -71,29 +71,29 @@ msgstr "Gästebucheinträge anzeigen"
 msgid "Done! Import successful."
 msgstr "Erledig! Import erfolgreich."
 
-#: pnadminapi.php:206
+#: pnadminapi.php:208
 #: pntemplates/Eternizer_admin_adminView.tpl:3
 msgid "Admin view"
 msgstr "Adminübersicht"
 
-#: pnadminapi.php:207
+#: pnadminapi.php:209
 msgid "Administrative guestbook view"
 msgstr "Adminbereich des Gästebuchs"
 
-#: pnadminapi.php:210
+#: pnadminapi.php:212
 msgid "Import"
 msgstr "Import"
 
-#: pnadminapi.php:211
+#: pnadminapi.php:213
 msgid "Import from other guestbooks"
 msgstr "Import aus anderen Gästebuchmodulen"
 
-#: pnadminapi.php:214
+#: pnadminapi.php:216
 #: pntemplates/Eternizer_admin_config.tpl:9
 msgid "Settings"
 msgstr "Konfiguration"
 
-#: pnadminapi.php:215
+#: pnadminapi.php:217
 msgid "Eternizer module configuration"
 msgstr "Eternizer Modulkonfiguration"
 
@@ -241,7 +241,7 @@ msgid "Spam check"
 msgstr "Spamschutz"
 
 #: pntemplates/Eternizer_admin_config.tpl:41
-#: pntemplates/Eternizer_admin_adminView.tpl:53
+#: pntemplates/Eternizer_admin_adminView.tpl:60
 msgid "Moderate"
 msgstr "Moderieren"
 
@@ -311,7 +311,7 @@ msgstr "Aktualisieren"
 
 #: pntemplates/Eternizer_admin_config.tpl:119
 #: pntemplates/Eternizer_admin_modify.tpl:49
-#: pntemplates/Eternizer_user_form.tpl:37
+#: pntemplates/Eternizer_user_form.tpl:41
 #: pntemplates/Eternizer_admin_suppress.tpl:13
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -320,7 +320,7 @@ msgstr "Abbrechen"
 #: pntemplates/Eternizer_init_interactive.tpl:8
 #: pntemplates/Eternizer_init_interactive.tpl:9
 #: pntemplates/Eternizer_init_step3.tpl:18
-#: pntemplates/Eternizer_import_main.tpl:18
+#: pntemplates/Eternizer_import_main.tpl:17
 msgid "Continue"
 msgstr "Fortfahren"
 
@@ -328,12 +328,13 @@ msgstr "Fortfahren"
 #: pntemplates/Eternizer_admin_modify.tpl:10
 #: pntemplates/Eternizer_admin_adminView.tpl:27
 #: pntemplates/Eternizer_admin_adminView.tpl:30
-#: pntemplates/Eternizer_user_entry.tpl:35
+#: pntemplates/Eternizer_user_entry.tpl:37
 msgid "Edit entry"
 msgstr "Eintrag bearbeiten"
 
 #: pntemplates/Eternizer_admin_modify.tpl:30
-#: pntemplates/Eternizer_user_entry.tpl:52
+#: pntemplates/Eternizer_admin_adminView.tpl:43
+#: pntemplates/Eternizer_user_entry.tpl:54
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -373,33 +374,33 @@ msgstr "Eintrag aktivieren"
 msgid "Moderate entry"
 msgstr "Eintrag moderieren"
 
-#: pntemplates/Eternizer_admin_adminView.tpl:47
+#: pntemplates/Eternizer_admin_adminView.tpl:52
 msgid "No entries available."
 msgstr "Keine Einträge verfügbar."
 
-#: pntemplates/Eternizer_admin_adminView.tpl:51
+#: pntemplates/Eternizer_admin_adminView.tpl:58
 msgid "With selected entries"
 msgstr "Eintrag löschen"
 
-#: pntemplates/Eternizer_admin_adminView.tpl:52
+#: pntemplates/Eternizer_admin_adminView.tpl:59
 msgid "Activate"
 msgstr "Aktivieren"
 
-#: pntemplates/Eternizer_admin_adminView.tpl:55
+#: pntemplates/Eternizer_admin_adminView.tpl:62
 #: pntemplates/Eternizer_admin_suppress.tpl:12
 msgid "Delete"
 msgstr "Löschen"
 
-#: pntemplates/Eternizer_user_entry.tpl:32
+#: pntemplates/Eternizer_user_entry.tpl:34
 msgid "Comment entry"
 msgstr "Eintrag kommentieren"
 
-#: pntemplates/Eternizer_user_entry.tpl:38
+#: pntemplates/Eternizer_user_entry.tpl:40
 #: pntemplates/Eternizer_admin_suppress.tpl:3
 msgid "Delete entry"
 msgstr "Eintrag löschen"
 
-#: pntemplates/Eternizer_user_form.tpl:36
+#: pntemplates/Eternizer_user_form.tpl:40
 msgid "Create"
 msgstr "Erstellen"
 
@@ -411,19 +412,19 @@ msgstr "Soll dieser Gästebucheintrag wirklich gelöscht werden?"
 msgid "Confirmation prompt"
 msgstr "Sicherheitsabfrage"
 
-#: pntemplates/Eternizer_import_main.tpl:3
+#: pntemplates/Eternizer_import_main.tpl:2
 msgid "Eternizer Import"
 msgstr "Eternizer Import"
 
-#: pntemplates/Eternizer_import_main.tpl:7
+#: pntemplates/Eternizer_import_main.tpl:6
 msgid "Import from"
 msgstr "Import aus "
 
-#: pntemplates/Eternizer_import_main.tpl:10
+#: pntemplates/Eternizer_import_main.tpl:9
 msgid "Choose module"
 msgstr "Modul auswählen"
 
-#: pntemplates/Eternizer_import_main.tpl:22
+#: pntemplates/Eternizer_import_main.tpl:21
 msgid "No guestbook module found"
 msgstr "Es konnte kein Gästebuchmodul gefunden werden."
 

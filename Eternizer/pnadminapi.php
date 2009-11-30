@@ -163,6 +163,8 @@ function Eternizer_adminapi_getEntries($args)
         return LogUtil::registerPermissionError();
     }
 
+    $startnum = (isset($args['startnum']) && is_numeric($args['startnum']) ? DataUtil::formatForStore($args['startnum']) : -1);
+    $perpage = (isset($args['perpage']) && is_numeric($args['perpage']) && $args['perpage'] > 0 ? $args['perpage'] : DataUtil::formatForStore(pnModGetVar('Eternizer', 'perpage')));
     $order = pnModGetVar('Eternizer', 'order');
 
     $pntable = & pnDBGetTables();
@@ -180,7 +182,7 @@ function Eternizer_adminapi_getEntries($args)
         'instance_right' => '',
         'level' => ACCESS_MODERATE);
 
-    $list = DBUtil::selectObjectArray('Eternizer_entry', '', $order, -1, -1, '', $perms);
+    $list = DBUtil::selectObjectArray('Eternizer_entry', '', $order, $startnum, $perpage, '', $perms);
 
     foreach (array_keys($list) as $k) {
         $list[$k]['profile'] = $list[$k]['__ATTRIBUTES__'];

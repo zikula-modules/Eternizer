@@ -1,4 +1,4 @@
-<!--[ $Id$ ]-->
+<!--[* $Id$ *]-->
 <div class="z-formrow">
     <label for="Eternizer_numitems"><!--[gt text="Items per page" domain="module_eternizer"]--></label>
     <div>

@@ -1,4 +1,4 @@
-<!--[ $Id$ ]-->
+<!--[* $Id$ *]-->
 <!--[insert name="getstatusmsg"]-->
 
 <!--[pnform cssClass="z-form"]-->

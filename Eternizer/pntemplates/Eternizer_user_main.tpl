@@ -1,4 +1,4 @@
-<!--[ $Id$ ]-->
+<!--[* $Id$ *]-->
 <!--[gt text="Guestbook" assign=title]-->
 <!--[pnpagesetvar name=title value=$title]-->
 <!--[insert name="getstatusmsg"]-->

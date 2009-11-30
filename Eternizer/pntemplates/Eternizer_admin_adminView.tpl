@@ -1,4 +1,4 @@
-<!--[ $Id$ ]-->
+<!--[* $Id$ *]-->
 <!--[include file="Eternizer_admin_menu.tpl"]-->
 <h2><!--[gt text="Admin view"]--></h2>
 
@@ -39,6 +39,11 @@
             </div>
             <div class="etz_content">
                 <!--[$item.text|pnvarprepfordisplay|nl2br|pnmodcallhooks]-->
+                <!--[if $item.comment]-->
+                <p style="margin-top: 2em;" class="entry-comment"><strong class="entry-comment-label"><!--[gt text="Comment"]-->:</strong><br />
+                    <!--[$item.comment]-->
+                </p>
+                <!--[/if]-->
             </div>
         </div>
     </div>
@@ -46,6 +51,8 @@
     <!--[foreachelse]-->
     <p class="z-informationmsg"><!--[gt text="No entries available."]--></p>
     <!--[/foreach]-->
+
+    <!--[pager posvar="startnum" rowcount=$count limit=$config.perpage]-->
 
     <fieldset>
         <legend><!--[gt text="With selected entries"]--></legend>

@@ -1,4 +1,4 @@
-<!--[ $Id$ ]-->
+<!--[* $Id$ *]-->
 <div class="etz_entry z-clearfix <!--[cycle values='etz_bg1,etz_bg2']-->" >
     <div class="etz_author">
         <div class="etz_avatar">
@@ -9,7 +9,9 @@
             <!--[assign var='defaultavatar' value="`$baseurl``$avatarpath`/`$avatar`"|default:$defaultavatar]-->
             <!--[/if]-->
             <!--[/if]-->
+            <!--[if isset($profile.1) AND !empty($profile.1)]-->
             <img src="<!--[eternizergravatar email=$profile.1 size=80 default=$defaultavatar]-->" alt="avatar" />
+            <!--[/if]-->
         </div>
         <dl class="etz_options">
             <!--[foreach from=$profile key=pid item=value]-->
@@ -19,7 +21,7 @@
                 <!--[if $config.profile.$pid.type eq 'mail']-->
                 <a href="mailto:<!--[$value]-->"><!--[$value]--></a>
                 <!--[elseif $config.profile.$pid.type eq 'url']-->
-                <a href="<!--[$value]-->"><!--[$value]--></a>
+                <a href="<!--[$value]-->"><!--[$value|truncate:30]--></a>
                 <!--[else]-->
                 <!--[$value]-->
                 <!--[/if]-->
@@ -47,7 +49,7 @@
             <strong class="etz_title"><!--[$profile[$config.titlefield]|pnvarprepfordisplay]--> (<!--[$cr_date|pndate_format:datetimebrief]-->)</strong>
         </div>
         <div class="etz_content">
-            <!--[$text|pnvarprepfordisplay|nl2br|pnmodcallhooks]-->
+            <!--[$text]-->
             <!--[if $comment]-->
             <p style="margin-top: 2em;" class="entry-comment"><strong class="entry-comment-label"><!--[gt text="Comment"]-->:</strong><br />
                 <!--[$comment]-->

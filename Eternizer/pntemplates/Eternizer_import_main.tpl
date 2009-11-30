@@ -1,5 +1,4 @@
-<!--[ $Id$ ]-->
-
+<!--[* $Id$ *]-->
 <h2><!--[gt text="Eternizer Import"]--></h2>
 <!--[if $books]-->
 <form class="z-form" action="<!--[pnmodurl modname="Eternizer" type="import" func="display"]-->" method="post">

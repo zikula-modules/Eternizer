@@ -28,6 +28,8 @@ function Eternizer_user_main($args) {
         return LogUtil::registerPermissionError();
     }
 
+    $dom = ZLanguage::getModuleDomain('Eternizer');
+
     $startnum = FormUtil::getPassedValue('startnum', $args['startnum'], 'G');
     $perpage = FormUtil::getPassedValue('perpage', $args['perpage'], 'G');
 
@@ -37,7 +39,7 @@ function Eternizer_user_main($args) {
 
     $entries = pnModAPIFunc('Eternizer', 'user', 'GetEntries', array('startnum' => $startnum-1, 'perpage' => $perpage));
 
-    $pnRender = & pnRender::getInstance('Eternizer', false, null, true);
+    $pnRender = pnRender::getInstance('Eternizer', false, null, true);
 
     $count = pnModAPIFunc('Eternizer', 'user', 'CountEntries');
 
@@ -83,7 +85,7 @@ function Eternizer_user_main($args) {
     $pnRender->assign('form', $form===false?'':$form );
 
     if (!empty($tpl) && $pnRender->template_exists('Eternizer_user_'. DataUtil::formatForOS($tpl) .'_main.tpl')) {
-        return $pnRender->fetch('Eternizer_user_'.pnVarPrepForOS($tpl).'_main.tpl');
+        return $pnRender->fetch('Eternizer_user_'. DataUtil::formatForOS($tpl).'_main.tpl');
     }
     else {
         return $pnRender->fetch('Eternizer_user_main.tpl');
@@ -100,6 +102,9 @@ function Eternizer_user_new($args) {
     if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_COMMENT)) {
         return false;
     }
+
+    $dom = ZLanguage::getModuleDomain('Eternizer');
+
     $render = & FormUtil::newpnForm('Eternizer');
 
     if (!empty($tpl) && $pnRender->template_exists('Eternizer_user_'. DataUtil::formatForOS($tpl) .'_form.tpl')) {

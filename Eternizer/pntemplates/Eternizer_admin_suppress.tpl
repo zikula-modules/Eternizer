@@ -1,4 +1,4 @@
-<!--[ $Id$ ]-->
+<!--[* $Id$ *]-->
 <!--[include file="Eternizer_admin_menu.tpl"]-->
 <h2><!--[gt text="Delete entry"]--></h2>
 <p class="z-warningmsg"><!--[gt text="Do you really want to delete this guestbook entry?"]--></p>

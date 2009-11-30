@@ -1,4 +1,4 @@
-<!--[ $Id$ ]-->
+<!--[* $Id$ *]-->
 <!--[pnajaxheader filename=profilelist.js dragdrop=1]-->
 
 <script type="text/javascript">

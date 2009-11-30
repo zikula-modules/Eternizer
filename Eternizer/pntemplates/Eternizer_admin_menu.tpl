@@ -1,4 +1,4 @@
-<!--[ $Id$ ]-->
+<!--[* $Id$ *]-->
 
 <!--[if $init eq 1]-->
 <h2><!--[gt text="Installation of Eternizer"]--></h2>

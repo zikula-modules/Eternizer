@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula 1.2.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-30 16:31+0000\n"
+"POT-Creation-Date: 2009-11-30 20:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -69,27 +69,27 @@ msgstr ""
 msgid "Done! Import successful."
 msgstr ""
 
-#: pnadminapi.php:206 pntemplates/Eternizer_admin_adminView.tpl:3
+#: pnadminapi.php:208 pntemplates/Eternizer_admin_adminView.tpl:3
 msgid "Admin view"
 msgstr ""
 
-#: pnadminapi.php:207
+#: pnadminapi.php:209
 msgid "Administrative guestbook view"
 msgstr ""
 
-#: pnadminapi.php:210
+#: pnadminapi.php:212
 msgid "Import"
 msgstr ""
 
-#: pnadminapi.php:211
+#: pnadminapi.php:213
 msgid "Import from other guestbooks"
 msgstr ""
 
-#: pnadminapi.php:214 pntemplates/Eternizer_admin_config.tpl:9
+#: pnadminapi.php:216 pntemplates/Eternizer_admin_config.tpl:9
 msgid "Settings"
 msgstr ""
 
-#: pnadminapi.php:215
+#: pnadminapi.php:217
 msgid "Eternizer module configuration"
 msgstr ""
 
@@ -234,7 +234,7 @@ msgid "Spam check"
 msgstr ""
 
 #: pntemplates/Eternizer_admin_config.tpl:41
-#: pntemplates/Eternizer_admin_adminView.tpl:53
+#: pntemplates/Eternizer_admin_adminView.tpl:60
 msgid "Moderate"
 msgstr ""
 
@@ -304,7 +304,7 @@ msgstr ""
 
 #: pntemplates/Eternizer_admin_config.tpl:119
 #: pntemplates/Eternizer_admin_modify.tpl:49
-#: pntemplates/Eternizer_user_form.tpl:37
+#: pntemplates/Eternizer_user_form.tpl:41
 #: pntemplates/Eternizer_admin_suppress.tpl:13
 msgid "Cancel"
 msgstr ""
@@ -313,7 +313,7 @@ msgstr ""
 #: pntemplates/Eternizer_init_interactive.tpl:8
 #: pntemplates/Eternizer_init_interactive.tpl:9
 #: pntemplates/Eternizer_init_step3.tpl:18
-#: pntemplates/Eternizer_import_main.tpl:18
+#: pntemplates/Eternizer_import_main.tpl:17
 msgid "Continue"
 msgstr ""
 
@@ -321,12 +321,13 @@ msgstr ""
 #: pntemplates/Eternizer_admin_modify.tpl:10
 #: pntemplates/Eternizer_admin_adminView.tpl:27
 #: pntemplates/Eternizer_admin_adminView.tpl:30
-#: pntemplates/Eternizer_user_entry.tpl:35
+#: pntemplates/Eternizer_user_entry.tpl:37
 msgid "Edit entry"
 msgstr ""
 
 #: pntemplates/Eternizer_admin_modify.tpl:30
-#: pntemplates/Eternizer_user_entry.tpl:52
+#: pntemplates/Eternizer_admin_adminView.tpl:43
+#: pntemplates/Eternizer_user_entry.tpl:54
 msgid "Comment"
 msgstr ""
 
@@ -366,33 +367,33 @@ msgstr ""
 msgid "Moderate entry"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_adminView.tpl:47
+#: pntemplates/Eternizer_admin_adminView.tpl:52
 msgid "No entries available."
 msgstr ""
 
-#: pntemplates/Eternizer_admin_adminView.tpl:51
+#: pntemplates/Eternizer_admin_adminView.tpl:58
 msgid "With selected entries"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_adminView.tpl:52
+#: pntemplates/Eternizer_admin_adminView.tpl:59
 msgid "Activate"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_adminView.tpl:55
+#: pntemplates/Eternizer_admin_adminView.tpl:62
 #: pntemplates/Eternizer_admin_suppress.tpl:12
 msgid "Delete"
 msgstr ""
 
-#: pntemplates/Eternizer_user_entry.tpl:32
+#: pntemplates/Eternizer_user_entry.tpl:34
 msgid "Comment entry"
 msgstr ""
 
-#: pntemplates/Eternizer_user_entry.tpl:38
+#: pntemplates/Eternizer_user_entry.tpl:40
 #: pntemplates/Eternizer_admin_suppress.tpl:3
 msgid "Delete entry"
 msgstr ""
 
-#: pntemplates/Eternizer_user_form.tpl:36
+#: pntemplates/Eternizer_user_form.tpl:40
 msgid "Create"
 msgstr ""
 
@@ -404,18 +405,18 @@ msgstr ""
 msgid "Confirmation prompt"
 msgstr ""
 
-#: pntemplates/Eternizer_import_main.tpl:3
+#: pntemplates/Eternizer_import_main.tpl:2
 msgid "Eternizer Import"
 msgstr ""
 
-#: pntemplates/Eternizer_import_main.tpl:7
+#: pntemplates/Eternizer_import_main.tpl:6
 msgid "Import from"
 msgstr ""
 
-#: pntemplates/Eternizer_import_main.tpl:10
+#: pntemplates/Eternizer_import_main.tpl:9
 msgid "Choose module"
 msgstr ""
 
-#: pntemplates/Eternizer_import_main.tpl:22
+#: pntemplates/Eternizer_import_main.tpl:21
 msgid "No guestbook module found"
 msgstr ""

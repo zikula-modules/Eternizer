@@ -1,4 +1,4 @@
-<!--[ $Id$ ]-->
+<!--[* $Id$ *]-->
 
 <!--[include file="Eternizer_admin_menu.tpl"]-->
 <h2><!--[gt text="Edit entry"]--></h2>

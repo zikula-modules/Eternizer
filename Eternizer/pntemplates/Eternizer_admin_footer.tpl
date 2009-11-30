@@ -1,4 +1,4 @@
-<!--[ $Id$ ]-->
+<!--[* $Id$ *]-->
 <!--[if $init neq 1]-->
 <p class="z-center">
     <!--[pnmodgetinfo module=Eternizer info=all assign=modinfo]-->

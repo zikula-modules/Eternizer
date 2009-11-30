@@ -23,7 +23,7 @@ function Eternizer_import_main () {
 
     $books = pnModAPIFunc('Eternizer', 'import', 'getInstalledBooks', array());
 
-    $pnRender = pnRender::getInstance('Eternizer', false);
+    $pnRender = & pnRender::getInstance('Eternizer', false);
 
     $pnRender->assign('books', $books);
 

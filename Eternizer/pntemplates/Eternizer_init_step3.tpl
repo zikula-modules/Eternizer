@@ -1,4 +1,4 @@
-<!--[ $Id$ ]-->
+<!--[* $Id$ *]-->
 <h2><!--[gt text="Installation of Eternizer" domain="module_eternizer"]--></h2>
 
 <!--[insert name="getstatusmsg"]-->
