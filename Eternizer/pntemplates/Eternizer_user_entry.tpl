@@ -2,25 +2,19 @@
 <div class="etz_entry z-clearfix <!--[cycle values='etz_bg1,etz_bg2']-->" >
     <div class="etz_author">
         <div class="etz_avatar">
-            <strong><!--[$profile[$config.titlefield]|pnvarprepfordisplay]--></strong>
-            <br />
+            <!--[assign var='defaultavatar' value="`$baseurl``$avatarpath`/blank.gif"]-->
             <!--[if $cr_uid > 1]-->
-            <!--[pnusergetvar name=_YOURAVATAR uid=$cr_uid assign=avatar]-->
-            <!--[if $avatar ne "blank.gif" && $avatar]-->
-            <img src="<!--[pngetbaseurl]--><!--[$avatarpath]-->/<!--[$avatar]-->" alt="avatar" />
-            <!--[else]-->
-            <!--[eternizergravatar email=$profile.1 assign=avatar]-->
-            <img src="<!--[eternizergravatar email=$profile.1]-->" alt="avatar" />
+            <!--[pnusergetvar name=avatar uid=$cr_uid assign=avatar]-->
+            <!--[if isset($avatar) AND !empty($avatar) AND $avatar neq 'blank.gif' AND $avatar neq 'gravatar.gif']-->
+            <!--[assign var='defaultavatar' value="`$baseurl``$avatarpath`/`$avatar`"|default:$defaultavatar]-->
             <!--[/if]-->
-            <!--[else]-->
-            <!--[eternizergravatar email=$profile.1 assign=avatar]-->
-            <img src="<!--[eternizergravatar email=$profile.1]-->" alt="avatar" />
             <!--[/if]-->
+            <img src="<!--[eternizergravatar email=$profile.1 size=80 default=$defaultavatar]-->" alt="avatar" />
         </div>
         <dl class="etz_options">
             <!--[foreach from=$profile key=pid item=value]-->
             <!--[if $value != '' && $pid != $config.titlefield]-->
-            <dt><!--[$config.profile.$pid.title]--></dt>
+            <dt><strong><!--[$config.profile.$pid.title]--></strong></dt>
             <dd>
                 <!--[if $config.profile.$pid.type eq 'mail']-->
                 <a href="mailto:<!--[$value]-->"><!--[$value]--></a>
@@ -50,7 +44,7 @@
 
     <div class="etz_body">
         <div class="etz_info">
-            <strong class="etz_title"><!--[$cr_date|pndate_format:datetimebrief]--></strong>
+            <strong class="etz_title"><!--[$profile[$config.titlefield]|pnvarprepfordisplay]--> (<!--[$cr_date|pndate_format:datetimebrief]-->)</strong>
         </div>
         <div class="etz_content">
             <!--[$text|pnvarprepfordisplay|nl2br|pnmodcallhooks]-->

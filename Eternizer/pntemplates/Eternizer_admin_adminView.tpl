@@ -12,12 +12,10 @@
 
     <div class="etz_entry z-clearfix <!--[cycle values='etz_bg1,etz_bg2']-->" >
         <div class="etz_author">
-            <div class="etz_avatar">
-                <strong><!--[$item.profile[$config.titlefield]]--></strong>
-            </div>
             <dl class="etz_options">
                 <dt>
-                    <input type="checkbox" name="selected[<!--[$item.id]-->]" value="1" />
+                    <label for="item_<!--[$item.id]-->"><!--[gt text="Select item"]--></label>
+                    <input type="checkbox" id="item_<!--[$item.id]-->" name="selected[<!--[$item.id]-->]" value="1" />
                 </dt>
                 <dd>
                     <!--[if $item.obj_status eq 'M']-->
@@ -37,14 +35,14 @@
 
         <div class="etz_body">
             <div class="etz_info">
-                <strong class="etz_title"><!--[$item.cr_date|pndate_format:datetimebrief]--></strong>
+                <strong class="etz_title"><!--[$item.profile[$config.titlefield]]--> (<!--[$item.cr_date|pndate_format:datetimebrief]-->)</strong>
             </div>
             <div class="etz_content">
                 <!--[$item.text|pnvarprepfordisplay|nl2br|pnmodcallhooks]-->
             </div>
         </div>
     </div>
-    
+
     <!--[foreachelse]-->
     <p class="z-informationmsg"><!--[gt text="No entries available."]--></p>
     <!--[/foreach]-->

@@ -1,56 +1,54 @@
 /* +++ entry */
 
-.etz_bg1 {
+#eternizer .etz_bg1 {
     background-color: #F2F2F2;
 }
-.etz_bg2 {
+#eternizer .etz_bg2 {
     background-color: #EAEAEA;
 }
-.etz_entry {
+#eternizer .etz_entry {
     border-radius: 6px;
     -webkit-border-radius: 6px;    /* for Safari */
     -moz-border-radius: 6px;       /* for Firefox */
     overflow: hidden;              /* for MSIE8 */
     color:#444444;
-    margin:15px 0;
-    overflow:hidden;
-    padding:5px 10px;
+    margin:1% 0;
+    padding:1%;
 }
-.etz_entry .etz_author {
-    border-right: 1px solid white;
-    width:25%;
+#eternizer .etz_entry .etz_author {
+    border-right:1px solid white;
     float:left;
+    padding-right:1%;
+    width:29%;
 }
-.etz_entry .etz_author .etz_avatar {
+#eternizer .etz_entry .etz_author .etz_avatar {
     padding:5px;
     text-align:center;
 }
-.etz_entry dl.etz_options,
-.etz_entry dl.etz_options dd,
-.etz_entry dl.etz_options dt {
+#eternizer .etz_entry dl.etz_options,
+#eternizer .etz_entry dl.etz_options dd,
+#eternizer .etz_entry dl.etz_options dt {
     list-style-image:none;
     list-style-position:outside;
     list-style-type:none;
     margin:0;
-    padding:5px;
+    padding:2px 0;
     text-align:center;
 }
-.etz_entry .etz_body {
+#eternizer .etz_entry .etz_body {
     background: inherit;
     border: none;
     padding: 0;
     color: #333333;
-    width:74%;
+    width:69%;
     float:right;
 }
-.etz_entry .etz_body .etz_info {
+#eternizer .etz_entry .etz_body .etz_info {
     border-bottom:1px solid white;
     height:1.5em;
     padding:5px;
 }
-.etz_entry .etz_body .etz_content {
-    height:auto !important;
-    min-height:4em;
+#eternizer .etz_entry .etz_body .etz_content {
     overflow:hidden;
     padding:5px;
 }

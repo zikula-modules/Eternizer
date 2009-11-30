@@ -145,5 +145,13 @@ function Eternizer_userapi_WriteEntry($args)
 
     pnModCallHooks('item', 'create', $args['id'], array('module' => 'Eternizer'));
 
+    // notify email
+    if (pnModGetVar('Eternizer', 'notifymail') != '' ) {
+        $email = pnModGetVar('Eternizer', 'notifymail');
+        $subject = __('New guestbook entry');
+        $message = __('It was created a new guestbook entry on the website.');
+        pnModAPIFunc('Mailer', 'user', 'sendmessage', array('toaddress' => $email, 'subject' => $subject, 'body' => $message, 'html' => true));
+    }
+
     return true;
 }

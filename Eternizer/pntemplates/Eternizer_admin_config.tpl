@@ -23,6 +23,11 @@
         </div>
 
         <div class="z-formrow">
+            <!--[pnformlabel for='notifymail' __text='E-mail address to notify about new entries']-->
+            <!--[pnformtextinput id='notifymail' maxLength='255']-->
+        </div>
+
+        <div class="z-formrow">
             <!--[pnformlabel for='order' __text='Order']-->
             <!--[pnformdropdownlist id='order' mandatory='1']-->
         </div>

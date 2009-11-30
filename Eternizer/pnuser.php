@@ -65,6 +65,7 @@ function Eternizer_user_main($args) {
         }
 
         $act['profile'] = $profile;
+        $act['avatarpath'] = pnModGetVar('Users', 'avatarpath');
 
         $pnRender->assign($act);
         if (!empty($tpl) && $pnRender->template_exists('Eternizer_user_'. DataUtil::formatForOS($tpl) .'_entry.tpl')) {
@@ -75,7 +76,6 @@ function Eternizer_user_main($args) {
         }
     }
 
-    $pnRender->assign('avatarpath', pnModGetVar('Users', 'avatarpath'));
     $pnRender->assign('entries', $entryhtml);
     $pnRender->assign('entryarray', $entries);
 
