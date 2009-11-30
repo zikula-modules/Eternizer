@@ -11,8 +11,7 @@
         <!--[$entry]-->
         <!--[/foreach]-->
     </div>
+    <!--[pager posvar="startnum" rowcount=$count limit=$config.perpage]-->
 
     <!--[$form]-->
-
-    <!--[pager posvar="startnum" rowcount=$count limit=$config.perpage]-->
 </div>

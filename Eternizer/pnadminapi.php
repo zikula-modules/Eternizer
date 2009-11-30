@@ -212,7 +212,7 @@ function Eternizer_adminapi_getlinks()
                          'id' => 'Eternizer_import');
         $links[] = array('url' => pnModURL('Eternizer', 'admin', 'config'),
                          'text' => __('Settings', $dom),
-                         'title' => __("_Eternizer module configuration", $dom),
+                         'title' => __("Eternizer module configuration", $dom),
                          'id' => 'Eternizer_config')
         ;
     }

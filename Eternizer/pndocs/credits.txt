@@ -6,6 +6,8 @@ Everybody who uses this module and gave feedback, especially to the following ki
 
 Axel Guckelsberger (Guite)
 	for giving me a lot of answers to my questions and was very bear with me. Big thanks!
+Carsten Volmer (herr.vorragend)
+    Gettext conversion and template update
 The whole support.zikula.de-Team
 	for giving me usefull manuals and tips.
 Gilles Pilloud

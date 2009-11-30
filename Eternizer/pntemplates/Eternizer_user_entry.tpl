@@ -29,13 +29,13 @@
             <!--[if $pncore.logged_in eq true]-->
             <dd>
                 <!--[if $right_comment && !$right_edit]-->
-                <a href="<!--[pnmodurl modname=Eternizer type=admin func=modify id=$id]-->" title="<!--[gt text="Comment this entry"]-->"><!--[pnimg modname=core src=comment.gif set='icons/extrasmall' __title="Comment this entry" __alt="Comment this entry"]--></a>
+                <a href="<!--[pnmodurl modname=Eternizer type=admin func=modify id=$id]-->" title="<!--[gt text="Comment entry"]-->"><!--[pnimg modname=core src=comment.gif set='icons/extrasmall' __title="Comment entry" __alt="Comment entry"]--></a>
                 <!--[/if]-->
                 <!--[if $right_edit]-->
-                <a href="<!--[pnmodurl modname=Eternizer type=admin func=modify id=$id]-->" title="<!--[gt text="Edit this entry"]-->"><!--[pnimg modname=core src=edit.gif set='icons/extrasmall' __title="Edit this entry" __alt="Edit this entry"]--></a>
+                <a href="<!--[pnmodurl modname=Eternizer type=admin func=modify id=$id]-->" title="<!--[gt text="Edit entry"]-->"><!--[pnimg modname=core src=edit.gif set='icons/extrasmall' __title="Edit entry" __alt="Edit entry"]--></a>
                 <!--[/if]-->
                 <!--[if $right_delete]-->
-                <a href="<!--[pnmodurl modname=Eternizer type=admin func=suppress id=$id]-->" title="<!--[gt text="Delete this entry"]-->"><!--[pnimg modname=core src=14_layer_deletelayer.gif set='icons/extrasmall' __title="Delete this entry" __alt="Delete this entry"]--></a>
+                <a href="<!--[pnmodurl modname=Eternizer type=admin func=suppress id=$id]-->" title="<!--[gt text="Delete entry"]-->"><!--[pnimg modname=core src=14_layer_deletelayer.gif set='icons/extrasmall' __title="Delete entry" __alt="Delete entry"]--></a>
                 <!--[/if]-->
             </dd>
             <!--[/if]-->

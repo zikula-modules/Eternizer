@@ -18,7 +18,7 @@
     <fieldset>
         <legend><!--[gt text="General"]--></legend>
         <div class="z-formrow">
-            <!--[pnformlabel for='perpage' __text='Entries per page']-->
+            <!--[pnformlabel for='perpage' __text='Items per page']-->
             <!--[pnformintinput id='perpage' mandatory='1' minValue='1']-->
         </div>
 

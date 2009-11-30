@@ -56,7 +56,7 @@ class Eternizer_admin_configHandler
                                                       'text'  => __('All users', $dom)));
 
         $modvars['wwactionItems']     = array(array(  'value'  => 'nothing',
-                                                      'text'   => __('no', $dom)),
+                                                      'text'   => __('No', $dom)),
                                             array(    'value'  => 'truncate',
                                                       'text'   => __('truncate', $dom)),
                                             array(    'value'  => 'wrap',

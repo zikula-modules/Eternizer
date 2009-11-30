@@ -13,6 +13,6 @@
 </div>
 <!--[insert name="getstatusmsg"]-->
 <div id="eternizer" class="z-admincontainer">
-    <div class="z-adminpageicon"><!--[pnimg modname='Eternizer' src='admin.gif' __alt='' ]--></div>
+    <div class="z-adminpageicon"><!--[pnimg modname='Eternizer' src='admin.gif' alt='' ]--></div>
 
     <!--[/if]-->

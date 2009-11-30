@@ -148,8 +148,8 @@ function Eternizer_userapi_WriteEntry($args)
     // notify email
     if (pnModGetVar('Eternizer', 'notifymail') != '' ) {
         $email = pnModGetVar('Eternizer', 'notifymail');
-        $subject = __('New guestbook entry');
-        $message = __('It was created a new guestbook entry on the website.');
+        $subject = __('New guestbook entry', $dom);
+        $message = __('A new guestbook entry was created on the website.', $dom);
         pnModAPIFunc('Mailer', 'user', 'sendmessage', array('toaddress' => $email, 'subject' => $subject, 'body' => $message, 'html' => true));
     }
 

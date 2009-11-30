@@ -19,15 +19,15 @@
                 </dt>
                 <dd>
                     <!--[if $item.obj_status eq 'M']-->
-                    <a href="<!--[pnmodurl modname=Eternizer type=admin func='changeStatus' status="A" id=$item.id goback=$goback]-->"><!--[pnimg modname='core' src='greenled.gif' set='icons/extrasmall' __title="Activate this entry" __alt="Activate this entry"]--></a>
+                    <a href="<!--[pnmodurl modname=Eternizer type=admin func='changeStatus' status="A" id=$item.id goback=$goback]-->"><!--[pnimg modname='core' src='greenled.gif' set='icons/extrasmall' __title="Activate entry" __alt="Activate entry"]--></a>
                     <!--[else]-->
-                    <a href="<!--[pnmodurl modname=Eternizer type=admin func='changeStatus' status="M" id=$item.id goback=$goback]-->"><!--[pnimg modname='core' src='redled.gif' set='icons/extrasmall' __title="Moderate this entry" __alt="Moderate this entry"]--></a>
+                    <a href="<!--[pnmodurl modname=Eternizer type=admin func='changeStatus' status="M" id=$item.id goback=$goback]-->"><!--[pnimg modname='core' src='redled.gif' set='icons/extrasmall' __title="Moderate entry" __alt="Moderate entry"]--></a>
                     <!--[/if]-->
                     <!--[if $item.rights.modify]-->
-                    <a href="<!--[pnmodurl modname=Eternizer type=admin func='modify' id=$item.id goback=$goback]-->"><!--[pnimg modname='core' src='edit.gif' set='icons/extrasmall' __title="Edit this entry" __alt="Edit this entry"]--></a>
+                    <a href="<!--[pnmodurl modname=Eternizer type=admin func='modify' id=$item.id goback=$goback]-->"><!--[pnimg modname='core' src='edit.gif' set='icons/extrasmall' __title="Edit entry" __alt="Edit entry"]--></a>
                     <!--[/if]-->
                     <!--[if $item.rights.delete]-->
-                    <a href="<!--[pnmodurl modname=Eternizer type=admin func='suppress' id=$item.id goback=$goback]-->"><!--[pnimg modname='core' src='14_layer_deletelayer.gif' set='icons/extrasmall' __title="Edit this entry" __alt="Edit this entry"]--></a>
+                    <a href="<!--[pnmodurl modname=Eternizer type=admin func='suppress' id=$item.id goback=$goback]-->"><!--[pnimg modname='core' src='14_layer_deletelayer.gif' set='icons/extrasmall' __title="Edit entry" __alt="Edit entry"]--></a>
                     <!--[/if]-->
                 </dd>
             </dl>
@@ -48,7 +48,7 @@
     <!--[/foreach]-->
 
     <fieldset>
-        <legend><!--[gt text="Selected"]--></legend>
+        <legend><!--[gt text="With selected entries"]--></legend>
         <input type="submit" name="action[activate]" value="<!--[gt text="Activate"]-->" />
         <input type="submit" name="action[moderate]" value="<!--[gt text="Moderate"]-->" />
         <!--[if $rights.delete]-->
