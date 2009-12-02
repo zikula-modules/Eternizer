@@ -5,7 +5,12 @@
     var eternizer_deleteconfirm = '<!--[gt text="Confirm deletion?"]-->';
 </script>
 
+<!--[if $init neq 1]-->
 <!--[include file="Eternizer_admin_menu.tpl"]-->
+<!--[else]-->
+<h2><!--[gt text="Installation of Eternizer"]--></h2>
+<!--[/if]-->
+
 <h2><!--[gt text="Settings"]--></h2>
 
 <!--[pnform cssClass="z-form"]-->
@@ -125,4 +130,6 @@
 </div>
 <!--[/pnform]-->
 
+<!--[if $init neq 1]-->
 <!--[include file="Eternizer_admin_footer.tpl"]-->
+<!--[/if]-->
