@@ -16,12 +16,12 @@ class Eternizer_Import_Guestbook
 
     function getName()
     {
-        return 'Postguestbook';
+        return 'Guestbook';
     }
 
     function available()
     {
-        return (bool) pnModAvailable('postguestbook');
+        return (bool) pnModAvailable('Guestbook');
     }
 
     function display()
@@ -35,7 +35,7 @@ class Eternizer_Import_Guestbook
 
     function getConfig()
     {
-        $config = array('perpage'    => pnModGetVar('postguestbook', 'entries_per_page'));
+        $config = array('perpage'    => pnModGetVar('Guestbook', 'entries_per_page'));
 
         return $config;
     }
