@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula 1.2.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-30 20:38+0000\n"
+"POT-Creation-Date: 2009-12-09 09:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgstr ""
 msgid "A modern guestbook for Zikula"
 msgstr ""
 
-#: pnversion.php:18 pntemplates/Eternizer_search_options.tpl:4
+#: pnversion.php:18
 msgid "Eternizer"
 msgstr ""
 
@@ -85,7 +85,7 @@ msgstr ""
 msgid "Import from other guestbooks"
 msgstr ""
 
-#: pnadminapi.php:216 pntemplates/Eternizer_admin_config.tpl:9
+#: pnadminapi.php:216 pntemplates/Eternizer_admin_config.tpl:14
 msgid "Settings"
 msgstr ""
 
@@ -185,17 +185,8 @@ msgstr ""
 msgid "Text"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_menu.tpl:4
-#: pntemplates/Eternizer_init_interactive.tpl:2
-#: pntemplates/Eternizer_init_step3.tpl:2
-msgid "Installation of Eternizer"
-msgstr ""
-
-#: pntemplates/Eternizer_admin_menu.tpl:5
-msgid "Configuration"
-msgstr ""
-
 #: pntemplates/Eternizer_user_main.tpl:2
+#: pntemplates/Eternizer_search_options.tpl:4
 msgid "Guestbook"
 msgstr ""
 
@@ -211,105 +202,111 @@ msgstr ""
 msgid "Confirm deletion?"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_config.tpl:17
-#: pntemplates/Eternizer_admin_config.tpl:19
+#: pntemplates/Eternizer_admin_config.tpl:11
+#: pntemplates/Eternizer_init_interactive.tpl:2
+#: pntemplates/Eternizer_init_step3.tpl:2
+msgid "Installation of Eternizer"
+msgstr ""
+
+#: pntemplates/Eternizer_admin_config.tpl:22
+#: pntemplates/Eternizer_admin_config.tpl:24
 msgid "General"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_config.tpl:21
+#: pntemplates/Eternizer_admin_config.tpl:26
 #: pntemplates/Eternizer_listblock_modify.tpl:3
 msgid "Items per page"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_config.tpl:26
+#: pntemplates/Eternizer_admin_config.tpl:31
 msgid "E-mail address to notify about new entries"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_config.tpl:31
+#: pntemplates/Eternizer_admin_config.tpl:36
 msgid "Order"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_config.tpl:36
+#: pntemplates/Eternizer_admin_config.tpl:41
 msgid "Spam check"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_config.tpl:41
+#: pntemplates/Eternizer_admin_config.tpl:46
 #: pntemplates/Eternizer_admin_adminView.tpl:60
 msgid "Moderate"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_config.tpl:46
+#: pntemplates/Eternizer_admin_config.tpl:51
 msgid "Enforce use of profile data"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_config.tpl:52
-#: pntemplates/Eternizer_admin_config.tpl:54
+#: pntemplates/Eternizer_admin_config.tpl:57
+#: pntemplates/Eternizer_admin_config.tpl:59
 msgid "Long words processing"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_config.tpl:56
-#: pntemplates/Eternizer_admin_config.tpl:86
+#: pntemplates/Eternizer_admin_config.tpl:61
+#: pntemplates/Eternizer_admin_config.tpl:91
 msgid "Action"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_config.tpl:61
+#: pntemplates/Eternizer_admin_config.tpl:66
 msgid "Maximal length"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_config.tpl:66
+#: pntemplates/Eternizer_admin_config.tpl:71
 msgid "Length after processing"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_config.tpl:72
-#: pntemplates/Eternizer_admin_config.tpl:74
+#: pntemplates/Eternizer_admin_config.tpl:77
+#: pntemplates/Eternizer_admin_config.tpl:79
 msgid "Profile"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_config.tpl:76
+#: pntemplates/Eternizer_admin_config.tpl:81
 msgid "Title field"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_config.tpl:81
+#: pntemplates/Eternizer_admin_config.tpl:86
 msgid "ID"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_config.tpl:82
+#: pntemplates/Eternizer_admin_config.tpl:87
 msgid "Title"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_config.tpl:83
+#: pntemplates/Eternizer_admin_config.tpl:88
 msgid "Type"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_config.tpl:84
+#: pntemplates/Eternizer_admin_config.tpl:89
 msgid "Mandatory"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_config.tpl:85
+#: pntemplates/Eternizer_admin_config.tpl:90
 msgid "Equivalent in Profile"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_config.tpl:97
+#: pntemplates/Eternizer_admin_config.tpl:102
 msgid "Delete row"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_config.tpl:102
+#: pntemplates/Eternizer_admin_config.tpl:107
 msgid "New"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_config.tpl:118
+#: pntemplates/Eternizer_admin_config.tpl:123
 #: pntemplates/Eternizer_admin_modify.tpl:48
 msgid "Update"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_config.tpl:119
+#: pntemplates/Eternizer_admin_config.tpl:124
 #: pntemplates/Eternizer_admin_modify.tpl:49
 #: pntemplates/Eternizer_user_form.tpl:41
 #: pntemplates/Eternizer_admin_suppress.tpl:13
 msgid "Cancel"
 msgstr ""
 
-#: pntemplates/Eternizer_admin_config.tpl:121
+#: pntemplates/Eternizer_admin_config.tpl:126
 #: pntemplates/Eternizer_init_interactive.tpl:8
 #: pntemplates/Eternizer_init_interactive.tpl:9
 #: pntemplates/Eternizer_init_step3.tpl:18
@@ -343,11 +340,11 @@ msgstr ""
 msgid "All configuration is done. Thanks for using Eternizer."
 msgstr ""
 
-#: pntemplates/Eternizer_init_step3.tpl:12
+#: pntemplates/Eternizer_init_step3.tpl:11
 msgid "Last step"
 msgstr ""
 
-#: pntemplates/Eternizer_init_step3.tpl:14
+#: pntemplates/Eternizer_init_step3.tpl:13
 msgid "Activate Eternizer after installation"
 msgstr ""
 
