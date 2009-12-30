@@ -84,6 +84,13 @@ function Eternizer_upgrade($oldversion) {
         case '1.0a':
         case '1.0':
         case '1.1':
+            $profile = pnModGetVar('Eternizer', 'profile');
+
+            if (DataUtil::is_serialized($profile)) {
+                $profile = unserialize($profile);
+            }
+            
+            $profile = pnModSetVar('Eternizer', 'profile', $profile);
             break;
     }
 
