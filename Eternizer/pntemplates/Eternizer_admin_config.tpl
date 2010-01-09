@@ -93,7 +93,7 @@
             <!--[foreach from=$profile key="id" item="item"]-->
             <li id="profile_<!--[$id]-->" class="<!--[cycle values="z-odd,z-even"]--> z-sortable z-clearfix moveable">
                 <span class="col2"><!--[$id]--></span>
-                <!--[pnformtextinput cssClass="z-hide" id="profile_`$id`_pos" group="profile" maxLength='20']-->
+                <!--[pnformtextinput cssClass="z-hide" id="profile_`$id`_pos" group="profile" text=$item.pos maxLength='20']-->
                 <!--[pnformtextinput cssClass="col3" id="profile_`$id`_title" group="profile" text=$item.title maxLength='255']-->
                 <!--[pnformdropdownlist cssClass="col4" id="profile_`$id`_type" group="profile" selectedValue=$item.type items=$typeItems]-->
                 <!--[pnformdropdownlist cssClass="col5" id="profile_`$id`_mandatory" group="profile" selectedValue=$item.mandatory items=$mandatoryItems]-->
