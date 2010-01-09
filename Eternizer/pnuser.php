@@ -51,11 +51,11 @@ function Eternizer_user_main($args) {
     foreach (array_keys($entries) as $k) {
         $act =& $entries[$k];
         $act = DataUtil::formatForDisplayHTML($act);
-        list($act['text']) = pnModCallHooks('item', 'transform', '', array($act['text']));
-        list($act['comment']) = pnModCallHooks('item', 'transform', '', array($act['comment']));
         $act['text'] = Eternizer_WWAction($act['text']);
         $act['text'] = nl2br($act['text']);
         $act['comment'] = nl2br($act['comment']);
+        list($act['text']) = pnModCallHooks('item', 'transform', '', array($act['text']));
+        list($act['comment']) = pnModCallHooks('item', 'transform', '', array($act['comment']));
 
         $act['right_moderate'] = SecurityUtil::checkPermission('Eternizer::', $act['id'] . '::', ACCESS_MODERATE);
         $act['right_edit'] = SecurityUtil::checkPermission('Eternizer::', $act['id'] . '::', ACCESS_EDIT);
