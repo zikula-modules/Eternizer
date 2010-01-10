@@ -13,7 +13,7 @@
 $dom = ZLanguage::getModuleDomain('Eternizer');
 
 $modversion['name']           = 'Eternizer';
-$modversion['version']        = '1.1'; //not more than 10 chars
+$modversion['version']        = '1.1.1'; //not more than 10 chars
 $modversion['description']    = __('A modern guestbook for Zikula', $dom);
 $modversion['displayname']    = __('Eternizer', $dom);
 //! module url must be different from displayname, even if just in casing
