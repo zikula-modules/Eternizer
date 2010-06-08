@@ -27,7 +27,7 @@
                     <a href="<!--[pnmodurl modname=Eternizer type=admin func='modify' id=$item.id goback=$goback]-->"><!--[pnimg modname='core' src='edit.gif' set='icons/extrasmall' __title="Edit entry" __alt="Edit entry"]--></a>
                     <!--[/if]-->
                     <!--[if $item.rights.delete]-->
-                    <a href="<!--[pnmodurl modname=Eternizer type=admin func='suppress' id=$item.id goback=$goback]-->"><!--[pnimg modname='core' src='14_layer_deletelayer.gif' set='icons/extrasmall' __title="Edit entry" __alt="Edit entry"]--></a>
+                    <a href="<!--[pnmodurl modname=Eternizer type=admin func='suppress' id=$item.id goback=$goback]-->"><!--[pnimg modname='core' src='14_layer_deletelayer.gif' set='icons/extrasmall' __title="Delete entry" __alt="Delete entry"]--></a>
                     <!--[/if]-->
                 </dd>
             </dl>
