@@ -205,7 +205,7 @@ function Eternizer_admin_suppress()
     }
     $pnRender->assign('goback', FormUtil::getPassedValue('goback'));
     $pnRender->assign('cancelurl', $url);
-    $pnRender->assign('id', $id);
+    $pnRender->assign('id', serialize($id));
     return $pnRender->fetch('Eternizer_admin_suppress.tpl');
 }
 
@@ -216,8 +216,10 @@ function Eternizer_admin_suppress()
  */
 function Eternizer_admin_delete()
 {
-    $id = FormUtil::getPassedValue('id');
-
+    $id = FormUtil::getPassedValue('id', False, 'GETPOST');
+	if (DataUtil::is_serialized($id)) {
+		$id = unserialize($id);
+	}
     if (empty($id) || (!is_numeric($id) && !is_array($id))) {
         LogUtil::registerArgsError();
     }
