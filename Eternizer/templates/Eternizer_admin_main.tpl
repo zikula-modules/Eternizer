@@ -1,2 +1,2 @@
-<!--[* $Id$ *]-->
-<!--[pnmodfunc modname='Eternizer' type='admin' func='adminView']-->
+{* $Id$ *}
+{modfunc modname='Eternizer' type='admin' func='adminView'}

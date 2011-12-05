@@ -12,7 +12,9 @@
 
 // need to find a better way to load pnForm here since the path changes and we also use autoloading in Zikula 1.3.0
 Loader::requireOnce('includes/pnForm.php');
-Loader::requireOnce('modules/Eternizer/pnincludes/wordwrap.php');
+Loader::requireOnce('modules/Eternizer/includes/wordwrap.php');
+
+class Eternizer_Controller_User extends Zikula_AbstractController {
 
 /**
  * Main
@@ -22,7 +24,8 @@ Loader::requireOnce('modules/Eternizer/pnincludes/wordwrap.php');
  * @param  int $args['tpl']
  * @return (string)    output
  */
-function Eternizer_user_main($args) {
+public function main($args) {
+	
     $tpl = FormUtil::getPassedValue('tpl', $args['tpl'], 'G');
     if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_READ)) {
         return LogUtil::registerPermissionError();
@@ -33,19 +36,17 @@ function Eternizer_user_main($args) {
     $startnum = FormUtil::getPassedValue('startnum', $args['startnum'], 'G');
     $perpage = FormUtil::getPassedValue('perpage', $args['perpage'], 'G');
 
-    $config = pnModGetVar('Eternizer');
+    $config = ModUtil::getVar('Eternizer');
     if (!empty($perpage))
     $config['perpage'] = $perpage;
 
-    $entries = pnModAPIFunc('Eternizer', 'user', 'GetEntries', array('startnum' => $startnum-1, 'perpage' => $perpage));
+    $entries = ModUtil::apiFunc('Eternizer', 'user', 'GetEntries', array('startnum' => $startnum-1, 'perpage' => $perpage));
 
-    $pnRender = pnRender::getInstance('Eternizer', false, null, true);
+    $count = ModUtil::apiFunc('Eternizer', 'user', 'CountEntries');
 
-    $count = pnModAPIFunc('Eternizer', 'user', 'CountEntries');
-
-    $pnRender->assign('startnum', $startnum);
-    $pnRender->assign('count', $count);
-    $pnRender->assign('config', $config);
+    $this->view->assign('startnum', $startnum);
+    $this->view->assign('count', $count);
+    $this->view->assign('config', $config);
 
     $entryhtml = array();
     foreach (array_keys($entries) as $k) {
@@ -54,8 +55,8 @@ function Eternizer_user_main($args) {
         $act['text'] = Eternizer_WWAction($act['text']);
         $act['text'] = nl2br($act['text']);
         $act['comment'] = nl2br($act['comment']);
-        list($act['text']) = pnModCallHooks('item', 'transform', '', array($act['text']));
-        list($act['comment']) = pnModCallHooks('item', 'transform', '', array($act['comment']));
+        list($act['text']) = ModUtil::callHooks('item', 'transform', '', array($act['text']));
+        list($act['comment']) = ModUtil::callHooks('item', 'transform', '', array($act['comment']));
 
         $act['right_moderate'] = SecurityUtil::checkPermission('Eternizer::', $act['id'] . '::', ACCESS_MODERATE);
         $act['right_edit'] = SecurityUtil::checkPermission('Eternizer::', $act['id'] . '::', ACCESS_EDIT);
@@ -67,9 +68,9 @@ function Eternizer_user_main($args) {
         }
 
         $act['profile'] = $profile;
-        $act['avatarpath'] = pnModGetVar('Users', 'avatarpath');
+        $act['avatarpath'] = ModUtil::getVar('Users', 'avatarpath');
 
-        $pnRender->assign($act);
+        $this->view->assign($act);
         if (!empty($tpl) && $pnRender->template_exists('Eternizer_user_'. DataUtil::formatForOS($tpl) .'_entry.tpl')) {
             $entryhtml[] = $pnRender->fetch('Eternizer_user_'. DataUtil::formatForOS($tpl) . '_entry.tpl');
         }
@@ -78,17 +79,17 @@ function Eternizer_user_main($args) {
         }
     }
 
-    $pnRender->assign('entries', $entryhtml);
-    $pnRender->assign('entryarray', $entries);
+    $this->view->assign('entries', $entryhtml);
+    $this->view->assign('entryarray', $entries);
 
-    $form = pnModFunc('Eternizer', 'user', 'new', array( 'inline' => true));
-    $pnRender->assign('form', $form===false?'':$form );
+    $form = ModUtil::func('Eternizer', 'user', 'create', array( 'inline' => true));
+    $this->view->assign('form', $form===false?'':$form );
 
     if (!empty($tpl) && $pnRender->template_exists('Eternizer_user_'. DataUtil::formatForOS($tpl) .'_main.tpl')) {
-        return $pnRender->fetch('Eternizer_user_'. DataUtil::formatForOS($tpl).'_main.tpl');
+        return $this->view->fetch('Eternizer_user_'. DataUtil::formatForOS($tpl).'_main.tpl');
     }
     else {
-        return $pnRender->fetch('Eternizer_user_main.tpl');
+        return $this->view->fetch('Eternizer_user_main.tpl');
     }
 }
 
@@ -98,7 +99,7 @@ function Eternizer_user_main($args) {
  * @param  (bool)    $args['single'] = false
  * @return (string)  output
  */
-function Eternizer_user_new($args) {
+public function create($args) {
     if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_COMMENT)) {
         return false;
     }
@@ -116,4 +117,5 @@ function Eternizer_user_new($args) {
     Loader::requireOnce('modules/Eternizer/classes/Eternizer_user_newHandler.class.php');
 
     return $render->pnFormExecute($tpl, new Eternizer_user_newHandler($args['inline']));
+}
 }

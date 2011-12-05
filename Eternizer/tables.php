@@ -27,7 +27,7 @@ function Eternizer_pntables() {
                                                'comment'   => 'pn_comment');
 
     $pntable['Eternizer_entry_column_def'] = array('id'      => 'I        NOTNULL AUTO PRIMARY',
-                                                   'ip'      => 'C (15)   NULL',
+                                                   'ip'      => 'C(15)    NULL',
                                                    'text'    => 'X        NOTNULL',
                                                    'comment' => 'X        NULL');
 

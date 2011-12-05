@@ -11,10 +11,12 @@
  * @subpackage Eternizer
  */
 
-// need a better way to load this - from 1.3 we use autoloading
 Loader::requireOnce('includes/pnForm.php');
+// need a better way to load this - from 1.3 we use autoloading
+class Eternizer_Installer extends Zikula_AbstractInstaller {
 
-function Eternizer_init_getDefaultConfig()
+
+public function getDefaultConfig()
 {
     $dom = ZLanguage::getModuleDomain('Eternizer');
     $profile = array(
@@ -53,7 +55,7 @@ function Eternizer_init_getDefaultConfig()
                     'wwlimit'        => 60,
                     'wwshortto'      => 50,
                     'notify'         => 0,
-                    'notifymail'     => pnConfigGetVar('adminmail', 'email@example.org'),
+                    'notifymail'     => System::getVar('adminmail', 'email@example.org'),
                     'profile'        => $profile,
                     'titlefield'     => 0);
 
@@ -63,14 +65,16 @@ function Eternizer_init_getDefaultConfig()
 /**
  * @return       bool       true
  */
-function Eternizer_init() {
+public function install() {
+	
+	
     DBUtil::CreateTable('Eternizer_entry');
 
-    // Forget about configuration.. It is defect
-    pnModDelVar('Eternizer');
-    $config = Eternizer_init_getDefaultConfig();
+    // Forget about configuration.. It is defect TODO
+    ModUtil::delVar('Eternizer');
+    $config = $this->getDefaultConfig();
     foreach ($config as $k => $v)
-    pnModSetVar('Eternizer', $k, $v);
+    ModUtil::setVar('Eternizer', $k, $v);
 
     // Initialisation successful
     return true;
@@ -79,18 +83,18 @@ function Eternizer_init() {
 /**
  * @return       bool       true
  */
-function Eternizer_upgrade($oldversion) {
+public function upgrade($oldversion) {
     switch ($oldversion) {
         case '1.0a':
         case '1.0':
         case '1.1':
-            $profile = pnModGetVar('Eternizer', 'profile');
+            $profile = ModUtil::getVar('Eternizer', 'profile');
 
             if (DataUtil::is_serialized($profile)) {
                 $profile = unserialize($profile);
             }
             
-            $profile = pnModSetVar('Eternizer', 'profile', $profile);
+            $profile = ModUtil::setVar('Eternizer', 'profile', $profile);
             break;
     }
 
@@ -101,10 +105,10 @@ function Eternizer_upgrade($oldversion) {
 /**
  * @return       bool       true
  */
-function Eternizer_delete() {
+public function uninstall() {
     DBUtil::dropTable('Eternizer_entry');
 
-    pnModDelVar('Eternizer');
+    ModUtil::delVar('Eternizer');
 
     // Deletion successful
     return true;
@@ -116,7 +120,7 @@ function Eternizer_delete() {
  * @author Philipp Niethammer
  * @return pnRender output
  */
-function Eternizer_init_interactiveinit()
+public function interactiveinit()
 {
     if (!SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError();
@@ -132,7 +136,7 @@ function Eternizer_init_interactiveinit()
  * @author Philipp Niethammer
  * @return pnRender output
  */
-function Eternizer_init_step2()
+public function step2()
 {
     if (!SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError();
@@ -151,7 +155,7 @@ function Eternizer_init_step2()
  * @author Philipp Niethammer
  * @return pnRender output
  */
-function Eternizer_init_step3()
+public function step3()
 {
     if (!SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError();
@@ -159,7 +163,7 @@ function Eternizer_init_step3()
 
     $pnRender = & pnRender::getInstance('Eternizer', null);
 
-    $pnRender->assign('authid', SecurityUtil::generateAuthKey('Modules'));
+    $pnRender->assign('authid', SecurityUtil::generateCsrfToken('Modules'));
     return $pnRender->fetch('Eternizer_init_step3.tpl');
 }
-
+}

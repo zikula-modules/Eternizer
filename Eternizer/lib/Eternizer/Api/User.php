@@ -10,9 +10,12 @@
  * @package Zikula
  * @subpackage Eternizer
  */
-
+	
+	
 // Include the needed classes
 Loader::loadClass('Eternizer_antispam', 'modules/Eternizer/classes');
+
+class Eternizer_Api_User extends Zikula_AbstractApi {
 
 /**
  * GetEntries
@@ -21,8 +24,9 @@ Loader::loadClass('Eternizer_antispam', 'modules/Eternizer/classes');
  * @param    (int)    $args['perpage']
  * @return   (array)  $entries        Array with entries
  */
-function Eternizer_userapi_GetEntries($args)
-{
+
+public function GetEntries($args) {
+	
     if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_OVERVIEW)) {
         return LogUtil::registerPermissionError();
     }
@@ -63,7 +67,7 @@ function Eternizer_userapi_GetEntries($args)
  * Count the number of entries
  * @return   (int)   number of entries or false on error
  */
-function Eternizer_userapi_CountEntries()
+public function CountEntries()
 {
     if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_OVERVIEW)) {
         return LogUtil::registerPermissionError();
@@ -87,8 +91,7 @@ function Eternizer_userapi_CountEntries()
  * @param    (array)       $args['profile'] all profile data
  * @return   (bool)        True or False on error
  */
-function Eternizer_userapi_WriteEntry($args)
-{
+public function WriteEntry($args) {
     if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_COMMENT)) {
         return LogUtil::registerPermissionError();
     }
@@ -154,4 +157,5 @@ function Eternizer_userapi_WriteEntry($args)
     }
 
     return true;
+}
 }

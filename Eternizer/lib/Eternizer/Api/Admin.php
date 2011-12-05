@@ -10,7 +10,7 @@
  * @package Zikula
  * @subpackage Eternizer
  */
-
+ class Eternizer_Api_Admin extends Zikula_AbstractApi {
 /**
  * change status of an entry
  *
@@ -19,7 +19,7 @@
  * @param     (char)  $args['status']
  * @return    (bool)
  */
-function Eternizer_adminapi_changeStatus($args)
+public function changeStatus($args)
 {
     if (!isset($args['id']) || (!is_numeric($args['id']) && !is_array($args['id']))) {
         return LogUtil::registerArgsError();
@@ -54,7 +54,7 @@ function Eternizer_adminapi_changeStatus($args)
  * @param     (mixed)    id
  * @return    (bool)
  */
-function Eternizer_adminapi_DelEntry($args)
+public function DelEntry($args)
 {
     $dom = ZLanguage::getModuleDomain('Eternizer');
     if (!isset($args['id']) || (!is_numeric($args['id']) && !is_array($args['id']))) {
@@ -86,7 +86,7 @@ function Eternizer_adminapi_DelEntry($args)
  * @param    (array)      $args['profile']
  * @return   (bool)
  */
-function Eternizer_adminapi_EditEntry($args)
+public function EditEntry($args)
 {
     $dom = ZLanguage::getModuleDomain('Eternizer');
     if (!isset($args['id']) || !is_numeric($args['id'])) {
@@ -133,7 +133,7 @@ function Eternizer_adminapi_EditEntry($args)
  * @param     (int)        $args['id']
  * @return    (array)      array with infos or false
  */
-function Eternizer_adminapi_GetEntry($args)
+public function GetEntry($args)
 {
     $dom = ZLanguage::getModuleDomain('Eternizer');
     if (!isset($args['id']) || !is_numeric($args['id'])) {
@@ -157,7 +157,7 @@ function Eternizer_adminapi_GetEntry($args)
  *
  * @return array Array of items
  */
-function Eternizer_adminapi_getEntries($args)
+public function getEntries($args)
 {
     if (!SecurityUtil::checkPermission('Eternizer::', $args['id'] . '::', ACCESS_MODERATE)) {
         return LogUtil::registerPermissionError();
@@ -197,7 +197,7 @@ function Eternizer_adminapi_getEntries($args)
  *
  * @return array     array of admin links
  */
-function Eternizer_adminapi_getlinks()
+public function getlinks()
 {
     $dom = ZLanguage::getModuleDomain('Eternizer');
     $links = array();
@@ -221,3 +221,4 @@ function Eternizer_adminapi_getlinks()
 
     return $links;
 }
+ }

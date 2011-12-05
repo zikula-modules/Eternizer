@@ -10,13 +10,13 @@
  * @subpackage Eternizer
  */
 
-
+class Eternizer_Block_List extends Zikula_Controller_AbstractBlock {
+	
 /**
  * initialise block
  *
  */
-function Eternizer_listblock_init()
-{
+public function init() {
     // Security
     SecurityUtil::registerPermissionSchema('Eternizer:Listblock:', 'Block title::');
 }
@@ -26,7 +26,7 @@ function Eternizer_listblock_init()
  *
  * @return       array       The block information
  */
-function Eternizer_listblock_info()
+public function info()
 {
     $dom = ZLanguage::getModuleDomain('Eternizer');
     return array('text_type'      => 'List',
@@ -44,7 +44,7 @@ function Eternizer_listblock_info()
  * @param        array       $blockinfo     a blockinfo structure
  * @return       output      the rendered bock
  */
-function Eternizer_listblock_display($blockinfo)
+public function display($blockinfo)
 {
     // Security check - important to do this as early as possible to avoid
     // potential security holes or just too much wasted processing.
@@ -78,7 +78,7 @@ function Eternizer_listblock_display($blockinfo)
  * @param        array       $blockinfo     a blockinfo structure
  * @return       output      the bock form
  */
-function Eternizer_listblock_modify($blockinfo)
+public function modify($blockinfo)
 {
     $render = new pnRender('Eternizer');
 
@@ -98,7 +98,7 @@ function Eternizer_listblock_modify($blockinfo)
  * @param        array       $blockinfo     a blockinfo structure
  * @return       $blockinfo  the modified blockinfo structure
  */
-function Eternizer_listblock_update($blockinfo)
+public function update($blockinfo)
 {
     // Get current content
     $vars = pnBlockVarsFromContent($blockinfo['content']);
@@ -111,4 +111,5 @@ function Eternizer_listblock_update($blockinfo)
     $blockinfo['content'] = pnBlockVarsToContent($vars);
 
     return $blockinfo;
+}
 }

@@ -1,10 +1,10 @@
-<!--[* $Id$ *]-->
+{* $Id$ *}
 
-<!--[admincategorymenu xhtml=1]-->
+{admincategorymenu xhtml=1}
 <div class="z-adminbox">
-    <h1><!--[pnmodgetinfo modname="Eternizer" info="displayname"]--> v<!--[pnmodgetinfo modname="Eternizer" info="version"]--></h1>
-    <div class="z-menu"><!--[moduleadminlinks modname="Eternizer"]--></div>
+    <h1>{modgetinfo modname="Eternizer" info="displayname"} v{modgetinfo modname="Eternizer" info="version"}</h1>
+    <div class="z-menu">{modulelinks modname="Eternizer"}</div>
 </div>
-<!--[insert name="getstatusmsg"]-->
+{insert name="getstatusmsg"}
 <div id="eternizer" class="z-admincontainer">
-    <div class="z-adminpageicon"><!--[pnimg modname='Eternizer' src='admin.gif' alt='' ]--></div>
+    <div class="z-adminpageicon">{img modname='Eternizer' src='admin.gif' alt='' }</div>
