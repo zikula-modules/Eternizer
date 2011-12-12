@@ -11,7 +11,7 @@
  */
 
 // need to find a better way to load pnForm here since the path changes and we also use autoloading in Zikula 1.3.0
-Loader::requireOnce('includes/pnForm.php');
+//Loader::requireOnce('includes/pnForm.php');
 Loader::requireOnce('modules/Eternizer/includes/wordwrap.php');
 
 class Eternizer_Controller_User extends Zikula_AbstractController {
@@ -71,11 +71,11 @@ public function main($args) {
         $act['avatarpath'] = ModUtil::getVar('Users', 'avatarpath');
 
         $this->view->assign($act);
-        if (!empty($tpl) && $pnRender->template_exists('Eternizer_user_'. DataUtil::formatForOS($tpl) .'_entry.tpl')) {
-            $entryhtml[] = $pnRender->fetch('Eternizer_user_'. DataUtil::formatForOS($tpl) . '_entry.tpl');
+        if (!empty($tpl) && $this->view->template_exists('Eternizer_user_'. DataUtil::formatForOS($tpl) .'_entry.tpl')) {
+            $entryhtml[] = $this->view->fetch('Eternizer_user_'. DataUtil::formatForOS($tpl) . '_entry.tpl');
         }
         else {
-            $entryhtml[] = $pnRender->fetch('Eternizer_user_entry.tpl');
+            $entryhtml[] = $this->view->fetch('Eternizer_user_entry.tpl');
         }
     }
 
@@ -85,7 +85,7 @@ public function main($args) {
     $form = ModUtil::func('Eternizer', 'user', 'create', array( 'inline' => true));
     $this->view->assign('form', $form===false?'':$form );
 
-    if (!empty($tpl) && $pnRender->template_exists('Eternizer_user_'. DataUtil::formatForOS($tpl) .'_main.tpl')) {
+    if (!empty($tpl) && $this->view->template_exists('Eternizer_user_'. DataUtil::formatForOS($tpl) .'_main.tpl')) {
         return $this->view->fetch('Eternizer_user_'. DataUtil::formatForOS($tpl).'_main.tpl');
     }
     else {
@@ -103,19 +103,21 @@ public function create($args) {
     if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_COMMENT)) {
         return false;
     }
+    
+    $inline = $args['inline'];
 
     $dom = ZLanguage::getModuleDomain('Eternizer');
 
-    $render = & FormUtil::newpnForm('Eternizer');
+    $form = FormUtil::newForm('Eternizer', $this);
 
-    if (!empty($tpl) && $pnRender->template_exists('Eternizer_user_'. DataUtil::formatForOS($tpl) .'_form.tpl')) {
+    if (!empty($tpl) && $this->view->template_exists('Eternizer_user_'. DataUtil::formatForOS($tpl) .'_form.tpl')) {
         $tpl = 'Eternizer_user_'.DataUtil::formatForOS($tpl).'_form.tpl';
     } else {
         $tpl ='Eternizer_user_form.tpl';
     }
 
-    Loader::requireOnce('modules/Eternizer/classes/Eternizer_user_newHandler.class.php');
-
-    return $render->pnFormExecute($tpl, new Eternizer_user_newHandler($args['inline']));
+    //Loader::requireOnce('modules/Eternizer/classes/Eternizer_user_newHandler.class.php');
+    $args = array('inline' => true);
+    return $form->execute($tpl, new Eternizer_Form_Handler_User_newHandler());
 }
 }

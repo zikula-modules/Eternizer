@@ -144,7 +144,9 @@ public function WriteEntry($args) {
         LogUtil::registerStatus(__('Your entry is saved, but it needs to be approved by our team.', $dom));
     }
 
-    DBUtil::insertObject($args, 'Eternizer_entry');
+    if (!DBUtil::insertObject($args, 'Eternizer_entry')) {
+    	LogUtil::registerError($this->__('Sorry. Your commit was not saved!'));	
+    }
 
     pnModCallHooks('item', 'create', $args['id'], array('module' => 'Eternizer'));
 

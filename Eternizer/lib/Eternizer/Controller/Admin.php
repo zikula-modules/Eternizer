@@ -56,7 +56,7 @@ public function main()
 
     $pnRender = & pnRender::getInstance('Eternizer', false);
 
-    return $pnRender->fetch('Eternizer_admin_main.tpl');
+    return $this->view->fetch('Eternizer_admin_main.tpl');
 }
 
 /**
@@ -67,9 +67,9 @@ public function main()
  */
 public function config()
 {
-    $render = FormUtil::newpnForm('Eternizer');
+    $form = FormUtil::newForm('Eternizer', $this);
 
-    Loader::requireOnce('modules/Eternizer/classes/Eternizer_admin_configHandler.class.php');
+    //Loader::requireOnce('modules/Eternizer/classes/Eternizer_admin_configHandler.class.php');
 
     $modinfo = ModUtil::getInfo(ModUtil::getIdFromName('Eternizer'));
     // TODO $newestversion = file('http://www.guite.de/downloads/Eternizer_version.txt');
@@ -77,9 +77,9 @@ public function config()
     $newestversion = array(0 => $modinfo['version']);
     }
 
-    $this->view->assign('newestversion', trim($newestversion[0]));
+    $form->assign('newestversion', trim($newestversion[0]));
 
-    return $this->view->pnFormExecute('Eternizer_admin_config.tpl', new Eternizer_admin_configHandler());
+    return $form->execute('Eternizer_admin_config.tpl', new Eternizer_Form_Handler_Admin_configHandler());
 }
 
 /**
