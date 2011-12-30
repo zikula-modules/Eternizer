@@ -1,0 +1,7 @@
+{* purpose of this template: entries xml inclusion template in user area *}
+<entry id="{$item.id}" createdon="{$item.createdDate|dateformat}" updatedon="{$item.updatedDate|dateformat}">
+    <id>{$item.id}</id>
+    <ip><![CDATA[{$item.ip}]]></ip>
+    <text><![CDATA[{$item.text}]]></text>
+    <notes><![CDATA[{$item.notes}]]></notes>
+</entry>

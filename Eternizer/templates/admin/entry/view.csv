@@ -1,0 +1,5 @@
+{* purpose of this template: entries view csv view in admin area *}
+{eternizerTemplateHeaders contentType='text/comma-separated-values; charset=iso-8859-15' asAttachment=true filename='Entries.csv'}
+"{gt text='Ip'}";"{gt text='Text'}";"{gt text='Notes'}"{foreach item='entry' from=$items}
+"{$entry.ip|replace:"\"":""}";"{$entry.text|replace:"\"":""}";"{$entry.notes|replace:"\"":""}"{/foreach}
+

@@ -1,0 +1,4 @@
+CHANGELOG
+---------
+
+Changes in Eternizer 1.0.0

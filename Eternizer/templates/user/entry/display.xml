@@ -1,0 +1,4 @@
+{* purpose of this template: entries display xml view in user area *}
+{eternizerTemplateHeaders contentType='text/xml'}<?xml version="1.0" encoding="{charset}" ?>
+{getbaseurl assign='baseurl'}
+{include file='user/entry/include.xml' item=$entry}
