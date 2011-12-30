@@ -16,7 +16,7 @@ class Eternizer_Version extends Zikula_AbstractVersion {
 	$dom = ZLanguage::getModuleDomain('Eternizer');
 
 	$meta['name']           = 'Eternizer';
-	$meta['version']        = '1.1.1'; //not more than 10 chars
+	$meta['version']        = '1.1.2'; //not more than 10 chars
 	$meta['description']    = $this->__('A modern guestbook for Zikula', $dom);
 	$meta['displayname']    = $this->__('Eternizer', $dom);
 	//! module url must be different from displayname, even if just in casing
