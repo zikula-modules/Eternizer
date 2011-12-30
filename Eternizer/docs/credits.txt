@@ -1,16 +1,3 @@
-$Id: credits.txt,v 2.0 2005/12/29 23:18:00 Philipp Niethammer
+CREDITS
+-------
 
-Credits to:
-
-Everybody who uses this module and gave feedback, especially to the following kind persons:
-
-Axel Guckelsberger (Guite)
-	for giving me a lot of answers to my questions and was very bear with me. Big thanks!
-Carsten Volmer (herr.vorragend)
-    Gettext conversion and template update
-The whole support.zikula.de-Team
-	for giving me usefull manuals and tips.
-Gilles Pilloud
-	who will translate it to French.
-And of curse the whole community of Zikula on the whole world
-	for making such a great Framework!
