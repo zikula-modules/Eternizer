@@ -19,35 +19,39 @@
 
                 <div class="z-formrow">
                     {formlabel for='itemsperpage' __text='Itemsperpage'}
-                    {formintinput id='itemsperpage' group='config' maxLength=255 width=20em __title='Input this setting. Only digits are allowed.'}
+                    {formintinput id='itemsperpage' group='config' maxLength=255 width=20em __title='Enter this setting. Only digits are allowed.'}
                 </div>
                 <div class="z-formrow">
                     {formlabel for='mail' __text='Mail'}
-                    {formtextinput id='mail' group='config' maxLength=255 width=20em __title='Input this setting.'}
-                </div>
-                <div class="z-formrow">
-                    {formlabel for='order' __text='Order'}
-                    {formtextinput id='order' group='config' maxLength=255 width=20em __title='Input this setting.'}
+                    {formtextinput id='mail' group='config' maxLength=255 width=20em __title='Enter this setting.'}
                 </div>
                 <div class="z-formrow">
                     {formlabel for='moderate' __text='Moderate'}
-                    {formtextinput id='moderate' group='config' maxLength=255 width=20em __title='Input this setting.'}
+                    {formtextinput id='moderate' group='config' maxLength=255 width=20em __title='Enter this setting.'}
                 </div>
                 <div class="z-formrow">
                     {formlabel for='profiledata' __text='Profiledata'}
-                    {formtextinput id='profiledata' group='config' maxLength=255 width=20em __title='Input this setting.'}
+                    {formcheckbox id='profiledata' group='config'}
                 </div>
                 <div class="z-formrow">
-                    {formlabel for='action' __text='Action'}
-                    {formtextinput id='action' group='config' maxLength=255 width=20em __title='Input this setting.'}
+                    {formlabel for='textaction' __text='Textaction'}
+                    {formtextinput id='textaction' group='config' maxLength=255 width=20em __title='Enter this setting.'}
                 </div>
                 <div class="z-formrow">
                     {formlabel for='maxlength' __text='Maxlength'}
-                    {formintinput id='maxlength' group='config' maxLength=255 width=20em __title='Input this setting. Only digits are allowed.'}
+                    {formintinput id='maxlength' group='config' maxLength=255 width=20em __title='Enter this setting. Only digits are allowed.'}
                 </div>
                 <div class="z-formrow">
                     {formlabel for='afterlength' __text='Afterlength'}
-                    {formintinput id='afterlength' group='config' maxLength=255 width=20em __title='Input this setting. Only digits are allowed.'}
+                    {formtextinput id='afterlength' group='config' maxLength=255 width=20em __title='Enter this setting.'}
+                </div>
+                <div class="z-formrow">
+                    {formlabel for='formposition' __text='Formposition'}
+                    {formtextinput id='formposition' group='config' maxLength=255 width=20em __title='Enter this setting.'}
+                </div>
+                <div class="z-formrow">
+                    {formlabel for='ipsave' __text='Ipsave'}
+                    {formcheckbox id='ipsave' group='config'}
                 </div>
             </fieldset>
 

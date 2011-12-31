@@ -2,7 +2,7 @@
 
 <div class="z-formrow">
     {formlabel for='Eternizer_objecttype' __text='Object type'}
-    {eternizerSelectorObjectTypes assign="allObjectTypes"}
+    {eternizerSelectorObjectTypes assign='allObjectTypes'}
     {formdropdownlist id='Eternizer_objecttype' dataField='objectType' group='data' mandatory=true items=$allObjectTypes}
 </div>
 
@@ -25,7 +25,7 @@
 
 <div class="z-formrow">
     {formlabel for='Eternizer_template' __text='Template File'}
-    {eternizerSelectorTemplates assign="allTemplates"}
+    {eternizerSelectorTemplates assign='allTemplates'}
     {formdropdownlist id='Eternizer_template' dataField='template' group='data' mandatory=true items=$allTemplates}
 </div>
 

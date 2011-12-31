@@ -4,4 +4,5 @@
     <ip><![CDATA[{$item.ip}]]></ip>
     <text><![CDATA[{$item.text}]]></text>
     <notes><![CDATA[{$item.notes}]]></notes>
+    <state>{$item.state}</state>
 </entry>

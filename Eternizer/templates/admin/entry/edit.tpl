@@ -28,16 +28,22 @@
         <legend>{gt text='Content'}</legend>
         <div class="z-formrow">
             {formlabel for='ip' __text='Ip'}
-            {formtextinput group='entry' id='ip' mandatory=false readOnly=false __title='Input the ip of the entry' textMode='singleline' maxLength=15 cssClass=''}
+            {formtextinput group='entry' id='ip' mandatory=false readOnly=false __title='Enter the ip of the entry' textMode='singleline' maxLength=15 cssClass=''}
         </div>
         <div class="z-formrow">
             {formlabel for='text' __text='Text' mandatorysym='1'}
-            {formtextinput group='entry' id='text' mandatory=true __title='Input the text of the entry' textMode='multiline' rows='6' cols='50' cssClass='required'}
+            {formtextinput group='entry' id='text' mandatory=true __title='Enter the text of the entry' textMode='multiline' rows='6' cols='50' cssClass='required'}
             {eternizerValidationError id='text' class='required'}
         </div>
         <div class="z-formrow">
             {formlabel for='notes' __text='Notes'}
-            {formtextinput group='entry' id='notes' mandatory=false __title='Input the notes of the entry' textMode='multiline' rows='6' cols='50' cssClass=''}
+            {formtextinput group='entry' id='notes' mandatory=false __title='Enter the notes of the entry' textMode='multiline' rows='6' cols='50' cssClass=''}
+        </div>
+        <div class="z-formrow">
+            {formlabel for='state' __text='State' mandatorysym='1'}
+            {formintinput group='entry' id='state' mandatory=true __title='Enter the state of the entry' maxLength=11 cssClass='required validate-digits'}
+            {eternizerValidationError id='state' class='required'}
+            {eternizerValidationError id='state' class='validate-digits'}
         </div>
     </fieldset>
 
@@ -78,7 +84,7 @@
     {if $mode eq 'edit'}
         {formbutton id='btnUpdate' commandName='update' __text='Update entry' class='z-bt-save'}
       {if !$inlineUsage}
-        {gt text='Really delete this entry?' assign="deleteConfirmMsg"}
+        {gt text='Really delete this entry?' assign='deleteConfirmMsg'}
         {formbutton id='btnDelete' commandName='delete' __text='Delete entry' class='z-bt-delete z-btred' confirmMessage=$deleteConfirmMsg}
       {/if}
     {elseif $mode eq 'create'}

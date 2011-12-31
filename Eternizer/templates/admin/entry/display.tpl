@@ -15,24 +15,21 @@
     <dd>{$entry.text}</dd>
     <dt>{gt text='Notes'}</dt>
     <dd>{$entry.notes}</dd>
+    <dt>{gt text='State'}</dt>
+    <dd>{$entry.state}</dd>
 </dl>
     {include file='admin/include_standardfields_display.tpl' obj=$entry}
 
 {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
-<p>
-    {checkpermissionblock component='Eternizer::' instance='.*' level='ACCESS_EDIT'}
-
-        <a href="{modurl modname='Eternizer' type='admin' func='edit' ot='entry' id=$entry.id}" title="{gt text='Edit'}" class="z-icon-es-edit">
-            {gt text='Edit'}
+{if count($entry._actions) gt 0}
+    <p>{strip}
+    {foreach item='option' from=$entry._actions}
+        <a href="{$option.url.type|eternizerActionUrl:$option.url.func:$option.url.arguments}" title="{$option.linkTitle|safetext}" class="z-icon-es-{$option.icon}">
+            {$option.linkText|safetext}
         </a>
-        <a href="{modurl modname='Eternizer' type='admin' func='edit' ot='entry' astemplate=$entry.id}" title="{gt text='Reuse for new item'}" class="z-icon-es-saveas">
-            {gt text='Reuse'}
-        </a>
-    {/checkpermissionblock}
-    <a href="{modurl modname='Eternizer' type='admin' func='view' ot='entry'}" title="{gt text='Back to overview'}" class="z-icon-es-back">
-        {gt text='Back to overview'}
-    </a>
-</p>
+    {/foreach}
+    {/strip}</p>
+{/if}
 
 {* include display hooks *}
 {notifydisplayhooks eventname='eternizer.ui_hooks.entries.display_view' id=$entry.id urlobject=$currentUrlObject assign='hooks'}
