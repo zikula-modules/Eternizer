@@ -36,11 +36,13 @@ class Eternizer_Api_User extends Eternizer_Api_Base_User
                              'text' => $this->__('Entries'),
                              'title' => $this->__('Entry list'));
         }
+        if (UserUtil::isLoggedIn() == true) {
             if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
-            $links[] = array('url' => ModUtil::url($this->name, 'user', 'view', array('ot' => 'entry',
+            	$links[] = array('url' => ModUtil::url($this->name, 'user', 'view', array('ot' => 'entry',
             																			'select' => 'mine')),
                              'text' => $this->__('My Entries'),
                              'title' => $this->__('View of my entries'));
+        }
         }
         $formposition = ModUtil::getVar($this->name, 'formposition');
         if ($formposition == 'menu') {
