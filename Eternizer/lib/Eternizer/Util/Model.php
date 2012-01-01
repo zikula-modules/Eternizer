@@ -16,5 +16,25 @@
  */
 class Eternizer_Util_Model extends Eternizer_Util_Base_Model
 {
-    // feel free to add your own convenience methods here
+
+	// build the query to searching items by userid == loggedin user
+	public function getUserId() {
+    	// get userid of loggedin user
+    	if (UserUtil::isLoggedIn() === true) {
+			$userid = UserUtil::getVar('uid');
+    	}
+    	else {
+    		$userid = 1;
+    	}
+    	if ($userid != 1) {
+    	// build where clause
+    	$where = 'tbl.userid = \'' . DataUtil::formatForStore($userid) . '\'';
+    	}
+    	else {
+    		$where = '';
+    	}
+    	
+    	return $where;
+	
+		}
 }
