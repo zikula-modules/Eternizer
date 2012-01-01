@@ -17,5 +17,24 @@
  */
 class Eternizer_Controller_User extends Eternizer_Controller_Base_User
 {
-    // feel free to add your own controller methods here
+	    /**
+     * This method provides a generic item list overview.
+     *
+     * @param string  $ot           Treated object type.
+     * @param string  $sort         Sorting field.
+     * @param string  $sortdir      Sorting direction.
+     * @param int     $pos          Current pager position.
+     * @param int     $num          Amount of entries to display.
+     * @param string  $tpl          Name of alternative template (for alternative display options, feeds and xml output)
+     * @param boolean $raw          Optional way to display a template instead of fetching it (needed for standalone output)
+     * @return mixed Output.
+     */
+    public function view($args)
+    {
+    	// We rule the position of the form
+    	$formposition = ModUtil::getVar($this->name, 'formposition');    	
+    	$this->view->assign('formposition', $formposition);
+    	
+    	return parent::view($args);
+    }
 }
