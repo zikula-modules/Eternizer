@@ -16,5 +16,29 @@
  */
 class Eternizer_Util_Controller extends Eternizer_Util_Base_Controller
 {
-    // feel free to add your own convenience methods here
+    /**
+     * Get list of form positions.
+     */
+    public function getFormPositions()
+    {
+        $dom = ZLanguage::getModuleDomain('Eternizer');
+        $position = array();
+        $position[] = array('value' => 'above',    'text' => __('above', $dom),          'icon' => 'redled.png');
+        $position[] = array('value' => 'below',    'text' => __('below', $dom),         'icon' => 'yellowled.png');
+        $position[] = array('value' => 'menu',     'text' => __('menue', $dom),           'icon' => 'greenled.png');
+        return $position;
+    }
+    
+    /**
+     * Get list of form positions.
+     */
+    public function getKindOfModeration()
+    {
+        $dom = ZLanguage::getModuleDomain('Eternizer');
+        $moderation = array();
+        $moderation[] = array('value' => 'all',    'text' => __('all', $dom),          'icon' => 'redled.png');
+        $moderation[] = array('value' => 'guests',    'text' => __('guests', $dom),         'icon' => 'yellowled.png');
+        $moderation[] = array('value' => 'users',     'text' => __('registered users', $dom),           'icon' => 'greenled.png');
+        return $moderation;
+    }
 }
