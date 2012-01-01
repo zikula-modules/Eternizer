@@ -19,5 +19,8 @@
  */
 class Eternizer_Entity_Repository_Entry extends Eternizer_Entity_Repository_Base_Entry
 {
-    // feel free to add your own methods here, like for example reusable DQL queries
+    /**
+     * @var string The default sorting field/expression.
+     */
+    protected $defaultSortingField = 'createdDate';
 }
