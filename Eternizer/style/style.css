@@ -48,3 +48,142 @@ input.validation-passed, textarea.validation-passed {
     font-weight: 700;
 }
 
+
+#eternizer .etz_bg1 {
+    background-color: #F2F2F2;
+}
+#eternizer .etz_bg2 {
+    background-color: #EAEAEA;
+}
+#eternizer .etz_entry {
+    border-radius: 6px;
+    -webkit-border-radius: 6px; /* for Safari */
+    -moz-border-radius: 6px; /* for Firefox */
+    overflow: hidden; /* for MSIE8 */
+    color:#444444;
+    margin:1% 0;
+    padding:1%;
+}
+#eternizer .etz_entry .etz_author {
+    border-right:1px solid white;
+    float:left;
+    padding-right:1%;
+    width:29%;
+}
+#eternizer .etz_entry .etz_author .etz_avatar {
+    padding:5px;
+    text-align:center;
+}
+#eternizer .etz_entry dl.etz_options,
+#eternizer .etz_entry dl.etz_options dd,
+#eternizer .etz_entry dl.etz_options dt {
+    list-style-image:none;
+    list-style-position:outside;
+    list-style-type:none;
+    margin:0;
+    padding:2px 0;
+    text-align:center;
+    overflow:hidden;
+}
+#eternizer .etz_entry .etz_body {
+    background: inherit;
+    border: none;
+    padding: 0;
+    color: #333333;
+    width:69%;
+    float:right;
+}
+#eternizer .etz_entry .etz_body .etz_info {
+    border-bottom:1px solid white;
+    height:1.5em;
+    padding:5px;
+}
+#eternizer .etz_entry .etz_body .etz_content {
+    overflow:hidden;
+    padding:5px;
+}
+
+#eternizer .etz_entry .etz_updated {
+    font-size: 0.85em;
+    font-weight: bold;
+    margin: 10px 0 0 0;
+    witdh: 100%;
+    position: relative;
+    display: block;
+}
+
+/* +++ configuration menu */
+div.linktabs ul {
+    list-style-type: none;
+    margin: 0;
+}
+
+div.linktabs ul li {
+    display: none;
+}
+
+div.linktabs ul li.linktab {
+    display: inline;
+    margin-right: 2em;
+    font-weight: bold;
+}
+
+/* +++ Profile settings */
+ul#profiletable {
+    margin:0;
+    padding:0;
+    list-style-type: none;
+}
+
+ul#profiletable li {
+    background:transparent url(../../../images/icons/extrasmall/move.gif) no-repeat scroll 5px 50%;
+    border:1px dotted #999999;
+    margin:0.5em;
+    padding:0.2em 0.2em 0.2em 30px;
+    position:relative;
+}
+
+ul#profiletable li:hover {
+    background-color: #CFCFCF;
+}
+
+ul#profiletable li.profileheader {
+    font-weight: bold;
+    background:#CFCFCF;
+}
+
+ul#profiletable .col2 {
+    width: 3em;
+}
+
+ul#profiletable .col3,
+ul#profiletable .col4,
+ul#profiletable .col5,
+ul#profiletable .col6 {
+    width: 20%;
+}
+
+ul#profiletable span {
+    float: left;
+    margin-left: 0.2em;
+    text-align: left;
+    overflow: hidden;
+}
+
+ul#profiletable .col7 {
+    float: none;
+}
+
+#eternizer .moveable {
+    cursor: move;
+}
+
+#eternizer .footer {
+    font-size: 0.8em;
+    text-align: center;
+    margin-top: 1em;
+}
+
+#eternizer .z-pager {
+    text-align: center;
+}
