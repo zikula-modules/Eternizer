@@ -18,5 +18,17 @@
  */
 class Eternizer_Form_Handler_Admin_Config extends Eternizer_Form_Handler_Admin_Base_Config
 {
-    // feel free to extend the base handler class here
+    /**
+     * Method stub for own additions in subclasses.
+     */
+    protected function initializeAdditions()
+    {
+    	$position = Eternizer_Util_Controller::getFormPositions();
+    	$moderation = Eternizer_Util_Controller::getKindOfModeration();
+    	
+    	$config = $this->view->get_template_vars('config');
+     	$config['formpositionItems'] = $position;
+     	$config['moderateItems'] = $moderation;
+     	$this->view->assign('config', $config);
+    }
 }
