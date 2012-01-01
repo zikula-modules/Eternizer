@@ -36,6 +36,19 @@ class Eternizer_Api_Base_User extends Zikula_AbstractApi
                              'text' => $this->__('Entries'),
                              'title' => $this->__('Entry list'));
         }
+            if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
+            $links[] = array('url' => ModUtil::url($this->name, 'user', 'view', array('ot' => 'entry',
+            																			'select' => 'mine')),
+                             'text' => $this->__('My Entries'),
+                             'title' => $this->__('View of my entries'));
+        }
+        if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_COMMENT)) {
+            $links[] = array('url' => ModUtil::url($this->name, 'user', 'edit', array('ot' => 'entry')),
+                             'text' => $this->__('New Entry'),
+                             'title' => $this->__('Make a new entry'));
+        }
+        
+        
         return $links;
     }
 
