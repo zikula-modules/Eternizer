@@ -13,13 +13,13 @@
 
         {* add validation summary and a <div> element for styling the form *}
         {eternizerFormFrame}
-        {formsetinitialfocus inputId='itemsperpage'}
+        {formsetinitialfocus inputId='pagesize'}
             <fieldset>
                 <legend>{gt text='Here you can manage all basic settings for this application.'}</legend>
 
                 <div class="z-formrow">
-                    {formlabel for='itemsperpage' __text='Itemsperpage'}
-                    {formintinput id='itemsperpage' group='config' maxLength=255 width=20em __title='Enter this setting. Only digits are allowed.'}
+                    {formlabel for='pagesize' __text='Pagesize'}
+                    {formintinput id='pagesize' group='config' maxLength=255 width=20em __title='Enter this setting. Only digits are allowed.'}
                 </div>
                 <div class="z-formrow">
                     {formlabel for='mail' __text='Mail'}
@@ -28,22 +28,6 @@
                 <div class="z-formrow">
                     {formlabel for='moderate' __text='Moderate'}
                     {formtextinput id='moderate' group='config' maxLength=255 width=20em __title='Enter this setting.'}
-                </div>
-                <div class="z-formrow">
-                    {formlabel for='profiledata' __text='Profiledata'}
-                    {formcheckbox id='profiledata' group='config'}
-                </div>
-                <div class="z-formrow">
-                    {formlabel for='textaction' __text='Textaction'}
-                    {formtextinput id='textaction' group='config' maxLength=255 width=20em __title='Enter this setting.'}
-                </div>
-                <div class="z-formrow">
-                    {formlabel for='maxlength' __text='Maxlength'}
-                    {formintinput id='maxlength' group='config' maxLength=255 width=20em __title='Enter this setting. Only digits are allowed.'}
-                </div>
-                <div class="z-formrow">
-                    {formlabel for='afterlength' __text='Afterlength'}
-                    {formtextinput id='afterlength' group='config' maxLength=255 width=20em __title='Enter this setting.'}
                 </div>
                 <div class="z-formrow">
                     {formlabel for='formposition' __text='Formposition'}

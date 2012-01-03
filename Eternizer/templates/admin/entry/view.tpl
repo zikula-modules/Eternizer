@@ -35,7 +35,7 @@
         <col id="cip" />
         <col id="ctext" />
         <col id="cnotes" />
-        <col id="cstate" />
+        <col id="cobj_status" />
         <col id="citemactions" />
     </colgroup>
     <thead>
@@ -49,8 +49,8 @@
         <th id="hnotes" scope="col" class="z-left">
             {sortlink __linktext='Notes' sort='notes' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='admin' func='view' ot='entry'}
         </th>
-        <th id="hstate" scope="col" class="z-right">
-            {sortlink __linktext='State' sort='state' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='admin' func='view' ot='entry'}
+        <th id="hobj_status" scope="col" class="z-left">
+            {sortlink __linktext='Obj_status' sort='obj_status' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='admin' func='view' ot='entry'}
         </th>
         <th id="hitemactions" scope="col" class="z-right z-order-unsorted">{gt text='Actions'}</th>
     </tr>
@@ -68,8 +68,8 @@
         <td headers="hnotes" class="z-left">
             {$entry.notes}
         </td>
-        <td headers="hstate" class="z-right">
-            {$entry.state}
+        <td headers="hobj_status" class="z-left">
+            {$entry.obj_status}
         </td>
         <td headers="hitemactions" class="z-right z-nowrap z-w02">
             {if count($entry._actions) gt 0}

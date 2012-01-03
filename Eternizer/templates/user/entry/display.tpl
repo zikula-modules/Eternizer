@@ -13,8 +13,8 @@
     <dd>{$entry.text}</dd>
     <dt>{gt text='Notes'}</dt>
     <dd>{$entry.notes}</dd>
-    <dt>{gt text='State'}</dt>
-    <dd>{$entry.state}</dd>
+    <dt>{gt text='Obj_status'}</dt>
+    <dd>{$entry.obj_status}</dd>
 </dl>
     {include file='user/include_standardfields_display.tpl' obj=$entry}
 
