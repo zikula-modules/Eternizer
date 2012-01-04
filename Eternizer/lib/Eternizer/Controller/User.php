@@ -32,8 +32,18 @@ class Eternizer_Controller_User extends Eternizer_Controller_Base_User
     public function view($args)
     {
     	// We rule the position of the form
-    	$formposition = ModUtil::getVar($this->name, 'formposition');    	
+    	$formposition = ModUtil::getVar($this->name, 'formposition');
+
+    	// We assign to the template
     	$this->view->assign('formposition', $formposition);
+    	
+    	$order = ModUtil::getVar($this->name, 'order');
+    	if ($order == 'descending') {
+    		$args['sortdir'] = 'desc';
+    	}
+    	else {
+    		$args['sortdir'] = 'asc';
+    	}
     	
     	return parent::view($args);
     }
