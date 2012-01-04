@@ -28,7 +28,7 @@ class Eternizer_Util_Model extends Eternizer_Util_Base_Model
     	}
     	if ($userid != 1) {
     	// build where clause
-    	$where = 'tbl.userid = \'' . DataUtil::formatForStore($userid) . '\'';
+    	$where = 'tbl.createdUserId = \'' . DataUtil::formatForStore($userid) . '\'';
     	}
     	else {
     		$where = '';
