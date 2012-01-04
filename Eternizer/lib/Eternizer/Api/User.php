@@ -45,7 +45,7 @@ class Eternizer_Api_User extends Eternizer_Api_Base_User
         }
         }
         $formposition = ModUtil::getVar($this->name, 'formposition');
-        if ($formposition == 'menu') {
+        if ($formposition == 'menue') {
         	if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_COMMENT)) {
             	$links[] = array('url' => ModUtil::url($this->name, 'user', 'edit', array('ot' => 'entry')),
                              	'text' => $this->__('New Entry'),
