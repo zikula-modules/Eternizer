@@ -50,14 +50,6 @@ class Eternizer_Entity_Validator_Base_Entry extends Eternizer_Validator
             $errorInfo['message'] = __f('Error! Length of field value must not be higher than %2$s (%1$s).', array('email', 100), $dom);
             return $errorInfo;
         }
-        if (!$this->isStringNotEmpty('email')) {
-            $errorInfo['message'] = __f('Error! Field value must not be empty (%s).', array('email'), $dom);
-            return $errorInfo;
-        }
-        if (!$this->isValidEmail('email')) {
-            $errorInfo['message'] = __f('Error! Field value must be a valid email address (%s).', array('email'), $dom);
-            return $errorInfo;
-        }
         if (!$this->isStringNotLongerThan('homepage', 255)) {
             $errorInfo['message'] = __f('Error! Length of field value must not be higher than %2$s (%1$s).', array('homepage', 255), $dom);
             return $errorInfo;
@@ -68,10 +60,6 @@ class Eternizer_Entity_Validator_Base_Entry extends Eternizer_Validator
         }
         if (!$this->isStringNotLongerThan('location', 100)) {
             $errorInfo['message'] = __f('Error! Length of field value must not be higher than %2$s (%1$s).', array('location', 100), $dom);
-            return $errorInfo;
-        }
-        if (!$this->isStringNotEmpty('location')) {
-            $errorInfo['message'] = __f('Error! Field value must not be empty (%s).', array('location'), $dom);
             return $errorInfo;
         }
         if (!$this->isStringNotLongerThan('text', 2000)) {
