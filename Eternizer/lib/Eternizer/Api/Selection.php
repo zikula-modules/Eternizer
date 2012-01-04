@@ -31,9 +31,33 @@ class Eternizer_Api_Selection extends Eternizer_Api_Base_Selection
     	$select = $this->request->getGet()->filter('select', '', FILTER_SANITIZE_STRING);
     	if ($select == 'mine') {
     		
-    		$where = Eternizer_Util_Base_Model::getUserId();
+    		$args['where'] = Eternizer_Util_Model::getUserId();
     	}
     	
     	return parent::getEntities($args);
     }
+
+        /**
+     * Select a list of entities by different criteria.
+     *
+     * @param string  $args['ot']             The object type to retrieve (optional)
+     * @param string  $args['where']          The where clause to use when retrieving the collection (optional) (default='').
+     * @param string  $args['orderBy']        The order-by clause to use when retrieving the collection (optional) (default='').
+     * @param integer $args['currentPage']    Where to start selection
+     * @param integer $args['resultsPerPage'] Amount of items to select
+     * @param boolean $args['useJoins']       Whether to include joining related objects (optional) (default=true).
+     *
+     * @return Array with retrieved collection and amount of total records affected by this query.
+     */
+    public function getEntitiesPaginated($args)
+    {
+        	$select = $this->request->getGet()->filter('select', '', FILTER_SANITIZE_STRING);
+    	if ($select == 'mine') {
+    		
+    		$args['where'] = Eternizer_Util_Model::getUserId();
+    	}
+
+    	return parent::getEntitiesPaginated($args);
+    }
+    
 }
