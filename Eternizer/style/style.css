@@ -112,6 +112,21 @@ input.validation-passed, textarea.validation-passed {
     display: block;
 }
 
+#eternizer .etz_entry .etz_title {
+    clear: both;
+    width: 100%;
+}
+
+#eternizer .etz_entry .etz_name {
+    float: left;
+    width: 70%;
+}
+
+#eternizer .etz_entry .etz_action {
+    float: right;
+    width: 25%;
+}
+
 /* +++ configuration menu */
 div.linktabs ul {
     list-style-type: none;
