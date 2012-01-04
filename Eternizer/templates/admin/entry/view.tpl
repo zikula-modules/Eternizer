@@ -33,6 +33,10 @@
 <table class="z-datatable">
     <colgroup>
         <col id="cip" />
+        <col id="cname" />
+        <col id="cemail" />
+        <col id="chomepage" />
+        <col id="clocation" />
         <col id="ctext" />
         <col id="cnotes" />
         <col id="cobj_status" />
@@ -42,6 +46,18 @@
     <tr>
         <th id="hip" scope="col" class="z-left">
             {sortlink __linktext='Ip' sort='ip' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='admin' func='view' ot='entry'}
+        </th>
+        <th id="hname" scope="col" class="z-left">
+            {sortlink __linktext='Name' sort='name' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='admin' func='view' ot='entry'}
+        </th>
+        <th id="hemail" scope="col" class="z-left">
+            {sortlink __linktext='Email' sort='email' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='admin' func='view' ot='entry'}
+        </th>
+        <th id="hhomepage" scope="col" class="z-left">
+            {sortlink __linktext='Homepage' sort='homepage' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='admin' func='view' ot='entry'}
+        </th>
+        <th id="hlocation" scope="col" class="z-left">
+            {sortlink __linktext='Location' sort='location' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='admin' func='view' ot='entry'}
         </th>
         <th id="htext" scope="col" class="z-left">
             {sortlink __linktext='Text' sort='text' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='admin' func='view' ot='entry'}
@@ -61,6 +77,25 @@
     <tr class="{cycle values='z-odd, z-even'}">
         <td headers="hip" class="z-left">
             {$entry.ip|notifyfilters:'eternizer.filterhook.entries'}
+        </td>
+        <td headers="hname" class="z-left">
+            {$entry.name}
+        </td>
+        <td headers="hemail" class="z-left">
+                <a href="mailto:{$entry.email}" title="{gt text='Send an email'}">
+                    {icon type='mail' size='extrasmall' __alt='Email'}
+                </a>
+
+        </td>
+        <td headers="hhomepage" class="z-left">
+            {if $entry.homepage ne ''}
+                <a href="{$entry.homepage}" title="{gt text='Visit this page'}">
+                    {icon type='url' size='extrasmall' __alt='Homepage'}
+                </a>
+            {else}&nbsp;{/if}
+        </td>
+        <td headers="hlocation" class="z-left">
+            {$entry.location}
         </td>
         <td headers="htext" class="z-left">
             {$entry.text}
@@ -85,7 +120,7 @@
     </tr>
     {foreachelse}
         <tr class="z-admintableempty">
-          <td class="z-left" colspan="5">
+          <td class="z-left" colspan="9">
             {gt text='No entries found.'}
           </td>
         </tr>

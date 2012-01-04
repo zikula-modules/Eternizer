@@ -26,12 +26,16 @@
                     {formtextinput id='mail' group='config' maxLength=255 width=20em __title='Enter this setting.'}
                 </div>
                 <div class="z-formrow">
+                    {formlabel for='order' __text='Order'}
+                    {formdropdownlist id='order' group='config'}
+                </div>
+                <div class="z-formrow">
                     {formlabel for='moderate' __text='Moderate'}
-                    {formtextinput id='moderate' group='config' maxLength=255 width=20em __title='Enter this setting.'}
+                    {formdropdownlist id='moderate' group='config'}
                 </div>
                 <div class="z-formrow">
                     {formlabel for='formposition' __text='Formposition'}
-                    {formtextinput id='formposition' group='config' maxLength=255 width=20em __title='Enter this setting.'}
+                    {formdropdownlist id='formposition' group='config'}
                 </div>
                 <div class="z-formrow">
                     {formlabel for='ipsave' __text='Ipsave'}

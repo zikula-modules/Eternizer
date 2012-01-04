@@ -26,6 +26,26 @@
             {formtextinput group='entry' id='ip' mandatory=false readOnly=false __title='Enter the ip of the entry' textMode='singleline' maxLength=15 cssClass=''}
         </div>
         <div class="z-formrow">
+            {formlabel for='name' __text='Name'}
+            {formtextinput group='entry' id='name' mandatory=false readOnly=false __title='Enter the name of the entry' textMode='singleline' maxLength=100 cssClass=''}
+        </div>
+        <div class="z-formrow">
+            {formlabel for='email' __text='Email' mandatorysym='1'}
+            {formemailinput group='entry' id='email' mandatory=true readOnly=false __title='Enter the email of the entry' textMode='singleline' maxLength=100 cssClass='required validate-email'}
+            {eternizerValidationError id='email' class='required'}
+            {eternizerValidationError id='email' class='validate-email'}
+        </div>
+        <div class="z-formrow">
+            {formlabel for='homepage' __text='Homepage'}
+            {formurlinput group='entry' id='homepage' mandatory=false readOnly=false __title='Enter the homepage of the entry' textMode='singleline' maxLength=255 cssClass=' validate-url'}
+            {eternizerValidationError id='homepage' class='validate-url'}
+        </div>
+        <div class="z-formrow">
+            {formlabel for='location' __text='Location' mandatorysym='1'}
+            {formtextinput group='entry' id='location' mandatory=true readOnly=false __title='Enter the location of the entry' textMode='singleline' maxLength=100 cssClass='required'}
+            {eternizerValidationError id='location' class='required'}
+        </div>
+        <div class="z-formrow">
             {formlabel for='text' __text='Text' mandatorysym='1'}
             {formtextinput group='entry' id='text' mandatory=true __title='Enter the text of the entry' textMode='multiline' rows='6' cols='50' cssClass='required'}
             {eternizerValidationError id='text' class='required'}

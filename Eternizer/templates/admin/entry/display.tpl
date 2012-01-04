@@ -11,6 +11,29 @@
 
 
 <dl id="Eternizer_body">
+    <dt>{gt text='Name'}</dt>
+    <dd>{$entry.name}</dd>
+    <dt>{gt text='Email'}</dt>
+    <dd>  {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
+    <a href="mailto:{$entry.email}" title="{gt text='Send an email'}">
+        {icon type='mail' size='extrasmall' __alt='Email'}
+    </a>
+  {else}
+    {$entry.email}
+  {/if}
+</dd>
+    <dt>{gt text='Homepage'}</dt>
+    <dd>{if $entry.homepage ne ''}
+  {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
+    <a href="{$entry.homepage}" title="{gt text='Visit this page'}">
+        {icon type='url' size='extrasmall' __alt='Homepage'}
+    </a>
+  {else}
+    {$entry.homepage}
+  {/if}
+{else}&nbsp;{/if}</dd>
+    <dt>{gt text='Location'}</dt>
+    <dd>{$entry.location}</dd>
     <dt>{gt text='Text'}</dt>
     <dd>{$entry.text}</dd>
     <dt>{gt text='Notes'}</dt>
