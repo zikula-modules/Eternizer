@@ -17,5 +17,17 @@
  */
 class Eternizer_Form_Handler_Admin_Entry_Edit extends Eternizer_Form_Handler_Admin_Entry_Base_Edit
 {
-    // feel free to extend the base handler class here
+    /**
+     * Method stub for own additions in subclasses.
+     *
+     * @depreciated to be removed in favour of postInitialize().
+     */
+    protected function initializeAdditions()
+    {
+    	// We rule the position of the form
+    	$formposition = ModUtil::getVar($this->name, 'formposition');
+
+    	// We assign to the template
+    	$this->view->assign('formposition', $formposition);
+    }
 }
