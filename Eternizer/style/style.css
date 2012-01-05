@@ -112,19 +112,27 @@ input.validation-passed, textarea.validation-passed {
     display: block;
 }
 
-#eternizer .etz_entry .etz_title {
+#eternizer .etz_entry .etz_body .ezt_info .etz_title {
+    float: left:
     clear: both;
     width: 100%;
+    postion: relative;
 }
 
 #eternizer .etz_entry .etz_name {
     float: left;
-    width: 70%;
+    width: 75%;
+    postion: relative;
 }
 
 #eternizer .etz_entry .etz_action {
     float: right;
-    width: 25%;
+    width: 15%;
+    postion: relative;
+}
+
+#eternizer .etz_avatar img {
+    border: 3px solid #fff;
 }
 
 /* +++ configuration menu */
