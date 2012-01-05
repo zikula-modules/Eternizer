@@ -3,108 +3,54 @@
 {include file='user/header.tpl'}
 {gt text='Entry list' assign='templateTitle'}
 {pagesetvar name='title' value=$templateTitle}
-<div class="z-frontendcontainer">
+<div id="eternizer">
     <h2>{$templateTitle}</h2>
 
-
-    {checkpermissionblock component='Eternizer::' instance='.*' level="ACCESS_ADD"}
-        {gt text='Create entry' assign='createTitle'}
-        <a href="{modurl modname='Eternizer' type='user' func='edit' ot='entry'}" title="{$createTitle}" class="z-icon-es-add">
-            {$createTitle}
-        </a>
-    {/checkpermissionblock}
-
-    {assign var='all' value=0}
     {if isset($showAllEntries) && $showAllEntries eq 1}
         {gt text='Back to paginated view' assign='linkTitle'}
         <a href="{modurl modname='Eternizer' type='user' func='view' ot='entry'}" title="{$linkTitle}" class="z-icon-es-view">
             {$linkTitle}
         </a>
-        {assign var='all' value=1}
     {else}
         {gt text='Show all entries' assign='linkTitle'}
         <a href="{modurl modname='Eternizer' type='user' func='view' ot='entry' all=1}" title="{$linkTitle}" class="z-icon-es-view">
             {$linkTitle}
         </a>
     {/if}
-
-<table class="z-datatable">
-    <colgroup>
-        <col id="cip" />
-        <col id="cname" />
-        <col id="cemail" />
-        <col id="chomepage" />
-        <col id="clocation" />
-        <col id="ctext" />
-        <col id="cnotes" />
-        <col id="cobj_status" />
-        <col id="citemactions" />
-    </colgroup>
-    <thead>
-    <tr>
-        <th id="hip" scope="col" class="z-left">
-            {sortlink __linktext='Ip' sort='ip' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='user' func='view' ot='entry'}
-        </th>
-        <th id="hname" scope="col" class="z-left">
-            {sortlink __linktext='Name' sort='name' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='user' func='view' ot='entry'}
-        </th>
-        <th id="hemail" scope="col" class="z-left">
-            {sortlink __linktext='Email' sort='email' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='user' func='view' ot='entry'}
-        </th>
-        <th id="hhomepage" scope="col" class="z-left">
-            {sortlink __linktext='Homepage' sort='homepage' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='user' func='view' ot='entry'}
-        </th>
-        <th id="hlocation" scope="col" class="z-left">
-            {sortlink __linktext='Location' sort='location' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='user' func='view' ot='entry'}
-        </th>
-        <th id="htext" scope="col" class="z-left">
-            {sortlink __linktext='Text' sort='text' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='user' func='view' ot='entry'}
-        </th>
-        <th id="hnotes" scope="col" class="z-left">
-            {sortlink __linktext='Notes' sort='notes' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='user' func='view' ot='entry'}
-        </th>
-        <th id="hobj_status" scope="col" class="z-left">
-            {sortlink __linktext='Obj_status' sort='obj_status' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='user' func='view' ot='entry'}
-        </th>
-        <th id="hitemactions" scope="col" class="z-right z-order-unsorted">{gt text='Actions'}</th>
-    </tr>
-    </thead>
-    <tbody>
-
-    {foreach item='entry' from=$items}
-    <tr class="{cycle values='z-odd, z-even'}">
-        <td headers="hip" class="z-left">
-            {$entry.ip|notifyfilters:'eternizer.filterhook.entries'}
-        </td>
-        <td headers="hname" class="z-left">
-            {$entry.name}
-        </td>
-        <td headers="hemail" class="z-left">
-                <a href="mailto:{$entry.email}" title="{gt text='Send an email'}">
-                    {icon type='mail' size='extrasmall' __alt='Email'}
-                </a>
-
-        </td>
-        <td headers="hhomepage" class="z-left">
-            {if $entry.homepage ne ''}
-                <a href="{$entry.homepage}" title="{gt text='Visit this page'}">
-                    {icon type='url' size='extrasmall' __alt='Homepage'}
-                </a>
-            {else}&nbsp;{/if}
-        </td>
-        <td headers="hlocation" class="z-left">
-            {$entry.location}
-        </td>
-        <td headers="htext" class="z-left">
-            {$entry.text}
-        </td>
-        <td headers="hnotes" class="z-left">
-            {$entry.notes}
-        </td>
-        <td headers="hobj_status" class="z-left">
-            {$entry.obj_status}
-        </td>
-        <td headers="hitemactions" class="z-right z-nowrap z-w02">
+    {if $formposition eq 'above'}
+    {modfunc modname='Eternizer' type='user' func='edit'}
+    {/if}
+    {foreach item='entry' from=$items}     
+    <div class="etz_entry z-clearfix {cycle values='etz_bg1,etz_bg2'}" >  
+    <div class="etz_author">
+        <div class="etz_avatar">
+        {useravatar uid=$entry.createdUserId}
+        </div>
+        <dl class="etz_options"> 
+        {if $entry.email ne ''}<span class=etz_attr>
+             <a href="mailto:{$entry.email}" title="{gt text='Send an email'}">
+             {icon type='mail' size='extrasmall' __alt='Email'}
+             </a></span>
+        {else}&nbsp;{/if}
+        {if $entry.homepage ne ''}<span class=etz_attr>
+        <a href="{$entry.homepage}" title="{gt text='Visit this page'}">
+        {icon type='url' size='extrasmall' __alt='Homepage'}
+        </a></span>
+        {else}&nbsp;{/if}<br />        
+        {if $entry.location ne ''}<span class='etz_attr'>{gt text='Location'}</span><br />{$entry.location}{/if}  
+        </dl>
+    </div>
+    <div class="etz_body">
+        <div class="etz_info">
+            <div class="etz_title">
+            <div class="etz_name">
+            {if $entry.name ne ''}<span class='etz_attr'}>{$entry.name}</span>
+            {else}
+            {usergetvar name='uname' uid=$entry.createdUserId assign='uname'}
+            {$uname}
+            {/if} {gt text='on'} {$entry.createdDate|dateformat:datetimelong}</div>
+            </div>
+            <div class="etz_action">
             {if count($entry._actions) gt 0}
             {strip}
                 {foreach item='option' from=$entry._actions}
@@ -113,9 +59,21 @@
                     </a>
                 {/foreach}
             {/strip}
+            {/if}</div>
+        </div>
+        <div class="etz_content">
+            {$entry.text}
+            {if $entry.notes}
+            <p style="margin-top: 2em;" class="entry-comment"><strong class="entry-comment-label">{gt text="Comment"}:</strong><br />
+                {$entry.notes}
+            </p>
             {/if}
-        </td>
-    </tr>
+            {if $entry.updatedDate > $entry.createdDate}
+            <br /><span class="etz_updated">{gt text='Updated on'} {$entry.updatedDate|dateformat:datetimelong}</span>
+            {/if}
+        </div>
+    </div>   
+    </div>
     {foreachelse}
         <tr class="z-datatableempty">
           <td class="z-left" colspan="9">
@@ -124,18 +82,19 @@
         </tr>
     {/foreach}
 
-    </tbody>
-</table>
-
     {if !isset($showAllEntries) || $showAllEntries ne 1}
         {pager rowcount=$pager.numitems limit=$pager.itemsperpage display='page'}
+    {/if}  
+    
+    {if $formposition eq 'below'}
+    {modfunc modname='Eternizer' type='user' func='edit'}
     {/if}
-
+     
     {notifydisplayhooks eventname='eternizer.ui_hooks.entries.display_view' urlobject=$currentUrlObject assign='hooks'}
     {foreach key='hookname' item='hook' from=$hooks}
         {$hook}
-    {/foreach}
-</div>
+        {/foreach}
+	</div>
 </div>
 {include file='user/footer.tpl'}
 

@@ -1,5 +1,7 @@
 {* purpose of this template: build the Form to edit an instance of entry *}
+{if $formposition eq 'menue'}
 {include file='user/header.tpl'}
+{/if}
 {pageaddvar name='javascript' value='modules/Eternizer/javascript/Eternizer_editFunctions.js'}
 {pageaddvar name='javascript' value='modules/Eternizer/javascript/Eternizer_validation.js'}
 
@@ -17,48 +19,50 @@
 {form cssClass='z-form'}
     {* add validation summary and a <div> element for styling the form *}
     {eternizerFormFrame}
-    {formsetinitialfocus inputId='ip'}
+    
+            {foreach from=$profile key=id item=item}
+        <div class="z-formrow">
+            {formlabel for="profile_$id" text=$item.title}
+            {if $item.type eq 'mail'}
+            {formemailinput id="profile_$id" group="profile" text=$item.value maxLength='255' mandatory=$item.mandatory readOnly=$item.readonly}
+            {elseif $item.type eq 'url'}
+            {formurlinput id="profile_$id" group="profile" text=$item.value maxLength='255' mandatory=$item.mandatory readOnly=$item.readonly}
+            {else}
+            {formtextinput id="profile_$id" group="profile" text=$item.value maxLength='255' mandatory=$item.mandatory readOnly=$item.readonly}
+            {/if}
+        </div>
+        {/foreach}
 
     <fieldset>
         <legend>{gt text='Content'}</legend>
-        <div class="z-formrow">
+        <div class="z-formrow" style='visibility: hidden;'>
             {formlabel for='ip' __text='Ip'}
-            {formtextinput group='entry' id='ip' mandatory=false readOnly=false __title='Enter the ip of the entry' textMode='singleline' maxLength=15 cssClass=''}
+            {formtextinput group='entry' id='ip' mandatory=false readOnly=false __title='Input the ip of the entry' textMode='singleline' maxLength=15 cssClass=''}
         </div>
-        <div class="z-formrow">
+                <div class="z-formrow">
             {formlabel for='name' __text='Name'}
             {formtextinput group='entry' id='name' mandatory=false readOnly=false __title='Enter the name of the entry' textMode='singleline' maxLength=100 cssClass=''}
         </div>
         <div class="z-formrow">
-            {formlabel for='email' __text='Email' mandatorysym='1'}
-            {formemailinput group='entry' id='email' mandatory=true readOnly=false __title='Enter the email of the entry' textMode='singleline' maxLength=100 cssClass='required validate-email'}
-            {eternizerValidationError id='email' class='required'}
+            {formlabel for='email' __text='Email'}
+            {formemailinput group='entry' id='email' mandatory=false readOnly=false __title='Enter the email of the entry' textMode='singleline' maxLength=100 cssClass='validate-email'}
             {eternizerValidationError id='email' class='validate-email'}
         </div>
         <div class="z-formrow">
             {formlabel for='homepage' __text='Homepage'}
-            {formurlinput group='entry' id='homepage' mandatory=false readOnly=false __title='Enter the homepage of the entry' textMode='singleline' maxLength=255 cssClass=' validate-url'}
+            {formurlinput group='entry' id='homepage' mandatory=false readOnly=false __title='Enter the homepage of the entry' textMode='singleline' maxLength=255 cssClass='validate-url'}
             {eternizerValidationError id='homepage' class='validate-url'}
         </div>
         <div class="z-formrow">
-            {formlabel for='location' __text='Location' mandatorysym='1'}
-            {formtextinput group='entry' id='location' mandatory=true readOnly=false __title='Enter the location of the entry' textMode='singleline' maxLength=100 cssClass='required'}
-            {eternizerValidationError id='location' class='required'}
+            {formlabel for='location' __text='Location'}
+            {formtextinput group='entry' id='location' mandatory=false readOnly=false __title='Enter the location of the entry' textMode='singleline' maxLength=100 cssClass=''}
         </div>
         <div class="z-formrow">
-            {formlabel for='text' __text='Text' mandatorysym='1'}
-            {formtextinput group='entry' id='text' mandatory=true __title='Enter the text of the entry' textMode='multiline' rows='6' cols='50' cssClass='required'}
+            {formlabel for='text' __text='Text'   mandatorysym='1'}
+            {formtextinput group='entry' id='text' mandatory=true __title='Input the text of the entry' textMode='multiline' rows='6' cols='50' cssClass=''}
             {eternizerValidationError id='text' class='required'}
         </div>
-        <div class="z-formrow">
-            {formlabel for='notes' __text='Notes'}
-            {formtextinput group='entry' id='notes' mandatory=false __title='Enter the notes of the entry' textMode='multiline' rows='6' cols='50' cssClass=''}
-        </div>
-        <div class="z-formrow">
-            {formlabel for='obj_status' __text='Obj_status' mandatorysym='1'}
-            {formtextinput group='entry' id='obj_status' mandatory=true readOnly=false __title='Enter the obj_status of the entry' textMode='singleline' maxLength=1 cssClass='required'}
-            {eternizerValidationError id='obj_status' class='required'}
-        </div>
+        <input type="hidden" id='notes' name='notes' value=''>
     </fieldset>
 
     {if $mode ne 'create'}
@@ -83,7 +87,7 @@
     {/if}
 
     {* include return control *}
-    {if $mode eq 'create'}
+    {* {if $mode eq 'create'}
         <fieldset>
             <legend>{gt text='Return control'}</legend>
             <div class="z-formrow">
@@ -91,14 +95,14 @@
                 {formcheckbox group='entry' id='repeatcreation' readOnly=false}
             </div>
         </fieldset>
-    {/if}
+    {/if} *}
 
     {* include possible submit actions *}
     <div class="z-buttons z-formbuttons">
     {if $mode eq 'edit'}
         {formbutton id='btnUpdate' commandName='update' __text='Update entry' class='z-bt-save'}
       {if !$inlineUsage}
-        {gt text='Really delete this entry?' assign='deleteConfirmMsg'}
+        {gt text='Really delete this entry?' assign="deleteConfirmMsg"}
         {formbutton id='btnDelete' commandName='delete' __text='Delete entry' class='z-bt-delete z-btred' confirmMessage=$deleteConfirmMsg}
       {/if}
     {elseif $mode eq 'create'}
@@ -113,7 +117,9 @@
 
 </div>
 </div>
+{if $formposition eq 'menue'}
 {include file='user/footer.tpl'}
+{/if}
 
 {icon type='edit' size='extrasmall' assign='editImageArray'}
 {icon type='delete' size='extrasmall' assign='deleteImageArray'}
