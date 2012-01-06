@@ -18,24 +18,29 @@
 class Eternizer_Controller_User extends Eternizer_Controller_Base_User
 {
 	    /**
-     * This method provides a generic item list overview.
+     * This method provides the handling of
+     * the formposition
+     * the editing of entries and
+     * the order of entries
      *
-     * @param string  $ot           Treated object type.
-     * @param string  $sort         Sorting field.
-     * @param string  $sortdir      Sorting direction.
-     * @param int     $pos          Current pager position.
-     * @param int     $num          Amount of entries to display.
-     * @param string  $tpl          Name of alternative template (for alternative display options, feeds and xml output)
-     * @param boolean $raw          Optional way to display a template instead of fetching it (needed for standalone output)
-     * @return mixed Output.
+     * @param string  $formposition		position of the create form
+     * @param int  $userid              the userid of loggedin users
+     * @param string  $args['sortdir']  Sorting direction
+     * 
+     * return the parent function
+     * 
      */
     public function view($args)
     {
     	// We rule the position of the form
     	$formposition = ModUtil::getVar($this->name, 'formposition');
+    	
+    	//We check the userid for ruling the edit button
+    	$userid = UserUtil::getVar('uid');
 
     	// We assign to the template
     	$this->view->assign('formposition', $formposition);
+    	$this->view->assign('userid', $userid);
     	
     	$order = ModUtil::getVar($this->name, 'order');
     	if ($order == 'descending') {
