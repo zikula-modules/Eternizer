@@ -52,6 +52,7 @@
             </div>
             <div class="etz_action">
             {if count($entry._actions) gt 0}
+            {if $entry.createdUserId eq $userid}
             {strip}
                 {foreach item='option' from=$entry._actions}
                     <a href="{$option.url.type|eternizerActionUrl:$option.url.func:$option.url.arguments}" title="{$option.linkTitle|safetext}"{if $option.icon eq 'preview'} target="_blank"{/if}>
@@ -59,6 +60,7 @@
                     </a>
                 {/foreach}
             {/strip}
+            {/if}
             {/if}</div>
         </div>
         <div class="etz_content">
