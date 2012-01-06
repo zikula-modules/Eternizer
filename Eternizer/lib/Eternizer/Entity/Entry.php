@@ -25,7 +25,77 @@ use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
  */
 class Eternizer_Entity_Entry extends Eternizer_Entity_Base_Entry
 {
-    // feel free to add your own methods here
+    /**
+     * Collect available actions for this entity.
+     */
+    protected function prepareItemActions()
+    {
+        if (!empty($this->_actions)) {
+            return;
+        }
+
+        $currentType = FormUtil::getPassedValue('type', 'user', 'GETPOST', FILTER_SANITIZE_STRING);
+        $currentFunc = FormUtil::getPassedValue('func', 'main', 'GETPOST', FILTER_SANITIZE_STRING);
+        $dom = ZLanguage::getModuleDomain('Eternizer');
+        if ($currentType == 'admin') {
+            if (in_array($currentFunc, array('main', 'view'))) {
+                    $this->_actions[] = array(
+                        'url' => array('type' => 'user', 'func' => 'display', 'arguments' => array('ot' => 'entry', 'id' => $this['id'])),
+                        'icon' => 'preview',
+                        'linkTitle' => __('Open preview page', $dom),
+                        'linkText' => __('Preview', $dom)
+                    );
+                    $this->_actions[] = array(
+                        'url' => array('type' => 'admin', 'func' => 'display', 'arguments' => array('ot' => 'entry', 'id' => $this['id'])),
+                        'icon' => 'display',
+                        'linkTitle' => str_replace('"', '', $this['ip']),
+                        'linkText' => __('Details', $dom)
+                    );
+            }
+
+            if (in_array($currentFunc, array('main', 'view', 'display'))) {
+                if (SecurityUtil::checkPermission('Eternizer::', '.*', ACCESS_EDIT)) {
+
+                    $this->_actions[] = array(
+                        'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => array('ot' => 'entry', 'id' => $this['id'])),
+                        'icon' => 'edit',
+                        'linkTitle' => __('Edit', $dom),
+                        'linkText' => __('Edit', $dom)
+                    );
+                    $this->_actions[] = array(
+                        'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => array('ot' => 'entry', 'astemplate' => $this['id'])),
+                        'icon' => 'saveas',
+                        'linkTitle' => __('Reuse for new item', $dom),
+                        'linkText' => __('Reuse', $dom)
+                    );
+                }
+            }
+            if ($currentFunc == 'display') {
+                    $this->_actions[] = array(
+                        'url' => array('type' => 'admin', 'func' => 'view', 'arguments' => array('ot' => 'entry')),
+                        'icon' => 'back',
+                        'linkTitle' => __('Back to overview', $dom),
+                        'linkText' => __('Back to overview', $dom)
+                    );
+            }
+        }
+        if ($currentType == 'user') {
+
+            if (in_array($currentFunc, array('main', 'view', 'display'))) {
+                if (SecurityUtil::checkPermission('Eternizer::', '.*', ACCESS_EDIT)) {
+
+                    $this->_actions[] = array(
+                        'url' => array('type' => 'user', 'func' => 'edit', 'arguments' => array('ot' => 'entry', 'id' => $this['id'])),
+                        'icon' => 'edit',
+                        'linkTitle' => __('Edit', $dom),
+                        'linkText' => __('Edit', $dom)
+                    );
+
+                }
+            }
+        }
+    }
+	
 
 
 
