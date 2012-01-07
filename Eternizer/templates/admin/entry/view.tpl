@@ -99,13 +99,17 @@
             {$entry.location}
         </td>
         <td headers="htext" class="z-left">
-            {$entry.text}
+            {$entry.text|truncate:100}
         </td>
         <td headers="hnotes" class="z-left">
             {$entry.notes}
         </td>
         <td headers="hobj_status" class="z-left">
-            {$entry.obj_status}
+        {if $entry.obj_status == 'A'}
+        	{img src='extrasmall/greenled.png' modname='core' set='icons' __alt='confirmed'}
+        {else}
+        	{img src='extrasmall/redled.png' modname='core' set='icons' __alt='to moderate'}    
+        {/if}
         </td>
         <td headers="hitemactions" class="z-right z-nowrap z-w02">
             {if count($entry._actions) gt 0}

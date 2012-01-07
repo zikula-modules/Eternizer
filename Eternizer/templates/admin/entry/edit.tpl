@@ -35,20 +35,19 @@
             {formtextinput group='entry' id='name' mandatory=false readOnly=false __title='Enter the name of the entry' textMode='singleline' maxLength=100 cssClass=''}
         </div>
         <div class="z-formrow">
-            {formlabel for='email' __text='Email' mandatorysym='1'}
-            {formemailinput group='entry' id='email' mandatory=true readOnly=false __title='Enter the email of the entry' textMode='singleline' maxLength=100 cssClass='required validate-email'}
-            {eternizerValidationError id='email' class='required'}
+            {formlabel for='email' __text='Email'}
+            {formemailinput group='entry' id='email' mandatory=false readOnly=false __title='Enter the email of the entry' textMode='singleline' maxLength=100 cssClass='validate-email'}
             {eternizerValidationError id='email' class='validate-email'}
         </div>
         <div class="z-formrow">
             {formlabel for='homepage' __text='Homepage'}
-            {formurlinput group='entry' id='homepage' mandatory=false readOnly=false __title='Enter the homepage of the entry' textMode='singleline' maxLength=255 cssClass=' validate-url'}
+            {formurlinput group='entry' id='homepage' mandatory=false readOnly=false __title='Enter the homepage of the entry' textMode='singleline' maxLength=255 cssClass='validate-url'}
             {eternizerValidationError id='homepage' class='validate-url'}
         </div>
         <div class="z-formrow">
-            {formlabel for='location' __text='Location' mandatorysym='1'}
-            {formtextinput group='entry' id='location' mandatory=true readOnly=false __title='Enter the location of the entry' textMode='singleline' maxLength=100 cssClass='required'}
-            {eternizerValidationError id='location' class='required'}
+            {formlabel for='location' __text='Location'}
+            {formtextinput group='entry' id='location' mandatory=false readOnly=false __title='Enter the location of the entry' textMode='singleline' maxLength=100 cssClass=''}
+            {eternizerValidationError id='location' class=''}
         </div>
         <div class="z-formrow">
             {formlabel for='text' __text='Text' mandatorysym='1'}
