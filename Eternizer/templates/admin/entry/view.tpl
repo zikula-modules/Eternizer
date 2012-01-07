@@ -82,10 +82,11 @@
             {$entry.name}
         </td>
         <td headers="hemail" class="z-left">
+            {if $entry.email ne ''}
                 <a href="mailto:{$entry.email}" title="{gt text='Send an email'}">
                     {icon type='mail' size='extrasmall' __alt='Email'}
                 </a>
-
+            {else}&nbsp;{/if}
         </td>
         <td headers="hhomepage" class="z-left">
             {if $entry.homepage ne ''}
