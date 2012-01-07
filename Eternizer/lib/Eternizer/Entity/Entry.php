@@ -141,7 +141,10 @@ class Eternizer_Entity_Entry extends Eternizer_Entity_Base_Entry
      */
     public function postPersistCallback()
     {
-    	Eternizer_Util_Base_Settings::handleModvarsPostPersist();
+    	$args['ip'] = $this->getIp();
+    	$args['text'] = $this->getText();
+    		
+    	Eternizer_Util_Base_Settings::handleModvarsPostPersist($args);
         $this->performPostPersistCallback();
     }
 
