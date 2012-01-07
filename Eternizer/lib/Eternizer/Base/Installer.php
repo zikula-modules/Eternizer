@@ -36,9 +36,9 @@ class Eternizer_Base_Installer extends Zikula_AbstractInstaller
         // set up all our vars with initial values
         $this->setVar('pagesize', 10);
         $this->setVar('mail', '');
-        $this->setVar('order', array('descending'));
-        $this->setVar('moderate', array('guests'));
-        $this->setVar('formposition', array('below'));
+        $this->setVar('order', 'descending');
+        $this->setVar('moderate', 'guests');
+        $this->setVar('formposition','below');
         $this->setVar('ipsave', false);
 
         // create the default data for Eternizer
