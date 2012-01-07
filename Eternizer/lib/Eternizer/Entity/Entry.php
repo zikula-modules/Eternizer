@@ -69,6 +69,14 @@ class Eternizer_Entity_Entry extends Eternizer_Entity_Base_Entry
                         'linkText' => __('Reuse', $dom)
                     );
                 }
+                if (SecurityUtil::checkPermission('Eternizer::', '.*', ACCESS_DELETE)) {
+                    $this->_actions[] = array(
+                        'url' => array('type' => 'admin', 'func' => 'delete', 'arguments' => array('ot' => 'entry', 'id' => $this['id'])),
+                        'icon' => 'delete',
+                        'linkTitle' => __('Delete', $dom),
+                        'linkText' => __('Delete', $dom)
+                    );
+                }
             }
             if ($currentFunc == 'display') {
                     $this->_actions[] = array(
@@ -90,7 +98,6 @@ class Eternizer_Entity_Entry extends Eternizer_Entity_Base_Entry
                         'linkTitle' => __('Edit', $dom),
                         'linkText' => __('Edit', $dom)
                     );
-
                 }
             }
         }
