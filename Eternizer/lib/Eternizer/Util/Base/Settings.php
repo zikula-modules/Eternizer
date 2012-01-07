@@ -50,12 +50,12 @@ class Eternizer_Util_Base_Settings extends Zikula_AbstractBase
     	
     	$userid = $this->getCreatedUserId();
     	
-    	$ip = $args['ip'];
+    	$id = $args['id'];
     	$text = $args['text'];
     	
     	$host = System::serverGetVar('HTTP_HOST') . '/';
     	$url = $host . ModUtil::url('Eternizer', 'user', 'view');
-    	$editurl = $host . ModUtil::url('Eternizer', 'admin', 'edit', array('ot' => 'entry', 'id' => $ip));
+    	$editurl = $host . ModUtil::url('Eternizer', 'admin', 'edit', array('ot' => 'entry', 'id' => $id));
 
     	$toaddress = $modvar['mail'];
     	
