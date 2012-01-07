@@ -17,5 +17,28 @@
  */
 class Eternizer_Controller_Admin extends Eternizer_Controller_Base_Admin
 {
-    // feel free to add your own controller methods here
+		    /**
+     * This method provides the handling of
+     * the formposition
+     * the editing of entries and
+     * the order of entries
+     *
+     * @param string  $args['sortdir']  Sorting direction
+     * 
+     * return the parent function
+     * 
+     */
+    public function view($args)
+    {
+    	
+    	$order = ModUtil::getVar($this->name, 'order');
+    	if ($order == 'descending') {
+    		$args['sortdir'] = 'desc';
+    	}
+    	else {
+    		$args['sortdir'] = 'asc';
+    	}
+    	
+    	return parent::view($args);
+    }
 }
