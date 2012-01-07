@@ -44,35 +44,49 @@ class Eternizer_Util_Base_Settings extends Zikula_AbstractBase
     	return true;
     }
     
-    public function handleModvarsPostPersist() {
+    public function handleModvarsPostPersist($args) {
     	
     	$modvar = Eternizer_Util_Base_Settings::getModvars();
     	
-    	if ($modvar['moderate'] == 'guests') {
-    		$userid = $this->getCreatedUserId();
+    	$userid = $this->getCreatedUserId();
+    	
+    	$ip = $args['ip'];
+    	$text = $args['text'];
+    	
+    	$host = System::serverGetVar('HTTP_HOST') . '/';
+    	$url = $host . ModUtil::url('Eternizer', 'user', 'view');
+    	$editurl = $host . ModUtil::url('Eternizer', 'admin', 'edit', array('ot' => 'entry', 'id' => $ip));
 
-    			$toaddress = $modvar['mail'];
+    	$toaddress = $modvar['mail'];
     	
-    			$messagecontent = array();
-    			$messagecontent['toname'] = 'Michael Ueberschaer';
-    			$messagecontent['toaddress'] = $toaddress;
-    			$messagecontent['subject'] = __('New Entry');
-    			$messagecontent['body'] = __('Another entry was created by a user!') . '\n \n<br />'
-    			. $title .'\n'. $text;
-    			$messagecontent['html'] = true;
+    	$messagecontent = array();
+    	$messagecontent['toname'] = 'Michael Ueberschaer';
+    	$messagecontent['toaddress'] = $toaddress;
+    	$messagecontent['subject'] = __('New Entry');
+    	$messagecontent['body'] = __('Another entry was created by a user!') . '<br /><br />' .
+    	__('Text') . '<br />' . $text . '<br /><br />' . __('Visit our guestbook:') . 
+    	'<br />' . '<a href="' . $url . '">'. $url . '</a><br />' . __('Moderate the entry:') . 
+    	'<br />' . $editurl;
+    	$messagecontent['html'] = true;
     	
-    			if(!ModUtil::apiFunc('Mailer', 'user', 'sendmessage', $messagecontent)) {
-    			LogUtil::registerError(Zikula_Form_AbstractHandler::__('Unable to send message'));
-    			}
-    			else {
-    				if ($userid == 1) {			
-    					LogUtil::registerStatus(Zikula_Form_AbstractHandler::__('Your ticket was saved and must be attempt by our team'));
-    				}
-    				else {
-    					LogUtil::registerStatus(Zikula_Form_AbstractHandler::__('Your ticket was saved'));
-    				}
-    			}			
+        if(!ModUtil::apiFunc('Mailer', 'user', 'sendmessage', $messagecontent)) {
+    		LogUtil::registerError(Zikula_Form_AbstractHandler::__('Unable to send message'));
     	}
+    	
+    	$message = Zikula_Form_AbstractHandler::__('Your entry was saved!');
+    	
+    	if ($modvar['moderate'] == 'guests') {
+
+    			if ($userid == 1) {			
+    				$message = Zikula_Form_AbstractHandler::__('Your entry was saved and must be confirmed by our team');
+    			}
+    	}
+    	elseif ($modvar['moderate'] == 'all') {
+    		
+    		$message = Zikula_Form_AbstractHandler::__('Your entry was saved and must be confirmed by our team');
+    	}
+    	
+    	LogUtil::registerStatus($message);
     	
     	return true;
     	
