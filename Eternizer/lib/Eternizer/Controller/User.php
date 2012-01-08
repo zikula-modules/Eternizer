@@ -15,6 +15,7 @@
 /**
  * This is the User controller class providing navigation and interaction functionality.
  */
+use Doctrine\ORM\Query\AST\Functions\ModFunction;
 class Eternizer_Controller_User extends Eternizer_Controller_Base_User
 {
 	    /**
@@ -93,4 +94,23 @@ class Eternizer_Controller_User extends Eternizer_Controller_Base_User
     		}
     	}
     }
+    
+        /**
+     * This method provides a generic item detail view.
+     *
+     * @param string  $ot           Treated object type.
+     * @param string  $tpl          Name of alternative template (for alternative display options, feeds and xml output)
+     * @param boolean $raw          Optional way to display a template instead of fetching it (needed for standalone output)
+     * @return mixed Output.
+     */
+    public function display($args)
+    {
+    	// DEBUG: permission check aspect starts
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_OVERVIEW));
+		// DEBUG: permission check aspect ends
+
+        // return main template
+        return System::redirect(ModUtil::url($this->name, 'user', 'view'));
+    }
+    
 }
