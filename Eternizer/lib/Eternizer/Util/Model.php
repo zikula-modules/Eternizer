@@ -18,7 +18,8 @@ class Eternizer_Util_Model extends Eternizer_Util_Base_Model
 {
 
 	// build the query to searching items by userid == loggedin user
-	public function getUserId() {
+	public function getUserId()
+	{
     	// get userid of loggedin user
     	if (UserUtil::isLoggedIn() === true) {
 			$userid = UserUtil::getVar('uid');
@@ -36,5 +37,13 @@ class Eternizer_Util_Model extends Eternizer_Util_Base_Model
     	
     	return $where;
 	
-		}
+	}
+	
+	//build the where clause for allowed entries
+	public function entryAllowed()
+	{
+		$where = 'tbl.obj_status = \'' . DataUtil::formatForStore('A') . '\'';
+		
+		return $where;
+	}
 }
