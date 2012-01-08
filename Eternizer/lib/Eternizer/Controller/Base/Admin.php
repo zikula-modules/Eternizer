@@ -277,8 +277,7 @@ class Eternizer_Controller_Base_Admin extends Zikula_AbstractController
             $this->view->clear_cache();
 
             // redirect to the list of the current object type
-            $this->redirect(ModUtil::url($this->name, 'admin', 'view',
-                                                                                        array('ot' => $objectType)));
+            $this->redirect(ModUtil::url($this->name, 'admin', 'view',array('ot' => $objectType)));
         }
 
         $repository = $this->entityManager->getRepository('Eternizer_Entity_' . ucfirst($objectType));
