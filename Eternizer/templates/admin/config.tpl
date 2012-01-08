@@ -1,4 +1,4 @@
-{zdebug}{* purpose of this template: module configuration *}
+{* purpose of this template: module configuration *}
 {include file='admin/header.tpl'}
 <div class="eternizer-config">
 {gt text='Settings' assign='templateTitle'}
@@ -13,7 +13,7 @@
 
         {* add validation summary and a <div> element for styling the form *}
         {eternizerFormFrame}
-        {formsetinitialfocus inputId='itemsperpage'}
+        {formsetinitialfocus inputId='pagesize'}
             <fieldset>
                 <legend>{gt text='Here you can manage all basic settings for this application.'}</legend>
 
@@ -26,16 +26,28 @@
                     {formtextinput id='mail' group='config' maxLength=255 width=20em __title='Enter this setting.'}
                 </div>
                 <div class="z-formrow">
+                    {formlabel for='order' __text='Order'}
+                    {formdropdownlist id='order' group='config'}
+                </div>
+                <div class="z-formrow">
                     {formlabel for='moderate' __text='Moderate'}
-                    {formdropdownlist id='moderate' group='config' maxLength=255 width=20em __title='Enter this setting.'}
+                    {formdropdownlist id='moderate' group='config'}
                 </div>
                 <div class="z-formrow">
                     {formlabel for='formposition' __text='Formposition'}
-                    {formdropdownlist id='formposition' group='config' maxLength=255 width=20em __title='Enter this setting.'}
+                    {formdropdownlist id='formposition' group='config'}
                 </div>
                 <div class="z-formrow">
                     {formlabel for='ipsave' __text='Ipsave'}
                     {formcheckbox id='ipsave' group='config'}
+                </div>
+                <div class="z-formrow">
+                    {formlabel for='editentries' __text='Editentries'}
+                    {formcheckbox id='editentries' group='config'}
+                </div>
+                <div class="z-formrow">
+                    {formlabel for='period' __text='Period' class='eternizerFormTooltips' title=$toolTip}
+                    {formintinput id='period' group='config' maxLength=255 width=20em __title='Enter this setting. Only digits are allowed.'}
                 </div>
             </fieldset>
 
