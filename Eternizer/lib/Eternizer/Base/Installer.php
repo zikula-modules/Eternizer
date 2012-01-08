@@ -40,6 +40,8 @@ class Eternizer_Base_Installer extends Zikula_AbstractInstaller
         $this->setVar('moderate', 'guests');
         $this->setVar('formposition','below');
         $this->setVar('ipsave', false);
+        $this->setVar('editentries', false);
+        $this->setVar('period', 12);
 
         // create the default data for Eternizer
         $this->createDefaultData();
