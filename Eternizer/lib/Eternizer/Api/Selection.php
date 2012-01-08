@@ -34,6 +34,24 @@ class Eternizer_Api_Selection extends Eternizer_Api_Base_Selection
     		$args['where'] = Eternizer_Util_Model::getUserId();
     	}
     	
+        $type = $this->request->getGet()->filter('type', '', FILTER_SANITIZE_STRING);
+    	    	
+    	if ($type == 'user') {
+    		if ($args['where'] != '')
+    		{
+    			$args['where'] .= ' AND ';
+    		}
+    	
+    		if ($args['where'] != '')
+    		{    	
+    			$args['where'] .= Eternizer_Util_Model::entryAllowed();
+    		}
+    		else
+    		{
+    			$args['where'] = Eternizer_Util_Model::entryAllowed();
+    		}
+    	}
+    	
     	return parent::getEntities($args);
     }
 
@@ -51,10 +69,28 @@ class Eternizer_Api_Selection extends Eternizer_Api_Base_Selection
      */
     public function getEntitiesPaginated($args)
     {
-        	$select = $this->request->getGet()->filter('select', '', FILTER_SANITIZE_STRING);
+        $select = $this->request->getGet()->filter('select', '', FILTER_SANITIZE_STRING);
     	if ($select == 'mine') {
     		
     		$args['where'] = Eternizer_Util_Model::getUserId();
+    	}
+    	
+    	$type = $this->request->getGet()->filter('type', '', FILTER_SANITIZE_STRING);
+    	    	
+    	if ($type == 'user') {
+    		if ($args['where'] != '')
+    		{
+    			$args['where'] .= ' AND ';
+    		}
+    	
+    		if ($args['where'] != '')
+    		{    	
+    			$args['where'] .= Eternizer_Util_Model::entryAllowed();
+    		}
+    		else
+    		{
+    			$args['where'] = Eternizer_Util_Model::entryAllowed();
+    		}
     	}
 
     	return parent::getEntitiesPaginated($args);
