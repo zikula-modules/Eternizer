@@ -16,7 +16,8 @@
  */
 class Eternizer_Util_Base_Settings extends Zikula_AbstractBase
 {
-    public function handleModvarsPreSave() {
+    public function handleModvarsPreSave()
+    {
     	
       	$modvar = Eternizer_Util_Base_Settings::getModvars();
 
@@ -44,7 +45,8 @@ class Eternizer_Util_Base_Settings extends Zikula_AbstractBase
     	return true;
     }
     
-    public function handleModvarsPostPersist($args) {
+    public function handleModvarsPostPersist($args)
+    {
     	
     	$modvar = Eternizer_Util_Base_Settings::getModvars();
     	
@@ -69,11 +71,16 @@ class Eternizer_Util_Base_Settings extends Zikula_AbstractBase
     	'<br />' . $editurl;
     	$messagecontent['html'] = true;
     	
-        if(!ModUtil::apiFunc('Mailer', 'user', 'sendmessage', $messagecontent)) {
-    		LogUtil::registerError(Zikula_Form_AbstractHandler::__('Unable to send message'));
+    	// We send a mail if an email address is saved
+    	if ($toaddress != '') {
+    	
+        	if(!ModUtil::apiFunc('Mailer', 'user', 'sendmessage', $messagecontent)) {
+    			LogUtil::registerError(Zikula_Form_AbstractHandler::__('Unable to send message'));
+    		}
     	}
     	
-    	$message = Zikula_Form_AbstractHandler::__('Your entry was saved!');
+    	// Formating of email text
+    	$message = Zikula_Form_AbstractHandler::__('Your entry was published!');
     	
     	if ($modvar['moderate'] == 'guests') {
 
@@ -92,11 +99,19 @@ class Eternizer_Util_Base_Settings extends Zikula_AbstractBase
     	
     }
     
-    public function getModvars() {
+    public function handleChange()
+    {
+    	
+    }
+    
+    public function getModvars()
+    {
     	
     	$modvar['ipsave'] = ModUtil::getVar('Eternizer', 'ipsave');
     	$modvar['moderate'] = ModUtil::getVar('Eternizer', 'moderate');
     	$modvar['mail'] = ModUtil::getVar('Eternizer', 'mail');
+    	$modvar['editentries'] = ModUtil::getVar('Eternizer', 'editentries');
+    	$modvar['period'] = ModUtil::getVar('Eternizer', 'period');
     	
     	return $modvar;
     }
