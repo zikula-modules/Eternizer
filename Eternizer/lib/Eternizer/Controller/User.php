@@ -37,10 +37,14 @@ class Eternizer_Controller_User extends Eternizer_Controller_Base_User
     	
     	//We check the userid for ruling the edit button
     	$userid = UserUtil::getVar('uid');
+    	
+    	//We check for editing of entries
+    	$editentries = ModUtil::getVar($this->name, 'editentries');
 
     	// We assign to the template
     	$this->view->assign('formposition', $formposition);
     	$this->view->assign('userid', $userid);
+    	$this->view->assign('editentries', $editentries);
     	
     	$order = ModUtil::getVar($this->name, 'order');
     	if ($order == 'descending') {
@@ -51,5 +55,42 @@ class Eternizer_Controller_User extends Eternizer_Controller_Base_User
     	}
     	
     	return parent::view($args);
+    }
+    
+    /**
+     * This method provides a generic handling of all edit requests.
+     *
+     * @param string  $ot           Treated object type.
+     * @param string  $tpl          Name of alternative template (for alternative display options, feeds and xml output)
+     * @param boolean $raw          Optional way to display a template instead of fetching it (needed for standalone output)
+     * @return mixed Output.
+     */
+    public function edit($args)
+    {
+    	//We check for parameters
+    	$func = $this->request->getGet()->filter('func','view' , FILTER_SANITIZE_STRING);
+    	$id = $this->request->getGet()->filter('id', null , FILTER_SANITIZE_NUMBER_INT);
+   		
+    	//We check for editing of entries
+    	$editentries = ModUtil::getVar($this->name, 'editentries');
+    	
+    	// if editing is allowed we call the parent method
+    	if ($editentries == 1) {
+    		return parent::edit($args);
+    	}
+    	else {
+    		if (($func == 'edit' || $func == 'view')) {
+    			if ($id == null) {
+    				return parent::edit($args);
+    			}
+    			// otherwise we make a redirect
+    			else {
+    				$url = ModUtil::url($this->name, 'user', 'view');
+    				LogUtil::registerError($this->__('Sorry. The editing of entries is disabled.'));
+    				System::redirect($url);
+    	
+    			}
+    		}
+    	}
     }
 }
