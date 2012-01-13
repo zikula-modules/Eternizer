@@ -40,18 +40,9 @@ class Eternizer_Installer extends Eternizer_Base_Installer
             
             $profile = ModUtil::setVar('Eternizer', 'profile', $profile);
             case '1.1.1':
-                // do something
+                // TODO we have to implement putting the datas into the new table
                 // ...
-                // update the database schema
-                try {
-                    DoctrineHelper::updateSchema($this->entityManager, $this->listEntityClasses());
-                } catch (Exception $e) {
-                    if (System::isDevelopmentMode()) {
-                        LogUtil::registerError($this->__('Doctrine Exception: ') . $e->getMessage());
-                    }
-                    return LogUtil::registerError($this->__f('An error was encountered while dropping the tables for the %s module.', array($this->getName())));
-                }
-            
+                        
             break;
         }
         
