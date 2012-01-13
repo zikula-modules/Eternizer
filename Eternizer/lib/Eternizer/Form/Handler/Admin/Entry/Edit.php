@@ -26,7 +26,14 @@ class Eternizer_Form_Handler_Admin_Entry_Edit extends Eternizer_Form_Handler_Adm
     {
     	// We rule the position of the form
     	$formposition = ModUtil::getVar($this->name, 'formposition');
-
+    	
+    	//We build the dropdownlist for moderation
+    	$moderation = Eternizer_Util_Controller::getKindOfStatus();
+    	
+    	$entry = $this->view->get_template_vars('entry');
+    	$entry['obj_statusItems'] = $moderation;
+    	$this->view->assign('entry',$entry);
+    	
     	// We assign to the template
     	$this->view->assign('formposition', $formposition);
     }
