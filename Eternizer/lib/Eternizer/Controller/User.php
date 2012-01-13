@@ -95,13 +95,10 @@ class Eternizer_Controller_User extends Eternizer_Controller_Base_User
     	}
     }
     
-        /**
-     * This method provides a generic item detail view.
+     /**
+     * This method overrites the parent diplay function.
      *
-     * @param string  $ot           Treated object type.
-     * @param string  $tpl          Name of alternative template (for alternative display options, feeds and xml output)
-     * @param boolean $raw          Optional way to display a template instead of fetching it (needed for standalone output)
-     * @return mixed Output.
+     * @return mixed System Redirect.
      */
     public function display($args)
     {
