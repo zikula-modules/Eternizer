@@ -41,4 +41,20 @@ class Eternizer_Controller_Admin extends Eternizer_Controller_Base_Admin
     	
     	return parent::view($args);
     }
+    
+
+     /**
+     * This method overrites the parent diplay function.
+     *
+     * @return mixed System Redirect.
+     */
+    public function display($args)
+    {
+    	// DEBUG: permission check aspect starts
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_ADMIN));
+		// DEBUG: permission check aspect ends
+
+        // return main template
+        return System::redirect(ModUtil::url($this->name, 'admin', 'view'));
+    }    
 }
