@@ -16,5 +16,5 @@
  */
 class Eternizer_Api_Admin extends Eternizer_Api_Base_Admin
 {
-    // feel free to add own api methods here
+
 }
