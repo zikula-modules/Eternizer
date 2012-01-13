@@ -16,29 +16,17 @@
  */
 class Eternizer_Util_Controller extends Eternizer_Util_Base_Controller
 {
-    /**
-     * Get list of form positions.
-     */
-    public function getFormPositions()
-    {
-        $dom = ZLanguage::getModuleDomain('Eternizer');
-        $position = array();
-        $position[] = array('value' => 'above',    'text' => __('above', $dom),          'icon' => 'redled.png');
-        $position[] = array('value' => 'below',    'text' => __('below', $dom),         'icon' => 'yellowled.png');
-        $position[] = array('value' => 'menu',     'text' => __('menue', $dom),           'icon' => 'greenled.png');
-        return $position;
-    }
     
     /**
      * Get list of form positions.
      */
-    public function getKindOfModeration()
+    public static function getKindOfStatus()
     {
         $dom = ZLanguage::getModuleDomain('Eternizer');
         $moderation = array();
-        $moderation[] = array('value' => 'all',    'text' => __('all', $dom),          'icon' => 'redled.png');
-        $moderation[] = array('value' => 'guests',    'text' => __('guests', $dom),         'icon' => 'yellowled.png');
-        $moderation[] = array('value' => 'users',     'text' => __('registered users', $dom),           'icon' => 'greenled.png');
+        $moderation[] = array('value' => 'A',    'text' => __('accepted and published', $dom));
+        $moderation[] = array('value' => 'M',    'text' => __('to moderate', $dom));
+        $moderation[] = array('value' => 'D',     'text' => __('denied', $dom));
         return $moderation;
     }
 }
