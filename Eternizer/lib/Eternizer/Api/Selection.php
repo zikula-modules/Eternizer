@@ -36,7 +36,7 @@ class Eternizer_Api_Selection extends Eternizer_Api_Base_Selection
     	
         $type = $this->request->getGet()->filter('type', '', FILTER_SANITIZE_STRING);
     	    	
-    	if ($type == 'user') {
+    	if ($type == 'user' || $type = '') {
     		if ($args['where'] != '')
     		{
     			$args['where'] .= ' AND ';
@@ -77,7 +77,7 @@ class Eternizer_Api_Selection extends Eternizer_Api_Base_Selection
     	
     	$type = $this->request->getGet()->filter('type', '', FILTER_SANITIZE_STRING);
     	    	
-    	if ($type == 'user') {
+    	if ($type == 'user' || $type == '') {
     		if ($args['where'] != '')
     		{
     			$args['where'] .= ' AND ';
