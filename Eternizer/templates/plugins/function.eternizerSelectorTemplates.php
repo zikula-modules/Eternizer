@@ -26,8 +26,7 @@ function smarty_function_eternizerSelectorTemplates($params, $view)
 {
     $result = array();
 
-    $result[] = array('text' => $view->__('Only item titles'), 'value' => 'itemlist_display.tpl');
-    $result[] = array('text' => $view->__('With description'), 'value' => 'itemlist_display_description.tpl');
+    $result[] = array('text' => $view->__('Newest Entries'), 'value' => 'itemlist_display.tpl');
 
     if (array_key_exists('assign', $params)) {
         $view->assign($params['assign'], $result);
