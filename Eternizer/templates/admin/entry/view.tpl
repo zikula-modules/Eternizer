@@ -107,8 +107,10 @@
         <td headers="hobj_status" class="z-left">
         {if $entry.obj_status == 'A'}
         	{img src='extrasmall/greenled.png' modname='core' set='icons' __alt='confirmed'}
-        {else}
-        	{img src='extrasmall/redled.png' modname='core' set='icons' __alt='to moderate'}    
+        {elseif $entry.obj_status == 'M'}
+        	{img src='extrasmall/yellowled.png' modname='core' set='icons' __alt='to moderate'}    
+        {elseif $entry.obj_status == 'D'}
+        	{img src='extrasmall/redled.png' modname='core' set='icons' __alt='denied'}
         {/if}
         </td>
         <td headers="hitemactions" class="z-right z-nowrap z-w02">

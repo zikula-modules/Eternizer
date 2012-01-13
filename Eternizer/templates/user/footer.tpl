@@ -2,7 +2,7 @@
 
 {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
 <p class="z-center">
-    Powered by <a href="http://modulestudio.de" title="Get the MOST out of Zikula!">ModuleStudio 0.5.4</a>
+    Powered by <a href="http://modulestudio.de" title="Get the MOST out of Zikula!">ModuleStudio 0.5.4</a> and <a href="http://www.webdesign-in-bremen.com" title="Webdesign with Zikula">MU(t) Beratung Internet</a>
 </p>
 {elseif isset($smarty.get.func) && $smarty.get.func eq 'edit'}
 {pageaddvar name='stylesheet' value='styles/core.css'}

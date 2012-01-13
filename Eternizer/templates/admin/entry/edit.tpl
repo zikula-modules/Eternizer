@@ -60,7 +60,7 @@
         </div>
         <div class="z-formrow">
             {formlabel for='obj_status' __text='Obj_status' mandatorysym='1'}
-            {formtextinput group='entry' id='obj_status' mandatory=true readOnly=false __title='Enter the obj_status of the entry' textMode='singleline' maxLength=1 cssClass='required'}
+            {formdropdownlist group='entry' id='obj_status' mandatory=true readOnly=false __title='Enter the obj_status of the entry' textMode='singleline' maxLength=1 cssClass='required'}
             {eternizerValidationError id='obj_status' class='required'}
         </div>
     </fieldset>

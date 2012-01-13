@@ -101,10 +101,10 @@
     <div class="z-buttons z-formbuttons">
     {if $mode eq 'edit'}
         {formbutton id='btnUpdate' commandName='update' __text='Update entry' class='z-bt-save'}
-      {if !$inlineUsage}
+     {* {if !$inlineUsage}
         {gt text='Really delete this entry?' assign="deleteConfirmMsg"}
         {formbutton id='btnDelete' commandName='delete' __text='Delete entry' class='z-bt-delete z-btred' confirmMessage=$deleteConfirmMsg}
-      {/if}
+      {/if} *}
     {elseif $mode eq 'create'}
         {formbutton id='btnCreate' commandName='create' __text='Create entry' class='z-bt-ok'}
     {else}
