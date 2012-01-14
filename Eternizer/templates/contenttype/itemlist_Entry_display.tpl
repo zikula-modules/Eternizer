@@ -5,7 +5,7 @@
 {if $item.name ne ''}
 	<dt>{$item.name}</dt>
 	{else}
-	<dt>{useravatar uid=$item.createdUserId}</dt>
+	<dt>{usergetvar name='uname' uid=$item.createdUserId assign='uname'}{$uname}</dt>
 	{/if}
     <dd>{$item.text|truncate:50:"..."}
 </div>

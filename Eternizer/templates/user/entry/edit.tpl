@@ -1,6 +1,6 @@
-{* purpose of this template: build the Form to edit an instance of entry *}
+{zdebug}{* purpose of this template: build the Form to edit an instance of entry *}
 {if $formposition eq 'menue'}
-{include file='user/header.tpl'}
+	{include file='user/header.tpl'}
 {/if}
 {pageaddvar name='javascript' value='modules/Eternizer/javascript/Eternizer_editFunctions.js'}
 {pageaddvar name='javascript' value='modules/Eternizer/javascript/Eternizer_validation.js'}
