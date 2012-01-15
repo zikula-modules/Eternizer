@@ -8,14 +8,6 @@
     <h3>{$templateTitle}</h3>
 </div>
 
-
-    {checkpermissionblock component='Eternizer::' instance='.*' level="ACCESS_ADD"}
-        {gt text='Create entry' assign='createTitle'}
-        <a href="{modurl modname='Eternizer' type='admin' func='edit' ot='entry'}" title="{$createTitle}" class="z-icon-es-add">
-            {$createTitle}
-        </a>
-    {/checkpermissionblock}
-
     {assign var='all' value=0}
     {if isset($showAllEntries) && $showAllEntries eq 1}
         {gt text='Back to paginated view' assign='linkTitle'}
@@ -66,7 +58,7 @@
             {sortlink __linktext='Notes' sort='notes' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='admin' func='view' ot='entry'}
         </th>
         <th id="hobj_status" scope="col" class="z-left">
-            {sortlink __linktext='Obj_status' sort='obj_status' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='admin' func='view' ot='entry'}
+            {sortlink __linktext='Status' sort='obj_status' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='admin' func='view' ot='entry'}
         </th>
         <th id="hitemactions" scope="col" class="z-right z-order-unsorted">{gt text='Actions'}</th>
     </tr>
@@ -106,11 +98,11 @@
         </td>
         <td headers="hobj_status" class="z-left">
         {if $entry.obj_status == 'A'}
-        	{img src='extrasmall/greenled.png' modname='core' set='icons' __alt='confirmed'}
+        	{img src='extrasmall/greenled.png' modname='core' set='icons' __alt='confirmed' __title='confirmed'}
         {elseif $entry.obj_status == 'M'}
-        	{img src='extrasmall/yellowled.png' modname='core' set='icons' __alt='to moderate'}    
+        	{img src='extrasmall/yellowled.png' modname='core' set='icons' __alt='to moderate' __title='to moderate'}    
         {elseif $entry.obj_status == 'D'}
-        	{img src='extrasmall/redled.png' modname='core' set='icons' __alt='denied'}
+        	{img src='extrasmall/redled.png' modname='core' set='icons' __alt='denied' __title='denied'}
         {/if}
         </td>
         <td headers="hitemactions" class="z-right z-nowrap z-w02">
