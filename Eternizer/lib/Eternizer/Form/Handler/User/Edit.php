@@ -84,7 +84,12 @@ class Eternizer_Form_Handler_User_Edit extends Eternizer_Form_Handler_User_Base_
         	$url = ModUtil::url($this->name, 'user', 'view');
         	return System::redirect($url);
         }
-
+        
+        // Own code to assign formpostion
+        
+        $formposition = ModUtil::getVar($this->name, 'formposition');
+        $this->view->assign('formposition', $formposition);
+        
         // assign data to template as array (makes translatable support easier)
         $this->view->assign($this->objectTypeLower, $entityData);
 
