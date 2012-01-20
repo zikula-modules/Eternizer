@@ -46,13 +46,23 @@
             <div class="etz_name">
             {if $entry.name ne ''}<span class='etz_attr'}>{$entry.name}</span>
             {else}
-            {usergetvar name='uname' uid=$entry.createdUserId assign='uname'}
+            {if $entry.createdUserId eq 0}
+            {gt text='Guest' assign='uname'}
             {$uname}
-            {/if} {gt text='on'} {$entry.createdDate|dateformat:datetimelong}</div>
+            {else}
+            {usergetvar name='uname' uid=$entry.createdUserId assign='uname'}
+            {if $uname ne ''}
+            {$uname}
+            {else}
+            {gt text='Guest'}
+            {/if}
+            {/if}
+            {/if} 
+            {gt text='on'} {$entry.createdDate|dateformat:datetimelong}</div>
             </div>
             <div class="etz_action">
             {if count($entry._actions) gt 0}
-            {if $entry.createdUserId eq $userid && $editentries eq 1}
+            {if $entry.createdUserId eq $userid && $coredata.logged_in eq true && $editentries eq 1}
             {strip}
                 {foreach item='option' from=$entry._actions}
                     <a href="{$option.url.type|eternizerActionUrl:$option.url.func:$option.url.arguments}" title="{$option.linkTitle|safetext}"{if $option.icon eq 'preview'} target="_blank"{/if}>

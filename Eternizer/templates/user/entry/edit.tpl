@@ -1,4 +1,4 @@
-{zdebug}{* purpose of this template: build the Form to edit an instance of entry *}
+{* purpose of this template: build the Form to edit an instance of entry *}
 {if $formposition eq 'menue'}
 	{include file='user/header.tpl'}
 {/if}
@@ -19,19 +19,6 @@
 {form cssClass='z-form'}
     {* add validation summary and a <div> element for styling the form *}
     {eternizerFormFrame}
-    
-            {foreach from=$profile key=id item=item}
-        <div class="z-formrow">
-            {formlabel for="profile_$id" text=$item.title}
-            {if $item.type eq 'mail'}
-            {formemailinput id="profile_$id" group="profile" text=$item.value maxLength='255' mandatory=$item.mandatory readOnly=$item.readonly}
-            {elseif $item.type eq 'url'}
-            {formurlinput id="profile_$id" group="profile" text=$item.value maxLength='255' mandatory=$item.mandatory readOnly=$item.readonly}
-            {else}
-            {formtextinput id="profile_$id" group="profile" text=$item.value maxLength='255' mandatory=$item.mandatory readOnly=$item.readonly}
-            {/if}
-        </div>
-        {/foreach}
 
     <fieldset>
         <legend>{gt text='Content'}</legend>
