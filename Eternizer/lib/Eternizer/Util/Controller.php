@@ -16,6 +16,23 @@
  */
 class Eternizer_Util_Controller extends Eternizer_Util_Base_Controller
 {
+	/**
+	 * 
+	 * Helper method for setting the modvars
+	 */
+	public static function setModVars()
+	{
+        $this->setVar('pagesize', 10);
+        $this->setVar('mail', '');
+        $this->setVar('order', 'descending');
+        $this->setVar('moderate', 'guests');
+        $this->setVar('formposition','below');
+        $this->setVar('ipsave', false);
+        $this->setVar('editentries', false);
+        $this->setVar('period', 12);
+
+        return true;
+	}
     
     /**
      * Get list of form positions.

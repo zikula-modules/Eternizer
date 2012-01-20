@@ -29,8 +29,7 @@ class Eternizer_Util_Base_Settings extends Zikula_AbstractBase
     	
     	if ($modvar['moderate'] == 'guests') {
     		
-    		$userid = $this->getCreatedUserId();
-    		if ($userid == 1) {
+    		if (UserUtil::isLoggedIn() === false) {
     		$this->setObj_status('M');
     		}
     		else {
@@ -56,19 +55,24 @@ class Eternizer_Util_Base_Settings extends Zikula_AbstractBase
     	$text = $args['text'];
     	
     	$host = System::serverGetVar('HTTP_HOST') . '/';
-    	$url = $host . ModUtil::url('Eternizer', 'user', 'view');
-    	$editurl = $host . ModUtil::url('Eternizer', 'admin', 'edit', array('ot' => 'entry', 'id' => $id));
+    	$url = 'http://'. $host . ModUtil::url('Eternizer', 'user', 'view');
+    	$editurl = 'http://' . $host . ModUtil::url('Eternizer', 'admin', 'edit', array('ot' => 'entry', 'id' => $id));
 
+    	$from = ModUtil::getVar('ZConfig', 'sitename');
+    	$fromaddress = ModUtil::getVar('ZConfig', 'adminmail');
     	$toaddress = $modvar['mail'];
     	
     	$messagecontent = array();
-    	$messagecontent['toname'] = 'Michael Ueberschaer';
+    	$messagecontent['from'] = $from;
+    	$messagecontent['fromaddress'] = $fromaddress;
+    	$messagecontent['toname'] = 'Webmaster';
     	$messagecontent['toaddress'] = $toaddress;
-    	$messagecontent['subject'] = __('New Entry');
-    	$messagecontent['body'] = __('Another entry was created by a user!') . '<br /><br />' .
+    	$messagecontent['subject'] = __('New Entry in Guestbook on ') . $from;
+    	$messagecontent['body'] = __('Another entry was created by a user on <h2>') . $from . '</h2>' .
     	__('Text') . '<br />' . $text . '<br /><br />' . __('Visit our guestbook:') . 
-    	'<br />' . '<a href="' . $url . '">'. $url . '</a><br />' . __('Moderate the entry:') . 
-    	'<br />' . $editurl;
+    	'<br />' . '<a href="' . $url . '">'. $url . '</a><br />' . __('Moderate this entry:') . 
+    	'<br />' . '<a href="' . $editurl . '">' . $editurl . '</a>';
+    	$messagecontent['altbody'] = '';
     	$messagecontent['html'] = true;
     	
     	// We send a mail if an email address is saved
@@ -84,7 +88,7 @@ class Eternizer_Util_Base_Settings extends Zikula_AbstractBase
     	
     	if ($modvar['moderate'] == 'guests') {
 
-    			if ($userid == 1) {			
+    			if ($userid < 2) {			
     				$message = Zikula_Form_AbstractHandler::__('Your entry was saved and must be confirmed by our team');
     			}
     	}
@@ -99,9 +103,14 @@ class Eternizer_Util_Base_Settings extends Zikula_AbstractBase
     	
     }
     
+    /**
+     * 
+     * this method will handle a moderation on the view template
+     * Enter description here ...
+     */
     public function handleChange()
     {
-    	
+    	// TODO
     }
     
     public function getModvars()
