@@ -25,6 +25,7 @@ use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
  */
 class Eternizer_Entity_Entry extends Eternizer_Entity_Base_Entry
 {
+	
     /**
      * Collect available actions for this entity.
      */
