@@ -47,14 +47,14 @@
             {if $entry.name ne ''}<span class='etz_attr'}>{$entry.name}</span>
             {else}
             {if $entry.createdUserId eq 0}
-            {gt text='Guest' assign='uname'}
-            {$uname}
+            {modgetvar module='Users' name='anonymous' assign='guest'}
+            {$guest}
             {else}
             {usergetvar name='uname' uid=$entry.createdUserId assign='uname'}
             {if $uname ne ''}
             {$uname}
             {else}
-            {gt text='Guest'}
+            {$guest}
             {/if}
             {/if}
             {/if} 
