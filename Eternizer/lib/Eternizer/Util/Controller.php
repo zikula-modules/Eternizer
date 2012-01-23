@@ -22,14 +22,14 @@ class Eternizer_Util_Controller extends Eternizer_Util_Base_Controller
 	 */
 	public static function setModVars()
 	{
-        $this->setVar('pagesize', 10);
-        $this->setVar('mail', '');
-        $this->setVar('order', 'descending');
-        $this->setVar('moderate', 'guests');
-        $this->setVar('formposition','below');
-        $this->setVar('ipsave', false);
-        $this->setVar('editentries', false);
-        $this->setVar('period', 12);
+        ModUtil::setVar('Eternizer', 'pagesize', 10);
+        ModUtil::setVar('Eternizer', 'mail', '');
+        ModUtil::setVar('Eternizer', 'order', 'descending');
+        ModUtil::setVar('Eternizer', 'moderate', 'guests');
+        ModUtil::setVar('Eternizer', 'formposition','below');
+        ModUtil::setVar('Eternizer', 'ipsave', false);
+        ModUtil::setVar('Eternizer', 'editentries', false);
+        ModUtil::setVar('Eternizer', 'period', 12);
 
         return true;
 	}
