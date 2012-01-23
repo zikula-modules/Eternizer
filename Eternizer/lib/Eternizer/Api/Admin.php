@@ -56,8 +56,7 @@ class Eternizer_Api_Admin extends Eternizer_Api_Base_Admin
 		//get prefix
         $prefix = $this->serviceManager['prefix'];
         		
-       //get host, db, user and pw
-        		
+        //get host, db, user and pw        		
         $databases = ServiceUtil::getManager()->getArgument('databases');
 		$connName = Doctrine_Manager::getInstance()->getCurrentConnection()->getName();
 		$host = $databases[$connName]['host'];
@@ -76,59 +75,53 @@ class Eternizer_Api_Admin extends Eternizer_Api_Base_Admin
        		$this->__('Connection to database failed');
        	}
    
-        if($connect) { 
-    
-        	// ask the DB for entries in the old eternizer table	
-        		        		
+        if($connect) {    
+        	// ask the DB for entries in the old eternizer table	  		        		
         	// handle the access to the old eternizer table
 			// build sql
 			$query = "SELECT * FROM $table";	
 
         	// prepare the sql query
         	$sql = $connect->query($query);
-    	        
-        /*	try {
-        	// execute the query
-        	$sql->execute();
-        	}
-        	catch (PDOException $a) {
-        		$this->__('No result');
-        	}*/
        		
+        	// rule the attribute names
        		if ($args['name'] != '') {
        			$name = $args['name'];
+       		}
+       		else {
+       			$name = '';
        		}      			
        		if ($args['email'] != '') {
        			$email = $args['email'];
        		}
+       		else {
+       			$email = '';
+       		}
        		if ($args['homepage'] != '') {
        			$homepage = $args['homepage'];
+       		}
+       		else {
+       			$homepage = '';
        		}
        		if ($args['location'] != '') {
        			$location = $args['location'];
        		}
-       		
-       		$attr_name = '';
-       		$attr_email = '';
-       		$attr_homepage = '';
-       		$attr_location = '';
+       		else {
+       			$location = '';
+       		}
        		
        		$datas = array();
-
-
-       		$name = '0';
-       		$email = '1';
-       		$homepage = '2';
-       		$location = '3';
        		
+       		// walk through the result of the old table
        		foreach ($sql as $result) {
-       			
+
+       		// set attribute fields
        		$attr_name = '';
        		$attr_email = '';
        		$attr_homepage = '';
        		$attr_location = '';
        		      			
-       	//	if ($args['attributes']) {
+       		if ($args['attributes']) {
        		
        		// select all attributes for the entries
        		// build and execute the select	
@@ -137,7 +130,8 @@ class Eternizer_Api_Admin extends Eternizer_Api_Base_Admin
        		$sql2->bindParam(':id', $result['pn_id']);
        		       	
        		$sql2->execute();
-       				
+
+       			// walk through the attributes for the entry
        			foreach ($sql2 as $result2) {
 
        				if ($name != '') {
@@ -163,7 +157,7 @@ class Eternizer_Api_Admin extends Eternizer_Api_Base_Admin
        			}
 
        		$sql2 = NULL;
-       	//	}
+       		}
        			
        		$datas[] =   array(':id' => $result['pn_id'],
        					':ip' => $result['pn_ip'],
@@ -177,9 +171,7 @@ class Eternizer_Api_Admin extends Eternizer_Api_Base_Admin
        					':createdUserId' => $result['pn_cr_uid'],
        					':updatedUserId' => $result['pn_lu_uid'],
        					':createdDate' => $result['pn_cr_date'],
-       					':updatedDate' => $result['pn_lu_date']);
-
-       			
+       					':updatedDate' => $result['pn_lu_date']);		
        		}
        		
        		// clear the result rows
@@ -200,13 +192,22 @@ class Eternizer_Api_Admin extends Eternizer_Api_Base_Admin
         		}       			
        			
         	}
+        	
+        	$sql3 = NULL;
+        	// if checked delete the old table
+        	if ($args['oldtable']) {
         		
-        	/*$query4 = "DROP TABLE $table";
+        	$query4 = "DROP TABLE $table";
         		
         	$sql4 = $connect->prepare($query4);
-        	$sql4->execute();  */     				
+        	$sql4->execute(); 
 
-       		$connect = null;
+        	}
+        	
+        	$sql4 = NULL;
+        	
+			// delete the connection
+       		$connect = NULL;
        		
 			}
 			else {
