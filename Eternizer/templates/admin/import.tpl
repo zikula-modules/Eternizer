@@ -18,27 +18,23 @@
                 <legend>{gt text='Here you can manage all basic settings for the import.'}</legend>
                 <div class="z-formrow">
                     {formlabel for='name' __text='-> Name'}
-                    {formtextinput id='name' group='import' maxLength=255 width=20em __title='Enter this setting.'}
-                    <div class="z-informationmsg z-formnote">{gt text="Notice: If you enter a correct email adress a message will be sent to when a new entry was saved. 
-                    If you leave this field empty, it is disabled."}</div>
+                    {formtextinput id='name' group='import' maxLength=255 width=20em __title='Enter the correct attribute name.'}
+                    <div class="z-informationmsg z-formnote">{gt text="Notice: Enter the attribute name for the name in the table objectdata_attributes."}</div>
                 </div>
                 <div class="z-formrow">
                     {formlabel for='email' __text='-> Email'}
-                    {formtextinput id='email' group='import' maxLength=255 width=20em __title='Enter this setting.'}
-                    <div class="z-informationmsg z-formnote">{gt text="Notice: If you enter a correct email adress a message will be sent to when a new entry was saved. 
-                    If you leave this field empty, it is disabled."}</div>
+                    {formtextinput id='email' group='import' maxLength=255 width=20em __title='Enter the correct attribute name.'}
+                    <div class="z-informationmsg z-formnote">{gt text="Notice: Enter the attribute name for the email in the table objectdata_attributes."}</div>
                 </div>
                 <div class="z-formrow">
                     {formlabel for='homepage' __text='-> Homepage'}
-                    {formtextinput id='homepage' group='import' maxLength=255 width=20em __title='Enter this setting.'}
-                    <div class="z-informationmsg z-formnote">{gt text="Notice: If you enter a correct email adress a message will be sent to when a new entry was saved. 
-                    If you leave this field empty, it is disabled."}</div>
+                    {formtextinput id='homepage' group='import' maxLength=255 width=20em __title='Enter the correct attribute name.'}
+                    <div class="z-informationmsg z-formnote">{gt text="Notice: Enter the attribute name for the homepage in the table objectdata_attributes."}</div>
                 </div>  
                 <div class="z-formrow">
                     {formlabel for='location' __text='-> Location'}
-                    {formtextinput id='location' group='import' maxLength=255 width=20em __title='Enter this setting.'}
-                    <div class="z-informationmsg z-formnote">{gt text="Notice: If you enter a correct email adress a message will be sent to when a new entry was saved. 
-                    If you leave this field empty, it is disabled."}</div>
+                    {formtextinput id='location' group='import' maxLength=255 width=20em __title='Enter the correct attribute name.'}
+                    <div class="z-informationmsg z-formnote">{gt text="Notice: Enter the attribute name for the location in the table objectdata_attributes."}</div>
                 </div>                   
                 <div class="z-formrow">
                     {formlabel for='attributes' __text='Import attributes?'}
