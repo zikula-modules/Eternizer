@@ -14,8 +14,45 @@
 /**
  * Installer implementation class
  */
+use Doctrine\DBAL\Connection;
+
 class Eternizer_Installer extends Eternizer_Base_Installer
 {
+	
+    /**
+     * Install the Eternizer application.
+     *
+     * @return boolean True on success, or false.
+     */
+    public function install()
+    {
+        // create all tables from according entity definitions
+        try {
+            DoctrineHelper::createSchema($this->entityManager, $this->listEntityClasses());
+        } catch (Exception $e) {
+            if (System::isDevelopmentMode()) {
+                LogUtil::registerError($this->__('Doctrine Exception: ') . $e->getMessage());
+            }
+            return LogUtil::registerError($this->__f('An error was encountered while creating the tables for the %s module.', array($this->getName())));
+        }
+
+        // set up all our vars with initial values
+        Eternizer_Util_Controller::setModVars();
+
+        // create the default data for Eternizer
+        $this->createDefaultData();
+
+        // register persistent event handlers
+        $this->registerPersistentEventHandlers();
+
+        // register hook subscriber bundles
+        HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
+
+
+        // initialisation successful
+        return true;
+    }	
+	
     /**
      * Upgrade the Eternizer application from an older version.
      *
@@ -40,12 +77,36 @@ class Eternizer_Installer extends Eternizer_Base_Installer
             
             $profile = ModUtil::setVar('Eternizer', 'profile', $profile);
             case '1.1.1':
-                // TODO we have to implement putting the datas into the new table
-                // ...
-                        
-            break;
-        }
+                
+            	// remove all module vars
+        		$this->delVars();
+        		
+        		// create all tables from according entity definitions
+        		try {
+            		DoctrineHelper::createSchema($this->entityManager, $this->listEntityClasses());
+        		} catch (Exception $e) {
+            		if (System::isDevelopmentMode()) {
+                		LogUtil::registerError($this->__('Doctrine Exception: ') . $e->getMessage());
+            		}
+            		return LogUtil::registerError($this->__f('An error was encountered while creating the tables for the %s module.', array($this->getName())));
+        		}
+
+        		// set up all our vars with initial values
+        		Eternizer_Util_Controller::setModVars();
+
+        		// create the default data for Eternizer
+        		$this->createDefaultData();
+
+        		// register persistent event handlers
+        		$this->registerPersistentEventHandlers();
+
+        		// register hook subscriber bundles
+        		HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
+
+ 	
+            	break;
+        	}
         
-    return true;
+    		return true;
     }
 }
