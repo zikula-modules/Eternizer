@@ -55,6 +55,15 @@ class Eternizer_Controller_Admin extends Eternizer_Controller_Base_Admin
 		// DEBUG: permission check aspect ends
 
         // return main template
-        return System::redirect(ModUtil::url($this->name, 'admin', 'view'));
-    }    
+        return System::redirect(ModUtil::url('Eternizer', 'admin', 'view'));
+    }  
+
+    public function import() {
+    	
+        // Create new Form reference
+        $view = FormUtil::newForm($this->name, $this);
+
+        // Execute form using supplied template and page event handler
+        return $view->execute('admin/import.tpl', new Eternizer_Form_Handler_Admin_Base_Import());
+    }
 }
