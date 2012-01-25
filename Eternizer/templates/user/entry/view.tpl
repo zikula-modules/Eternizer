@@ -19,6 +19,10 @@
     {/if}
     {if $formposition eq 'above'}
     {modfunc modname='Eternizer' type='user' func='edit'}
+    {notifydisplayhooks eventname='eternizer.ui_hooks.entries.display_view' urlobject=$currentUrlObject assign='hooks'}
+    {foreach key='hookname' item='hook' from=$hooks}
+        {$hook}
+        {/foreach}  
     {/if}
     {foreach item='entry' from=$items}     
     <div class="etz_entry z-clearfix {cycle values='etz_bg1,etz_bg2'}" >  
@@ -99,13 +103,13 @@
     {/if}  
     
     {if $formposition eq 'below'}
-    {modfunc modname='Eternizer' type='user' func='edit'}
-    {/if}
-     
+    {modfunc modname='Eternizer' type='user' func='edit'}    
     {notifydisplayhooks eventname='eternizer.ui_hooks.entries.display_view' urlobject=$currentUrlObject assign='hooks'}
     {foreach key='hookname' item='hook' from=$hooks}
         {$hook}
-        {/foreach}
+        {/foreach}    
+    {/if}
+
 	</div>
 </div>
 {include file='user/footer.tpl'}
