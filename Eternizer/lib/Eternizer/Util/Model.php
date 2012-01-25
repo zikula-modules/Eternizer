@@ -40,7 +40,7 @@ class Eternizer_Util_Model extends Eternizer_Util_Base_Model
 	}
 	
 	//build the where clause for allowed entries
-	public function entryAllowed()
+	public static function entryAllowed()
 	{
 		$where = 'tbl.obj_status = \'' . DataUtil::formatForStore('A') . '\'';
 		
