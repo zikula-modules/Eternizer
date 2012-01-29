@@ -18,6 +18,22 @@
 use Doctrine\ORM\Query\AST\Functions\ModFunction;
 class Eternizer_Controller_User extends Eternizer_Controller_Base_User
 {
+    /**
+     * This method is the default function, and is called whenever the application's
+     * User area is called without defining arguments.
+     *
+     * @return mixed Output.
+     */
+    public function main($args)
+    {
+		// DEBUG: permission check aspect starts
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_OVERVIEW));
+		// DEBUG: permission check aspect ends	
+		
+        // redirect to view template
+		return System::redirect(ModUtil::url($this->name, 'user', 'view'));
+    }
+	
 	    /**
      * This method provides the handling of
      * the formposition
