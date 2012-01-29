@@ -32,14 +32,10 @@
         </div>
         <dl class="etz_options"> 
         {if $entry.email ne ''}<span class=etz_attr>
-             <a href="mailto:{$entry.email}" title="{gt text='Send an email'}">
-             {icon type='mail' size='extrasmall' __alt='Email'}
-             </a></span>
+             <a href="mailto:{$entry.email}" title="{gt text='Send an email'}">{icon type='mail' size='extrasmall' __alt='Email'}</a></span>
         {else}&nbsp;{/if}
         {if $entry.homepage ne ''}<span class=etz_attr>
-        <a href="{$entry.homepage}" title="{gt text='Visit this page'}">
-        {icon type='url' size='extrasmall' __alt='Homepage'}
-        </a></span>
+        <a href="{$entry.homepage}" title="{gt text='Visit this page'}">{icon type='url' size='extrasmall' __alt='Homepage'}</a></span>
         {else}&nbsp;{/if}<br />        
         {if $entry.location ne ''}<span class='etz_attr'>{gt text='Location'}</span><br />{$entry.location}{/if}  
         </dl>
