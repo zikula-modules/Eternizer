@@ -195,16 +195,23 @@ class Eternizer_Api_Admin extends Eternizer_Api_Base_Admin
         	
         	$sql3 = NULL;
         	// if checked delete the old table
-        	if ($args['oldtable']) {
-        		
+        	if ($args['oldtable']) {        		
         	$query4 = "DROP TABLE $table";
         		
         	$sql4 = $connect->prepare($query4);
         	$sql4->execute(); 
-
+        	$sql4 = NULL;        	
         	}
         	
-        	$sql4 = NULL;
+        	
+        	// if checked delete attributes for Eternizer
+        	if ($args['entriesattributes']) {
+        	$query5 = "DELETE FROM objectdata_attributes WHERE object_type = 'Eternizer_entry'";
+        	
+        	$sql5 = $connect->prepare($query5);
+        	$sql5->execute();
+        	$sql5 = NULL;
+        	}
         	
 			// delete the connection
        		$connect = NULL;
