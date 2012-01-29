@@ -19,11 +19,11 @@
 
                 <div class="z-formrow">
                     {formlabel for='pagesize' __text='Pagesize'}
-                    {formintinput id='pagesize' group='config' maxLength=255 width=20em __title='Enter this setting. Only digits are allowed.'}
+                    {formintinput id='pagesize' group='config' maxLength=255 __title='Enter this setting. Only digits are allowed.'}
                 </div>
                 <div class="z-formrow">
                     {formlabel for='mail' __text='Mail'}
-                    {formtextinput id='mail' group='config' maxLength=255 width=20em __title='Enter this setting.'}
+                    {formtextinput id='mail' group='config' maxLength=255 __title='Enter this setting.'}
                     <div class="z-informationmsg z-formnote">{gt text="Notice: If you enter a correct email adress a message will be sent to when a new entry was saved. 
                     If you leave this field empty, it is disabled."}</div>
                 </div>
@@ -49,7 +49,7 @@
                 </div>
                 <div class="z-formrow eternizer_hidden">
                     {formlabel for='period' __text='Period' class='eternizerFormTooltips' title=$toolTip}
-                    {formintinput id='period' group='config' maxLength=255 width=20em __title='Enter this setting. Only digits are allowed.'}
+                    {formintinput id='period' group='config' maxLength=255 __title='Enter this setting. Only digits are allowed.'}
                 </div>
             </fieldset>
 
