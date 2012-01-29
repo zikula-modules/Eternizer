@@ -1,7 +1,7 @@
 {* purpose of this template: footer for admin area *}
 
 {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
-<p class="z-center">
+<p class="z-gap z-center z-sub">
     Powered by <a href="http://modulestudio.de" title="Get the MOST out of Zikula!">ModuleStudio 0.5.4</a> and <a href="http://www.webdesign-in-bremen.com" title="Webdesign with Zikula">MU(t) Beratung Internet</a>
 </p>
 {adminfooter}
@@ -19,4 +19,3 @@
 {/capture}
 {pageaddvar name='header' value=$pageStyles}
 {/if}
-
