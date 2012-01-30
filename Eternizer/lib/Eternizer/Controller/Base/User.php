@@ -39,9 +39,9 @@ class Eternizer_Controller_Base_User extends Zikula_AbstractController
      */
     public function main($args)
     {
-// DEBUG: permission check aspect starts
+        // DEBUG: permission check aspect starts
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_OVERVIEW));
-// DEBUG: permission check aspect ends
+        // DEBUG: permission check aspect ends
 
         // return main template
         return $this->view->fetch('user/main.tpl');
