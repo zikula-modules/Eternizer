@@ -35,10 +35,6 @@ input.validation-failed, textarea.validation-failed {
     border: 1px solid #f30;
     color : #f30;
 }
-input.validation-passed, textarea.validation-passed {
-  /*  border: 1px solid #0c0; deleted */
-    color : #000;
-}
 
 .validation-advice {
     margin: 5px 0;
