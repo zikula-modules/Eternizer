@@ -41,8 +41,7 @@ class Eternizer_Controller_Admin extends Eternizer_Controller_Base_Admin
     	
     	return parent::view($args);
     }
-    
-
+        
      /**
      * This method overrites the parent diplay function.
      *
