@@ -25,9 +25,9 @@ class Eternizer_Util_Model extends Eternizer_Util_Base_Model
 			$userid = UserUtil::getVar('uid');
     	}
     	else {
-    		$userid = 1;
+    		$userid = 0;
     	}
-    	if ($userid != 1) {
+    	if ($userid != 0) {
     	// build where clause
     	$where = 'tbl.createdUserId = \'' . DataUtil::formatForStore($userid) . '\'';
     	}
