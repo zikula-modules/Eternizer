@@ -92,7 +92,6 @@ class Eternizer_Api_Selection extends Eternizer_Api_Base_Selection
     			$args['where'] = Eternizer_Util_Model::entryAllowed();
     		}
     	}
-
     	return parent::getEntitiesPaginated($args);
     }
     
