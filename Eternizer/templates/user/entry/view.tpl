@@ -44,7 +44,7 @@
         <div class="etz_info">
             <div class="etz_title">
             <div class="etz_name">
-            {if $entry.name ne ''}<span class="etz_attr"}>{$entry.name}</span>
+            {if $entry.name ne ''}<span class="etz_attr">{$entry.name}</span>
             {else}
             {if $entry.createdUserId eq 0}
             {modgetvar module='Users' name='anonymous' assign='guest'}
