@@ -31,7 +31,7 @@
         {useravatar uid=$entry.createdUserId}
         </div>
         <dl class="etz_options"> 
-        {if $entry.email ne ''}<span class=etz_attr>
+        {if $entry.email ne ''}<span class="etz_attr">
         <a href="mailto:{$entry.email}" title="{gt text='Send an email'}">{icon type='mail' size='extrasmall' __alt='Email'}</a></span>
         {else}&nbsp;{/if}
         {if $entry.homepage ne ''}<span class=etz_attr>
