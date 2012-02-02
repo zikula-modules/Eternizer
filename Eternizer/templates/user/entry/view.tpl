@@ -31,18 +31,18 @@
                         {if $entry.email ne ''}
                             <dt>{gt text='Email'}</dt>
                             <dd>
-                                <a href="mailto:{$entry.email}" title="{gt text='Send an email'}">{icon type='mail' size='extrasmall' __alt='Email'}</a>
+                                <a href="mailto:{$entry.email|safehtml}" title="{gt text='Send an email'}">{icon type='mail' size='extrasmall' __alt='Email'}</a>
                             </dd>
                         {/if}
                         {if $entry.homepage ne ''}
                             <dt>{gt text='Homepage'}</dt>
                             <dd>
-                                <a href="{$entry.homepage}" title="{gt text='Visit this page'}">{icon type='url' size='extrasmall' __alt='Homepage'}</a>
+                                <a href="{$entry.homepage|safehtml}" title="{gt text='Visit this page'}">{icon type='url' size='extrasmall' __alt='Homepage'}</a>
                             </dd>
                         {/if}
                         {if $entry.location ne ''}
                             <dt>{gt text='Location'}</dt>
-                            <dd>{$entry.location}</dd>
+                            <dd>{$entry.location|safehtml}</dd>
                         {/if}
                     </dl>
                 {/if}
@@ -52,21 +52,21 @@
                     <div class="etz_title">
                         <div class="etz_name">
                             {if $entry.name ne ''}
-                                <span class="etz_attr">{$entry.name}</span>
+                                <span class="etz_attr">{$entry.name|safehtml}</span>
                                 {else}
                                 {if $entry.createdUserId eq 0}
                                     {modgetvar module='Users' name='anonymous' assign='guest'}
-                                    {$guest}
+                                    {$guest|safehtml}
                                     {else}
                                     {usergetvar name='uname' uid=$entry.createdUserId assign='uname'}
                                     {if $uname ne ''}
-                                        {$uname}
+                                        {$uname|safehtml}
                                         {else}
-                                        {$guest}
+                                        {$guest|safehtml}
                                     {/if}
                                 {/if}
                             {/if}
-                            {gt text='on'} {$entry.createdDate|dateformat:datetimelong}
+                            {gt text='on %s' tag1=$entry.createdDate|dateformat:datetimelong}
                         </div>
                     </div>
                     <div class="etz_action">
@@ -87,21 +87,19 @@
                         <p style="margin-top: 2em;" class="entry-comment">
                             <strong class="entry-comment-label">{gt text="Comment:"}</strong>
                             <br/>
-                            {$entry.notes}
+                            {$entry.notes|safehtml}
                         </p>
                     {/if}
                     {if $entry.updatedDate > $entry.createdDate}
                         <br/>
-                        <span class="etz_updated">{gt text='Updated on'} {$entry.updatedDate|dateformat:datetimelong}</span>
+                        <span class="etz_updated">{gt text='Updated on %s' tag1=$entry.updatedDate|dateformat:datetimelong}</span>
                     {/if}
                 </div>
             </div>
         </div>
         {foreachelse}
         <tr class="z-datatableempty">
-            <td class="z-left" colspan="9">
-                {gt text='No entries found.'}
-            </td>
+            <td class="z-left" colspan="9">{gt text='No entries found.'}</td>
         </tr>
     {/foreach}
 
