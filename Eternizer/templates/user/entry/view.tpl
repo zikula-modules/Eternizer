@@ -8,15 +8,12 @@
 
     {if isset($showAllEntries) && $showAllEntries eq 1}
         {gt text='Back to paginated view' assign='linkTitle'}
-        <a href="{modurl modname='Eternizer' type='user' func='view' ot='entry'}" title="{$linkTitle}" class="z-icon-es-view">
-            {$linkTitle}
-        </a>
+        <a href="{modurl modname='Eternizer' type='user' func='view' ot='entry'}" title="{$linkTitle}" class="z-icon-es-view">{$linkTitle}</a>
     {else}
         {gt text='Show all entries' assign='linkTitle'}
-        <a href="{modurl modname='Eternizer' type='user' func='view' ot='entry' all=1}" title="{$linkTitle}" class="z-icon-es-view">
-            {$linkTitle}
-        </a>
+        <a href="{modurl modname='Eternizer' type='user' func='view' ot='entry' all=1}" title="{$linkTitle}" class="z-icon-es-view">{$linkTitle}</a>
     {/if}
+
     {if $formposition eq 'above'}
     {modfunc modname='Eternizer' type='user' func='edit'}
     {notifydisplayhooks eventname='eternizer.ui_hooks.entries.display_view' urlobject=$currentUrlObject assign='hooks'}
@@ -24,6 +21,7 @@
         {$hook}
         {/foreach}  
     {/if}
+
     {foreach item='entry' from=$items}     
     <div class="etz_entry z-clearfix {cycle values='etz_bg1,etz_bg2'}" >  
     <div class="etz_author">
@@ -49,6 +47,7 @@
             </dl>
         {/if}
     </div>
+
     <div class="etz_body">
         <div class="etz_info">
             <div class="etz_title">
@@ -74,9 +73,7 @@
             {if $entry.createdUserId eq $userid && $coredata.logged_in eq true && $editentries eq 1}
             {strip}
                 {foreach item='option' from=$entry._actions}
-                    <a href="{$option.url.type|eternizerActionUrl:$option.url.func:$option.url.arguments}" title="{$option.linkTitle|safetext}"{if $option.icon eq 'preview'} target="_blank"{/if}>
-                        {icon type=$option.icon size='extrasmall' alt=$option.linkText|safetext}
-                    </a>
+                    <a href="{$option.url.type|eternizerActionUrl:$option.url.func:$option.url.arguments}" title="{$option.linkTitle|safetext}"{if $option.icon eq 'preview'} target="_blank"{/if}>{icon type=$option.icon size='extrasmall' alt=$option.linkText|safetext}</a>
                 {/foreach}
             {/strip}
             {/if}
@@ -94,6 +91,7 @@
             {/if}
         </div>
     </div>   
+
     </div>
     {foreachelse}
         <tr class="z-datatableempty">
