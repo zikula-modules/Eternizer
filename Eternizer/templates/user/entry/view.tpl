@@ -27,18 +27,27 @@
     {foreach item='entry' from=$items}     
     <div class="etz_entry z-clearfix {cycle values='etz_bg1,etz_bg2'}" >  
     <div class="etz_author">
-        <div class="etz_avatar">
-        {useravatar uid=$entry.createdUserId}
-        </div>
-        <dl class="etz_options"> 
-        {if $entry.email ne ''}<span class="etz_attr">
-        <a href="mailto:{$entry.email}" title="{gt text='Send an email'}">{icon type='mail' size='extrasmall' __alt='Email'}</a></span>
-        {else}&nbsp;{/if}
-        {if $entry.homepage ne ''}<span class="etz_attr">
-        <a href="{$entry.homepage}" title="{gt text='Visit this page'}">{icon type='url' size='extrasmall' __alt='Homepage'}</a></span>
-        {else}&nbsp;{/if}<br />        
-        {if $entry.location ne ''}<span class="etz_attr">{gt text='Location'}</span><br />{$entry.location}{/if}  
-        </dl>
+        <div class="etz_avatar">{useravatar uid=$entry.createdUserId}</div>
+        {if $entry.email ne '' || $entry.homepage ne '' || $entry.location ne ''}
+            <dl class="etz_options"> 
+            {if $entry.email ne ''}
+            <dt>{gt text='Email'}</dt>
+            <dd>
+                <a href="mailto:{$entry.email}" title="{gt text='Send an email'}">{icon type='mail' size='extrasmall' __alt='Email'}</a>
+            </dd>
+            {/if}
+            {if $entry.homepage ne ''}
+            <dt>{gt text='Homepage'}</dt>
+            <dd>
+                <a href="{$entry.homepage}" title="{gt text='Visit this page'}">{icon type='url' size='extrasmall' __alt='Homepage'}</a>
+            </dd>
+            {/if}
+            {if $entry.location ne ''}
+                <dt>{gt text='Location'}</dt>
+                <dd>{$entry.location}</dd>
+            {/if}
+            </dl>
+        {/if}
     </div>
     <div class="etz_body">
         <div class="etz_info">
