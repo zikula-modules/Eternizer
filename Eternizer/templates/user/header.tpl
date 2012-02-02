@@ -1,5 +1,4 @@
 {* purpose of this template: header for user area *}
-
 {pageaddvar name='javascript' value='prototype'}
 {pageaddvar name='javascript' value='validation'}
 {pageaddvar name='javascript' value='zikula'}
