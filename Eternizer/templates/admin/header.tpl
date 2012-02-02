@@ -8,5 +8,5 @@
 {pageaddvar name='javascript' value='zikula.imageviewer'}
 
 {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
-{adminheader}
+    {adminheader}
 {/if}
