@@ -49,7 +49,7 @@
             {formtextinput group='entry' id='text' mandatory=true __title='Input the text of the entry' textMode='multiline' rows='6' cols='50' cssClass=''}
             {eternizerValidationError id='text' class='required'}
         </div>
-        <input type="hidden" id='notes' name='notes' value=''>
+        <input type="hidden" id='notes' name='notes' value='' />
     </fieldset>
 
     {if $mode ne 'create'}
