@@ -27,14 +27,14 @@ class Eternizer_Api_Base_User extends Zikula_AbstractApi
 
         if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url($this->name, 'admin', 'main'),
-                             'text' => $this->__('Backend'),
-                             'title' => $this->__('Switch to administration area.'),
-                             'class' => 'z-icon-es-options');
+                'text' => $this->__('Backend'),
+                'title' => $this->__('Switch to administration area.'),
+                'class' => 'z-icon-es-options');
         }
         if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
             $links[] = array('url' => ModUtil::url($this->name, 'user', 'view', array('ot' => 'entry')),
-                             'text' => $this->__('Entries'),
-                             'title' => $this->__('Entry list'));
+                'text' => $this->__('Entries'),
+                'title' => $this->__('Entry list'));
         }
         return $links;
     }
@@ -101,7 +101,7 @@ class Eternizer_Api_Base_User extends Zikula_AbstractApi
         // fallback to default templates
         if (!isset($args['args'][$args['func'] . 'ending'])) {
             if ($args['func'] == 'view') {
-                $args['args'][$args['func'] . 'ending'] = '';//'/';
+                $args['args'][$args['func'] . 'ending'] = ''; //'/';
             }
             else if ($args['func'] == 'display') {
                 $args['args'][$args['func'] . 'ending'] = $displayDefaultEnding;
@@ -113,19 +113,19 @@ class Eternizer_Api_Base_User extends Zikula_AbstractApi
             /**
             $filterEntities = array('customer', 'region', 'federalstate', 'country');
             foreach ($filterEntities as $filterEntity) {
-                $filterField = $filterEntity . 'id';
-                if (!isset($args['args'][$filterField]) || !$args['args'][$filterField]) {
-                    continue;
-                }
-                $filterId = $args['args'][$filterField];
-                unset($args['args'][$filterField]);
-
-                $filterGroupFolder = $routerFacade->getGroupingFolderFromObjectType($filterEntity, 'display', $args['args']);
-                $filterSlug = $routerFacade->getFormattedSlug($filterEntity, 'display', $args['args'], $filterId);
-                $result .= $filterGroupFolder . '/' . $filterSlug .'/';
-                break;
+            $filterField = $filterEntity . 'id';
+            if (!isset($args['args'][$filterField]) || !$args['args'][$filterField]) {
+            continue;
             }
-            */
+            $filterId = $args['args'][$filterField];
+            unset($args['args'][$filterField]);
+
+            $filterGroupFolder = $routerFacade->getGroupingFolderFromObjectType($filterEntity, 'display', $args['args']);
+            $filterSlug = $routerFacade->getFormattedSlug($filterEntity, 'display', $args['args'], $filterId);
+            $result .= $filterGroupFolder . '/' . $filterSlug .'/';
+            break;
+            }
+             */
         }
         elseif ($args['func'] == 'display') {
             // determine given id
@@ -161,7 +161,8 @@ class Eternizer_Api_Base_User extends Zikula_AbstractApi
         // post processing
         if (
             ($args['func'] == 'view' && !empty($args['args']['viewending']))
-            || $args['func'] == 'display') {
+            || $args['func'] == 'display'
+        ) {
             // check if url ends with a trailing slash
             if (substr($result, -1) == '/') {
                 // remove the trailing slash

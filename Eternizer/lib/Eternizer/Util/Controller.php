@@ -16,24 +16,24 @@
  */
 class Eternizer_Util_Controller extends Eternizer_Util_Base_Controller
 {
-	/**
-	 * 
-	 * Helper method for setting the modvars
-	 */
-	public static function setModVars()
-	{
+    /**
+     *
+     * Helper method for setting the modvars
+     */
+    public static function setModVars()
+    {
         ModUtil::setVar('Eternizer', 'pagesize', 10);
         ModUtil::setVar('Eternizer', 'mail', '');
         ModUtil::setVar('Eternizer', 'order', 'descending');
         ModUtil::setVar('Eternizer', 'moderate', 'guests');
-        ModUtil::setVar('Eternizer', 'formposition','below');
+        ModUtil::setVar('Eternizer', 'formposition', 'below');
         ModUtil::setVar('Eternizer', 'ipsave', false);
         ModUtil::setVar('Eternizer', 'editentries', false);
         ModUtil::setVar('Eternizer', 'period', 12);
 
         return true;
-	}
-    
+    }
+
     /**
      * Get list of form positions.
      */
@@ -41,9 +41,9 @@ class Eternizer_Util_Controller extends Eternizer_Util_Base_Controller
     {
         $dom = ZLanguage::getModuleDomain('Eternizer');
         $moderation = array();
-        $moderation[] = array('value' => 'A',    'text' => __('accepted and published', $dom));
-        $moderation[] = array('value' => 'M',    'text' => __('to moderate', $dom));
-        $moderation[] = array('value' => 'D',     'text' => __('denied', $dom));
+        $moderation[] = array('value' => 'A', 'text' => __('accepted and published', $dom));
+        $moderation[] = array('value' => 'M', 'text' => __('to moderate', $dom));
+        $moderation[] = array('value' => 'D', 'text' => __('denied', $dom));
         return $moderation;
     }
 }

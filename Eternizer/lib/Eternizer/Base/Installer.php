@@ -38,7 +38,7 @@ class Eternizer_Base_Installer extends Zikula_AbstractInstaller
         $this->setVar('mail', '');
         $this->setVar('order', 'descending');
         $this->setVar('moderate', 'guests');
-        $this->setVar('formposition','below');
+        $this->setVar('formposition', 'below');
         $this->setVar('ipsave', false);
         $this->setVar('editentries', false);
         $this->setVar('period', 12);
@@ -68,23 +68,23 @@ class Eternizer_Base_Installer extends Zikula_AbstractInstaller
      */
     public function upgrade($oldversion)
     {
-    /*
-        // Upgrade dependent on old version number
-        switch ($oldversion) {
-            case 1.0.0:
-                // do something
-                // ...
-                // update the database schema
-                try {
-                    DoctrineHelper::updateSchema($this->entityManager, $this->listEntityClasses());
-                } catch (Exception $e) {
-                    if (System::isDevelopmentMode()) {
-                        LogUtil::registerError($this->__('Doctrine Exception: ') . $e->getMessage());
+        /*
+            // Upgrade dependent on old version number
+            switch ($oldversion) {
+                case 1.0.0:
+                    // do something
+                    // ...
+                    // update the database schema
+                    try {
+                        DoctrineHelper::updateSchema($this->entityManager, $this->listEntityClasses());
+                    } catch (Exception $e) {
+                        if (System::isDevelopmentMode()) {
+                            LogUtil::registerError($this->__('Doctrine Exception: ') . $e->getMessage());
+                        }
+                        return LogUtil::registerError($this->__f('An error was encountered while dropping the tables for the %s module.', array($this->getName())));
                     }
-                    return LogUtil::registerError($this->__f('An error was encountered while dropping the tables for the %s module.', array($this->getName())));
-                }
-        }
-    */
+            }
+        */
 
         // update successful
         return true;
@@ -138,6 +138,7 @@ class Eternizer_Base_Installer extends Zikula_AbstractInstaller
 
         return $classNames;
     }
+
     /**
      * Create the default data for Eternizer.
      *
@@ -146,7 +147,8 @@ class Eternizer_Base_Installer extends Zikula_AbstractInstaller
     protected function createDefaultData()
     {
         // Ensure that tables are cleared
-        $this->entityManager->transactional(function($entityManager) {
+        $this->entityManager->transactional(function($entityManager)
+        {
             $entityManager->getRepository('Eternizer_Entity_Entry')->truncateTable();
         });
 

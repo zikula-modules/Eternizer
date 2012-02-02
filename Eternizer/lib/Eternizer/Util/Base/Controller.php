@@ -70,7 +70,7 @@ class Eternizer_Util_Base_Controller extends Zikula_AbstractBase
             $id = $request->getGet()->filter($idField, $defaultValue);
             if (!$id && $idField != 'id' && count($idFields) == 1) {
                 $defaultValue = isset($args['id']) && is_numeric($args['id']) ? $args['id'] : 0;
-                $id = (int) $request->getGet()->filter('id', $defaultValue, FILTER_VALIDATE_INT);
+                $id = (int)$request->getGet()->filter('id', $defaultValue, FILTER_VALIDATE_INT);
             }
             $idValues[$idField] = $id;
         }
@@ -103,8 +103,8 @@ class Eternizer_Util_Base_Controller extends Zikula_AbstractBase
     public static function formatPermalink($name)
     {
         $name = str_replace(array('ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', 'ß', '.', '?', '"', '/', ':', 'é', 'è', 'â'),
-                            array('ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', 'ss', '', '', '', '-', '-', 'e', 'e', 'a'),
-                            $name);
+            array('ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', 'ss', '', '', '', '-', '-', 'e', 'e', 'a'),
+            $name);
         $name = DataUtil::formatPermalink($name);
         return strtolower($name);
     }

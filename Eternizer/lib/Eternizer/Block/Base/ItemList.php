@@ -37,15 +37,15 @@ class Eternizer_Block_Base_ItemList extends Zikula_Controller_AbstractBlock
             $requirementMessage .= $this->__('Notice: This block will not be displayed until you activate the Eternizer module.');
         }
 
-        return array('module'           => 'Eternizer',
-                     'text_type'        => $this->__('Item list'),
-                     'text_type_long'   => $this->__('Show a list of Eternizer items based on different criteria.'),
-                     'allow_multiple'   => true,
-                     'form_content'     => false,
-                     'form_refresh'     => false,
-                     'show_preview'     => true,
-                     'admin_tableless'  => true,
-                     'requirement'      => $requirementMessage);
+        return array('module' => 'Eternizer',
+            'text_type' => $this->__('Item list'),
+            'text_type_long' => $this->__('Show a list of Eternizer items based on different criteria.'),
+            'allow_multiple' => true,
+            'form_content' => false,
+            'form_refresh' => false,
+            'show_preview' => true,
+            'admin_tableless' => true,
+            'requirement' => $requirementMessage);
     }
 
     /**
@@ -134,9 +134,9 @@ class Eternizer_Block_Base_ItemList extends Zikula_Controller_AbstractBlock
 
         // assign block vars and fetched data
         $this->view->assign('vars', $vars)
-                   ->assign('objectType', $objectType)
-                   ->assign('items', $entities)
-                   ->assign($repository->getAdditionalTemplateParameters('block'));
+                ->assign('objectType', $objectType)
+                ->assign('items', $entities)
+                ->assign($repository->getAdditionalTemplateParameters('block'));
 
         // set a block title
         if (empty($blockinfo['title'])) {
@@ -219,7 +219,7 @@ class Eternizer_Block_Base_ItemList extends Zikula_Controller_AbstractBlock
 
         $vars['objectType'] = $this->request->getPost()->filter('objecttype', 'entry', FILTER_SANITIZE_STRING);
         $vars['sorting'] = $this->request->getPost()->filter('sorting', 'default', FILTER_SANITIZE_STRING);
-        $vars['amount'] = (int) $this->request->getPost()->filter('amount', 5, FILTER_VALIDATE_INT);
+        $vars['amount'] = (int)$this->request->getPost()->filter('amount', 5, FILTER_VALIDATE_INT);
         $vars['template'] = $this->request->getPost()->get('template', '');
         $vars['filter'] = $this->request->getPost()->get('filter', '');
 

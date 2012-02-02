@@ -39,19 +39,19 @@ class Eternizer_Entity_Repository_Base_Entry extends EntityRepository
     public function getAllowedSortingFields()
     {
         return array(
-                     'id',
-                     'ip',
-                     'name',
-                     'email',
-                     'homepage',
-                     'location',
-                     'text',
-                     'notes',
-                     'obj_status',
-                     'createdUserId',
-                     'updatedUserId',
-                     'createdDate',
-                     'updatedDate'
+            'id',
+            'ip',
+            'name',
+            'email',
+            'homepage',
+            'location',
+            'text',
+            'notes',
+            'obj_status',
+            'createdUserId',
+            'updatedUserId',
+            'createdDate',
+            'updatedDate'
         );
     }
 
@@ -78,11 +78,10 @@ class Eternizer_Entity_Repository_Base_Entry extends EntityRepository
     }
 
 
-
     /**
      * Return name of the field used as title / name for entities of this repository.
      *
-     * @return string name of field to be used as title. 
+     * @return string name of field to be used as title.
      */
     public function getTitleFieldName()
     {
@@ -93,7 +92,7 @@ class Eternizer_Entity_Repository_Base_Entry extends EntityRepository
     /**
      * Return name of the field used for describing entities of this repository.
      *
-     * @return string name of field to be used as description. 
+     * @return string name of field to be used as description.
      */
     public function getDescriptionFieldName()
     {
@@ -105,7 +104,7 @@ class Eternizer_Entity_Repository_Base_Entry extends EntityRepository
     /**
      * Return name of the first upload field which is capable for handling images.
      *
-     * @return string name of field to be used for preview images 
+     * @return string name of field to be used for preview images
      */
     public function getPreviewFieldName()
     {
@@ -145,7 +144,7 @@ class Eternizer_Entity_Repository_Base_Entry extends EntityRepository
     public function truncateTable()
     {
         $query = $this->getEntityManager()
-                 ->createQuery('DELETE Eternizer_Entity_Entry');
+                ->createQuery('DELETE Eternizer_Entity_Entry');
         $query->execute();
     }
 
@@ -212,13 +211,13 @@ class Eternizer_Entity_Repository_Base_Entry extends EntityRepository
     public function selectWherePaginated($where = '', $orderBy = '', $currentPage = 1, $resultsPerPage = 25, $useJoins = true)
     {
         $query = $this->_intBaseQuery($where, $orderBy, $useJoins);
-        $offset = ($currentPage-1) * $resultsPerPage;
+        $offset = ($currentPage - 1) * $resultsPerPage;
 
         // count the total number of affected items
         $count = Paginate::getTotalQueryResults($query);
 
         $query->setFirstResult($offset)
-              ->setMaxResults($resultsPerPage);
+                ->setMaxResults($resultsPerPage);
 
         $result = $query->getResult();
 
@@ -284,7 +283,7 @@ class Eternizer_Entity_Repository_Base_Entry extends EntityRepository
 
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select($selection)
-           ->from('Eternizer_Entity_Entry', 'tbl');
+                ->from('Eternizer_Entity_Entry', 'tbl');
 
         if ($useJoins === true) {
             $this->addJoinsToFrom($qb);
@@ -312,7 +311,7 @@ class Eternizer_Entity_Repository_Base_Entry extends EntityRepository
         $where = 'tbl.' . $fieldName . ' = \'' . DataUtil::formatForStore($fieldValue) . '\'';
 
         if ($excludeid > 0) {
-            $where .= ' AND tbl.id != \'' . (int) DataUtil::formatForStore($excludeid) . '\'';
+            $where .= ' AND tbl.id != \'' . (int)DataUtil::formatForStore($excludeid) . '\'';
         }
 
         $count = $this->selectCount($where);
@@ -338,7 +337,7 @@ class Eternizer_Entity_Repository_Base_Entry extends EntityRepository
 
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select($selection)
-           ->from('Eternizer_Entity_Entry', 'tbl');
+                ->from('Eternizer_Entity_Entry', 'tbl');
 
         if ($useJoins === true) {
             $this->addJoinsToFrom($qb);
@@ -355,7 +354,7 @@ class Eternizer_Entity_Repository_Base_Entry extends EntityRepository
 
         $query = $qb->getQuery();
 
-// TODO - see https://github.com/zikula/core/issues/118
+        // TODO - see https://github.com/zikula/core/issues/118
         // use FilterUtil to support generic filtering
         //$fu = new FilterUtil('Eternizer', $this);
 

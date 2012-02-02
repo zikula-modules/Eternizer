@@ -137,7 +137,7 @@ abstract class Eternizer_Base_Validator extends Zikula_AbstractBase
      */
     public function isNumberNotShorterThan($fieldName, $length)
     {
-        $minValue = pow(10, $length-1);
+        $minValue = pow(10, $length - 1);
         return ($this->isValidNumber($fieldName) && $this->entity[$fieldName] > $minValue);
     }
 
@@ -228,10 +228,10 @@ abstract class Eternizer_Base_Validator extends Zikula_AbstractBase
     public function isValidLanguage($fieldName, $onlyInstalled = false)
     {
         $languageMap = ZLanguage::languageMap();
-        $result = in_array($this->entity[$fieldName], array_keys($languageMap));        
+        $result = in_array($this->entity[$fieldName], array_keys($languageMap));
         if (!$result || !$onlyInstalled) {
             return $result;
-        } 
+        }
         $available = ZLanguage::getInstalledLanguages();
         return in_array($this->entity[$fieldName], $available);
     }
@@ -304,8 +304,8 @@ abstract class Eternizer_Base_Validator extends Zikula_AbstractBase
     protected function isDateTimeValueInPast($fieldName, $format, $mandatory = true)
     {
         if ($mandatory === false) {
-        	return true;
-    	}
+            return true;
+        }
         return ($this->isValidDateTime($fieldName) && $this->entity[$fieldName]->format($format) < date($format));
     }
 
@@ -320,8 +320,8 @@ abstract class Eternizer_Base_Validator extends Zikula_AbstractBase
     protected function isDateTimeValueInFuture($fieldName, $format, $mandatory = true)
     {
         if ($mandatory === false) {
-        	return true;
-    	}
+            return true;
+        }
         return ($this->isValidDateTime($fieldName) && $this->entity[$fieldName]->format($format) > date($format));
     }
 

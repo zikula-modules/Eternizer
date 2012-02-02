@@ -119,7 +119,6 @@ class Eternizer_Form_Handler_User_Base_Edit extends Zikula_Form_AbstractHandler
     protected $hasPageLockSupport = false;
 
 
-
     /**
      * Post construction hook.
      *
@@ -179,8 +178,8 @@ class Eternizer_Form_Handler_User_Base_Edit extends Zikula_Form_AbstractHandler
             if ($this->hasPageLockSupport === true && ModUtil::available('PageLock')) {
                 // try to guarantee that only one person at a time can be editing this entity
                 ModUtil::apiFunc('PageLock', 'user', 'pageLock',
-                                         array('lockName' => $this->name . $this->objectTypeCapital . $this->createCompositeIdentifier(),
-                                               'returnUrl' => $this->getRedirectUrl(null, $entity)));
+                    array('lockName' => $this->name . $this->objectTypeCapital . $this->createCompositeIdentifier(),
+                        'returnUrl' => $this->getRedirectUrl(null, $entity)));
             }
         }
         else {
@@ -192,7 +191,7 @@ class Eternizer_Form_Handler_User_Base_Edit extends Zikula_Form_AbstractHandler
         }
 
         $this->view->assign('mode', $this->mode)
-                   ->assign('inlineUsage', $this->inlineUsage);
+                ->assign('inlineUsage', $this->inlineUsage);
 
         $entityData = $entity->toArray();
 
@@ -211,7 +210,7 @@ class Eternizer_Form_Handler_User_Base_Edit extends Zikula_Form_AbstractHandler
     /**
      * Create concatenated identifier string (for composite keys).
      *
-     * @return String concatenated identifiers. 
+     * @return String concatenated identifiers.
      */
     protected function createCompositeIdentifier()
     {
@@ -232,7 +231,7 @@ class Eternizer_Form_Handler_User_Base_Edit extends Zikula_Form_AbstractHandler
      *
      * @param Array $itemIds List of concatenated identifiers.
      * @param Array $idFields List of identifier names.
-     * @return Array with list of single identifiers. 
+     * @return Array with list of single identifiers.
      */
     protected function decodeCompositeIdentifier($itemIds, $idFields)
     {
@@ -255,7 +254,7 @@ class Eternizer_Form_Handler_User_Base_Edit extends Zikula_Form_AbstractHandler
      * Enrich a given args array for easy creation of display urls with composite keys.
      *
      * @param Array $args List of arguments to be extended.
-     * @return Array enriched arguments list. 
+     * @return Array enriched arguments list.
      */
     protected function addIdentifiersToUrlArgs($args = array())
     {
@@ -269,7 +268,7 @@ class Eternizer_Form_Handler_User_Base_Edit extends Zikula_Form_AbstractHandler
     /**
      * Initialise existing entity for editing.
      *
-     * @return Zikula_EntityAccess desired entity instance or null 
+     * @return Zikula_EntityAccess desired entity instance or null
      */
     protected function initEntityForEdit()
     {
@@ -283,7 +282,7 @@ class Eternizer_Form_Handler_User_Base_Edit extends Zikula_Form_AbstractHandler
     /**
      * Initialise new entity for creation.
      *
-     * @return Zikula_EntityAccess desired entity instance or null 
+     * @return Zikula_EntityAccess desired entity instance or null
      */
     protected function initEntityForCreation($entityClass)
     {
@@ -387,6 +386,7 @@ class Eternizer_Form_Handler_User_Base_Edit extends Zikula_Form_AbstractHandler
         list($entities, $objectCount) = ModUtil::apiFunc($this->name, 'selection', 'getEntitiesPaginated', $selectionArgs);
         return (($many) ? $entities : $entities[0]);
     }
+
     /**
      * Get list of allowed redirect codes.
      */
@@ -446,7 +446,7 @@ class Eternizer_Form_Handler_User_Base_Edit extends Zikula_Form_AbstractHandler
 
         $result = $this->fetchInputData($view, $args);
         if ($result === false) {
-             return $result;
+            return $result;
         }
 
         $hookAreaPrefix = 'eternizer.ui_hooks.' . $this->objectTypeLowerMultiple;
@@ -517,7 +517,7 @@ class Eternizer_Form_Handler_User_Base_Edit extends Zikula_Form_AbstractHandler
 
         if ($this->hasPageLockSupport === true && $this->mode == 'edit') {
             ModUtil::apiFunc('PageLock', 'user', 'releaseLock',
-                             array('lockName' => $this->name . $this->objectTypeCapital . $this->createCompositeIdentifier()));
+                array('lockName' => $this->name . $this->objectTypeCapital . $this->createCompositeIdentifier()));
         }
 
         return $this->view->redirect($this->getRedirectUrl($args, $entity, $repeatCreateAction));
@@ -535,26 +535,26 @@ class Eternizer_Form_Handler_User_Base_Edit extends Zikula_Form_AbstractHandler
         $message = '';
         switch ($args['commandName']) {
             case 'create':
-                    if ($success === true) {
-                        $message = $this->__('Done! Item created.');
-                    } else {
-                        $message = $this->__('Error! Creation attempt failed.');
-                    }
-                    break;
+                if ($success === true) {
+                    $message = $this->__('Done! Item created.');
+                } else {
+                    $message = $this->__('Error! Creation attempt failed.');
+                }
+                break;
             case 'update':
-                    if ($success === true) {
-                        $message = $this->__('Done! Item updated.');
-                    } else {
-                        $message = $this->__('Error! Update attempt failed.');
-                    }
-                    break;
+                if ($success === true) {
+                    $message = $this->__('Done! Item updated.');
+                } else {
+                    $message = $this->__('Error! Update attempt failed.');
+                }
+                break;
             case 'update':
-                    if ($success === true) {
-                        $message = $this->__('Done! Item deleted.');
-                    } else {
-                        $message = $this->__('Error! Deletion attempt failed.');
-                    }
-                    break;
+                if ($success === true) {
+                    $message = $this->__('Done! Item deleted.');
+                } else {
+                    $message = $this->__('Error! Deletion attempt failed.');
+                }
+                break;
         }
         return $message;
     }
@@ -609,6 +609,7 @@ class Eternizer_Form_Handler_User_Base_Edit extends Zikula_Form_AbstractHandler
         // return remaining form data
         return $formData;
     }
+
     /**
      * Executing insert and update statements
      *

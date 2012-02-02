@@ -118,9 +118,9 @@ class Eternizer_ContentType_Base_ItemList extends Content_AbstractContentType
 
         // assign block vars and fetched data
         $this->view->assign('vars', $data)
-                   ->assign('objectType', $this->objectType)
-                   ->assign('items', $entities)
-                   ->assign($repository->getAdditionalTemplateParameters('contentType'));
+                ->assign('objectType', $this->objectType)
+                ->assign('items', $entities)
+                ->assign($repository->getAdditionalTemplateParameters('contentType'));
 
         $output = '';
         if (!empty($this->template) && $this->view->template_exists('contenttype/' . $this->template)) {
@@ -146,10 +146,10 @@ class Eternizer_ContentType_Base_ItemList extends Content_AbstractContentType
     public function getDefaultData()
     {
         return array('objectType' => 'entry',
-                     'sorting' => 'default',
-                     'amount' => 1,
-                     'template' => 'itemlist_display.tpl',
-                     'filter' => '');
+            'sorting' => 'default',
+            'amount' => 1,
+            'template' => 'itemlist_display.tpl',
+            'filter' => '');
     }
 
     public function startEditing()

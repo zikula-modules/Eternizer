@@ -16,7 +16,7 @@
  */
 class Eternizer_Api_Selection extends Eternizer_Api_Base_Selection
 {
-	    /**
+    /**
      * Select a list of entities by different criteria.
      *
      * @param string  $args['ot']       The object type to retrieve (optional)
@@ -28,34 +28,32 @@ class Eternizer_Api_Selection extends Eternizer_Api_Base_Selection
      */
     public function getEntities($args)
     {
-    	$select = $this->request->getGet()->filter('select', '', FILTER_SANITIZE_STRING);
-    	if ($select == 'mine') {
-    		
-    		$args['where'] = Eternizer_Util_Model::getUserId();
-    	}
-    	
+        $select = $this->request->getGet()->filter('select', '', FILTER_SANITIZE_STRING);
+        if ($select == 'mine') {
+
+            $args['where'] = Eternizer_Util_Model::getUserId();
+        }
+
         $type = $this->request->getGet()->filter('type', '', FILTER_SANITIZE_STRING);
-    	    	
-    	if ($type == 'user' || $type = '') {
-    		if ($args['where'] != '')
-    		{
-    			$args['where'] .= ' AND ';
-    		}
-    	
-    		if ($args['where'] != '')
-    		{    	
-    			$args['where'] .= Eternizer_Util_Model::entryAllowed();
-    		}
-    		else
-    		{
-    			$args['where'] = Eternizer_Util_Model::entryAllowed();
-    		}
-    	}
-    	
-    	return parent::getEntities($args);
+
+        if ($type == 'user' || $type = '') {
+            if ($args['where'] != '') {
+                $args['where'] .= ' AND ';
+            }
+
+            if ($args['where'] != '') {
+                $args['where'] .= Eternizer_Util_Model::entryAllowed();
+            }
+            else
+            {
+                $args['where'] = Eternizer_Util_Model::entryAllowed();
+            }
+        }
+
+        return parent::getEntities($args);
     }
 
-        /**
+    /**
      * Select a list of entities by different criteria.
      *
      * @param string  $args['ot']             The object type to retrieve (optional)
@@ -70,29 +68,27 @@ class Eternizer_Api_Selection extends Eternizer_Api_Base_Selection
     public function getEntitiesPaginated($args)
     {
         $select = $this->request->getGet()->filter('select', '', FILTER_SANITIZE_STRING);
-    	if ($select == 'mine') {
-    		
-    		$args['where'] = Eternizer_Util_Model::getUserId();
-    	}
-    	
-    	$type = $this->request->getGet()->filter('type', '', FILTER_SANITIZE_STRING);
-    	    	
-    	if ($type == 'user' || $type == '') {
-    		if ($args['where'] != '')
-    		{
-    			$args['where'] .= ' AND ';
-    		}
-    	
-    		if ($args['where'] != '')
-    		{    	
-    			$args['where'] .= Eternizer_Util_Model::entryAllowed();
-    		}
-    		else
-    		{
-    			$args['where'] = Eternizer_Util_Model::entryAllowed();
-    		}
-    	}
-    	return parent::getEntitiesPaginated($args);
+        if ($select == 'mine') {
+
+            $args['where'] = Eternizer_Util_Model::getUserId();
+        }
+
+        $type = $this->request->getGet()->filter('type', '', FILTER_SANITIZE_STRING);
+
+        if ($type == 'user' || $type == '') {
+            if ($args['where'] != '') {
+                $args['where'] .= ' AND ';
+            }
+
+            if ($args['where'] != '') {
+                $args['where'] .= Eternizer_Util_Model::entryAllowed();
+            }
+            else
+            {
+                $args['where'] = Eternizer_Util_Model::entryAllowed();
+            }
+        }
+        return parent::getEntitiesPaginated($args);
     }
-    
+
 }

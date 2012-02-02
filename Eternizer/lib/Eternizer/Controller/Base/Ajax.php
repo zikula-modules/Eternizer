@@ -19,7 +19,6 @@ class Eternizer_Controller_Base_Ajax extends Zikula_Controller_AbstractAjax
 {
 
 
-
     /**
      * This method is the default function, and is called whenever the application's
      * Ajax area is called without defining arguments.
@@ -28,9 +27,9 @@ class Eternizer_Controller_Base_Ajax extends Zikula_Controller_AbstractAjax
      */
     public function main($args)
     {
-// DEBUG: permission check aspect starts
+        // DEBUG: permission check aspect starts
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_OVERVIEW));
-// DEBUG: permission check aspect ends
+        // DEBUG: permission check aspect ends
 
     }
 

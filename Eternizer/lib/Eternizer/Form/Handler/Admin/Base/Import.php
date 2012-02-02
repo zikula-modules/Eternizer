@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Eternizer.
@@ -18,7 +17,7 @@
  */
 class Eternizer_Form_Handler_Admin_Base_Import extends Zikula_Form_AbstractHandler
 {
-   /**
+    /**
      * Post construction hook.
      *
      * @return mixed
@@ -87,18 +86,18 @@ class Eternizer_Form_Handler_Admin_Base_Import extends Zikula_Form_AbstractHandl
     public function handleCommand(Zikula_Form_View $view, &$args)
     {
         if ($args['commandName'] == 'import') {
-        	
-            // retrieve form data
-            $data = $this->view->getValues();  
-            // call api func import      	
-			if (ModUtil::apiFunc($this->name, 'admin', 'import', $data['import'])) {
 
-            LogUtil::registerStatus($this->__('Done! Import complete.'));
-			}
-        
+            // retrieve form data
+            $data = $this->view->getValues();
+            // call api func import      	
+            if (ModUtil::apiFunc($this->name, 'admin', 'import', $data['import'])) {
+
+                LogUtil::registerStatus($this->__('Done! Import complete.'));
+            }
+
         } else if ($args['commandName'] == 'cancel') {
             // nothing to do there
-            }
+        }
 
         // redirect back to the import page
         $url = ModUtil::url('Eternizer', 'admin', 'import');

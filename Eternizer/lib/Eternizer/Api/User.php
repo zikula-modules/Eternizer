@@ -27,33 +27,33 @@ class Eternizer_Api_User extends Eternizer_Api_Base_User
 
         if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url($this->name, 'admin', 'main'),
-                             'text' => $this->__('Backend'),
-                             'title' => $this->__('Switch to administration area.'),
-                             'class' => 'z-icon-es-options');
+                'text' => $this->__('Backend'),
+                'title' => $this->__('Switch to administration area.'),
+                'class' => 'z-icon-es-options');
         }
         if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
             $links[] = array('url' => ModUtil::url($this->name, 'user', 'view', array('ot' => 'entry')),
-                             'text' => $this->__('Entries'),
-                             'title' => $this->__('Entry list'));
+                'text' => $this->__('Entries'),
+                'title' => $this->__('Entry list'));
         }
         if (UserUtil::isLoggedIn() == true) {
             if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
-            	$links[] = array('url' => ModUtil::url($this->name, 'user', 'view', array('ot' => 'entry',
-            																			'select' => 'mine')),
-                             'text' => $this->__('My Entries'),
-                             'title' => $this->__('View of my entries'));
-        }
+                $links[] = array('url' => ModUtil::url($this->name, 'user', 'view', array('ot' => 'entry',
+                    'select' => 'mine')),
+                    'text' => $this->__('My Entries'),
+                    'title' => $this->__('View of my entries'));
+            }
         }
         $formposition = ModUtil::getVar($this->name, 'formposition');
         if ($formposition == 'menue') {
-        	if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_COMMENT)) {
-            	$links[] = array('url' => ModUtil::url($this->name, 'user', 'edit', array('ot' => 'entry')),
-                             	'text' => $this->__('New Entry'),
-                             	'title' => $this->__('Make a new entry'));
+            if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_COMMENT)) {
+                $links[] = array('url' => ModUtil::url($this->name, 'user', 'edit', array('ot' => 'entry')),
+                    'text' => $this->__('New Entry'),
+                    'title' => $this->__('Make a new entry'));
+            }
         }
-        }
-        
-        
+
+
         return $links;
     }
 }

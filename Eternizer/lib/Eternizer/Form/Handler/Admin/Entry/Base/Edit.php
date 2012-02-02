@@ -134,17 +134,18 @@ class Eternizer_Form_Handler_Admin_Entry_Base_Edit extends Eternizer_Form_Handle
         $message = '';
         switch ($args['commandName']) {
             case 'create':
-                        $message = $this->__('Done! Entry created.');
-                    break;
+                $message = $this->__('Done! Entry created.');
+                break;
             case 'update':
-                        $message = $this->__('Done! Entry updated.');
-                    break;
+                $message = $this->__('Done! Entry updated.');
+                break;
             case 'update':
-                        $message = $this->__('Done! Entry deleted.');
-                    break;
+                $message = $this->__('Done! Entry deleted.');
+                break;
         }
         return $message;
     }
+
     /**
      * Input data processing called by handleCommand method.
      */
@@ -167,6 +168,7 @@ class Eternizer_Form_Handler_Admin_Entry_Base_Edit extends Eternizer_Form_Handle
         // save updated entity
         $this->entityRef = $entity;
     }
+
     /**
      * Executing insert and update statements
      *
@@ -177,11 +179,11 @@ class Eternizer_Form_Handler_Admin_Entry_Base_Edit extends Eternizer_Form_Handle
         // get treated entity reference from persisted member var
         $entity = $this->entityRef;
 
-            $this->updateRelationLinks($entity);
-            //$this->entityManager->transactional(function($entityManager) {
-                $this->entityManager->persist($entity);
-                $this->entityManager->flush();
-            //});
+        $this->updateRelationLinks($entity);
+        //$this->entityManager->transactional(function($entityManager) {
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush();
+        //});
     }
 
     /**
@@ -191,7 +193,7 @@ class Eternizer_Form_Handler_Admin_Entry_Base_Edit extends Eternizer_Form_Handle
     {
         if ($this->inlineUsage == true) {
             $urlArgs = array('idp' => $this->idPrefix,
-                             'com' => $args['commandName']);
+                'com' => $args['commandName']);
             $urlArgs = $this->addIdentifiersToUrlArgs($urlArgs);
             // inline usage, return to special function for closing the Zikula.UI.Window instance
             return ModUtil::url($this->name, 'admin', 'handleInlineRedirect', $urlArgs);
@@ -210,29 +212,29 @@ class Eternizer_Form_Handler_Admin_Entry_Base_Edit extends Eternizer_Form_Handle
         // parse given redirect code and return corresponding url
         switch ($this->returnTo) {
             case 'admin':
-                                    return ModUtil::url($this->name, 'admin', 'main');
+                return ModUtil::url($this->name, 'admin', 'main');
             case 'adminView':
-                                    return ModUtil::url($this->name, 'admin', 'view',
-                                                             array('ot' => $this->objectType));
+                return ModUtil::url($this->name, 'admin', 'view',
+                    array('ot' => $this->objectType));
             case 'adminDisplay':
-                                    if ($args['commandName'] != 'delete' && !($this->mode == 'create' && $args['commandName'] == 'cancel')) {
-                                        return ModUtil::url($this->name, 'admin', $this->addIdentifiersToUrlArgs());
-                                    }
-                                    return $this->getDefaultReturnUrl($args, $obj);
+                if ($args['commandName'] != 'delete' && !($this->mode == 'create' && $args['commandName'] == 'cancel')) {
+                    return ModUtil::url($this->name, 'admin', $this->addIdentifiersToUrlArgs());
+                }
+                return $this->getDefaultReturnUrl($args, $obj);
             case 'user':
-                                    return ModUtil::url($this->name, 'user', 'main');
+                return ModUtil::url($this->name, 'user', 'main');
             case 'userView':
-                                    return ModUtil::url($this->name, 'user', 'view',
-                                                             array('ot' => $this->objectType));
+                return ModUtil::url($this->name, 'user', 'view',
+                    array('ot' => $this->objectType));
             case 'userDisplay':
-                                    if ($args['commandName'] != 'delete' && !($this->mode == 'create' && $args['commandName'] == 'cancel')) {
-                                        return ModUtil::url($this->name, 'user', $this->addIdentifiersToUrlArgs());
-                                    }
-                                    return $this->getDefaultReturnUrl($args, $obj);
+                if ($args['commandName'] != 'delete' && !($this->mode == 'create' && $args['commandName'] == 'cancel')) {
+                    return ModUtil::url($this->name, 'user', $this->addIdentifiersToUrlArgs());
+                }
+                return $this->getDefaultReturnUrl($args, $obj);
             case 'search':
-                                    return ModUtil::url($this->name, 'search', 'main');
+                return ModUtil::url($this->name, 'search', 'main');
             default:
-                                    return $this->getDefaultReturnUrl($args, $obj);
+                return $this->getDefaultReturnUrl($args, $obj);
         }
     }
 
@@ -245,6 +247,7 @@ class Eternizer_Form_Handler_Admin_Entry_Base_Edit extends Eternizer_Form_Handle
         $selectedRelations = array();
         $this->view->assign('selectedRelations', $selectedRelations);
     }
+
     /**
      * Helper method for updating links to related records.
      */

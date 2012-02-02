@@ -51,7 +51,6 @@ abstract class Eternizer_Entity_Base_Entry extends Zikula_EntityAccess
     protected $_actions = array();
 
 
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -144,7 +143,6 @@ abstract class Eternizer_Entity_Base_Entry extends Zikula_EntityAccess
      * @var datetime $updatedDate.
      */
     protected $updatedDate;
-
 
 
     /**
@@ -274,7 +272,6 @@ abstract class Eternizer_Entity_Base_Entry extends Zikula_EntityAccess
     {
         $this->_actions = $_actions;
     }
-
 
 
     /**
@@ -583,8 +580,6 @@ abstract class Eternizer_Entity_Base_Entry extends Zikula_EntityAccess
     }
 
 
-
-
     /**
      * Initialise validator and return it's instance.
      *
@@ -636,18 +631,18 @@ abstract class Eternizer_Entity_Base_Entry extends Zikula_EntityAccess
         $dom = ZLanguage::getModuleDomain('Eternizer');
         if ($currentType == 'admin') {
             if (in_array($currentFunc, array('main', 'view'))) {
-                    $this->_actions[] = array(
-                        'url' => array('type' => 'user', 'func' => 'display', 'arguments' => array('ot' => 'entry', 'id' => $this['id'])),
-                        'icon' => 'preview',
-                        'linkTitle' => __('Open preview page', $dom),
-                        'linkText' => __('Preview', $dom)
-                    );
-                    $this->_actions[] = array(
-                        'url' => array('type' => 'admin', 'func' => 'display', 'arguments' => array('ot' => 'entry', 'id' => $this['id'])),
-                        'icon' => 'display',
-                        'linkTitle' => str_replace('"', '', $this['ip']),
-                        'linkText' => __('Details', $dom)
-                    );
+                $this->_actions[] = array(
+                    'url' => array('type' => 'user', 'func' => 'display', 'arguments' => array('ot' => 'entry', 'id' => $this['id'])),
+                    'icon' => 'preview',
+                    'linkTitle' => __('Open preview page', $dom),
+                    'linkText' => __('Preview', $dom)
+                );
+                $this->_actions[] = array(
+                    'url' => array('type' => 'admin', 'func' => 'display', 'arguments' => array('ot' => 'entry', 'id' => $this['id'])),
+                    'icon' => 'display',
+                    'linkTitle' => str_replace('"', '', $this['ip']),
+                    'linkText' => __('Details', $dom)
+                );
             }
 
             if (in_array($currentFunc, array('main', 'view', 'display'))) {
@@ -676,22 +671,22 @@ abstract class Eternizer_Entity_Base_Entry extends Zikula_EntityAccess
                 }
             }
             if ($currentFunc == 'display') {
-                    $this->_actions[] = array(
-                        'url' => array('type' => 'admin', 'func' => 'view', 'arguments' => array('ot' => 'entry')),
-                        'icon' => 'back',
-                        'linkTitle' => __('Back to overview', $dom),
-                        'linkText' => __('Back to overview', $dom)
-                    );
+                $this->_actions[] = array(
+                    'url' => array('type' => 'admin', 'func' => 'view', 'arguments' => array('ot' => 'entry')),
+                    'icon' => 'back',
+                    'linkTitle' => __('Back to overview', $dom),
+                    'linkText' => __('Back to overview', $dom)
+                );
             }
         }
         if ($currentType == 'user') {
             if (in_array($currentFunc, array('main', 'view'))) {
-                    $this->_actions[] = array(
-                        'url' => array('type' => 'user', 'func' => 'display', 'arguments' => array('ot' => 'entry', 'id' => $this['id'])),
-                        'icon' => 'display',
-                        'linkTitle' => str_replace('"', '', $this['ip']),
-                        'linkText' => __('Details', $dom)
-                    );
+                $this->_actions[] = array(
+                    'url' => array('type' => 'user', 'func' => 'display', 'arguments' => array('ot' => 'entry', 'id' => $this['id'])),
+                    'icon' => 'display',
+                    'linkTitle' => str_replace('"', '', $this['ip']),
+                    'linkText' => __('Details', $dom)
+                );
             }
 
             if (in_array($currentFunc, array('main', 'view', 'display'))) {
@@ -712,17 +707,15 @@ abstract class Eternizer_Entity_Base_Entry extends Zikula_EntityAccess
                 }
             }
             if ($currentFunc == 'display') {
-                    $this->_actions[] = array(
-                        'url' => array('type' => 'user', 'func' => 'view', 'arguments' => array('ot' => 'entry')),
-                        'icon' => 'back',
-                        'linkTitle' => __('Back to overview', $dom),
-                        'linkText' => __('Back to overview', $dom)
-                    );
+                $this->_actions[] = array(
+                    'url' => array('type' => 'user', 'func' => 'view', 'arguments' => array('ot' => 'entry')),
+                    'icon' => 'back',
+                    'linkTitle' => __('Back to overview', $dom),
+                    'linkText' => __('Back to overview', $dom)
+                );
             }
         }
     }
-
-
 
 
     /**
@@ -743,29 +736,29 @@ abstract class Eternizer_Entity_Base_Entry extends Zikula_EntityAccess
         $currentType = FormUtil::getPassedValue('type', 'user', 'GETPOST', FILTER_SANITIZE_STRING);
         $currentFunc = FormUtil::getPassedValue('func', 'main', 'GETPOST', FILTER_SANITIZE_STRING);
 
-        $this['id'] = (int) ((isset($this['id']) && !empty($this['id'])) ? DataUtil::formatForDisplay($this['id']) : 0);
-    if ($currentFunc != 'edit') {
-        $this['ip'] = ((isset($this['ip']) && !empty($this['ip'])) ? DataUtil::formatForDisplayHTML($this['ip']) : '');
-    }
-    if ($currentFunc != 'edit') {
-        $this['name'] = ((isset($this['name']) && !empty($this['name'])) ? DataUtil::formatForDisplayHTML($this['name']) : '');
-    }
-    if ($currentFunc != 'edit') {
-        $this['email'] = ((isset($this['email']) && !empty($this['email'])) ? DataUtil::formatForDisplayHTML($this['email']) : '');
-    }
+        $this['id'] = (int)((isset($this['id']) && !empty($this['id'])) ? DataUtil::formatForDisplay($this['id']) : 0);
+        if ($currentFunc != 'edit') {
+            $this['ip'] = ((isset($this['ip']) && !empty($this['ip'])) ? DataUtil::formatForDisplayHTML($this['ip']) : '');
+        }
+        if ($currentFunc != 'edit') {
+            $this['name'] = ((isset($this['name']) && !empty($this['name'])) ? DataUtil::formatForDisplayHTML($this['name']) : '');
+        }
+        if ($currentFunc != 'edit') {
+            $this['email'] = ((isset($this['email']) && !empty($this['email'])) ? DataUtil::formatForDisplayHTML($this['email']) : '');
+        }
         $this['homepage'] = ((isset($this['homepage']) && !empty($this['homepage'])) ? DataUtil::formatForDisplay($this['homepage']) : '');
-    if ($currentFunc != 'edit') {
-        $this['location'] = ((isset($this['location']) && !empty($this['location'])) ? DataUtil::formatForDisplayHTML($this['location']) : '');
-    }
-    if ($currentFunc != 'edit') {
-        $this['text'] = ((isset($this['text']) && !empty($this['text'])) ? DataUtil::formatForDisplayHTML($this['text']) : '');
-    }
-    if ($currentFunc != 'edit') {
-        $this['notes'] = ((isset($this['notes']) && !empty($this['notes'])) ? DataUtil::formatForDisplayHTML($this['notes']) : '');
-    }
-    if ($currentFunc != 'edit') {
-        $this['obj_status'] = ((isset($this['obj_status']) && !empty($this['obj_status'])) ? DataUtil::formatForDisplayHTML($this['obj_status']) : '');
-    }
+        if ($currentFunc != 'edit') {
+            $this['location'] = ((isset($this['location']) && !empty($this['location'])) ? DataUtil::formatForDisplayHTML($this['location']) : '');
+        }
+        if ($currentFunc != 'edit') {
+            $this['text'] = ((isset($this['text']) && !empty($this['text'])) ? DataUtil::formatForDisplayHTML($this['text']) : '');
+        }
+        if ($currentFunc != 'edit') {
+            $this['notes'] = ((isset($this['notes']) && !empty($this['notes'])) ? DataUtil::formatForDisplayHTML($this['notes']) : '');
+        }
+        if ($currentFunc != 'edit') {
+            $this['obj_status'] = ((isset($this['obj_status']) && !empty($this['obj_status'])) ? DataUtil::formatForDisplayHTML($this['obj_status']) : '');
+        }
         $this->prepareItemActions();
         return true;
     }
@@ -822,7 +815,7 @@ abstract class Eternizer_Entity_Base_Entry extends Zikula_EntityAccess
      */
     protected function performPreRemoveCallback()
     {
-/*        // delete workflow for this entity
+        /*        // delete workflow for this entity
         $result = Zikula_Workflow_Util::deleteWorkflow($this);
         if ($result === false) {
             $dom = ZLanguage::getModuleDomain('Eternizer');

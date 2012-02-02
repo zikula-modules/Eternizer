@@ -18,110 +18,110 @@ class Eternizer_Util_Base_Settings extends Zikula_AbstractBase
 {
     public function handleModvarsPreSave()
     {
-    	
-      	$modvar = Eternizer_Util_Base_Settings::getModvars();
 
-    	if ($modvar['ipsave'] == true) {
-    		$ip = System::serverGetVar('REMOTE_ADDR');
-    	}
-    	
-    	$this->setIp($ip);
-    	
-    	if ($modvar['moderate'] == 'guests') {
-    		
-    		if (UserUtil::isLoggedIn() === false) {
-    		$this->setObj_status('M');
-    		}
-    		else {
-    			$this->setObj_status('A');
-    		}
-    	}
-    	elseif ($modvar['moderate'] == 'all') {
-    		
-    		$this->setObj_status('M');
-    	}
-    	
-    	return true;
+        $modvar = Eternizer_Util_Base_Settings::getModvars();
+
+        if ($modvar['ipsave'] == true) {
+            $ip = System::serverGetVar('REMOTE_ADDR');
+        }
+
+        $this->setIp($ip);
+
+        if ($modvar['moderate'] == 'guests') {
+
+            if (UserUtil::isLoggedIn() === false) {
+                $this->setObj_status('M');
+            }
+            else {
+                $this->setObj_status('A');
+            }
+        }
+        elseif ($modvar['moderate'] == 'all') {
+
+            $this->setObj_status('M');
+        }
+
+        return true;
     }
-    
+
     public function handleModvarsPostPersist($args)
     {
-    	
-    	$modvar = Eternizer_Util_Base_Settings::getModvars();
-    	
-    	$userid = $this->getCreatedUserId();
-    	
-    	$id = $args['id'];
-    	$text = $args['text'];
-    	
-    	$host = System::serverGetVar('HTTP_HOST') . '/';
-    	$url = 'http://'. $host . ModUtil::url('Eternizer', 'user', 'view');
-    	$editurl = 'http://' . $host . ModUtil::url('Eternizer', 'admin', 'edit', array('ot' => 'entry', 'id' => $id));
 
-    	$from = ModUtil::getVar('ZConfig', 'sitename');
-    	$fromaddress = ModUtil::getVar('ZConfig', 'adminmail');
-    	$toaddress = $modvar['mail'];
-    	
-    	$messagecontent = array();
-    	$messagecontent['from'] = $from;
-    	$messagecontent['fromaddress'] = $fromaddress;
-    	$messagecontent['toname'] = 'Webmaster';
-    	$messagecontent['toaddress'] = $toaddress;
-    	$messagecontent['subject'] = __('New Entry in Guestbook on ') . $from;
-    	$messagecontent['body'] = __('Another entry was created by a user on <h2>') . $from . '</h2>' .
-    	__('Text') . '<br />' . $text . '<br /><br />' . __('Visit our guestbook:') . 
-    	'<br />' . '<a href="' . $url . '">'. $url . '</a><br />' . __('Moderate this entry:') . 
-    	'<br />' . '<a href="' . $editurl . '">' . $editurl . '</a>';
-    	$messagecontent['altbody'] = '';
-    	$messagecontent['html'] = true;
-    	
-    	// We send a mail if an email address is saved
-    	if ($toaddress != '') {
-    	
-        	if(!ModUtil::apiFunc('Mailer', 'user', 'sendmessage', $messagecontent)) {
-    			LogUtil::registerError(Zikula_Form_AbstractHandler::__('Unable to send message'));
-    		}
-    	}
-    	
-    	// Formating of email text
-    	$message = Zikula_Form_AbstractHandler::__('Your entry was published!');
-    	
-    	if ($modvar['moderate'] == 'guests') {
+        $modvar = Eternizer_Util_Base_Settings::getModvars();
 
-    			if ($userid < 2) {			
-    				$message = Zikula_Form_AbstractHandler::__('Your entry was saved and must be confirmed by our team');
-    			}
-    	}
-    	elseif ($modvar['moderate'] == 'all') {
-    		
-    		$message = Zikula_Form_AbstractHandler::__('Your entry was saved and must be confirmed by our team');
-    	}
-    	
-    	LogUtil::registerStatus($message);
-    	
-    	return true;
-    	
+        $userid = $this->getCreatedUserId();
+
+        $id = $args['id'];
+        $text = $args['text'];
+
+        $host = System::serverGetVar('HTTP_HOST') . '/';
+        $url = 'http://' . $host . ModUtil::url('Eternizer', 'user', 'view');
+        $editurl = 'http://' . $host . ModUtil::url('Eternizer', 'admin', 'edit', array('ot' => 'entry', 'id' => $id));
+
+        $from = ModUtil::getVar('ZConfig', 'sitename');
+        $fromaddress = ModUtil::getVar('ZConfig', 'adminmail');
+        $toaddress = $modvar['mail'];
+
+        $messagecontent = array();
+        $messagecontent['from'] = $from;
+        $messagecontent['fromaddress'] = $fromaddress;
+        $messagecontent['toname'] = 'Webmaster';
+        $messagecontent['toaddress'] = $toaddress;
+        $messagecontent['subject'] = __('New Entry in Guestbook on ') . $from;
+        $messagecontent['body'] = __('Another entry was created by a user on <h2>') . $from . '</h2>' .
+                __('Text') . '<br />' . $text . '<br /><br />' . __('Visit our guestbook:') .
+                '<br />' . '<a href="' . $url . '">' . $url . '</a><br />' . __('Moderate this entry:') .
+                '<br />' . '<a href="' . $editurl . '">' . $editurl . '</a>';
+        $messagecontent['altbody'] = '';
+        $messagecontent['html'] = true;
+
+        // We send a mail if an email address is saved
+        if ($toaddress != '') {
+
+            if (!ModUtil::apiFunc('Mailer', 'user', 'sendmessage', $messagecontent)) {
+                LogUtil::registerError(Zikula_Form_AbstractHandler::__('Unable to send message'));
+            }
+        }
+
+        // Formating of email text
+        $message = Zikula_Form_AbstractHandler::__('Your entry was published!');
+
+        if ($modvar['moderate'] == 'guests') {
+
+            if ($userid < 2) {
+                $message = Zikula_Form_AbstractHandler::__('Your entry was saved and must be confirmed by our team');
+            }
+        }
+        elseif ($modvar['moderate'] == 'all') {
+
+            $message = Zikula_Form_AbstractHandler::__('Your entry was saved and must be confirmed by our team');
+        }
+
+        LogUtil::registerStatus($message);
+
+        return true;
+
     }
-    
+
     /**
-     * 
+     *
      * this method will handle a moderation on the view template
      * Enter description here ...
      */
     public function handleChange()
     {
-    	// TODO
+        // TODO
     }
-    
+
     public function getModvars()
     {
-    	
-    	$modvar['ipsave'] = ModUtil::getVar('Eternizer', 'ipsave');
-    	$modvar['moderate'] = ModUtil::getVar('Eternizer', 'moderate');
-    	$modvar['mail'] = ModUtil::getVar('Eternizer', 'mail');
-    	$modvar['editentries'] = ModUtil::getVar('Eternizer', 'editentries');
-    	$modvar['period'] = ModUtil::getVar('Eternizer', 'period');
-    	
-    	return $modvar;
+
+        $modvar['ipsave'] = ModUtil::getVar('Eternizer', 'ipsave');
+        $modvar['moderate'] = ModUtil::getVar('Eternizer', 'moderate');
+        $modvar['mail'] = ModUtil::getVar('Eternizer', 'mail');
+        $modvar['editentries'] = ModUtil::getVar('Eternizer', 'editentries');
+        $modvar['period'] = ModUtil::getVar('Eternizer', 'period');
+
+        return $modvar;
     }
 }

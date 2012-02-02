@@ -16,6 +16,7 @@
  * This is the User controller class providing navigation and interaction functionality.
  */
 use Doctrine\ORM\Query\AST\Functions\ModFunction;
+
 class Eternizer_Controller_User extends Eternizer_Controller_Base_User
 {
     /**
@@ -26,54 +27,54 @@ class Eternizer_Controller_User extends Eternizer_Controller_Base_User
      */
     public function main($args)
     {
-		// DEBUG: permission check aspect starts
+        // DEBUG: permission check aspect starts
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_OVERVIEW));
-		// DEBUG: permission check aspect ends	
-		
+        // DEBUG: permission check aspect ends
+
         // redirect to view template
-		return System::redirect(ModUtil::url($this->name, 'user', 'view'));
+        return System::redirect(ModUtil::url($this->name, 'user', 'view'));
     }
-	
-	    /**
+
+    /**
      * This method provides the handling of
      * the formposition
      * the editing of entries and
      * the order of entries
      *
-     * @param string  $formposition		position of the create form
+     * @param string  $formposition        position of the create form
      * @param int  $userid              the userid of loggedin users
      * @param string  $args['sortdir']  Sorting direction
-     * 
+     *
      * return the parent function
-     * 
+     *
      */
     public function view($args)
     {
-    	// We rule the position of the form
-    	$formposition = ModUtil::getVar($this->name, 'formposition');
-    	
-    	//We check the userid for ruling the edit button
-    	$userid = UserUtil::getVar('uid');
-    	
-    	//We check for editing of entries
-    	$editentries = ModUtil::getVar($this->name, 'editentries');
+        // We rule the position of the form
+        $formposition = ModUtil::getVar($this->name, 'formposition');
 
-    	// We assign to the template
-    	$this->view->assign('formposition', $formposition);
-    	$this->view->assign('userid', $userid);
-    	$this->view->assign('editentries', $editentries);
-    	
-    	$order = ModUtil::getVar($this->name, 'order');
-    	if ($order == 'descending') {
-    		$args['sortdir'] = 'desc';
-    	}
-    	else {
-    		$args['sortdir'] = 'asc';
-    	}
-    	
-    	return parent::view($args);
+        //We check the userid for ruling the edit button
+        $userid = UserUtil::getVar('uid');
+
+        //We check for editing of entries
+        $editentries = ModUtil::getVar($this->name, 'editentries');
+
+        // We assign to the template
+        $this->view->assign('formposition', $formposition);
+        $this->view->assign('userid', $userid);
+        $this->view->assign('editentries', $editentries);
+
+        $order = ModUtil::getVar($this->name, 'order');
+        if ($order == 'descending') {
+            $args['sortdir'] = 'desc';
+        }
+        else {
+            $args['sortdir'] = 'asc';
+        }
+
+        return parent::view($args);
     }
-    
+
     /**
      * This method provides a generic handling of all edit requests.
      *
@@ -84,46 +85,46 @@ class Eternizer_Controller_User extends Eternizer_Controller_Base_User
      */
     public function edit($args)
     {
-    	//We check for parameters
-    	$func = $this->request->getGet()->filter('func','view' , FILTER_SANITIZE_STRING);
-    	$id = $this->request->getGet()->filter('id', null , FILTER_SANITIZE_NUMBER_INT);
-   		
-    	//We check for editing of entries
-    	$editentries = ModUtil::getVar($this->name, 'editentries');
-    	
-    	// if editing is allowed we call the parent method
-    	if ($editentries == 1) {
-    		return parent::edit($args);
-    	}
-    	else {
-    		if (($func == 'edit' || $func == 'view')) {
-    			if ($id == null) {
-    				return parent::edit($args);
-    			}
-    			// otherwise we make a redirect
-    			else {
-    				$url = ModUtil::url($this->name, 'user', 'view');
-    				LogUtil::registerError($this->__('Sorry. The editing of entries is disabled.'));
-    				System::redirect($url);
-    	
-    			}
-    		}
-    	}
+        //We check for parameters
+        $func = $this->request->getGet()->filter('func', 'view', FILTER_SANITIZE_STRING);
+        $id = $this->request->getGet()->filter('id', null, FILTER_SANITIZE_NUMBER_INT);
+
+        //We check for editing of entries
+        $editentries = ModUtil::getVar($this->name, 'editentries');
+
+        // if editing is allowed we call the parent method
+        if ($editentries == 1) {
+            return parent::edit($args);
+        }
+        else {
+            if (($func == 'edit' || $func == 'view')) {
+                if ($id == null) {
+                    return parent::edit($args);
+                }
+                // otherwise we make a redirect
+                else {
+                    $url = ModUtil::url($this->name, 'user', 'view');
+                    LogUtil::registerError($this->__('Sorry. The editing of entries is disabled.'));
+                    System::redirect($url);
+
+                }
+            }
+        }
     }
-    
-     /**
+
+    /**
      * This method overrites the parent diplay function.
      *
      * @return mixed System Redirect.
      */
     public function display($args)
     {
-    	// DEBUG: permission check aspect starts
+        // DEBUG: permission check aspect starts
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_OVERVIEW));
-		// DEBUG: permission check aspect ends
+        // DEBUG: permission check aspect ends
 
         // return main template
         return System::redirect(ModUtil::url($this->name, 'user', 'view'));
     }
-    
+
 }

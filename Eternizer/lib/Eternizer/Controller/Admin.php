@@ -17,48 +17,49 @@
  */
 class Eternizer_Controller_Admin extends Eternizer_Controller_Base_Admin
 {
-		    /**
+    /**
      * This method provides the handling of
      * the formposition
      * the editing of entries and
      * the order of entries
      *
      * @param string  $args['sortdir']  Sorting direction
-     * 
+     *
      * return the parent function
-     * 
+     *
      */
     public function view($args)
     {
-    	
-    	$order = ModUtil::getVar($this->name, 'order');
-    	if ($order == 'descending') {
-    		$args['sortdir'] = 'desc';
-    	}
-    	else {
-    		$args['sortdir'] = 'asc';
-    	}
-    	
-    	return parent::view($args);
+
+        $order = ModUtil::getVar($this->name, 'order');
+        if ($order == 'descending') {
+            $args['sortdir'] = 'desc';
+        }
+        else {
+            $args['sortdir'] = 'asc';
+        }
+
+        return parent::view($args);
     }
-        
-     /**
+
+    /**
      * This method overrites the parent diplay function.
      *
      * @return mixed System Redirect.
      */
     public function display($args)
     {
-    	// DEBUG: permission check aspect starts
+        // DEBUG: permission check aspect starts
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_ADMIN));
-		// DEBUG: permission check aspect ends
+        // DEBUG: permission check aspect ends
 
         // return main template
         return System::redirect(ModUtil::url('Eternizer', 'admin', 'view'));
-    }  
+    }
 
-    public function import() {
-    	
+    public function import()
+    {
+
         // Create new Form reference
         $view = FormUtil::newForm($this->name, $this);
 

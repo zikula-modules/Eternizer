@@ -24,20 +24,20 @@ class Eternizer_Listener_ThirdParty
         if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_MODERATE)) {
             return;
         }
-/** this is an example implementation from the Users module
+        /** this is an example implementation from the Users module
         $approvalOrder = ModUtil::getVar('Users', 'moderation_order', UserUtil::APPROVAL_ANY);
         $filter = array('approved_by' => 0);
         if ($approvalOrder == UserUtil::APPROVAL_AFTER) {
-            $filter['isverified'] = true;
+        $filter['isverified'] = true;
         }
         $numPendingApproval = ModUtil::apiFunc('Users', 'registration', 'countAll', array('filter' => $filter));
 
         if (!empty($numPendingApproval)) {
-            $collection = new Zikula_Collection_Container('Users');
-            $collection->add(new Zikula_Provider_AggregateItem('registrations', __('Registrations pending approval'), $numPendingApproval, 'admin', 'viewRegistrations'));
-            $event->getSubject()->add($collection);
+        $collection = new Zikula_Collection_Container('Users');
+        $collection->add(new Zikula_Provider_AggregateItem('registrations', __('Registrations pending approval'), $numPendingApproval, 'admin', 'viewRegistrations'));
+        $event->getSubject()->add($collection);
         }
-*/
+         */
     }
 
     /**

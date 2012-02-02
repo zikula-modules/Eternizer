@@ -26,16 +26,16 @@ class Eternizer_Api_Base_Mailz extends Zikula_AbstractApi
     {
         $plugins = array();
         $plugins[] = array(
-            'pluginid'      => 1,
-            'module'        => 'Eternizer',
-            'title'         => $this->__('3 newest entries'),
-            'description'   => $this->__('A list of the three newest entries.')
+            'pluginid' => 1,
+            'module' => 'Eternizer',
+            'title' => $this->__('3 newest entries'),
+            'description' => $this->__('A list of the three newest entries.')
         );
         $plugins[] = array(
-            'pluginid'      => 2,
-            'module'        => 'Eternizer',
-            'title'         => $this->__('3 random entries'),
-            'description'   => $this->__('A list of three random entries.')
+            'pluginid' => 2,
+            'module' => 'Eternizer',
+            'title' => $this->__('3 random entries'),
+            'description' => $this->__('A list of three random entries.')
         );
         return $plugins;
     }
@@ -53,8 +53,8 @@ class Eternizer_Api_Base_Mailz extends Zikula_AbstractApi
     public function getContent($args)
     {
         ModUtil::initOOModule('Eternizer');
-// $args is something like:
-// Array ( [uid] => 5 [contenttype] => h [pluginid] => 1 [nid] => 1 [last] => 0000-00-00 00:00:00 [params] => Array ( [] => ) ) 1
+        // $args is something like:
+        // Array ( [uid] => 5 [contenttype] => h [pluginid] => 1 [nid] => 1 [last] => 0000-00-00 00:00:00 [params] => Array ( [] => ) ) 1
         $objectType = 'entry';
 
         $serviceManager = ServiceUtil::getManager();
@@ -79,7 +79,8 @@ class Eternizer_Api_Base_Mailz extends Zikula_AbstractApi
             }
         }
 
-        $where = ''/*$this->filter*/;
+        $where = '' /*$this->filter*/
+        ;
         $resultsPerPage = 3;
 
         // get objects from database
@@ -98,8 +99,8 @@ class Eternizer_Api_Base_Mailz extends Zikula_AbstractApi
         //$view->assign('vars', $data);
 
         $view->assign('objectType', 'entry')
-             ->assign('items', $entities)
-             ->assign($repository->getAdditionalTemplateParameters('api', array('name' => 'mailz')));
+                ->assign('items', $entities)
+                ->assign($repository->getAdditionalTemplateParameters('api', array('name' => 'mailz')));
 
         if ($args['contenttype'] == 't') { /* text */
             return $view->fetch('mailz/itemlist_Entry_text.tpl');

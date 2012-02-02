@@ -27,12 +27,12 @@ class Eternizer_Listener_Page
      */
     public static function pageutilAddvarFilter(Zikula_Event $event)
     {
-       // Simply test with something like
-/*
-       if (($key = array_search('system/Users/javascript/somescript.js', $event->data)) !== false) {
-           $event->data[$key] = 'config/javascript/myoverride.js';
-       }
-*/
+        // Simply test with something like
+        /*
+               if (($key = array_search('system/Users/javascript/somescript.js', $event->data)) !== false) {
+                   $event->data[$key] = 'config/javascript/myoverride.js';
+               }
+        */
     }
 
     /**

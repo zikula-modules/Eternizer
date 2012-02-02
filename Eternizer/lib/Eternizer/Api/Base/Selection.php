@@ -28,7 +28,7 @@ class Eternizer_Api_Base_Selection extends Zikula_AbstractApi
     {
         $objectType = $this->determineObjectType($args, 'getIdFields');
         $entityClass = 'Eternizer_Entity_' . ucfirst($objectType);
-        $objectTemp = new $entityClass(); 
+        $objectTemp = new $entityClass();
         $idFields = $objectTemp->get_idFields();
         return $idFields;
     }
@@ -51,7 +51,7 @@ class Eternizer_Api_Base_Selection extends Zikula_AbstractApi
         $repository = $this->getRepository($objectType);
 
         $idValues = $args['id'];
-        $useJoins = isset($args['useJoins']) ? ((bool) $args['useJoins']) : true;
+        $useJoins = isset($args['useJoins']) ? ((bool)$args['useJoins']) : true;
 
         $idFields = $this->getIdFields(array('ot' => $objectType));
 
@@ -77,7 +77,7 @@ class Eternizer_Api_Base_Selection extends Zikula_AbstractApi
 
         $where = isset($args['where']) ? $args['where'] : '';
         $orderBy = isset($args['orderBy']) ? $args['orderBy'] : '';
-        $useJoins = isset($args['useJoins']) ? ((bool) $args['useJoins']) : true;
+        $useJoins = isset($args['useJoins']) ? ((bool)$args['useJoins']) : true;
 
         return $repository->selectWhere($where, $orderBy, $useJoins);
     }
@@ -103,7 +103,7 @@ class Eternizer_Api_Base_Selection extends Zikula_AbstractApi
         $orderBy = isset($args['orderBy']) ? $args['orderBy'] : '';
         $currentPage = isset($args['currentPage']) ? $args['currentPage'] : 1;
         $resultsPerPage = isset($args['resultsPerPage']) ? $args['resultsPerPage'] : 25;
-        $useJoins = isset($args['useJoins']) ? ((bool) $args['useJoins']) : true;
+        $useJoins = isset($args['useJoins']) ? ((bool)$args['useJoins']) : true;
 
         if ($orderBy == 'RAND()') {
             // random ordering is disabled for now, see https://github.com/Guite/MostGenerator/issues/143

@@ -17,33 +17,33 @@
 class Eternizer_Util_Model extends Eternizer_Util_Base_Model
 {
 
-	// build the query to searching items by userid == loggedin user
-	public function getUserId()
-	{
-    	// get userid of loggedin user
-    	if (UserUtil::isLoggedIn() === true) {
-			$userid = UserUtil::getVar('uid');
-    	}
-    	else {
-    		$userid = 0;
-    	}
-    	if ($userid != 0) {
-    	// build where clause
-    	$where = 'tbl.createdUserId = \'' . DataUtil::formatForStore($userid) . '\'';
-    	}
-    	else {
-    		$where = '';
-    	}
-    	
-    	return $where;
-	
-	}
-	
-	//build the where clause for allowed entries
-	public static function entryAllowed()
-	{
-		$where = 'tbl.obj_status = \'' . DataUtil::formatForStore('A') . '\'';
-		
-		return $where;
-	}
+    // build the query to searching items by userid == loggedin user
+    public function getUserId()
+    {
+        // get userid of loggedin user
+        if (UserUtil::isLoggedIn() === true) {
+            $userid = UserUtil::getVar('uid');
+        }
+        else {
+            $userid = 0;
+        }
+        if ($userid != 0) {
+            // build where clause
+            $where = 'tbl.createdUserId = \'' . DataUtil::formatForStore($userid) . '\'';
+        }
+        else {
+            $where = '';
+        }
+
+        return $where;
+
+    }
+
+    //build the where clause for allowed entries
+    public static function entryAllowed()
+    {
+        $where = 'tbl.obj_status = \'' . DataUtil::formatForStore('A') . '\'';
+
+        return $where;
+    }
 }

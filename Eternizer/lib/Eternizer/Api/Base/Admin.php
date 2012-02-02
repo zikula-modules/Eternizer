@@ -26,19 +26,19 @@ class Eternizer_Api_Base_Admin extends Zikula_AbstractApi
         $links = array();
 
         if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
-            $links[] = array('url'   => ModUtil::url($this->name, 'user', 'main'),
-                'text'  => $this->__('Frontend'),
+            $links[] = array('url' => ModUtil::url($this->name, 'user', 'main'),
+                'text' => $this->__('Frontend'),
                 'title' => $this->__('Switch to user area.'),
                 'class' => 'z-icon-es-home');
         }
         if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url'   => ModUtil::url($this->name, 'admin', 'view', array('ot' => 'entry')),
-                'text'  => $this->__('Entries'),
+            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'view', array('ot' => 'entry')),
+                'text' => $this->__('Entries'),
                 'title' => $this->__('Entry list'));
         }
         if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url'   => ModUtil::url($this->name, 'admin', 'config'),
-                'text'  => $this->__('Configuration'),
+            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'config'),
+                'text' => $this->__('Configuration'),
                 'title' => $this->__('Manage settings for this application'));
         }
         return $links;

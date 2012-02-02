@@ -90,13 +90,13 @@ class Eternizer_Form_Plugin_ColourInput extends Zikula_Form_Plugin_TextInput
             /* <![CDATA[ */
                 var namePicky = new PickyColor({
                     field: '"
-            . $this->id . "',
+                . $this->id . "',
                     color: '"
-            . DataUtil::formatForDisplay($this->text) . "',
+                . DataUtil::formatForDisplay($this->text) . "',
                     colorWell: '"
-            . $this->id . "',
+                . $this->id . "',
                     closeText: '"
-            . __('Close', $dom) . "'
+                . __('Close', $dom) . "'
                 })
             /* ]]> */
             </script>";

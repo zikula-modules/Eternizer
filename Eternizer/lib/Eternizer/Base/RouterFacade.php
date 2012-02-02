@@ -33,12 +33,12 @@ class Eternizer_Base_RouterFacade
     {
         $displayDefaultEnding = System::getVar('shorturlsext', 'html');
         $this->requirements = array(
-            'func'          => '\w+',
-            'ot'            => '\w+',
-            'title'         => '[^/.]+', // title used for slugs ([^/.]+ = all chars except / and .)
+            'func' => '\w+',
+            'ot' => '\w+',
+            'title' => '[^/.]+', // title used for slugs ([^/.]+ = all chars except / and .)
             'displayending' => '(?:' . $displayDefaultEnding . '|xml|pdf|json)',
-            'viewending'    => '(?:\.csv|\.rss|\.atom|\.xml|\.pdf|\.json)?',
-            'id'            => '\d+'
+            'viewending' => '(?:\.csv|\.rss|\.atom|\.xml|\.pdf|\.json)?',
+            'id' => '\d+'
         );
 
         // initialise and reference router instance
@@ -90,11 +90,11 @@ class Eternizer_Base_RouterFacade
     protected function initRouteForEachSlugType($prefix, $patternStart, $patternEnd, $defaults, $fieldRequirements)
     {
         // entities with unique slug (slug only)
-        $this->router->set($prefix . 'a', new Zikula_Routing_UrlRoute($patternStart . ':title.' . $patternEnd,        $defaults, $fieldRequirements));
+        $this->router->set($prefix . 'a', new Zikula_Routing_UrlRoute($patternStart . ':title.' . $patternEnd, $defaults, $fieldRequirements));
         // entities with non-unique slug (slug and id)
-        $this->router->set($prefix . 'b', new Zikula_Routing_UrlRoute($patternStart . ':title.:id.' . $patternEnd,    $defaults, $fieldRequirements));
+        $this->router->set($prefix . 'b', new Zikula_Routing_UrlRoute($patternStart . ':title.:id.' . $patternEnd, $defaults, $fieldRequirements));
         // entities without slug (id)
-        $this->router->set($prefix . 'c', new Zikula_Routing_UrlRoute($patternStart . 'id.:id.' . $patternEnd,        $defaults, $fieldRequirements));
+        $this->router->set($prefix . 'c', new Zikula_Routing_UrlRoute($patternStart . 'id.:id.' . $patternEnd, $defaults, $fieldRequirements));
     }
 
     /**
@@ -113,16 +113,18 @@ class Eternizer_Base_RouterFacade
         if ($func == 'view') {
             switch ($objectType) {
                 case 'entry':
-                            $groupFolder = 'entries';
-                            break;
-                default: return '';
+                    $groupFolder = 'entries';
+                    break;
+                default:
+                    return '';
             }
         } else if ($func == 'display') {
             switch ($objectType) {
                 case 'entry':
-                            $groupFolder = 'entry';
-                            break;
-                default: return '';
+                    $groupFolder = 'entry';
+                    break;
+                default:
+                    return '';
             }
         }
 
@@ -145,16 +147,18 @@ class Eternizer_Base_RouterFacade
         if ($func == 'view') {
             switch ($groupFolder) {
                 case 'entries':
-                            $objectType = 'entry';
-                            break;
-                default: return '';
+                    $objectType = 'entry';
+                    break;
+                default:
+                    return '';
             }
         } else if ($func == 'display') {
             switch ($groupFolder) {
                 case 'entry':
-                            $objectType = 'entry';
-                            break;
-                default: return '';
+                    $objectType = 'entry';
+                    break;
+                default:
+                    return '';
             }
         }
 
@@ -179,8 +183,8 @@ class Eternizer_Base_RouterFacade
 
         switch ($objectType) {
             case 'entry':
-                        $slug = $itemid;
-                        break;
+                $slug = $itemid;
+                break;
         }
 
         return $slug;

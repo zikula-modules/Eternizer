@@ -39,9 +39,9 @@ class Eternizer_Controller_Base_Admin extends Zikula_AbstractController
      */
     public function main($args)
     {
-// DEBUG: permission check aspect starts
+        // DEBUG: permission check aspect starts
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_ADMIN));
-// DEBUG: permission check aspect ends
+        // DEBUG: permission check aspect ends
 
 
         // return main template
@@ -63,9 +63,9 @@ class Eternizer_Controller_Base_Admin extends Zikula_AbstractController
      */
     public function view($args)
     {
-// DEBUG: permission check aspect starts
+        // DEBUG: permission check aspect starts
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_ADMIN));
-// DEBUG: permission check aspect ends
+        // DEBUG: permission check aspect ends
 
         // parameter specifying which type of objects we are treating
         $objectType = (isset($args['ot']) && !empty($args['ot'])) ? $args['ot'] : $this->request->getGet()->filter('ot', 'entry', FILTER_SANITIZE_STRING);
@@ -79,7 +79,7 @@ class Eternizer_Controller_Base_Admin extends Zikula_AbstractController
         if ($tpl == 'tree') {
             $trees = ModUtil::apiFunc($this->name, 'selection', 'getAllTrees', array('ot' => $objectType));
             $this->view->assign('trees', $trees)
-                       ->assign($repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
+                    ->assign($repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
             // fetch and return the appropriate template
             return Eternizer_Util_View::processTemplate($this->view, 'admin', $objectType, 'view', $args);
         }
@@ -106,7 +106,7 @@ class Eternizer_Controller_Base_Admin extends Zikula_AbstractController
             'orderBy' => $sort . ' ' . $sdir
         );
 
-        $showAllEntries = (int) (isset($args['all']) && !empty($args['all'])) ? $args['all'] : $this->request->getGet()->filter('all', 0, FILTER_VALIDATE_INT);
+        $showAllEntries = (int)(isset($args['all']) && !empty($args['all'])) ? $args['all'] : $this->request->getGet()->filter('all', 0, FILTER_VALIDATE_INT);
         $this->view->assign('showAllEntries', $showAllEntries);
         if ($showAllEntries == 1) {
             // item list without pagination
@@ -117,12 +117,12 @@ class Eternizer_Controller_Base_Admin extends Zikula_AbstractController
             // item list with pagination
 
             // the current offset which is used to calculate the pagination
-            $currentPage = (int) (isset($args['pos']) && !empty($args['pos'])) ? $args['pos'] : $this->request->getGet()->filter('pos', 1, FILTER_VALIDATE_INT);
+            $currentPage = (int)(isset($args['pos']) && !empty($args['pos'])) ? $args['pos'] : $this->request->getGet()->filter('pos', 1, FILTER_VALIDATE_INT);
 
             // the number of items displayed on a page for pagination
-            $resultsPerPage = (int) (isset($args['num']) && !empty($args['num'])) ? $args['num'] : $this->request->getGet()->filter('num', 0, FILTER_VALIDATE_INT);
+            $resultsPerPage = (int)(isset($args['num']) && !empty($args['num'])) ? $args['num'] : $this->request->getGet()->filter('num', 0, FILTER_VALIDATE_INT);
             if ($resultsPerPage == 0) {
-                $csv = (int) (isset($args['usecsv']) && !empty($args['usecsv'])) ? $args['usecsv'] : $this->request->getGet()->filter('usecsvext', 0, FILTER_VALIDATE_INT);
+                $csv = (int)(isset($args['usecsv']) && !empty($args['usecsv'])) ? $args['usecsv'] : $this->request->getGet()->filter('usecsvext', 0, FILTER_VALIDATE_INT);
                 $resultsPerPage = ($csv == 1) ? 999999 : $this->getVar('pagesize', 10);
             }
 
@@ -131,8 +131,8 @@ class Eternizer_Controller_Base_Admin extends Zikula_AbstractController
             list($entities, $objectCount) = ModUtil::apiFunc($this->name, 'selection', 'getEntitiesPaginated', $selectionArgs);
 
             $this->view->assign('currentPage', $currentPage)
-                       ->assign('pager', array('numitems'     => $objectCount,
-                                               'itemsperpage' => $resultsPerPage));
+                    ->assign('pager', array('numitems' => $objectCount,
+                'itemsperpage' => $resultsPerPage));
         }
 
         // build ModUrl instance for display hooks
@@ -140,10 +140,10 @@ class Eternizer_Controller_Base_Admin extends Zikula_AbstractController
 
         // assign the object data, sorting information and details for creating the pager
         $this->view->assign('items', $entities)
-                   ->assign('sort', $sort)
-                   ->assign('sdir', $sdir)
-                   ->assign('currentUrlObject', $currentUrlObject)
-                   ->assign($repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
+                ->assign('sort', $sort)
+                ->assign('sdir', $sdir)
+                ->assign('currentUrlObject', $currentUrlObject)
+                ->assign($repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
 
         // fetch and return the appropriate template
         return Eternizer_Util_View::processTemplate($this->view, 'admin', $objectType, 'view', $args);
@@ -159,9 +159,9 @@ class Eternizer_Controller_Base_Admin extends Zikula_AbstractController
      */
     public function display($args)
     {
-// DEBUG: permission check aspect starts
+        // DEBUG: permission check aspect starts
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_ADMIN));
-// DEBUG: permission check aspect ends
+        // DEBUG: permission check aspect ends
 
         // parameter specifying which type of objects we are treating
         $objectType = (isset($args['ot']) && !empty($args['ot'])) ? $args['ot'] : $this->request->getGet()->filter('ot', 'entry', FILTER_SANITIZE_STRING);
@@ -190,8 +190,8 @@ class Eternizer_Controller_Base_Admin extends Zikula_AbstractController
 
         // assign output data to view object.
         $this->view->assign($objectType, $entity)
-                   ->assign('currentUrlObject', $currentUrlObject)
-                   ->assign($repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
+                ->assign('currentUrlObject', $currentUrlObject)
+                ->assign($repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
 
         // fetch and return the appropriate template
         return Eternizer_Util_View::processTemplate($this->view, 'admin', $objectType, 'display', $args);
@@ -207,9 +207,9 @@ class Eternizer_Controller_Base_Admin extends Zikula_AbstractController
      */
     public function edit($args)
     {
-// DEBUG: permission check aspect starts
+        // DEBUG: permission check aspect starts
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_ADMIN));
-// DEBUG: permission check aspect ends
+        // DEBUG: permission check aspect ends
 
         // parameter specifying which type of objects we are treating
         $objectType = (isset($args['ot']) && !empty($args['ot'])) ? $args['ot'] : $this->request->getGet()->filter('ot', 'entry', FILTER_SANITIZE_STRING);
@@ -240,9 +240,9 @@ class Eternizer_Controller_Base_Admin extends Zikula_AbstractController
      */
     public function delete($args)
     {
-// DEBUG: permission check aspect starts
+        // DEBUG: permission check aspect starts
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_ADMIN));
-// DEBUG: permission check aspect ends
+        // DEBUG: permission check aspect ends
 
         // parameter specifying which type of objects we are treating
         $objectType = (isset($args['ot']) && !empty($args['ot'])) ? $args['ot'] : $this->request->getGet()->filter('ot', 'entry', FILTER_SANITIZE_STRING);
@@ -250,9 +250,9 @@ class Eternizer_Controller_Base_Admin extends Zikula_AbstractController
         if (!in_array($objectType, Eternizer_Util_Controller::getObjectTypes('controllerAction', $utilArgs))) {
             $objectType = Eternizer_Util_Controller::getDefaultObjectType('controllerAction', $utilArgs);
         }
-        
+
         $idFields = ModUtil::apiFunc($this->name, 'selection', 'getIdFields', array('ot' => $objectType));
-        
+
         // retrieve identifier of the object we wish to delete
         $idValues = Eternizer_Util_Controller::retrieveIdentifier($this->request, $args, $objectType, $idFields);
         $hasIdentifier = Eternizer_Util_Controller::isValidIdentifier($idValues);
@@ -262,7 +262,7 @@ class Eternizer_Controller_Base_Admin extends Zikula_AbstractController
         $entity = ModUtil::apiFunc($this->name, 'selection', 'getEntity', array('ot' => $objectType, 'id' => $idValues));
         $this->throwNotFoundUnless($entity != null, $this->__('No such item.'));
 
-        $confirmation = (bool) (isset($args['confirmation']) && !empty($args['confirmation'])) ? $args['confirmation'] : $this->request->getPost()->filter('confirmation', false, FILTER_VALIDATE_BOOLEAN);
+        $confirmation = (bool)(isset($args['confirmation']) && !empty($args['confirmation'])) ? $args['confirmation'] : $this->request->getPost()->filter('confirmation', false, FILTER_VALIDATE_BOOLEAN);
 
         if ($confirmation) {
             $this->checkCsrfToken();
@@ -277,14 +277,14 @@ class Eternizer_Controller_Base_Admin extends Zikula_AbstractController
             $this->view->clear_cache();
 
             // redirect to the list of the current object type
-            $this->redirect(ModUtil::url($this->name, 'admin', 'view',array('ot' => $objectType)));
+            $this->redirect(ModUtil::url($this->name, 'admin', 'view', array('ot' => $objectType)));
         }
 
         $repository = $this->entityManager->getRepository('Eternizer_Entity_' . ucfirst($objectType));
 
         // assign the object we loaded above
         $this->view->assign($objectType, $entity)
-                   ->assign($repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
+                ->assign($repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
 
         // fetch and return the appropriate template
         return Eternizer_Util_View::processTemplate($this->view, 'admin', $objectType, 'delete', $args);
@@ -295,7 +295,7 @@ class Eternizer_Controller_Base_Admin extends Zikula_AbstractController
      */
     public function handleInlineRedirect()
     {
-        $itemId = (int) $this->request->getGet()->filter('id', 0, FILTER_VALIDATE_INT);
+        $itemId = (int)$this->request->getGet()->filter('id', 0, FILTER_VALIDATE_INT);
         $idPrefix = $this->request->getGet()->filter('idp', '', FILTER_SANITIZE_STRING);
         $commandName = $this->request->getGet()->filter('com', '', FILTER_SANITIZE_STRING);
         if (empty($idPrefix)) {
@@ -303,10 +303,10 @@ class Eternizer_Controller_Base_Admin extends Zikula_AbstractController
         }
 
         $this->view->assign('itemId', $itemId)
-                   ->assign('idPrefix', $idPrefix)
-                   ->assign('commandName', $commandName)
-                   ->assign('jcssConfig', JCSSUtil::getJSConfig())
-                   ->display('admin/inlineRedirectHandler.tpl');
+                ->assign('idPrefix', $idPrefix)
+                ->assign('commandName', $commandName)
+                ->assign('jcssConfig', JCSSUtil::getJSConfig())
+                ->display('admin/inlineRedirectHandler.tpl');
         return true;
     }
 

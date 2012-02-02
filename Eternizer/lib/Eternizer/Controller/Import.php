@@ -9,63 +9,66 @@
  * @package Zikula
  * @subpackage Eternizer
  */
-class Eternizer_Controller_Import extends Zikula_AbstractController {
-/**
- * List installed supported books
- *
- * @author    Philipp Niethammer <webmaster@nochwer.de>
- * @return    output
- */
-public function main () {
-    if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_ADMIN)) {
-        return LogUtil::registerPermissionError();
+class Eternizer_Controller_Import extends Zikula_AbstractController
+{
+    /**
+     * List installed supported books
+     *
+     * @author    Philipp Niethammer <webmaster@nochwer.de>
+     * @return    output
+     */
+    public function main()
+    {
+        if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_ADMIN)) {
+            return LogUtil::registerPermissionError();
+        }
+
+        $books = ModUtil::apiFunc('Eternizer', 'import', 'getInstalledBooks', array());
+
+        $pnRender = & pnRender::getInstance('Eternizer', false);
+
+        $pnRender->assign('books', $books);
+
+        return $pnRender->fetch('Eternizer_import_main.tpl');
     }
 
-    $books = ModUtil::apiFunc('Eternizer', 'import', 'getInstalledBooks', array());
+    /**
+     * Redirect to the import of the specified module
+     *
+     * @author    Philipp Niethammer <webmaster@nochwer.de>
+     * @return    output
+     */
+    public function display()
+    {
+        if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_ADMIN)) {
+            return LogUtil::registerPermissionError();
+        }
 
-    $pnRender = & pnRender::getInstance('Eternizer', false);
+        $plg = FormUtil::getPassedValue('plugin');
 
-    $pnRender->assign('books', $books);
+        $obj =& ModUtil::apiFunc('Eternizer', 'import', 'getObject', array('name' => $plg));
 
-    return $pnRender->fetch('Eternizer_import_main.tpl');
-}
+        if (!is_object($obj)) {
+            return pnRedirect(pnModURL('Eternizer', 'import', 'main'));
+        }
 
-/**
- * Redirect to the import of the specified module
- *
- * @author    Philipp Niethammer <webmaster@nochwer.de>
- * @return    output
- */
-public function display () {
-    if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_ADMIN)) {
-        return LogUtil::registerPermissionError();
+        return $obj->display();
     }
 
-    $plg = FormUtil::getPassedValue('plugin');
+    public function import()
+    {
+        if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_ADMIN)) {
+            return LogUtil::registerPermissionError();
+        }
 
-    $obj =& ModUtil::apiFunc('Eternizer', 'import', 'getObject', array('name' => $plg));
+        $name = FormUtil::getPassedValue('plugin');
+        $config = (bool)FormUtil::getPassedValue('config');
+        $data = (bool)FormUtil::getPassedValue('data');
+        $deactivate = (bool)FormUtil::getPassedValue('deactivate');
+        $delete = (bool)FormUtil::getPassedValue('delete');
 
-    if (!is_object($obj)) {
+        ModUtil::apiFunc('Eternizer', 'import', 'import', concat('name', 'config', 'data', 'deactivate', 'delete'));
+
         return pnRedirect(pnModURL('Eternizer', 'import', 'main'));
     }
-
-    return $obj->display();
-}
-
-public function import()
-{
-    if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_ADMIN)) {
-        return LogUtil::registerPermissionError();
-    }
-
-    $name         = FormUtil::getPassedValue('plugin');
-    $config        = (bool) FormUtil::getPassedValue('config');
-    $data        = (bool) FormUtil::getPassedValue('data');
-    $deactivate    = (bool) FormUtil::getPassedValue('deactivate');
-    $delete        = (bool) FormUtil::getPassedValue('delete');
-
-    ModUtil::apiFunc('Eternizer', 'import', 'import', concat('name', 'config', 'data', 'deactivate', 'delete'));
-
-    return pnRedirect(pnModURL('Eternizer', 'import', 'main'));
-}
 }

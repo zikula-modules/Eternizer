@@ -25,7 +25,7 @@ use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
  */
 class Eternizer_Entity_Entry extends Eternizer_Entity_Base_Entry
 {
-	
+
     /**
      * Collect available actions for this entity.
      */
@@ -75,8 +75,6 @@ class Eternizer_Entity_Entry extends Eternizer_Entity_Base_Entry
             }
         }
     }
-	
-
 
 
     /**
@@ -100,7 +98,7 @@ class Eternizer_Entity_Entry extends Eternizer_Entity_Base_Entry
      */
     public function prePersistCallback()
     {
-  		Eternizer_Util_Base_Settings::handleModvarsPreSave();  	
+        Eternizer_Util_Base_Settings::handleModvarsPreSave();
         $this->performPrePersistCallback();
     }
 
@@ -113,10 +111,10 @@ class Eternizer_Entity_Entry extends Eternizer_Entity_Base_Entry
      */
     public function postPersistCallback()
     {
-    	$args['id'] = $this->getId();
-    	$args['text'] = $this->getText();
-    		
-    	Eternizer_Util_Base_Settings::handleModvarsPostPersist($args);
+        $args['id'] = $this->getId();
+        $args['text'] = $this->getText();
+
+        Eternizer_Util_Base_Settings::handleModvarsPostPersist($args);
         $this->performPostPersistCallback();
     }
 

@@ -43,7 +43,7 @@ class Eternizer_Util_Base_View extends Zikula_AbstractBase
         $template .= '.' . $templateExtension;
 
         // look whether we need output with or without the theme
-        $raw = (bool) (isset($args['raw']) && !empty($args['raw'])) ? $args['raw'] : FormUtil::getPassedValue('raw', false, 'GETPOST', FILTER_VALIDATE_BOOLEAN);
+        $raw = (bool)(isset($args['raw']) && !empty($args['raw'])) ? $args['raw'] : FormUtil::getPassedValue('raw', false, 'GETPOST', FILTER_VALIDATE_BOOLEAN);
         if (!$raw && in_array($templateExtension, array('csv', 'rss', 'atom', 'xml', 'pdf', 'vcard', 'ical', 'json'))) {
             $raw = true;
         }
@@ -109,15 +109,15 @@ class Eternizer_Util_Base_View extends Zikula_AbstractBase
         $extParams = array();
         if ($func == 'view') {
             if (SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_ADMIN)) {
-                $extParams = array('csv', 'rss', 'atom', 'xml', 'json'/*, 'pdf'*/);
+                $extParams = array('csv', 'rss', 'atom', 'xml', 'json' /*, 'pdf'*/);
             }
             else {
-                $extParams = array('rss', 'atom'/*, 'pdf'*/);
+                $extParams = array('rss', 'atom' /*, 'pdf'*/);
             }
         }
         elseif ($func == 'display') {
             if (SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_ADMIN)) {
-                $extParams = array('xml', 'json'/*, 'pdf'*/);
+                $extParams = array('xml', 'json' /*, 'pdf'*/);
             }
         }
         return $extParams;
@@ -144,11 +144,11 @@ class Eternizer_Util_Base_View extends Zikula_AbstractBase
 
         // create name of the pdf output file
         $fileTitle = Eternizer_Util_Controller::formatPermalink(System::getVar('sitename'))
-                   . '-'
-                   . Eternizer_Util_Controller::formatPermalink(PageUtil::getVar('title'))
-                   . '-' . date('Ymd') . '.pdf';
+                . '-'
+                . Eternizer_Util_Controller::formatPermalink(PageUtil::getVar('title'))
+                . '-' . date('Ymd') . '.pdf';
 
-//if ($_GET['dbg'] == 1) die($output);
+        //if ($_GET['dbg'] == 1) die($output);
 
         // instantiate pdf object
         $pdf = new DOMPDF();

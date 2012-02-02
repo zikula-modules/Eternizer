@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Eternizer.
@@ -45,19 +44,19 @@ class Eternizer_Form_Handler_Admin_Base_Config extends Zikula_Form_AbstractHandl
         // initialise list entries for the 'order' setting
         $modVars['orderItems'] = array(
             array('value' => 'descending', 'text' => 'Descending'),
-            array('value' => 'ascending', 'text'  => 'Ascending')
+            array('value' => 'ascending', 'text' => 'Ascending')
         );
         // initialise list entries for the 'moderate' setting
         $modVars['moderateItems'] = array(
             array('value' => 'nothing', 'text' => 'Nothing'),
             array('value' => 'guests', 'text' => 'Guests'),
-            array('value' => 'all', 'text'  => 'All')
+            array('value' => 'all', 'text' => 'All')
         );
         // initialise list entries for the 'formposition' setting
         $modVars['formpositionItems'] = array(
             array('value' => 'above', 'text' => 'Above'),
             array('value' => 'below', 'text' => 'Below'),
-            array('value' => 'menue', 'text'  => 'Menue')
+            array('value' => 'menue', 'text' => 'Menue')
         );
 
         // assign all module vars
@@ -125,7 +124,7 @@ class Eternizer_Form_Handler_Admin_Base_Config extends Zikula_Form_AbstractHandl
             LogUtil::registerStatus($this->__('Done! Module configuration updated.'));
         } else if ($args['commandName'] == 'cancel') {
             // nothing to do there
-            }
+        }
 
         // redirect back to the config page
         $url = ModUtil::url('Eternizer', 'admin', 'config');

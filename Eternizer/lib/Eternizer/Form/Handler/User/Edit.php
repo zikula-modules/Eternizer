@@ -58,8 +58,8 @@ class Eternizer_Form_Handler_User_Edit extends Eternizer_Form_Handler_User_Base_
             if ($this->hasPageLockSupport === true && ModUtil::available('PageLock')) {
                 // try to guarantee that only one person at a time can be editing this entity
                 ModUtil::apiFunc('PageLock', 'user', 'pageLock',
-                                         array('lockName' => $this->name . $this->objectTypeCapital . $this->createCompositeIdentifier(),
-                                               'returnUrl' => $this->getRedirectUrl(null, $entity)));
+                    array('lockName' => $this->name . $this->objectTypeCapital . $this->createCompositeIdentifier(),
+                        'returnUrl' => $this->getRedirectUrl(null, $entity)));
             }
         }
         else {
@@ -71,25 +71,25 @@ class Eternizer_Form_Handler_User_Edit extends Eternizer_Form_Handler_User_Base_
         }
 
         $this->view->assign('mode', $this->mode)
-                   ->assign('inlineUsage', $this->inlineUsage);
+                ->assign('inlineUsage', $this->inlineUsage);
 
         $entityData = $entity->toArray();
-        
+
         // Own code to handle editing of entries only for the creater
-        
+
         $userid = UserUtil::getVar('uid');
-        
+
         if ($entityData['createdUserId'] != $userid && $this->mode != 'create') {
-        	
-        	$url = ModUtil::url($this->name, 'user', 'view');
-        	return System::redirect($url);
+
+            $url = ModUtil::url($this->name, 'user', 'view');
+            return System::redirect($url);
         }
-        
+
         // Own code to assign formpostion
-        
+
         $formposition = ModUtil::getVar($this->name, 'formposition');
         $this->view->assign('formposition', $formposition);
-        
+
         // assign data to template as array (makes translatable support easier)
         $this->view->assign($this->objectTypeLower, $entityData);
 
