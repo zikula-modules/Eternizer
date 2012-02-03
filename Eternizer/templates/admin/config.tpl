@@ -20,11 +20,13 @@
         <div class="z-formrow">
             {formlabel for='mail' __text='Mail'}
             {formtextinput id='mail' group='config' maxLength=255 __title='Enter this setting.'}
-            <div class="z-informationmsg z-formnote">{gt text="Notice: If you enter a correct email adress a message will be sent to when a new entry was saved. If you leave this field empty, it is disabled."}</div>
+            <div class="z-informationmsg z-formnote">{gt text="Notice: If you enter a correct email address a message will be sent to when a new entry was saved. If you leave this field empty, it is disabled."}</div>
         </div>
         <div class="z-formrow">
             {formlabel for='order' __text='Order'}
             {formdropdownlist id='order' group='config'}
+            <div class="z-informationmsg z-formnote">{gt text="Notice: Here you enter the standard order in backend and frontend. In backend 
+            you are able to sort the columns over using the links."}</div>
         </div>
         <div class="z-formrow">
             {formlabel for='moderate' __text='Moderate'}

@@ -17,6 +17,35 @@
  */
 class Eternizer_Controller_Admin extends Eternizer_Controller_Base_Admin
 {
+	
+	 /**
+     * This method provides a generic item list overview.
+     *
+     * @param string  $ot           Treated object type.
+     * @param string  $sort         Sorting field.
+     * @param string  $sortdir      Sorting direction.
+     * @param int     $pos          Current pager position.
+     * @param int     $num          Amount of entries to display.
+     * @param string  $tpl          Name of alternative template (for alternative display options, feeds and xml output)
+     * @param boolean $raw          Optional way to display a template instead of fetching it (needed for standalone output)
+     * @return mixed Output.
+     */
+    public function view($args)
+    {
+    	$sort = $this->request->getGet()->filter('sortdir', '', FILTER_SANITIZE_STRING);
+    	    if ($sort == '') {
+    	        $sortdir = ModUtil::getVar('Eternizer', 'order');
+    	            if ($sortdir == 'descending') {
+    		            $args['sortdir'] = 'desc';
+    	            }
+    	            else {
+    		            $args['sortdir'] = 'asc';
+    	            }
+    	    }
+    	
+    	return parent::view($args);
+    }
+    
     /**
      * This method overrites the parent diplay function.
      *
