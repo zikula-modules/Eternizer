@@ -26,10 +26,10 @@
 
     <fieldset>
         <legend>{gt text='Content'}</legend>
-        <div class="z-formrow">
+       {* <div class="z-formrow">
             {formlabel for='ip' __text='Ip'}
             {formtextinput group='entry' id='ip' mandatory=false readOnly=false __title='Enter the ip of the entry' textMode='singleline' maxLength=15 cssClass=''}
-        </div>
+        </div> *}
         <div class="z-formrow">
             {formlabel for='name' __text='Name'}
             {formtextinput group='entry' id='name' mandatory=false readOnly=false __title='Enter the name of the entry' textMode='singleline' maxLength=100 cssClass=''}
