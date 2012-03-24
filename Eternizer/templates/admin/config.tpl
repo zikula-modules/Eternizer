@@ -25,8 +25,7 @@
         <div class="z-formrow">
             {formlabel for='order' __text='Order'}
             {formdropdownlist id='order' group='config'}
-            <div class="z-informationmsg z-formnote">{gt text="Notice: Here you enter the standard order in backend and frontend. In backend 
-            you are able to sort the columns over using the links."}</div>
+            <div class="z-informationmsg z-formnote">{gt text="Notice: Here you enter the standard order in backend and frontend. In backend you are able to sort the columns over using the links."}</div>
         </div>
         <div class="z-formrow">
             {formlabel for='moderate' __text='Moderate'}
