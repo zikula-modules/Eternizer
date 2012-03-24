@@ -70,11 +70,11 @@
     {/if}
 
     {* include display hooks *}
-    {if $mode eq 'create'}
-    {notifydisplayhooks eventname='eternizer.ui_hooks.entries.form_edit' id=null assign='hooks'}
-    {else}
-    {notifydisplayhooks eventname='eternizer.ui_hooks.entries.form_edit' id=$entry.id assign='hooks'}
-    {/if}
+    {* {if $mode eq 'create'} *}
+    {notifydisplayhooks eventname='eternizer.ui_hooks.entries.form_edit' id=null}
+    {* {else} *}
+    {* {notifydisplayhooks eventname='eternizer.ui_hooks.entries.form_edit' id=$entry.id} *}
+    {* {/if} *}
 
     {if is_array($hooks) && isset($hooks[0])}
     <fieldset>
