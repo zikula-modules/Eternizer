@@ -18,7 +18,7 @@ class Eternizer_Util_Model extends Eternizer_Util_Base_Model
 {
 
     // build the query to searching items by userid == loggedin user
-    public function getUserId()
+    public static function getUserId()
     {
         // get userid of loggedin user
         if (UserUtil::isLoggedIn() === true) {
