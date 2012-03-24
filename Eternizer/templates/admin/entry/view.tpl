@@ -98,7 +98,7 @@
                     {$entry.text|truncate:100|safehtml}
                 </td>
                 <td headers="hnotes">
-                    {$entry.notes|safetext}
+                    {$entry.notes|truncate:100|safetext}
                 </td>
                 <td headers="hobj_status" class="z-left">
                     {if $entry.obj_status == 'A'}
