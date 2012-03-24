@@ -14,12 +14,12 @@
     <fieldset>
         <legend>{gt text='Here you can manage all basic settings for this application.'}</legend>
         <div class="z-formrow">
-            {formlabel for='pagesize' __text='Pagesize'}
+            {formlabel for='pagesize' __text='Items per page'}
             {formintinput id='pagesize' group='config' maxLength=255 __title='Enter this setting. Only digits are allowed.'}
         </div>
         <div class="z-formrow">
             {formlabel for='mail' __text='Mail'}
-            {formtextinput id='mail' group='config' maxLength=255 __title='Enter this setting.'}
+            {formemailinput id='mail' group='config' maxLength=255 __title='Enter this setting.'}
             <div class="z-informationmsg z-formnote">{gt text="Notice: If you enter a correct email address a message will be sent to when a new entry was saved. If you leave this field empty, it is disabled."}</div>
         </div>
         <div class="z-formrow">
