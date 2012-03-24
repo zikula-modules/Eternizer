@@ -32,12 +32,13 @@
             <col id="ctext"/>
             <col id="cnotes"/>
             <col id="cobj_status"/>
+            <col id="createddate"/>
             <col id="citemactions"/>
         </colgroup>
         <thead>
             <tr>
                 <th id="hip" scope="col" class="z-left">
-                    {sortlink __linktext='Ip' sort='ip' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='admin' func='view' ot='entry'}
+                    {gt text='Ip'}
                 </th>
                 <th id="hname" scope="col" class="z-left">
                     {sortlink __linktext='Name' sort='name' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='admin' func='view' ot='entry'}
@@ -52,13 +53,16 @@
                     {sortlink __linktext='Location' sort='location' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='admin' func='view' ot='entry'}
                 </th>
                 <th id="htext" scope="col" class="z-left">
-                    {sortlink __linktext='Text' sort='text' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='admin' func='view' ot='entry'}
+                    {gt text='Text'}
                 </th>
                 <th id="hnotes" scope="col" class="z-left">
-                    {sortlink __linktext='Notes' sort='notes' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='admin' func='view' ot='entry'}
+                    {gt text='Notes'}
                 </th>
                 <th id="hobj_status" scope="col" class="z-left">
                     {sortlink __linktext='Status' sort='obj_status' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='admin' func='view' ot='entry'}
+                </th>
+                <th id="hobj_status" scope="col" class="z-left">
+                    {sortlink __linktext='Created Date' sort='createdDate' currentsort=$sort sortdir=$sdir all=$all modname='Eternizer' type='admin' func='view' ot='entry'}
                 </th>
                 <th id="hitemactions" scope="col" class="z-right z-order-unsorted">{gt text='Actions'}</th>
             </tr>
@@ -104,6 +108,9 @@
                     {elseif $entry.obj_status == 'D'}
                     {img src='extrasmall/redled.png' modname='core' set='icons' __alt='denied' __title='denied'}
                     {/if}
+                </td>
+                <td headers="hcreateddate">
+                    {$entry.createdDate|dateformat:datetimelong}
                 </td>
                 <td headers="hitemactions" class="z-right z-nowrap">
                     {if count($entry._actions) gt 0}
