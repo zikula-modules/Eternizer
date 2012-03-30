@@ -34,6 +34,7 @@
                 {formlabel for='email' __text='Email'}
                 {formemailinput group='entry' id='email' mandatory=false readOnly=false __title='Enter the email of the entry' textMode='singleline' maxLength=100 cssClass='validate-email'}
                 {eternizerValidationError id='email' class='validate-email'}
+                <div class="z-informationmsg z-formnote">{gt text="Notice: The entered email address will be displayed"}</div>
             </div>
             <div class="z-formrow">
                 {formlabel for='homepage' __text='Homepage'}
