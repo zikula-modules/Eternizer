@@ -84,6 +84,11 @@ class Eternizer_Api_Admin extends Eternizer_Api_Base_Admin
 
             // prepare the sql query
             $sql = $connect->query($query);
+            
+            // if no old table return error message
+            if (!$sql) {
+            	return LogUtil::registerError($this->__('Sorry! No old table or the table is empty.'));
+            }
 
             // rule the attribute names
             if ($args['name'] != '') {
