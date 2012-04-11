@@ -46,6 +46,8 @@ class Eternizer_Util_Base_Settings extends Zikula_AbstractBase
 
     public function handleModvarsPostPersist($args)
     {
+    	$serviceManager = ServiceUtil::getManager();
+    	$handler = new Zikula_Form_View($serviceManager, 'Eternizer');
 
         $modvar = Eternizer_Util_Base_Settings::getModvars();
 
@@ -67,10 +69,10 @@ class Eternizer_Util_Base_Settings extends Zikula_AbstractBase
         $messagecontent['fromaddress'] = $fromaddress;
         $messagecontent['toname'] = 'Webmaster';
         $messagecontent['toaddress'] = $toaddress;
-        $messagecontent['subject'] = __('New Entry in Guestbook on ') . $from;
-        $messagecontent['body'] = __('Another entry was created by a user on <h2>') . $from . '</h2>' .
-                __('Text') . '<br />' . $text . '<br /><br />' . __('Visit our guestbook:') .
-                '<br />' . '<a href="' . $url . '">' . $url . '</a><br />' . __('Moderate this entry:') .
+        $messagecontent['subject'] = $handler->__('New Entry in Guestbook on ') . $from;
+        $messagecontent['body'] = $handler->__('Another entry was created by an user on '). '<h2>' . $from . '</h2>' .
+                $handler->__('Text') . '<br />' . $text . '<br /><br />' . $handler->__('Visit our guestbook:') .
+                '<br />' . '<a href="' . $url . '">' . $url . '</a><br />' . $handler->__('Moderate this entry:') .
                 '<br />' . '<a href="' . $editurl . '">' . $editurl . '</a>';
         $messagecontent['altbody'] = '';
         $messagecontent['html'] = true;
@@ -79,22 +81,22 @@ class Eternizer_Util_Base_Settings extends Zikula_AbstractBase
         if ($toaddress != '') {
 
             if (!ModUtil::apiFunc('Mailer', 'user', 'sendmessage', $messagecontent)) {
-                LogUtil::registerError(Zikula_Form_AbstractHandler::__('Unable to send message'));
+                LogUtil::registerError($handler->__('Unable to send message'));
             }
         }
 
         // Formating of email text
-        $message = Zikula_Form_AbstractHandler::__('Your entry was published!');
+        $message = $handler->__('Your entry was published!');
 
         if ($modvar['moderate'] == 'guests') {
 
             if ($userid < 2) {
-                $message = Zikula_Form_AbstractHandler::__('Your entry was saved and must be confirmed by our team');
+                $message = $handler->__('Your entry was saved and must be confirmed by our team');
             }
         }
         elseif ($modvar['moderate'] == 'all') {
 
-            $message = Zikula_Form_AbstractHandler::__('Your entry was saved and must be confirmed by our team');
+            $message = $handler->__('Your entry was saved and must be confirmed by our team');
         }
 
         LogUtil::registerStatus($message);
