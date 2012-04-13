@@ -70,13 +70,13 @@
     {/if}
 
     {* include display hooks *}
-    {* {if $mode eq 'create'} *}
-    {notifydisplayhooks eventname='eternizer.ui_hooks.entries.form_edit' id=null}
-    {* {else} *}
-    {* {notifydisplayhooks eventname='eternizer.ui_hooks.entries.form_edit' id=$entry.id} *}
-    {* {/if} *}
+    {if $mode eq 'create'}
+    {notifydisplayhooks eventname='eternizer.ui_hooks.entries.form_edit' id=null assign='hooks'}
+    {else}
+    {notifydisplayhooks eventname='eternizer.ui_hooks.entries.form_edit' id=$entry.id assign='hooks'}
+    {/if}
 
-    {if is_array($hooks) && isset($hooks[0])}
+   {* {if is_array($hooks) && isset($hooks[0])} *}
     <fieldset>
         <legend>{gt text='Hooks'}</legend>
         {foreach key='hookName' item='hook' from=$hooks}
@@ -85,7 +85,7 @@
         </div>
         {/foreach}
     </fieldset>
-    {/if}
+    {* {/if} *}
 
     {* include return control *}
     {if $mode eq 'create'}
