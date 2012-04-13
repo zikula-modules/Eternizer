@@ -2,3 +2,13 @@ CHANGELOG
 ---------
 
 Changes in Eternizer 1.1.2
+
+# spam check deleted
+# using of object attributes deleted
+
+# position of edit form in user view selectable
+# own entries for registered users can be editable
+# import for old entries
+# import of atttibutes as far as available
+# deleting of the attributes in the table object_attributes
+# deleting of old table

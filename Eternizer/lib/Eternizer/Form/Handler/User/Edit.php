@@ -85,7 +85,7 @@ class Eternizer_Form_Handler_User_Edit extends Eternizer_Form_Handler_User_Base_
             return System::redirect($url);
         }
 
-        // Own code to assign formpostion
+        // Own code to assign formposition
 
         $formposition = ModUtil::getVar($this->name, 'formposition');
         $this->view->assign('formposition', $formposition);

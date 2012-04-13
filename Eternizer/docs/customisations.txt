@@ -5,5 +5,36 @@ CUSTOMISATIONS
 
 Eternizer - Manual additions and amendments
 
+Changed Files
+
+
+*styles/style.css
+
+*templates/admin/view.tpl
+*templates/user/footer.tpl
+
+Implemented Classes
+
+*lib/Eternizer/Api/Admin.php
+*lib/Eternizer/Api/Selection.php
+*lib/Eternizer/Api/User.php
+
+*lib/Eternizer/Controller/Admin.php
+*lib/Eternizer/Controller/User.php
+
+*lib/Eternizer/Entity/Repository/Entry.php
+
+*lib/Eternizer/Form/Handler/Admin/Entry/Edit.php
+*lib/Eternizer/Form/Handler/User/Edit.php
+
+*lib/Eternizer/Util/Controller.php
+*lib/Eternizer/Util/Model.php
+
+*lib/Eternizer/Installer.php
+
+Additional Files
+
+
+
 
 

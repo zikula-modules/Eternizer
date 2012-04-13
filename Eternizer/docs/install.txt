@@ -1,3 +1,3 @@
-$Id: install.txt,v 2.0 2005/12/29 23:19:00 Philipp Niethammer
+$Id: install.txt,v 2.1 2012/04/13 13:00:00 Michael Ueberschaer
 
-Please see http://code.zikula.org/eternizer/wiki/installation for install introduction.
+Install Eternizer like each other module
