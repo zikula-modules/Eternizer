@@ -82,7 +82,7 @@
                     </div>
                 </div>
                 <div class="etz_content">
-                    {$entry.text}
+                    {$entry.text|notifyfilters:'eternizer.filter_hooks.entries.filter'|safehtml}
                     {if $entry.notes ne ''}
                         <p style="margin-top: 2em;" class="entry-comment">
                             <strong class="entry-comment-label">{gt text="Comment:"}</strong>
