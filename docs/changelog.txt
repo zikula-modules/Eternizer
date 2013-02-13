@@ -12,3 +12,7 @@ Changes in Eternizer 1.1.2
 # import of atttibutes as far as available
 # deleting of the attributes in the table object_attributes
 # deleting of old table
+
+Changes in Eternizer 1.1.3
+
+# fix of missing code for filter hook in template
