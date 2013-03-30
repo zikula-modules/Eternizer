@@ -34,6 +34,8 @@ class Eternizer_Form_Handler_Admin_Base_Config extends Zikula_Form_AbstractHandl
      */
     public function initialize(Zikula_Form_View $view)
     {
+        $dom = ZLanguage::getModuleDomain('Eternizer');
+        
         // permission check
         if (!SecurityUtil::checkPermission('Eternizer::', '::', ACCESS_ADMIN)) {
             return $view->registerError(LogUtil::registerPermissionError());
@@ -43,20 +45,20 @@ class Eternizer_Form_Handler_Admin_Base_Config extends Zikula_Form_AbstractHandl
         $modVars = ModUtil::getVar('Eternizer');
         // initialise list entries for the 'order' setting
         $modVars['orderItems'] = array(
-            array('value' => 'descending', 'text' => 'Descending'),
-            array('value' => 'ascending', 'text' => 'Ascending')
+            array('value' => 'descending', 'text' => __('Descending', $dom)),
+            array('value' => 'ascending', 'text' => __('Ascending', $dom))
         );
         // initialise list entries for the 'moderate' setting
         $modVars['moderateItems'] = array(
-            array('value' => 'nothing', 'text' => 'Nothing'),
-            array('value' => 'guests', 'text' => 'Guests'),
-            array('value' => 'all', 'text' => 'All')
+            array('value' => 'nothing', 'text' => __('Nothing', $dom)),
+            array('value' => 'guests', 'text' => __('Guests', $dom)),
+            array('value' => 'all', 'text' => __('All', $dom))
         );
         // initialise list entries for the 'formposition' setting
         $modVars['formpositionItems'] = array(
-            array('value' => 'above', 'text' => 'Above'),
-            array('value' => 'below', 'text' => 'Below'),
-            array('value' => 'menue', 'text' => 'Menue')
+            array('value' => 'above', 'text' => __('Above', $dom)),
+            array('value' => 'below', 'text' => __('Below', $dom)),
+            array('value' => 'menue', 'text' => __('Menue', $dom))
         );
 
         // assign all module vars
