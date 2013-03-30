@@ -1,5 +1,7 @@
 {* purpose of this template: module configuration *}
 {include file='admin/header.tpl'}
+{pageaddvar name='javascript' value='jquery'}
+{pageaddvar name='javascript' value='jquery-ui'}
 <div class="eternizer-config">
     {gt text='Settings' assign='templateTitle'}
     {pagesetvar name='title' value=$templateTitle}
@@ -43,9 +45,15 @@
             {formlabel for='editentries' __text='Edit own entries?'}
             {formcheckbox id='editentries' group='config'}
         </div>
-        <div class="z-formrow eternizer_hidden">
+        <div id="periodoption" style="display: none;">
+        <div class="z-formrow">
             {formlabel for='period' __text='Period' class='eternizerFormTooltips' title=$toolTip}
             {formintinput id='period' group='config' maxLength=255 __title='Enter this setting. Only digits are allowed.'}
+        </div>
+        </div>
+        <div class="z-formrow">
+            {formlabel for='simplecaptcha' __text='Use simple captcha?'}
+            {formcheckbox id='simplecaptcha' group='config'}
         </div>
     </fieldset>
 
@@ -56,4 +64,48 @@
     {/eternizerFormFrame}
     {/form}
 </div>
+<script type="text/javascript" charset="utf-8">
+/* <![CDATA[ */
+             
+    var MU = jQuery.noConflict();
+    MU(document).ready(function() {
+        if(MU(".z-formrow > #editentries").is(':checked')) {
+        MU("#periodoption").css({display: 'block'});
+        }
+
+        
+    	MU(".z-formrow > #editentries").click( function() {
+        if(MU(this).is(':checked')) {
+        	MU("#periodoption").slideDown('slow');
+        }
+        else {
+        	MU("#periodoption").slideUp('slow');
+        }
+
+    });
+
+    	MU(".z-formrow > #uploadFiles").click( function() {
+            if(MU(this).is(':checked')) {
+            	MU("#fileoptions").slideDown('slow');
+            }
+            else {
+            	MU("#fileoptions").slideUp('slow');
+            }
+
+        }); 
+
+    	MU(".z-formrow > #editPostings").click( function() {
+            if(MU(this).is(':checked')) {
+            	MU("#editoptions").slideDown('slow');
+            }
+            else {
+            	MU("#editoptions").slideUp('slow');
+            }
+
+        });        
+    });
+
+
+/* ]]> */
+</script>
 {include file='admin/footer.tpl'}

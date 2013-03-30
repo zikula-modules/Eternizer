@@ -17,5 +17,133 @@
  */
 class Eternizer_Form_Handler_User_Entry_Edit extends Eternizer_Form_Handler_User_Entry_Base_Edit
 {
-    // feel free to extend the base handler class here
+
+    /**
+     * Initialize form handler.
+     *
+     * This method takes care of all necessary initialisation of our data and form states.
+     *
+     * @return boolean False in case of initialization errors, otherwise true.
+     */
+    public function initialize(Zikula_Form_View $view)
+    {
+        parent::initialize($view);
+        // we check if we may edit this entry if we want to edit
+        if ($this->mode == 'edit') {
+            $entryid = $this->request->query->filter('id', 0, FILTER_SANITIZE_NUMBER_INT);
+            $editentry = Eternizer_Util_View::getStateOfEditOfEntry($entryid, 2);
+
+            if ($editentry === false) {
+                LogUtil::registerError(__('Sorry! The time to edit this entry is gone!'));
+                return System::redirect(ModUtil::url($this->name, 'user', 'view'));
+            }
+        }
+
+        $entity = $this->entityRef;
+        if ($this->mode == 'edit') {
+        } else {
+            if ($this->hasTemplateId !== true) {
+            }
+        }
+
+        // save entity reference for later reuse
+        $this->entityRef = $entity;
+
+        // everything okay, no initialization errors occured
+        return true;
+    }
+
+    /**
+     * Input data processing called by handleCommand method.
+     */
+    public function fetchInputData(Zikula_Form_View $view, &$args)
+    {
+        // fetch posted data input values as an associative array
+        $formData = $this->view->getValues();
+        // check if captcha is enabled
+        $simplecaptcha = $this->getVar('simplecaptcha');
+
+        if ($simplecaptcha == 1) {
+            $captchaInput = $formData['captcha']['eternizer_captcha'];
+
+            $check = $this->checkSimpleCaptcha($captchaInput);
+        }
+
+        if ($check == true || !isset($check)) {
+            parent::fetchInputData($view, $args);
+
+            // get treated entity reference from persisted member var
+            $entity = $this->entityRef;
+
+            $entityData = array();
+
+            $this->reassignRelatedObjects();
+
+            // assign fetched data
+            if (count($entityData) > 0) {
+                $entity->merge($entityData);
+            }
+
+            // save updated entity
+            $this->entityRef = $entity;
+        }
+    }
+
+    /**
+     * Command event handler.
+     *
+     * This event handler is called when a command is issued by the user.
+     */
+    public function handleCommand(Zikula_Form_View $view, &$args)
+    {
+        $result = parent::handleCommand($view, $args);
+        if ($result === false) {
+            return $result;
+        }
+
+        return $this->view->redirect($this->getRedirectUrl($args, $entity, $repeatCreateAction));
+    }
+
+    public function checkSimpleCaptcha($captcha)
+    {
+        $captcha_ok = false;
+        $cdata = @unserialize(SessionUtil::getVar('eternizercaptcha', 'Hallo'));
+        if(is_array($cdata)) {
+            switch($cdata['z'].'-'.$cdata['w']) {
+                case '0-0':
+                    $captcha_ok = (((int)$cdata['x'] + (int)$cdata['y'] + (int)$cdata['v']) == $captcha);
+                    break;
+                case '0-1':
+                    $captcha_ok = (((int)$cdata['x'] + (int)$cdata['y'] - (int)$cdata['v']) == $captcha);
+                    break;
+                case '1-0':
+                    $captcha_ok = (((int)$cdata['x'] - (int)$cdata['y'] + (int)$cdata['v']) == $captcha);
+                    break;
+                case '1-1':
+                    $captcha_ok = (((int)$cdata['x'] - (int)$cdata['y'] - (int)$cdata['v']) == $captcha);
+                    break;
+                default:
+                    // $captcha_ok is false
+            }
+        }
+
+        if($captcha_ok == false) {
+            // we delete the session var
+            SessionUtil::delVar('eternizercaptcha');
+
+            // we get the formposition for redirect
+            $formposition = ModUtil::getVar($this->name, 'formposition');
+
+            if ($formposition == 'menue') {
+                $url = ModUtil::url($this->name, 'user', 'edit', array('ot' => 'entry'));
+            } else {
+                $url = ModUtil::url($this->name, 'user', 'view');
+            }
+            LogUtil::registerError($this->__('The calculation to prevent spam was incorrect. Please try again.'));
+            return System::redirect($url);
+        } else {
+            SessionUtil::delVar('eternizercaptcha');
+            return true;
+        }
+    }
 }

@@ -46,16 +46,22 @@
                 {formtextinput group='entry' id='location' mandatory=false readOnly=false __title='Enter the location of the entry' textMode='singleline' maxLength=100 cssClass=''}
             </div>
             <div class="z-formrow">
-                {formlabel for='text' __text='Text'   mandatorysym='1'}
+                {formlabel for='text' __text='Text' mandatorysym='1'}
                 {formtextinput group='entry' id='text' mandatory=true __title='Input the text of the entry' textMode='multiline' rows='6' cols='50' cssClass=''}
                 {eternizerValidationError id='text' class='required'}
             </div>
+            {if $simplecaptcha eq 1}
+            <div class="z-formrow">
+                {formlabel for='eternizer_captcha' __text='Please solve this calculation' mandatorysym='1'}
+            <span>
+                {eternizerSimplecaptcha font='quikhand' size='14' bgcolor='ffffff' fgcolor='000000'}
+                {formtextinput group='captcha' id='eternizer_captcha' size='5' mandatory=true  textMode='singleline' maxLength=5}
+                <span class="z-sub">{gt text='(to prevent spam)'}</span>
+            </span>
+        </div>
+        {/if}
             <input type="hidden" id='notes' name='notes' value=''/>
         </fieldset>
-
-        {if $mode ne 'create'}
-        {include file='user/include_standardfields_edit.tpl' obj=$entry}
-        {/if}
 
         {* include display hooks *}
         {if $mode eq 'create'}
@@ -102,7 +108,11 @@
         </div>
         {/eternizerFormFrame}
         {/form}
-
+        
+        {if $mode ne 'create'}
+        {include file='user/include_standardfields_edit.tpl' obj=$entry}
+        {/if}
+        
     </div>
 </div>
 

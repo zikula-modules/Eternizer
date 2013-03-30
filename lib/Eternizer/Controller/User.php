@@ -126,5 +126,40 @@ class Eternizer_Controller_User extends Eternizer_Controller_Base_User
         // return main template
         return System::redirect(ModUtil::url($this->name, 'user', 'view'));
     }
+    
+    /**
+     * getimage
+     * returns an image for the captcha even if zTemp is located outside of the webroot
+     *@param img string the image filename
+     *@returns image output
+     */
+    public function getimage()
+    {
+        $img = FormUtil::getPassedValue('img', '', 'GET');
+    
+        $temp = System::getVar('temp');
+        if(StringUtil::right($temp, 1) <> '/') {
+            $temp .= '/';
+        }
+        $imgfile = $temp . 'eternizer_cache/' . DataUtil::formatForStore($img);
+        $parts = explode('.', $img);
+        $data = file_get_contents($imgfile);
+    
+        $mimetypes = array('png' => 'image/png',
+                'jpg' => 'image/jpeg',
+                'gif' => 'image/gif');
+    
+        header("Pragma: public");
+        header("Expires: 0");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Cache-Control: public");
+        header("Content-Description: eternizer image");
+        header("Content-Disposition: inline; filename=" . DataUtil::formatForDisplay($img) . ";");
+        header("Content-type: " . $mimetypes[$parts[1]]);
+        header("Content-Transfer-Encoding: binary");
+    
+        echo $data;
+        exit;
+    }
 
 }

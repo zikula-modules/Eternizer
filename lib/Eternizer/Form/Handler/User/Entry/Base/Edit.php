@@ -52,7 +52,6 @@ class Eternizer_Form_Handler_User_Entry_Base_Edit extends Eternizer_Form_Handler
         parent::initialize($view);
 
         $entity = $this->entityRef;
-
         if ($this->mode == 'edit') {
         } else {
             if ($this->hasTemplateId !== true) {
