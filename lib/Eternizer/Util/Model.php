@@ -46,4 +46,19 @@ class Eternizer_Util_Model extends Eternizer_Util_Base_Model
 
         return $where;
     }
+    
+	/**
+	 *
+	 This method is for getting a repository for an entry
+	 *
+	 */
+
+	public static function getEntryRepository() {
+
+		$serviceManager = ServiceUtil::getManager();
+		$entityManager = $serviceManager->getService('doctrine.entitymanager');
+		$repository = $entityManager->getRepository('Eternizer_Entity_Entry');
+
+		return $repository;
+	}
 }
