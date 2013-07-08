@@ -85,13 +85,15 @@
                 <div class="etz_content">
                     {$entry.text|notifyfilters:'eternizer.filter_hooks.entries.filter'|safehtml|nl2br}
                     {if $entry.notes ne ''}
+                        {if $entry.updatedUserId eq $entry.createdUserId}
                         <p style="margin-top: 2em;" class="entry-comment">
                             <strong class="entry-comment-label">{gt text="Comment:"}</strong>
                             <br/>
                             {$entry.notes|safehtml}
                         </p>
+                        {/if}
                     {/if}
-                    {if $entry.updatedDate > $entry.createdDate}
+                    {if $entry.updatedDate > $entry.createdDate && $entry.createdUserId eq $entry.updatedUserId}
                         <br/>
                         <span class="etz_updated">{gt text='Updated on %s' tag1=$entry.updatedDate|dateformat:datetimelong}</span>
                     {/if}
