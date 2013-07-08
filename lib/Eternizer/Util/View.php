@@ -62,7 +62,7 @@ class Eternizer_Util_View extends Eternizer_Util_Base_View
             }
         } else {
             if ($kind == 1) {
-            $out = '';
+                $out = '';
             } else {
                 $out = false;
             }
