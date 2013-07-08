@@ -1,9 +1,14 @@
 {* purpose of this template: entries view view in admin area *}
-<div class="eternizer-entry eternizer-view">
-    {include file='admin/header.tpl'}
-    {gt text='Entry list' assign='templateTitle'}
-    {pagesetvar name='title' value=$templateTitle}
-    <div class="z-admin-content-pagetitle">
+{pageaddvar name='javascript' value='jquery'}
+{pageaddvar name='javascript' value='jquery-ui'}
+<form class="z-form" id="entries_view" action="{modurl modname='Eternizer' type='admin' func='handleselectedentries'}" method="post">
+    <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
+    <input type="hidden" name="ot" value="entry" />
+    <div class="eternizer-entry eternizer-view">
+        {include file='admin/header.tpl'}
+        {gt text='Entry list' assign='templateTitle'}
+        {pagesetvar name='title' value=$templateTitle}
+        <div class="z-admin-content-pagetitle">
         {icon type='view' size='small' alt=$templateTitle}
         <h3>{$templateTitle}</h3>
     </div>
@@ -21,9 +26,9 @@
         <a href="{modurl modname='Eternizer' type='admin' func='view' ot='entry' all=1}" title="{$linkTitle}" class="z-icon-es-view">{$linkTitle}</a>
     </p>
     {/if}
-
     <table class="z-datatable">
         <colgroup>
+            <col id="ccheck"/>
             <col id="cip"/>
             <col id="cname"/>
             <col id="cemail"/>
@@ -37,6 +42,9 @@
         </colgroup>
         <thead>
             <tr>
+                <th id="hcheck" scope="col" class="z-left">
+                    <input type="checkbox" id="checkallentries">
+                </th>
                 <th id="hip" scope="col" class="z-left">
                     {gt text='Ip'}
                 </th>
@@ -71,6 +79,9 @@
         <tbody>
             {foreach item='entry' from=$items}
             <tr class="{cycle values='z-odd, z-even'}">
+                <td headers="hcheck">
+                    <input type="checkbox" class="checkentry" name="checkentry[]"  value="{$entry.id}">
+                </td>
                 <td headers="hip">
                     {$entry.ip|notifyfilters:'eternizer.filterhook.entries'}
                 </td>
@@ -128,5 +139,35 @@
     {if !isset($showAllEntries) || $showAllEntries ne 1}
     {pager rowcount=$pager.numitems limit=$pager.itemsperpage display='page'}
     {/if}
+            <fieldset>
+            <label for="action">{gt text='With selected entries'}</label>
+            <select id="action" name="action">
+            <option value="">{gt text='Choose action'}</option>
+            <option value="A" title="Accept and publish.">{gt text='Accept'}</option>
+            <option value="D" title="Deny the entry.">{gt text='Deny'}</option>
+            <option value="delete">{gt text='Delete'}</option>
+            </select>
+            <input type="submit" value="{gt text='Submit'}" />
+        </fieldset>
 </div>
+</form>
+<script type="text/javascript" charset="utf-8">
+/* <![CDATA[ */
+             
+    var MU = jQuery.noConflict();
+    MU(document).ready(function() {
+        
+    	MU("#checkallentries").click( function() {
+        if(MU(this).is(':checked')) {
+        	MU('input[type=checkbox]').attr('checked', 'checked');
+        }
+        else {
+        	MU('input[type=checkbox]').removeAttr('checked');
+        }
+
+    });       
+    });
+
+/* ]]> */
+</script>
 {include file='admin/footer.tpl'}
