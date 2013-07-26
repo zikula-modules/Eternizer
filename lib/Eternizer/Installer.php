@@ -106,7 +106,8 @@ class Eternizer_Installer extends Eternizer_Base_Installer
                 HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
                 
             case '1.1.2':
-                
+                ModUtil::setVar('Eternizer', 'period', 12);
+                ModUtil::setVar('Eternizer', 'simplecaptcha', false);
                 $this->createTempDir();
                 
             case '1.1.3':

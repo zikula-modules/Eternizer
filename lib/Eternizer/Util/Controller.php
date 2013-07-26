@@ -30,6 +30,7 @@ class Eternizer_Util_Controller extends Eternizer_Util_Base_Controller
         ModUtil::setVar('Eternizer', 'ipsave', false);
         ModUtil::setVar('Eternizer', 'editentries', false);
         ModUtil::setVar('Eternizer', 'period', 12);
+        ModUtil::setVar('Eternizer', 'simplecaptcha', false);
 
         return true;
     }
