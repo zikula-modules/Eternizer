@@ -7,7 +7,7 @@ Version 1.1.3 comes with some bug fixes and some new features
 
 Now you can give a period for edit own entries in hours
 
-The simplecaptcha known from formicula is implemeted
+The simplecaptcha known from formicula is implemented
 
 ###Update from 1.1.2###
 
