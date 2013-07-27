@@ -140,7 +140,7 @@
     {pager rowcount=$pager.numitems limit=$pager.itemsperpage display='page'}
     {/if}
             <fieldset>
-            <label for="action">{gt text='With selected entries'}</label>
+            <label for="action">{gt text='Selected entries'}</label>
             <select id="action" name="action">
             <option value="">{gt text='Choose action'}</option>
             <option value="A" title="Accept and publish.">{gt text='Accept'}</option>
