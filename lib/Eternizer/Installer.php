@@ -152,7 +152,7 @@ Allow from env=object_is_jpg
             }
         } else {
             // tempdir starts with /, so it is an absolute path, probably outside the webroot
-            LogUtil::registerStatus($this->__('The directory \'ztemp\' found outside of the webroot, please consult the manual of how to create the formicula_cache directory in this case.'));
+            LogUtil::registerStatus($this->__('The directory \'ztemp\' found outside of the webroot, please consult the manual of how to create the eternizer_cache directory in this case.'));
         }
     
     }
