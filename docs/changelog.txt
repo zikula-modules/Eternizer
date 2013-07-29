@@ -1,6 +1,10 @@
 CHANGELOG
 ---------
 
+Changes in Eternizer 1.1.4
+
+# fix - now no hook container if there is no hook enabled for eternizer
+
 Changes in Eternizer 1.1.3
 
 # fix of missing code for filter hook in template
