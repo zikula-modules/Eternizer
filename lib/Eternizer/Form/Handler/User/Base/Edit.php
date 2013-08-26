@@ -440,9 +440,9 @@ class Eternizer_Form_Handler_User_Base_Edit extends Zikula_Form_AbstractHandler
 
         $entityClass = $this->name . '_Entity_' . ucfirst($this->objectType);
         $repository = $this->entityManager->getRepository($entityClass);
-        if ($this->hasTranslatableFields === true) {
+       /* if ($this->hasTranslatableFields === true) {
             $transRepository = $this->entityManager->getRepository($entityClass . 'Translation');
-        }
+        }*/ //TODO maybe it is an issue in MOST
 
         $result = $this->fetchInputData($view, $args);
         if ($result === false) {

@@ -7,6 +7,8 @@ Eternizer - Manual additions and amendments
 
 Changed Files
 
+*lib/Eternizer/Form/Handler/User/Base/edit.php
+We commented out the code from line 443 for translatable fields
 
 *styles/style.css
 
