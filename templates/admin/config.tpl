@@ -47,6 +47,7 @@
         </div>
         <div id="periodoption" style="display: none;">
         <div class="z-formrow">
+        {gt text='Enter the hours, an entry is editable for users' assign='toolTip'}
             {formlabel for='period' __text='Period' class='eternizerFormTooltips' title=$toolTip}
             {formintinput id='period' group='config' maxLength=255 __title='Enter this setting. Only digits are allowed.'}
         </div>
