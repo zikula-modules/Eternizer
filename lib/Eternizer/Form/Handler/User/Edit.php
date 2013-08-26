@@ -91,10 +91,10 @@ class Eternizer_Form_Handler_User_Edit extends Eternizer_Form_Handler_User_Base_
         $simplecaptcha = ModUtil::getVar($this->name, 'simplecaptcha');
         if ($simplecaptcha == 1) {
             // reset captcha
-            SessionUtil::delVar('eternizer_captcha');
-            $this->view->assign('simplecaptcha', $simplecaptcha);
+            SessionUtil::delVar('eternizer_captcha');    
         }
-
+        // asssign var simplecaptcha to template
+        $this->view->assign('simplecaptcha', $simplecaptcha);
         // assign data to template as array (makes translatable support easier)
         $this->view->assign($this->objectTypeLower, $entityData);
 
