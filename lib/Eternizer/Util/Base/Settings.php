@@ -23,9 +23,8 @@ class Eternizer_Util_Base_Settings extends Zikula_AbstractBase
 
         if ($modvar['ipsave'] == true) {
             $ip = System::serverGetVar('REMOTE_ADDR');
+            $this->setIp($ip);
         }
-
-        $this->setIp($ip);
 
         if ($modvar['moderate'] == 'guests') {
 
