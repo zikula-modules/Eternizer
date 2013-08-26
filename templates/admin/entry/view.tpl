@@ -132,7 +132,7 @@
                 </td>
             </tr>
             {foreachelse}
-            <tr class="z-datatableempty"><td colspan="9">{gt text='No entries found'}</td></tr>
+            <tr class="z-datatableempty"><td colspan="11">{gt text='No entries found'}</td></tr>
             {/foreach}
         </tbody>
     </table>
