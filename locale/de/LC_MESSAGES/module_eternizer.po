@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-27 07:03+0000\n"
+"POT-Creation-Date: 2014-01-21 21:26+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Michael Ueberschaer <kontakt@webdesign-in-bremen.de>\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -215,11 +215,23 @@ msgstr "Fehler! Setzen der Konfigurationsvariablen fehlgeschlagen."
 msgid "Done! Module configuration updated."
 msgstr "Erledigt! Konfiguration des Moduls geändert."
 
-#: lib/Eternizer/Form/Handler/User/Entry/Edit.php:37
+#: lib/Eternizer/Form/Handler/User/Entry/Edit.php:35
+#: lib/Eternizer/Api/User.php:55
+msgid "That means, you have no permission to create an entry."
+msgstr ""
+"Das bedeutet, daß Du nicht die Rechte zur Erstellung eines Eintrages hast."
+
+#: lib/Eternizer/Form/Handler/User/Entry/Edit.php:44
 msgid "Sorry! The time to edit this entry is gone!"
 msgstr "Entschuldigung! Die Zeit zur Bearbeitung dieses Eintrags ist vorüber!"
 
-#: lib/Eternizer/Form/Handler/User/Entry/Edit.php:142
+#: lib/Eternizer/Form/Handler/User/Entry/Edit.php:150
+msgid "There is an error with the captcha validation. Enter the correct input!"
+msgstr ""
+"Ein Fehler ist bei der Validierung des Captchas aufgetreten. Nimm die "
+"korrekte Eingabe vor!"
+
+#: lib/Eternizer/Form/Handler/User/Entry/Edit.php:249
 msgid "The calculation to prevent spam was incorrect. Please try again."
 msgstr "Die Rechnung zur Spamvermeidung war falsch. Bitte versuche es erneut."
 
@@ -340,15 +352,15 @@ msgstr ""
 "Der ordner 'ztemp' wurde ausserhalb des Webroot gefunden, bitte nutze das "
 "Manual um den Ordner eternizer_cache für diesen Fall zu erstellen."
 
-#: lib/Eternizer/Util/Base/Settings.php:72
+#: lib/Eternizer/Util/Base/Settings.php:71
 msgid "New Entry in Guestbook on "
 msgstr "Ein neuer Eintrag im Gästebuch auf "
 
-#: lib/Eternizer/Util/Base/Settings.php:73
+#: lib/Eternizer/Util/Base/Settings.php:72
 msgid "Another entry was created by an user on "
 msgstr "Ein neuer Eintrag wurde erstellt auf "
 
-#: lib/Eternizer/Util/Base/Settings.php:74 templates/admin/view.tpl:56
+#: lib/Eternizer/Util/Base/Settings.php:73 templates/admin/view.tpl:56
 #: templates/admin/entry/display.tpl:37 templates/admin/entry/view.tpl:64
 #: templates/admin/entry/edit.tpl:53 templates/admin/entry/view.csv:3
 #: templates/user/entry/display.tpl:35 templates/user/entry/edit.tpl:49
@@ -356,24 +368,24 @@ msgstr "Ein neuer Eintrag wurde erstellt auf "
 msgid "Text"
 msgstr "Text"
 
-#: lib/Eternizer/Util/Base/Settings.php:74
+#: lib/Eternizer/Util/Base/Settings.php:73
 msgid "Visit our guestbook:"
 msgstr "Besuche unser Gästebuch:"
 
-#: lib/Eternizer/Util/Base/Settings.php:75
+#: lib/Eternizer/Util/Base/Settings.php:74
 msgid "Moderate this entry:"
 msgstr "Moderiere diesen Eintrag:"
 
-#: lib/Eternizer/Util/Base/Settings.php:84
+#: lib/Eternizer/Util/Base/Settings.php:83
 msgid "Unable to send message"
 msgstr "Nachricht kann nicht gesendet werden"
 
-#: lib/Eternizer/Util/Base/Settings.php:89
+#: lib/Eternizer/Util/Base/Settings.php:88
 msgid "Your entry was published!"
 msgstr "Dein Eintrag wurde veröffentlicht!"
 
-#: lib/Eternizer/Util/Base/Settings.php:94
-#: lib/Eternizer/Util/Base/Settings.php:99
+#: lib/Eternizer/Util/Base/Settings.php:93
+#: lib/Eternizer/Util/Base/Settings.php:98
 msgid "Your entry was saved and must be confirmed by our team"
 msgstr ""
 "Dein Eintrag wurde gespeichert und muss noch von unserem Team freigeschaltet "
@@ -595,7 +607,7 @@ msgstr "Hier kannst Du sämtliche Basiseinstellungen vornehmen."
 msgid "Items per page"
 msgstr "Elemente pro Seite"
 
-#: templates/admin/config.tpl:20 templates/admin/config.tpl:51
+#: templates/admin/config.tpl:20 templates/admin/config.tpl:52
 msgid "Enter this setting. Only digits are allowed."
 msgstr "Diese Einstellung eingeben. Nur Ziffern sind erlaubt."
 
@@ -646,18 +658,22 @@ msgid "Edit own entries?"
 msgstr "Eigene Beitrage bearbeiten?"
 
 #: templates/admin/config.tpl:50
+msgid "Enter the hours, an entry is editable for users"
+msgstr "Gib die Stunden ein, die ein Eintrag für die Benutzer editierbar ist."
+
+#: templates/admin/config.tpl:51
 msgid "Period"
 msgstr "Zeitraum"
 
-#: templates/admin/config.tpl:55
+#: templates/admin/config.tpl:56
 msgid "Use simple captcha?"
 msgstr "Einfaches Captcha nutzen?"
 
-#: templates/admin/config.tpl:61
+#: templates/admin/config.tpl:62
 msgid "Update configuration"
 msgstr "Konfiguration aktualisieren"
 
-#: templates/admin/config.tpl:62 templates/admin/import.tpl:58
+#: templates/admin/config.tpl:63 templates/admin/import.tpl:58
 #: templates/admin/entry/edit.tpl:114 templates/admin/entry/delete.tpl:22
 #: templates/user/entry/edit.tpl:107
 msgid "Cancel"

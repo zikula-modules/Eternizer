@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula 1.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-27 07:03+0000\n"
+"POT-Creation-Date: 2014-01-21 21:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -212,11 +212,20 @@ msgstr ""
 msgid "Done! Module configuration updated."
 msgstr ""
 
-#: lib/Eternizer/Form/Handler/User/Entry/Edit.php:37
+#: lib/Eternizer/Form/Handler/User/Entry/Edit.php:35
+#: lib/Eternizer/Api/User.php:55
+msgid "That means, you have no permission to create an entry."
+msgstr ""
+
+#: lib/Eternizer/Form/Handler/User/Entry/Edit.php:44
 msgid "Sorry! The time to edit this entry is gone!"
 msgstr ""
 
-#: lib/Eternizer/Form/Handler/User/Entry/Edit.php:142
+#: lib/Eternizer/Form/Handler/User/Entry/Edit.php:150
+msgid "There is an error with the captcha validation. Enter the correct input!"
+msgstr ""
+
+#: lib/Eternizer/Form/Handler/User/Entry/Edit.php:249
 msgid "The calculation to prevent spam was incorrect. Please try again."
 msgstr ""
 
@@ -321,15 +330,15 @@ msgid ""
 "manual of how to create the eternizer_cache directory in this case."
 msgstr ""
 
-#: lib/Eternizer/Util/Base/Settings.php:72
+#: lib/Eternizer/Util/Base/Settings.php:71
 msgid "New Entry in Guestbook on "
 msgstr ""
 
-#: lib/Eternizer/Util/Base/Settings.php:73
+#: lib/Eternizer/Util/Base/Settings.php:72
 msgid "Another entry was created by an user on "
 msgstr ""
 
-#: lib/Eternizer/Util/Base/Settings.php:74 templates/admin/view.tpl:56
+#: lib/Eternizer/Util/Base/Settings.php:73 templates/admin/view.tpl:56
 #: templates/admin/entry/display.tpl:37 templates/admin/entry/view.tpl:64
 #: templates/admin/entry/edit.tpl:53 templates/admin/entry/view.csv:3
 #: templates/user/entry/display.tpl:35 templates/user/entry/edit.tpl:49
@@ -337,24 +346,24 @@ msgstr ""
 msgid "Text"
 msgstr ""
 
-#: lib/Eternizer/Util/Base/Settings.php:74
+#: lib/Eternizer/Util/Base/Settings.php:73
 msgid "Visit our guestbook:"
 msgstr ""
 
-#: lib/Eternizer/Util/Base/Settings.php:75
+#: lib/Eternizer/Util/Base/Settings.php:74
 msgid "Moderate this entry:"
 msgstr ""
 
-#: lib/Eternizer/Util/Base/Settings.php:84
+#: lib/Eternizer/Util/Base/Settings.php:83
 msgid "Unable to send message"
 msgstr ""
 
-#: lib/Eternizer/Util/Base/Settings.php:89
+#: lib/Eternizer/Util/Base/Settings.php:88
 msgid "Your entry was published!"
 msgstr ""
 
-#: lib/Eternizer/Util/Base/Settings.php:94
-#: lib/Eternizer/Util/Base/Settings.php:99
+#: lib/Eternizer/Util/Base/Settings.php:93
+#: lib/Eternizer/Util/Base/Settings.php:98
 msgid "Your entry was saved and must be confirmed by our team"
 msgstr ""
 
@@ -572,7 +581,7 @@ msgstr ""
 msgid "Items per page"
 msgstr ""
 
-#: templates/admin/config.tpl:20 templates/admin/config.tpl:51
+#: templates/admin/config.tpl:20 templates/admin/config.tpl:52
 msgid "Enter this setting. Only digits are allowed."
 msgstr ""
 
@@ -617,18 +626,22 @@ msgid "Edit own entries?"
 msgstr ""
 
 #: templates/admin/config.tpl:50
+msgid "Enter the hours, an entry is editable for users"
+msgstr ""
+
+#: templates/admin/config.tpl:51
 msgid "Period"
 msgstr ""
 
-#: templates/admin/config.tpl:55
+#: templates/admin/config.tpl:56
 msgid "Use simple captcha?"
 msgstr ""
 
-#: templates/admin/config.tpl:61
+#: templates/admin/config.tpl:62
 msgid "Update configuration"
 msgstr ""
 
-#: templates/admin/config.tpl:62 templates/admin/import.tpl:58
+#: templates/admin/config.tpl:63 templates/admin/import.tpl:58
 #: templates/admin/entry/edit.tpl:114 templates/admin/entry/delete.tpl:22
 #: templates/user/entry/edit.tpl:107
 msgid "Cancel"
