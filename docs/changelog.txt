@@ -4,6 +4,12 @@ CHANGELOG
 Changes in Eternizer 1.1.4
 
 # fix - now no hook container if there is no hook enabled for eternizer
+# closed #48 - we get a feedback if the captcha validation failed
+# closed #52 - correct colspan entries now
+# closed #53 - var simplecptcha is defined now
+# closed #54 - translatable filelds error fixed
+# closed #56 - undefinded tooltip fixed
+# closed #58 - error message if user have no permission to create entry
 
 Changes in Eternizer 1.1.3
 
