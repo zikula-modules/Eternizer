@@ -27,7 +27,14 @@ class Eternizer_Form_Handler_User_Entry_Edit extends Eternizer_Form_Handler_User
      */
     public function initialize(Zikula_Form_View $view)
     {
+        $dom = ZLanguage::getModuleDomain($this->name);
         parent::initialize($view);
+        // we check if we may create an new entry
+        if ($this->mode == 'create') {      
+            if (!SecurityUtil::checkPermission($this->permissionComponent, '.*', ACCESS_ADD)) {
+                return LogUtil::registerError(__('That means, you have no permission to create an entry.', $dom));
+            }
+        }
         // we check if we may edit this entry if we want to edit
         if ($this->mode == 'edit') {
             $entryid = $this->request->query->filter('id', 0, FILTER_SANITIZE_NUMBER_INT);
@@ -62,6 +69,7 @@ class Eternizer_Form_Handler_User_Entry_Edit extends Eternizer_Form_Handler_User
         $formData = $this->view->getValues();
         // check if captcha is enabled
         $simplecaptcha = $this->getVar('simplecaptcha');
+        $check = '';
 
         if ($simplecaptcha == 1) {
             $captchaInput = $formData['captcha']['eternizer_captcha'];
@@ -69,7 +77,7 @@ class Eternizer_Form_Handler_User_Entry_Edit extends Eternizer_Form_Handler_User
             $check = $this->checkSimpleCaptcha($captchaInput);
         }
 
-        if ($check == true || !isset($check)) {
+        if ($check == true || $check == '') {
             parent::fetchInputData($view, $args);
 
             // get treated entity reference from persisted member var
