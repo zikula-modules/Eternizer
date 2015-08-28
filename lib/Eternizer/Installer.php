@@ -111,8 +111,11 @@ class Eternizer_Installer extends Eternizer_Base_Installer
                 $this->createTempDir();
                 
             case '1.1.3':
-                // later upgrade
-
+                // nothing to do
+                
+            case '1.1.4':
+				// later upgrade
+				
                 break;
         }
 
