@@ -20,7 +20,7 @@ class Eternizer_Version extends Eternizer_Base_Version
     {
         $meta = array();
         // the current module version
-        $meta['version'] = '1.1.3';
+        $meta['version'] = '1.1.4';
         // the displayed name of the module
         $meta['displayname'] = $this->__('Eternizer');
         // the module description
@@ -29,7 +29,7 @@ class Eternizer_Version extends Eternizer_Base_Version
         $meta['url'] = $this->__('eternizer');
         // core requirement
         $meta['core_min'] = '1.3.1'; // requires minimum 1.3.1 or later
-        $meta['core_max'] = '1.3.6'; // not ready for 1.3.7 yet
+        $meta['core_max'] = '1.3.99'; // not ready for 1.4.x yet
 
         // define special capabilities of this module
         $meta['capabilities'] = array(
