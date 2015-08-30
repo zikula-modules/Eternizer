@@ -17,24 +17,26 @@ We commented out the code from line 443 for translatable fields
 
 Implemented Classes
 
-*lib/Eternizer/Api/Admin.php
-*lib/Eternizer/Api/Selection.php
-*lib/Eternizer/Api/User.php
+*Api/AdminApi.php
+*Api/SelectionApi.php
+*Api/UserApi.php
 
-*lib/Eternizer/Controller/Admin.php
-*lib/Eternizer/Controller/User.php
+*Controller/AdminController.php
+*Controller/UserController.php
 
-*lib/Eternizer/Entity/Repository/Entry.php
+*Entity/EntryEntity.php
+*Entity/Repository/EntryEntity.php
 
-*lib/Eternizer/Form/Handler/Admin/Entry/Edit.php
-*lib/Eternizer/Form/Handler/User/Edit.php
+*Form/Handler/Entry/EditHandler.php
 
-*lib/Eternizer/Util/Controller.php
-*lib/Eternizer/Util/Model.php
+*Util/ControllerUtil.php
+*Util/ModelUtil.php
 
 *lib/Eternizer/Installer.php
 
 Additional Files
+
+*Resources/views/plugins/modifier.mueternizermoduleGetStateOfEditOfEntry.php
 
 
 
