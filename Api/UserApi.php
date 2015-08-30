@@ -14,6 +14,10 @@ namespace MU\EternizerModule\Api;
 
 use MU\EternizerModule\Api\Base\UserApi as BaseUserApi;
 
+use ModUtil;
+use SecurityUtil;
+use UserUtil;
+
 /**
  * This is the User api helper class.
  */
@@ -31,19 +35,30 @@ class UserApi extends BaseUserApi
         $request = $this->get('request');
 
         if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'main'),
+            $links[] = array('url' => $router->generate('mueternizermodule_admin_index'),
                 'text' => $this->__('Backend'),
                 'title' => $this->__('Switch to administration area.'),
-                'class' => 'z-icon-es-options');
+                'icon' => 'wrench');
         }
-        if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
-            $links[] = array('url' => ModUtil::url($this->name, 'user', 'view', array('ot' => 'entry')),
+        
+        $controllerHelper = $this->get('mueternizermodule.controller_helper');
+        $utilArgs = array('api' => 'user', 'action' => 'getLinks');
+        $allowedObjectTypes = $controllerHelper->getObjectTypes('api', $utilArgs);
+
+        $currentType = $request->query->filter('type', 'entry', false, FILTER_SANITIZE_STRING);
+        $currentLegacyType = $request->query->filter('lct', 'user', false, FILTER_SANITIZE_STRING);
+        $permLevel = in_array('admin', array($currentType, $currentLegacyType)) ? ACCESS_ADMIN : ACCESS_READ;
+        
+        if (in_array('entry', $allowedObjectTypes)
+            && SecurityUtil::checkPermission($this->name . ':Entry:', '::', $permLevel)) {
+            $links[] = array('url' => $router->generate('mueternizermodule_entry_view', array('lct' => 'user')),
                 'text' => $this->__('Entries'),
                 'title' => $this->__('Entry list'));
         }
         if (UserUtil::isLoggedIn() == true) {
-            if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
-                $links[] = array('url' => ModUtil::url($this->name, 'user', 'view', array('ot' => 'entry',
+        	if (in_array('entry', $allowedObjectTypes)
+            && SecurityUtil::checkPermission($this->name . ':Entry:', '::', $permLevel)) {
+            $links[] = array('url' => $router->generate('mueternizermodule_entry_view', array('ot' => 'entry',
                     'select' => 'mine')),
                     'text' => $this->__('My Entries'),
                     'title' => $this->__('View of my entries'));
@@ -51,8 +66,9 @@ class UserApi extends BaseUserApi
         }
         $formposition = ModUtil::getVar($this->name, 'formposition');
         if ($formposition == 'menue') {
-            if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADD)) {
-                $links[] = array('url' => ModUtil::url($this->name, 'user', 'edit', array('ot' => 'entry')),
+        	if (in_array('entry', $allowedObjectTypes)
+            && SecurityUtil::checkPermission($this->name . ':Entry:', '::', $permLevel)) {
+            	$links[] = array('url' => $router->generate('mueternizermodule_entry_edit', array('lct' => 'user')),
                     'text' => $this->__('New Entry'),
                     'title' => $this->__('Make a new entry'));
             } else {
