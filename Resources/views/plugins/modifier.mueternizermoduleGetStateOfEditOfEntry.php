@@ -10,6 +10,7 @@
  * @link http://zikula.org
  */
 
+use MU\Eternizer\Util;
 /**
  * The eternizerGetStateOfEditOfIssue return the state of edit -> yes or not.
  *
@@ -17,10 +18,12 @@
  *
  * @return out html
  */
-function smarty_modifier_eternizerGetStateOfEditOfEntry($id)
+function smarty_modifier_mueternizermoduleGetStateOfEditOfEntry($id)
 {
-
-	$out = Eternizer_Util_View::getStateOfEditOfEntry($id);
+    $serviceManager = ServiceUtil::getManager();
+    $viewHelper = $serviceManager->get('mueternizermodule.view_helper');
+    
+	$out = $viewHelper->getStateOfEditOfEntry($id);
 
 	return $out;
 }
