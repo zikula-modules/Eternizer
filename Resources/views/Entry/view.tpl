@@ -1,4 +1,4 @@
-{* purpose of this template: entries list view *}
+{zdebug}{* purpose of this template: entries list view *}
 {assign var='lct' value='user'}
 {if isset($smarty.get.lct) && $smarty.get.lct eq 'admin'}
     {assign var='lct' value='admin'}
@@ -44,12 +44,11 @@
         <div>
             <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
     {/if}
+    {if $lct eq 'admin'}
         <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover table-condensed">
-            <colgroup>
-                {if $lct eq 'admin'}
-                    <col id="cSelect" />
-                {/if}
+            <colgroup>             
+                <col id="cSelect" />
                 <col id="cIp" />
                 <col id="cName" />
                 <col id="cEmail" />
@@ -62,11 +61,9 @@
             </colgroup>
             <thead>
             <tr>
-                {if $lct eq 'admin'}
-                    <th id="hSelect" scope="col" align="center" valign="middle">
-                        <input type="checkbox" id="toggleEntries" />
-                    </th>
-                {/if}
+                <th id="hSelect" scope="col" align="center" valign="middle">
+                    <input type="checkbox" id="toggleEntries" />
+                </th>
                 <th id="hIp" scope="col" class="text-left">
                     {sortlink __linktext='Ip' currentsort=$sort modname='MUEternizerModule' type='entry' func='view' sort='ip' sortdir=$sdir all=$all own=$own workflowState=$workflowState q=$q pageSize=$pageSize lct=$lct}
                 </th>
@@ -98,11 +95,9 @@
         
         {foreach item='entry' from=$items}
             <tr>
-                {if $lct eq 'admin'}
-                    <td headers="hselect" align="center" valign="top">
-                        <input type="checkbox" name="items[]" value="{$entry.id}" class="entries-checkbox" />
-                    </td>
-                {/if}
+                <td headers="hselect" align="center" valign="top">
+                    <input type="checkbox" name="items[]" value="{$entry.id}" class="entries-checkbox" />
+                </td>
                 <td headers="hIp" class="z-left">
                     {$entry.ip}
                 </td>
@@ -158,10 +153,7 @@
         </table>
         </div>
         
-        {if !isset($showAllEntries) || $showAllEntries ne 1}
-            {pager rowcount=$pager.numitems limit=$pager.itemsperpage display='page' lct=$lct route='mueternizermodule_entry_view'}
-        {/if}
-    {if $lct eq 'admin'}
+
             <fieldset>
                 <label for="mUEternizerModuleAction" class="col-sm-3 control-label">{gt text='With selected entries'}</label>
                 <div class="col-sm-6">
@@ -177,8 +169,110 @@
         </div>
     </form>
     {/if}
+    {if $lct eq 'user'}
+    {foreach item='entry' from=$items}
+    <div id="eternizer">
+        <div class="etz_entry z-clearfix {cycle values='etz_bg1,etz_bg2'}">
+            <div class="etz_author">
+                <div class="etz_avatar">{useravatar uid=$entry.createdUserId}</div>
+                {if $entry.email ne '' || $entry.homepage ne '' || $entry.location ne ''}
+                    <dl class="etz_options">
+                        {if $entry.email ne ''}
+                            <dt>{gt text='Email'}</dt>
+                            <dd>
+                                <a href="mailto:{$entry.email|safehtml}" title="{gt text='Send an email'}">{icon type='mail' size='extrasmall' __alt='Email'}</a>
+                            </dd>
+                        {/if}
+                        {if $entry.homepage ne ''}
+                            <dt>{gt text='Homepage'}</dt>
+                            <dd>
+                                <a href="{$entry.homepage|safehtml}" title="{gt text='Visit this page'}">{icon type='url' size='extrasmall' __alt='Homepage'}</a>
+                            </dd>
+                        {/if}
+                        {if $entry.location ne ''}
+                            <dt>{gt text='Location'}</dt>
+                            <dd>{$entry.location|safehtml}</dd>
+                        {/if}
+                    </dl>
+                {/if}
+            </div>
+            <div class="etz_body">
+                <div class="etz_info">
+                    <div class="etz_title">
+                        <div class="etz_name">
+                            {if $entry.name ne ''}
+                                <span class="etz_attr">{$entry.name|safehtml}</span>
+                                {else}
+                                {if $entry.createdUserId eq 0}
+                                    {modgetvar module='Users' name='anonymous' assign='guest'}
+                                    {$guest|safehtml}
+                                    {else}
+                                    {usergetvar name='uname' uid=$entry.createdUserId assign='uname'}
+                                    {if $uname ne ''}
+                                        {$uname|safehtml}
+                                        {else}
+                                        {$guest|safehtml}
+                                    {/if}
+                                {/if}
+                            {/if}
+                            {gt text='on %s' tag1=$entry.createdDate|dateformat:datetimelong}
+                        </div>
+                    </div>
+                    <div class="etz_action">
+                        {if count($entry._actions) gt 0}
+                            {if $entry.createdUserId eq $userid && $coredata.logged_in eq true && $editentries eq 1}
+                            <div class="eternizer-user-entry-edit">{$entry.id|mueternizermoduleGetStateOfEditOfEntry}</div>
+                               {* {strip}
+                                    {foreach item='option' from=$entry._actions}
+                                        <a href="{$option.url.type|eternizerActionUrl:$option.url.func:$option.url.arguments}" title="{$option.linkTitle|safetext}"{if $option.icon eq 'preview'} target="_blank"{/if}>{icon type=$option.icon size='extrasmall' alt=$option.linkText|safetext}</a>
+                                    {/foreach}
+                                {/strip} *}
+                            {/if}
+                        {/if}
+                    </div>
+                </div>
+                <div class="etz_content">
+                    {$entry.text|notifyfilters:'eternizer.filter_hooks.entries.filter'|safehtml|nl2br}
+                    {if $entry.notes ne ''}
+                        {if $entry.updatedUserId eq $entry.createdUserId}
+                        <p style="margin-top: 2em;" class="entry-comment">
+                            <strong class="entry-comment-label">{gt text="Comment:"}</strong>
+                            <br/>
+                            {$entry.notes|safehtml}
+                        </p>
+                        {/if}
+                    {/if}
+                    {if $entry.updatedDate > $entry.createdDate && $entry.createdUserId eq $entry.updatedUserId}
+                        <br/>
+                        <span class="etz_updated">{gt text='Updated on %s' tag1=$entry.updatedDate|dateformat:datetimelong}</span>
+                    {/if}
+                </div>
+            </div>
+        </div>
+        </div>
+        {foreachelse}
+        <tr class="z-datatableempty">
+            <td class="z-left" colspan="9">{gt text='No entries found.'}</td>
+        </tr>
+    {/foreach}
 
+    {if !isset($showAllEntries) || $showAllEntries ne 1}
+        {pager rowcount=$pager.numitems limit=$pager.itemsperpage display='page'}
+    {/if}
+
+    {if $formposition eq 'below'}
+        {modfunc modname='Eternizer' type='user' func='edit'}
+        {notifydisplayhooks eventname='eternizer.ui_hooks.entries.display_view' urlobject=$currentUrlObject assign='hooks'}
+        {foreach key='hookname' item='hook' from=$hooks}
+            {$hook}
+        {/foreach}
+    {/if}    
+    {/if}
     
+
+        {if !isset($showAllEntries) || $showAllEntries ne 1}
+            {pager rowcount=$pager.numitems limit=$pager.itemsperpage display='page' lct=$lct route='mueternizermodule_entry_view'}
+        {/if}    
     {* here you can activate calling display hooks for the view page if you need it *}
     {*if $lct ne 'admin'}
         {notifydisplayhooks eventname='mueternizermodule.ui_hooks.entries.display_view' urlobject=$currentUrlObject assign='hooks'}

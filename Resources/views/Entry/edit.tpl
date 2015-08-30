@@ -97,7 +97,9 @@
         <div class="form-group">
             {formlabel for='obj_status' __text='Obj_status' mandatorysym='1' cssClass=' col-sm-3 control-label'}
             <div class="col-sm-9">
-            {formtextinput group='entry' id='obj_status' mandatory=true readOnly=false __title='Enter the obj_status of the entry' textMode='singleline' maxLength=1 cssClass='form-control required' }
+            {formdropdownlist group='entry' id='obj_status' mandatory=true readOnly=false __title='Enter the obj_status of the entry' textMode='singleline' maxLength=1 cssClass='form-control required'}
+           {* {eternizerValidationError id='obj_status' class='required'}
+             {formtextinput group='entry' id='obj_status' mandatory=true readOnly=false __title='Enter the obj_status of the entry' textMode='singleline' maxLength=1 cssClass='form-control required' } *}
             </div>
         </div>
     </fieldset>
