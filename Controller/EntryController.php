@@ -21,6 +21,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use MU\EternizerModule\Entity\EntryEntity;
 
+use ModUtil;
+use UserUtil;
+
 /**
  * Entry controller class providing navigation and interaction functionality.
  */
@@ -66,6 +69,28 @@ class EntryController extends BaseEntryController
      */
     public function viewAction(Request $request, $sort, $sortdir, $pos, $num)
     {
+    	// We rule the position of the form
+        $formposition = ModUtil::getVar($this->name, 'formposition');
+
+        //We check the userid for ruling the edit button
+        $userid = UserUtil::getVar('uid');
+
+        //We check for editing of entries
+        $editentries = ModUtil::getVar($this->name, 'editentries');
+
+        // We assign to the template
+        $this->view->assign('formposition', $formposition);
+        $this->view->assign('userid', $userid);
+        $this->view->assign('editentries', $editentries);
+
+        $order = ModUtil::getVar($this->name, 'order');
+        if ($order == 'descending') {
+            $args['sortdir'] = 'desc';
+        }
+        else {
+            $args['sortdir'] = 'asc';
+        }
+
         return parent::viewAction($request, $sort, $sortdir, $pos, $num);
     }
     

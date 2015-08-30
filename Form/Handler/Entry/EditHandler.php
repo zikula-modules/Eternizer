@@ -11,8 +11,17 @@
  */
 
 namespace MU\EternizerModule\Form\Handler\Entry;
+use MU\EternizerModule\Util;
 
 use MU\EternizerModule\Form\Handler\Entry\Base\EditHandler as BaseEditHandler;
+
+use FormUtil;
+use ModUtil;
+use SecurityUtil;
+use System;
+use UserUtil;
+use Zikula_Form_View;
+use ServiceUtil;
 
 /**
  * This handler class handles the page events of the Form called by the mUEternizerModule_entry_edit() function.
@@ -20,5 +29,75 @@ use MU\EternizerModule\Form\Handler\Entry\Base\EditHandler as BaseEditHandler;
  */
 class EditHandler extends BaseEditHandler
 {
-    // feel free to extend the base handler class here
+    /**
+     * Initialize form handler.
+     *
+     * This method takes care of all necessary initialisation of our data and form states.
+     *
+     * @param Zikula_Form_View $view The form view instance.
+     *
+     * @return boolean False in case of initialization errors, otherwise true.
+     */
+    public function initialize(Zikula_Form_View $view)
+    {
+        $result = parent::initialize($view);
+        if ($result === false) {
+            return $result;
+        }
+    
+        if ($this->mode == 'create') {
+            $modelHelper = $this->view->getServiceManager()->get('mueternizermodule.model_helper');
+            if (!$modelHelper->canBeCreated($this->objectType)) {
+                $logger = $this->view->getServiceManager()->get('logger');
+                $logger->notice('{app}: User {user} tried to create a new {entity}, but failed as it other items are required which must be created before.', array('app' => 'MUEternizerModule', 'user' => UserUtil::getVar('uname'), 'entity' => $this->objectType));
+    
+                return $this->view->redirect($this->getRedirectUrl(null));
+            }
+        }
+    
+        $entity = $this->entityRef;
+    
+        // save entity reference for later reuse
+        $this->entityRef = $entity;
+    
+        $entityData = $entity->toArray();
+    
+        if (count($this->listFields) > 0) {
+            $helper = $this->view->getServiceManager()->get('mueternizermodule.listentries_helper');
+    
+            foreach ($this->listFields as $listField => $isMultiple) {
+                $entityData[$listField . 'Items'] = $helper->getEntries($this->objectType, $listField);
+                if ($isMultiple) {
+                    $entityData[$listField] = $helper->extractMultiList($entityData[$listField]);
+                }
+            }
+        }
+    
+        // assign data to template as array (makes translatable support easier)
+        $this->view->assign($this->objectTypeLower, $entityData);
+    
+        if ($this->mode == 'edit') {
+            // assign formatted title
+            $this->view->assign('formattedEntityTitle', $entity->getTitleFromDisplayPattern());
+        }
+        
+        // We rule the position of the form
+        $formposition = ModUtil::getVar($this->name, 'formposition');
+        
+        $serviceManager = ServiceUtil::getManager();
+        $controllerHelper = $serviceManager->get('mueternizermodule.controller_helper');
+
+        //We build the dropdownlist for moderation
+        $moderation = $controllerHelper->getKindOfStatus();
+
+        $entry = $this->view->get_template_vars('entry');
+        $entry['obj_statusItems'] = $moderation;
+        $this->view->assign('entry', $entry);
+
+        // We assign to the template
+        $this->view->assign('formposition', $formposition);
+    
+        // everything okay, no initialization errors occured
+        return true;
+    }
 }

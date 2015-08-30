@@ -14,7 +14,6 @@ namespace MU\EternizerModule\Form\Handler\Entry\Base;
 
 use MU\EternizerModule\Form\Handler\Common\EditHandler as BaseEditHandler;
 
-
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use FormUtil;

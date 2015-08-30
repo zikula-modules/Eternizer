@@ -46,6 +46,9 @@ class SelectionApi extends BaseSelectionApi
         }
 
         $type = $request->request->filter('type', '', FILTER_SANITIZE_STRING);
+        
+        $serviceManager = ServiceUtil::getManager();
+        $modelHelper = $serviceManager->get('mueternizermodule.model_helper');
 
         if ($type == 'user' || $type = '') {
             if ($args['where'] != '') {
@@ -53,11 +56,11 @@ class SelectionApi extends BaseSelectionApi
             }
 
             if ($args['where'] != '') {
-                $args['where'] .= MUEternizerModule_Util_Model::entryAllowed();
+                $args['where'] .= $modelHelper->entryAllowed();
             }
             else
             {
-                $args['where'] = MUEternizerModule_Util_Model::entryAllowed();
+                $args['where'] = $modelHelper->entryAllowed();
             }
         }
 

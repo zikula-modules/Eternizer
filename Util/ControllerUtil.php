@@ -14,10 +14,23 @@ namespace MU\EternizerModule\Util;
 
 use MU\EternizerModule\Util\Base\ControllerUtil as BaseControllerUtil;
 
+use ZLanguage;
+
 /**
  * Utility implementation class for controller helper methods.
  */
 class ControllerUtil extends BaseControllerUtil
 {
-    // feel free to add your own convenience methods here
+    /**
+     * Get list of status.
+     */
+    public static function getKindOfStatus()
+    {
+        $dom = ZLanguage::getModuleDomain('Eternizer');
+        $moderation = array();
+        $moderation[] = array('value' => 'A', 'text' => __('accepted and published', $dom));
+        $moderation[] = array('value' => 'M', 'text' => __('to moderate', $dom));
+        $moderation[] = array('value' => 'D', 'text' => __('denied', $dom));
+        return $moderation;
+    }
 }

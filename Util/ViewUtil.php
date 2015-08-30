@@ -14,10 +14,70 @@ namespace MU\EternizerModule\Util;
 
 use MU\EternizerModule\Util\Base\ViewUtil as BaseViewUtil;
 
+use DateUtil;
+use ModUtil;
+use ServiceUtil;
+use UserUtil;
+
 /**
  * Utility implementation class for view helper methods.
  */
 class ViewUtil extends BaseViewUtil
 {
-    // feel free to add your own convenience methods here
+    /**
+     * This method checks if user must edit this posting - creater of the issue
+     */
+    public static function getStateOfEditOfEntry($entryid, $kind = 1)
+    {
+    	$serviceManager = ServiceUtil::getManager();
+    	//get repository for Entries
+    	$repository = $serviceManager->get('mueternizermodule.' . 'entry' . '_factory')->getRepository();
+        
+        // get entry
+        $entry = $repository->selectById($entryid);
+
+        // get userid of user created this posting
+        $createdUserId = $entry->getCreatedUserId();
+        // get created Date
+        $createdDate = $entry->getCreatedDate();
+        $createdDate = $createdDate->getTimestamp();
+
+        // get the actual time
+        $actualTime = DateUtil::getDatetime();
+        // get modvar editTime
+        $editTime = ModUtil::getVar('Eternizer', 'period');
+
+        $diffTime = DateUtil::getDatetimeDiff($createdDate, $actualTime);
+        $diffTimeHours = $diffTime['d'] * 24 + $diffTime['h'];
+
+        if (UserUtil::isLoggedIn()== true) {
+            $userid = UserUtil::getVar('uid');
+        } else {
+            $out = '';
+        }
+
+        if ($createdUserId == $userid && ($diffTimeHours < $editTime) ) {
+            if ($kind == 1) {
+                $serviceManager = ServiceUtil::getManager();
+                // generate an auth key to use in urls
+                $csrftoken = SecurityUtil::generateCsrfToken($serviceManager, true);
+                $url = ModUtil::url('Eternizer', 'user', 'edit', array('ot' => 'entry', 'id' => $entryid, 'token' => $csrftoken));
+                $title = __('You have permissions to edit this issue!');
+                $out = "<a title='{$title}' id='eternizer-user-entry-edit-creater' href='{$url}'>
+                <img src='/images/icons/extrasmall/xedit.png' />
+                </a>";
+            } else {
+                $out = true;
+
+            }
+        } else {
+            if ($kind == 1) {
+                $out = '';
+            } else {
+                $out = false;
+            }
+        }
+
+        return $out;
+    }
 }
