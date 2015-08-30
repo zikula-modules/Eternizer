@@ -85,10 +85,10 @@ class EntryController extends BaseEntryController
 
         $order = ModUtil::getVar($this->name, 'order');
         if ($order == 'descending') {
-            $args['sortdir'] = 'desc';
+            $sortdir = 'desc';
         }
         else {
-            $args['sortdir'] = 'asc';
+            $sortdir = 'asc';
         }
 
         return parent::viewAction($request, $sort, $sortdir, $pos, $num);
