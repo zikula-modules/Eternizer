@@ -1,0 +1,115 @@
+parameters:
+
+services:
+    # Entity factory classes
+    mueternizermodule.entry_factory:
+        class: "MU\\EternizerModule\\Entity\\Factory\\EntryFactory"
+        arguments:
+            objectManager: "@doctrine.orm.entity_manager"
+            className: "MU\\EternizerModule\\Entity\\EntryEntity"
+    
+
+    # Event subscriber and listener classes
+    mueternizermodule.core_listener:
+        class: "MU\\EternizerModule\\Listener\\CoreListener"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mueternizermodule.kernel_listener:
+        class: "MU\\EternizerModule\\Listener\\KernelListener"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mueternizermodule.installer_listener:
+        class: "MU\\EternizerModule\\Listener\\InstallerListener"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mueternizermodule.moduledispatch_listener:
+        class: "MU\\EternizerModule\\Listener\\ModuleDispatchListener"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mueternizermodule.mailer_listener:
+        class: "MU\\EternizerModule\\Listener\\MailerListener"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mueternizermodule.page_listener:
+        class: "MU\\EternizerModule\\Listener\\PageListener"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mueternizermodule.theme_listener:
+        class: "MU\\EternizerModule\\Listener\\ThemeListener"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mueternizermodule.view_listener:
+        class: "MU\\EternizerModule\\Listener\\ViewListener"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mueternizermodule.userlogin_listener:
+        class: "MU\\EternizerModule\\Listener\\UserLoginListener"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mueternizermodule.userlogout_listener:
+        class: "MU\\EternizerModule\\Listener\\UserLogoutListener"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mueternizermodule.user_listener:
+        class: "MU\\EternizerModule\\Listener\\UserListener"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mueternizermodule.userregistration_listener:
+        class: "MU\\EternizerModule\\Listener\\UserRegistrationListener"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mueternizermodule.users_listener:
+        class: "MU\\EternizerModule\\Listener\\UsersListener"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mueternizermodule.group_listener:
+        class: "MU\\EternizerModule\\Listener\\GroupListener"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mueternizermodule.thirdparty_listener:
+        class: "MU\\EternizerModule\\Listener\\ThirdPartyListener"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+
+    # Util classes
+    mueternizermodule.model_helper:
+        class: "MU\\EternizerModule\\Util\\ModelUtil"
+        arguments: ["@service_container", "@=service('kernel').getBundle('MUEternizerModule')"]
+    
+    mueternizermodule.controller_helper:
+        class: "MU\\EternizerModule\\Util\\ControllerUtil"
+        arguments: ["@service_container", "@=service('kernel').getBundle('MUEternizerModule')"]
+    
+    mueternizermodule.view_helper:
+        class: "MU\\EternizerModule\\Util\\ViewUtil"
+        arguments: ["@service_container", "@=service('kernel').getBundle('MUEternizerModule')"]
+    
+    mueternizermodule.workflow_helper:
+        class: "MU\\EternizerModule\\Util\\WorkflowUtil"
+        arguments: ["@service_container", "@=service('kernel').getBundle('MUEternizerModule')"]
+    
+    mueternizermodule.listentries_helper:
+        class: "MU\\EternizerModule\\Util\\ListEntriesUtil"
+        arguments: ["@service_container", "@=service('kernel').getBundle('MUEternizerModule')"]
+    
+
+    # Log processor
+    mueternizermodule.log.processor:
+        class: "Monolog\\Processor\\PsrLogMessageProcessor"
+        tags:
+            - { name: monolog.processor }

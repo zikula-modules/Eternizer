@@ -1,0 +1,113 @@
+application Eternizer {
+  vendor MU
+	author "Michael Ueberschaer"
+	email "kontakt@webdesign-in-bremen.com"
+	url "http://www.webdesign-in-bremen.com"
+	version "1.1.4"
+	prefix eternizer
+  generatorSettings {
+		settingsContainer Einstellungen
+		targetCoreVersion ZKPRE14
+		generateOnlyBaseClasses false
+		generatePoweredByBacklinksIntoFooterTemplates false
+		generateTests false
+		writeModelToDocs true
+	}
+			entities {
+				entity entry leading {
+					nameMultiple entries
+                                        displayPattern "#ip#"
+					fields {
+						string ip nullable {
+							mandatory false
+							length 15
+						},
+						string name {
+							mandatory false
+							length 100
+						},
+						email ^email {
+							mandatory false
+							length 100
+						},
+						url homepage {
+							mandatory false
+						},
+						string location {
+							mandatory false
+							length 100
+						},
+						text ^text,
+						text notes nullable {
+							defaultValue ""
+							mandatory false
+						},
+						string obj_status {
+							defaultValue A
+							length 1
+						}
+					}
+					actions {
+                	                     mainAction Main,
+                                             viewAction View,
+                                             displayAction Display,
+                                             editAction Edit,
+                                             deleteAction Delete
+                                        }
+				}
+			}
+			variables {
+				varContainer Variables {
+					vars {
+						intVar pagesize {
+							value "10"
+						},
+						textVar mail,
+						listVar order {
+							items {
+								listVarItem default descending,
+								listVarItem ascending
+							}
+						},
+						listVar moderate {
+							items {
+								listVarItem nothing,
+								listVarItem default guests,
+								listVarItem all
+							}
+						},
+						listVar formposition {
+							value ""
+							items {
+								listVarItem above,
+								listVarItem default below,
+								listVarItem menue
+							}
+						},
+						boolVar ipsave,
+						boolVar editentries,
+						intVar period {
+							documentation "Here we can decide how long a user may edit his entry; input of hours"
+						},
+						boolVar simplecaptcha
+					}
+				}
+			}
+			controllers {
+				adminController Admin {
+					actions {
+						mainAction Main
+					}
+				},
+				userController User {
+					actions {
+						mainAction Main
+					}
+				},
+				ajaxController Ajax {
+					actions {
+						mainAction Main
+					}
+				}
+			}
+}

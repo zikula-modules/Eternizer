@@ -17,4 +17,3 @@
  * usually to dispatch a controller request or API.
  */
 
-include_once 'Base/bootstrap.php';
