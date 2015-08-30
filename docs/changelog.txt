@@ -7,7 +7,8 @@ Changes in Eternizer 1.1.4
 # closed #48 - we get a feedback if the captcha validation failed
 # closed #52 - correct colspan entries now
 # closed #53 - var simplecptcha is defined now
-# closed #54 - translatable filelds error fixed
+# closed #54 - translatable fields error fixed
+# closed #55 - undefined check fixed
 # closed #56 - undefinded tooltip fixed
 # closed #58 - error message if user have no permission to create entry
 
