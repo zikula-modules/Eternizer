@@ -13,16 +13,30 @@
 namespace MU\EternizerModule\Controller;
 
 use MU\EternizerModule\Controller\Base\EntryController as BaseEntryController;
+use MU\EternizerModule\Entity\EntryEntity;
 
-use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use MU\EternizerModule\Entity\EntryEntity;
-
+use FormUtil;
+use JCSSUtil;
 use ModUtil;
+use SecurityUtil;
+use System;
 use UserUtil;
+use Zikula_AbstractController;
+use Zikula_View;
+use ZLanguage;
+use Zikula\Core\Hook\ProcessHook;
+use Zikula\Core\Hook\ValidationHook;
+use Zikula\Core\Hook\ValidationProviders;
+use Zikula\Core\ModUrl;
+use Zikula\Core\RouteUrl;
+use Zikula\Core\Response\PlainResponse;
 
 /**
  * Entry controller class providing navigation and interaction functionality.
@@ -69,6 +83,138 @@ class EntryController extends BaseEntryController
      */
     public function viewAction(Request $request, $sort, $sortdir, $pos, $num)
     {
+    	$legacyControllerType = $request->query->filter('lct', 'user', FILTER_SANITIZE_STRING);
+        System::queryStringSetVar('type', $legacyControllerType);
+        $request->query->set('type', $legacyControllerType);
+    
+        $controllerHelper = $this->serviceManager->get('mueternizermodule.controller_helper');
+        
+        // parameter specifying which type of objects we are treating
+        $objectType = 'entry';
+        $utilArgs = array('controller' => 'entry', 'action' => 'view');
+        $permLevel = $legacyControllerType == 'admin' ? ACCESS_ADMIN : ACCESS_READ;
+        if (!SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
+            throw new AccessDeniedException();
+        }
+        $repository = $this->serviceManager->get('mueternizermodule.' . $objectType . '_factory')->getRepository();
+        $repository->setRequest($this->request);
+        $viewHelper = $this->serviceManager->get('mueternizermodule.view_helper');
+        
+        // parameter for used sorting field
+        if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields())) {
+            $sort = $repository->getDefaultSortingField();
+            System::queryStringSetVar('sort', $sort);
+            $request->query->set('sort', $sort);
+            // set default sorting in route parameters (e.g. for the pager)
+            $routeParams = $request->attributes->get('_route_params');
+            $routeParams['sort'] = $sort;
+            $request->attributes->set('_route_params', $routeParams);
+        }
+        
+        // parameter for used sort order
+        $sortdir = strtolower($sortdir);
+        
+        // convenience vars to make code clearer
+        $currentUrlArgs = array();
+        
+        $where = '';
+        
+        $selectionArgs = array(
+            'ot' => $objectType,
+            'where' => $where,
+            'orderBy' => $sort . ' ' . $sortdir
+        );
+        
+        $showOwnEntries = (int) $request->query->filter('own', $this->getVar('showOnlyOwnEntries', 0), false, FILTER_VALIDATE_INT);
+        $showAllEntries = (int) $request->query->filter('all', 0, false, FILTER_VALIDATE_INT);
+        
+        if (!$showAllEntries) {
+            $csv = $request->getRequestFormat() == 'csv' ? 1 : 0;
+            if ($csv == 1) {
+                $showAllEntries = 1;
+            }
+        }
+        
+        $this->view->assign('showOwnEntries', $showOwnEntries)
+                   ->assign('showAllEntries', $showAllEntries);
+        if ($showOwnEntries == 1) {
+            $currentUrlArgs['own'] = 1;
+        }
+        if ($showAllEntries == 1) {
+            $currentUrlArgs['all'] = 1;
+        }
+        
+        // prepare access level for cache id
+        $accessLevel = ACCESS_READ;
+        $component = 'MUEternizerModule:' . ucfirst($objectType) . ':';
+        $instance = '::';
+        if (SecurityUtil::checkPermission($component, $instance, ACCESS_COMMENT)) {
+            $accessLevel = ACCESS_COMMENT;
+        }
+        if (SecurityUtil::checkPermission($component, $instance, ACCESS_EDIT)) {
+            $accessLevel = ACCESS_EDIT;
+        }
+        
+        $templateFile = $viewHelper->getViewTemplate($this->view, $objectType, 'view', $request);
+        $cacheId = $objectType . '_view|_sort_' . $sort . '_' . $sortdir;
+        $resultsPerPage = 0;
+        if ($showAllEntries == 1) {
+            // set cache id
+            $this->view->setCacheId($cacheId . '_all_1_own_' . $showOwnEntries . '_' . $accessLevel);
+        
+            // if page is cached return cached content
+            if ($this->view->is_cached($templateFile)) {
+                return $viewHelper->processTemplate($this->view, $objectType, 'view', $request, $templateFile);
+            }
+        
+            // retrieve item list without pagination
+            $entities = ModUtil::apiFunc($this->name, 'selection', 'getEntities', $selectionArgs);
+        } else {
+            // the current offset which is used to calculate the pagination
+            $currentPage = $pos;
+        
+            // the number of items displayed on a page for pagination
+            $resultsPerPage = $num;
+            if ($resultsPerPage == 0) {
+                $resultsPerPage = $this->getVar('pagesize', 10);
+            }
+        
+            // set cache id
+            $this->view->setCacheId($cacheId . '_amount_' . $resultsPerPage . '_page_' . $currentPage . '_own_' . $showOwnEntries . '_' . $accessLevel);
+        
+            // if page is cached return cached content
+            if ($this->view->is_cached($templateFile)) {
+                return $viewHelper->processTemplate($this->view, $objectType, 'view', $request, $templateFile);
+            }
+        
+            // retrieve item list with pagination
+            $selectionArgs['currentPage'] = $currentPage;
+            $selectionArgs['resultsPerPage'] = $resultsPerPage;
+            list($entities, $objectCount) = ModUtil::apiFunc($this->name, 'selection', 'getEntitiesPaginated', $selectionArgs);
+        
+            $this->view->assign('currentPage', $currentPage)
+                       ->assign('pager', array('numitems'     => $objectCount,
+                                               'itemsperpage' => $resultsPerPage));
+        }
+        
+        foreach ($entities as $k => $entity) {
+            $entity->initWorkflow();
+        }
+        
+        // build ModUrl instance for display hooks
+        $currentUrlObject = new ModUrl($this->name, 'entry', 'view', ZLanguage::getLanguageCode(), $currentUrlArgs);
+        
+        // assign the object data, sorting information and details for creating the pager
+        $this->view->assign('items', $entities)
+                   ->assign('sort', $sort)
+                   ->assign('sdir', $sortdir)
+                   ->assign('pageSize', $resultsPerPage)
+                   ->assign('currentUrlObject', $currentUrlObject)
+                   ->assign($repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
+        
+        $modelHelper = $this->serviceManager->get('mueternizermodule.model_helper');
+        $this->view->assign('canBeCreated', $modelHelper->canBeCreated($objectType));
+        
     	// We rule the position of the form
         $formposition = ModUtil::getVar($this->name, 'formposition');
 
@@ -90,8 +236,7 @@ class EntryController extends BaseEntryController
         else {
             $sortdir = 'asc';
         }
-
-        return parent::viewAction($request, $sort, $sortdir, $pos, $num);
+		return parent::viewAction($request, $sort, $sortdir, $pos, $num);
     }
     
     /**
@@ -137,6 +282,31 @@ class EntryController extends BaseEntryController
      */
     public function editAction(Request $request)
     {
+            //We check for parameters
+        $func = $this->request->getGet()->filter('func', 'view', FILTER_SANITIZE_STRING);
+        $id = $this->request->getGet()->filter('id', null, FILTER_SANITIZE_NUMBER_INT);
+
+        //We check for editing of entries
+        $editentries = ModUtil::getVar($this->name, 'editentries');
+
+        // if editing is allowed we call the parent method
+        if ($editentries == 1) {
+            return parent::editAction($request);
+        }
+        else {
+            if (($func == 'edit' || $func == 'view')) {
+                if ($id == null) {
+                    return parent::editAction($request);
+                }
+                // otherwise we make a redirect
+                else {
+                    $url = ModUtil::url($this->name, 'user', 'view');
+                    LogUtil::registerError($this->__('Sorry. The editing of entries is disabled.'));
+                    System::redirect($url);
+
+                }
+            }
+        }
         return parent::editAction($request);
     }
     
