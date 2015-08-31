@@ -1,4 +1,4 @@
-{zdebug}{* purpose of this template: entries list view *}
+{* purpose of this template: entries list view *}
 {assign var='lct' value='user'}
 {if isset($smarty.get.lct) && $smarty.get.lct eq 'admin'}
     {assign var='lct' value='admin'}
@@ -170,6 +170,13 @@
     </form>
     {/if}
     {if $lct eq 'user'}
+        {if $formposition eq 'above'}
+        {modfunc modname='MUEternizerModule' type='entry' func='editAction'}
+        {notifydisplayhooks eventname='eternizer.ui_hooks.entries.display_view' urlobject=$currentUrlObject assign='hooks'}
+        {foreach key='hookname' item='hook' from=$hooks}
+            {$hook}
+        {/foreach}
+    	{/if} 
     {foreach item='entry' from=$items}
     <div id="eternizer">
         <div class="etz_entry z-clearfix {cycle values='etz_bg1,etz_bg2'}">
@@ -256,12 +263,8 @@
         </tr>
     {/foreach}
 
-    {if !isset($showAllEntries) || $showAllEntries ne 1}
-        {pager rowcount=$pager.numitems limit=$pager.itemsperpage display='page'}
-    {/if}
-
     {if $formposition eq 'below'}
-        {modfunc modname='Eternizer' type='user' func='edit'}
+        {modfunc modname='MUEternizerModule' type='entry' func='edit'}
         {notifydisplayhooks eventname='eternizer.ui_hooks.entries.display_view' urlobject=$currentUrlObject assign='hooks'}
         {foreach key='hookname' item='hook' from=$hooks}
             {$hook}
@@ -269,10 +272,9 @@
     {/if}    
     {/if}
     
-
-        {if !isset($showAllEntries) || $showAllEntries ne 1}
-            {pager rowcount=$pager.numitems limit=$pager.itemsperpage display='page' lct=$lct route='mueternizermodule_entry_view'}
-        {/if}    
+    {if !isset($showAllEntries) || $showAllEntries ne 1}
+        {pager rowcount=$pager.numitems limit=$pager.itemsperpage display='page' lct=$lct route='mueternizermodule_entry_view'}
+    {/if}    
     {* here you can activate calling display hooks for the view page if you need it *}
     {*if $lct ne 'admin'}
         {notifydisplayhooks eventname='mueternizermodule.ui_hooks.entries.display_view' urlobject=$currentUrlObject assign='hooks'}
