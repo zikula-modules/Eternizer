@@ -4,7 +4,9 @@
     {assign var='lct' value='admin'}
 {/if}
 {assign var='lctUc' value=$lct|ucfirst}
-{include file="`$lctUc`/header.tpl"}
+{if $func == 'edit'}
+    {include file="`$lctUc`/header.tpl"}
+{/if}
 {pageaddvar name='javascript' value='@MUEternizerModule/Resources/public/js/MUEternizerModule.EditFunctions.js'}
 {pageaddvar name='javascript' value='@MUEternizerModule/Resources/public/js/MUEternizerModule.Validation.js'}
 
