@@ -25,7 +25,7 @@
 
 //if (!isset($smarty->imagetextcount)) $smarty->imagetextcount = 0;
 
-function smarty_function_eternizerSimplecaptcha($params, &$smarty)
+function smarty_function_mueternizermoduleSimplecaptcha($params, &$smarty)
 {
      // check which image types are supported
     $freetype = function_exists('imagettfbbox');
@@ -40,8 +40,8 @@ function smarty_function_eternizerSimplecaptcha($params, &$smarty)
         $createimagefunction = 'imagegif';
     } else {
         // no image functions available
-        ModUtil::setVar('Eternizer', 'simplecaptcha', 0);
-        if(SecurityUtil::checkPermission('Eternizer::', '.*', ACCESS_ADMIN)) {
+        ModUtil::setVar('MUEternizerModule', 'simplecaptcha', 0);
+        if(SecurityUtil::checkPermission('MUEternizerModule::', '.*', ACCESS_ADMIN)) {
             // admin permission, show error messages
             return $this->__('no image function available - captcha deactivated');
         } else {
