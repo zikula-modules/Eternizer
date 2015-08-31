@@ -15,7 +15,9 @@ namespace MU\EternizerModule\Util;
 use MU\EternizerModule\Util\Base\ViewUtil as BaseViewUtil;
 
 use DateUtil;
+use LogUtil;
 use ModUtil;
+use SecurityUtil;
 use ServiceUtil;
 use UserUtil;
 
@@ -45,7 +47,7 @@ class ViewUtil extends BaseViewUtil
         // get the actual time
         $actualTime = DateUtil::getDatetime();
         // get modvar editTime
-        $editTime = ModUtil::getVar('Eternizer', 'period');
+        $editTime = ModUtil::getVar('MUEternizerModule', 'period');
 
         $diffTime = DateUtil::getDatetimeDiff($createdDate, $actualTime);
         $diffTimeHours = $diffTime['d'] * 24 + $diffTime['h'];
@@ -61,7 +63,7 @@ class ViewUtil extends BaseViewUtil
                 $serviceManager = ServiceUtil::getManager();
                 // generate an auth key to use in urls
                 $csrftoken = SecurityUtil::generateCsrfToken($serviceManager, true);
-                $url = ModUtil::url('Eternizer', 'user', 'edit', array('ot' => 'entry', 'id' => $entryid, 'token' => $csrftoken));
+                $url = ModUtil::url('MUEternizerModule', 'entry', 'edit', array('lct' => 'user', 'id' => $entryid, 'token' => $csrftoken));
                 $title = __('You have permissions to edit this issue!');
                 $out = "<a title='{$title}' id='eternizer-user-entry-edit-creater' href='{$url}'>
                 <img src='/images/icons/extrasmall/xedit.png' />
@@ -77,7 +79,7 @@ class ViewUtil extends BaseViewUtil
                 $out = false;
             }
         }
-
+		
         return $out;
     }
 }
