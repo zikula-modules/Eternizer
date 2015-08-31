@@ -19,6 +19,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use ServiceUtil;
+
 /**
  * Entity class that defines the entity structure and behaviours.
  *
@@ -56,6 +58,9 @@ class EntryEntity extends BaseAbstractEntryEntity
      */
     public function prePersistCallback()
     {
+    	/*$serviceManager = ServiceUtil::getManager();
+    	$settingsHelper = $serviceManager->get('mueternizermodule.settings_helper');
+        $settingsHelper->handleModvarsPreSave();*/
         $this->performPrePersistCallback();
     }
     
@@ -68,6 +73,13 @@ class EntryEntity extends BaseAbstractEntryEntity
      */
     public function postPersistCallback()
     {
+        $args['id'] = $this->getId();
+        $args['text'] = $this->getText();
+        
+    	/*$serviceManager = ServiceUtil::getManager();
+    	$settingsHelper = $serviceManager->get('mueternizermodule.settings_helper');
+
+        $settingsHelper->handleModvarsPostPersist($args);*/
         $this->performPostPersistCallback();
     }
     
