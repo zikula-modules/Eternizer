@@ -96,8 +96,56 @@ class EditHandler extends BaseEditHandler
 
         // We assign to the template
         $this->view->assign('formposition', $formposition);
+        
+        // we check if simpecaptcha is enabled
+        $simplecaptcha = ModUtil::getVar('MUEternizerModule', 'simplecaptcha');
+        
+        $this->view->assign('simplecaptcha', $simplecaptcha);
     
         // everything okay, no initialization errors occured
         return true;
+    }
+    
+    public function checkSimpleCaptcha($captcha)
+    {
+        $captcha_ok = false;
+        $cdata = @unserialize(SessionUtil::getVar('eternizercaptcha', 'Hallo'));
+        if(is_array($cdata)) {
+            switch($cdata['z'].'-'.$cdata['w']) {
+                case '0-0':
+                    $captcha_ok = (((int)$cdata['x'] + (int)$cdata['y'] + (int)$cdata['v']) == $captcha);
+                    break;
+                case '0-1':
+                    $captcha_ok = (((int)$cdata['x'] + (int)$cdata['y'] - (int)$cdata['v']) == $captcha);
+                    break;
+                case '1-0':
+                    $captcha_ok = (((int)$cdata['x'] - (int)$cdata['y'] + (int)$cdata['v']) == $captcha);
+                    break;
+                case '1-1':
+                    $captcha_ok = (((int)$cdata['x'] - (int)$cdata['y'] - (int)$cdata['v']) == $captcha);
+                    break;
+                default:
+                    // $captcha_ok is false
+            }
+        }
+
+        if($captcha_ok == false) {
+            // we delete the session var
+            SessionUtil::delVar('eternizercaptcha');
+
+            // we get the formposition for redirect
+            $formposition = ModUtil::getVar($this->name, 'formposition');
+
+            if ($formposition == 'menue') {
+                $url = ModUtil::url($this->name, 'user', 'edit', array('ot' => 'entry'));
+            } else {
+                $url = ModUtil::url($this->name, 'user', 'view');
+            }
+            LogUtil::registerError($this->__('The calculation to prevent spam was incorrect. Please try again.'));
+            return System::redirect($url);
+        } else {
+            SessionUtil::delVar('eternizercaptcha');
+            return true;
+        }
     }
 }
