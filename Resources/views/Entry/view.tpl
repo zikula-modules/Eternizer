@@ -226,15 +226,8 @@
                         </div>
                     </div>
                     <div class="etz_action">
-                        {if count($entry._actions) gt 0}
-                            {if $entry.createdUserId eq $userid && $coredata.logged_in eq true && $editentries eq 1}
+                        {if $entry.createdUserId eq $userid && $coredata.logged_in eq true && $modvars.MUEternizerModule.editentries eq true}
                             <div class="eternizer-user-entry-edit">{$entry.id|mueternizermoduleGetStateOfEditOfEntry}</div>
-                               {* {strip}
-                                    {foreach item='option' from=$entry._actions}
-                                        <a href="{$option.url.type|eternizerActionUrl:$option.url.func:$option.url.arguments}" title="{$option.linkTitle|safetext}"{if $option.icon eq 'preview'} target="_blank"{/if}>{icon type=$option.icon size='extrasmall' alt=$option.linkText|safetext}</a>
-                                    {/foreach}
-                                {/strip} *}
-                            {/if}
                         {/if}
                     </div>
                 </div>
