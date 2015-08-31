@@ -66,7 +66,7 @@ class ViewUtil extends BaseViewUtil
                 $url = ModUtil::url('MUEternizerModule', 'entry', 'edit', array('lct' => 'user', 'id' => $entryid, 'token' => $csrftoken));
                 $title = __('You have permissions to edit this issue!');
                 $out = "<a title='{$title}' id='eternizer-user-entry-edit-creater' href='{$url}'>
-                <img src='/images/icons/extrasmall/xedit.png' />
+                <i class='fa fa-pencil-square-o'></i>
                 </a>";
             } else {
                 $out = true;
