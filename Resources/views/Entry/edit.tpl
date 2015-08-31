@@ -41,13 +41,13 @@
 
     <fieldset>
         <legend>{gt text='Content'}</legend>
-        
+        {*
         <div class="form-group">
             {formlabel for='ip' __text='Ip' cssClass=' col-sm-3 control-label'}
             <div class="col-sm-9">
             {formtextinput group='entry' id='ip' mandatory=false readOnly=false __title='Enter the ip of the entry' textMode='singleline' maxLength=15 cssClass='form-control ' }
             </div>
-        </div>
+        </div> *}
         
         <div class="form-group">
             {formlabel for='name' __text='Name' cssClass=' col-sm-3 control-label'}
@@ -93,15 +93,24 @@
             {formtextinput group='entry' id='notes' mandatory=false __title='Enter the notes of the entry' textMode='multiline' rows='6' cssClass='form-control ' }
             </div>
         </div>
-        
+        {if $lctUc eq 'admin'}
         <div class="form-group">
             {formlabel for='obj_status' __text='Obj_status' mandatorysym='1' cssClass=' col-sm-3 control-label'}
             <div class="col-sm-9">
             {formdropdownlist group='entry' id='obj_status' mandatory=true readOnly=false __title='Enter the obj_status of the entry' textMode='singleline' maxLength=1 cssClass='form-control required'}
-           {* {eternizerValidationError id='obj_status' class='required'}
-             {formtextinput group='entry' id='obj_status' mandatory=true readOnly=false __title='Enter the obj_status of the entry' textMode='singleline' maxLength=1 cssClass='form-control required' } *}
             </div>
         </div>
+        {/if}
+        {if $simplecaptcha eq 1}
+            <div class="form-group">
+                {formlabel for='eternizer_captcha' __text='Please solve this calculation' mandatorysym='1' cssClass=' col-sm-3 control-label'}
+            <span> 
+                {mueternizermoduleSimplecaptcha font='quikhand' size='14' bgcolor='ffffff' fgcolor='000000'}
+                {formtextinput group='captcha' id='eternizer_captcha' size='5' mandatory=true  textMode='singleline' maxLength=5 cssClass='form-control'}
+                <span class="z-sub">{gt text='(to prevent spam)'}</span>
+            </span>
+        </div>
+        {/if}
     </fieldset>
     
     {if $mode ne 'create'}
