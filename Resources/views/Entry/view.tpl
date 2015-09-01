@@ -172,7 +172,7 @@
     {if $lct eq 'user'}
         {if $formposition eq 'above'}
         {modfunc modname='MUEternizerModule' type='entry' func='editAction'}
-        {notifydisplayhooks eventname='eternizer.ui_hooks.entries.display_view' urlobject=$currentUrlObject assign='hooks'}
+        {notifydisplayhooks eventname='mueternizermodule.ui_hooks.entries' urlobject=$currentUrlObject assign='hooks'}
         {foreach key='hookname' item='hook' from=$hooks}
             {$hook}
         {/foreach}

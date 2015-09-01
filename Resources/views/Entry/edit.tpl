@@ -36,7 +36,7 @@
     {else}
         <h2>{$templateTitle}</h2>
     {/if}
-{form cssClass='form-horizontal' role='form'}
+{mueternizermoduleform cssClass='form-horizontal' role='form'}
     {* add validation summary and a <div> element for styling the form *}
     {mueternizermoduleFormFrame}
     {formsetinitialfocus inputId='ip'}
@@ -168,7 +168,7 @@
     </div>
     </div>
     {/mueternizermoduleFormFrame}
-{/form}
+{/mueternizermoduleform}
 </div>
 {include file="`$lctUc`/footer.tpl"}
 
