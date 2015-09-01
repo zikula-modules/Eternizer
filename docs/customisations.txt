@@ -36,6 +36,7 @@ Implemented Classes
 
 Additional Files
 
+*Resources/views/plugins/block.mueternizermoduleform.php
 *Resources/views/plugins/modifier.mueternizermoduleGetStateOfEditOfEntry.php
 
 
