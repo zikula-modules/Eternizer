@@ -17,14 +17,12 @@ use ModUtil;
 use UserUtil;
 
 /**
- * Utility base class for controller helper methods.
+ * Utility base class for settings helper methods.
  */
 class SettingsUtil extends Zikula_AbstractBase
 {
     public function handleModvarsPreSave()
     {
-    	$serviceManager = ServiceUtil::getManager();
-    	$settingsHelper = $serviceManager->get('mueternizermodule.settings_helper');
         $modvar = $this->getModvars();
 
         if ($modvar['ipsave'] == true) {
@@ -51,7 +49,6 @@ class SettingsUtil extends Zikula_AbstractBase
 
     public function handleModvarsPostPersist($args)
     {
-    	$serviceManager = ServiceUtil::getManager();
     	$handler = new Zikula_Form_View($serviceManager, 'Eternizer');
 
         $modvar = $this->getModvars();
@@ -85,7 +82,7 @@ class SettingsUtil extends Zikula_AbstractBase
         // We send a mail if an email address is saved
         if ($toaddress != '') {
 
-            if (!ModUtil::apiFunc('MailerModule', 'user', 'sendmessage', $messagecontent)) {
+            if (!ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendmessage', $messagecontent)) {
                 LogUtil::registerError($handler->__('Unable to send message'));
             }
         }
