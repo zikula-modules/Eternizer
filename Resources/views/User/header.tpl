@@ -15,7 +15,7 @@
 {pageaddvar name='jsgettext' value='mueternizermodule_js:MUEternizerModule'}
 
 {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
-    <h2 class="userheader">{gt text='Eternizer' comment='This is the title of the header template'}</h2>
+    <h2 class="userheader">{modgetinfo info='displayname'}</h2>
     {modulelinks modname='MUEternizerModule' type='user'}
 {/if}
 {insert name='getstatusmsg'}
