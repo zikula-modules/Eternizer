@@ -1,4 +1,4 @@
 CHANGELOG
 =========
 
-Changes in MUEternizerModule 1.1.4
+Changes in MUEternizerModule 1.2.0
