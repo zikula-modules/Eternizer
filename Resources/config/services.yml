@@ -98,6 +98,10 @@ services:
     mueternizermodule.view_helper:
         class: "MU\\EternizerModule\\Util\\ViewUtil"
         arguments: ["@service_container", "@=service('kernel').getBundle('MUEternizerModule')"]
+        
+    mueternizermodule.settings_helper:
+        class: "MU\\EternizerModule\\Util\\SettingsUtil"
+        arguments: ["@service_container", "@=service('kernel').getBundle('MUEternizerModule')"]
     
     mueternizermodule.workflow_helper:
         class: "MU\\EternizerModule\\Util\\WorkflowUtil"
