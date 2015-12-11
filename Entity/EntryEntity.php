@@ -58,9 +58,9 @@ class EntryEntity extends BaseAbstractEntryEntity
      */
     public function prePersistCallback()
     {
-    	/*$serviceManager = ServiceUtil::getManager();
+    	$serviceManager = ServiceUtil::getManager();
     	$settingsHelper = $serviceManager->get('mueternizermodule.settings_helper');
-        $settingsHelper->handleModvarsPreSave();*/
+        $settingsHelper->handleModvarsPreSave();
         $this->performPrePersistCallback();
     }
     
@@ -76,10 +76,10 @@ class EntryEntity extends BaseAbstractEntryEntity
         $args['id'] = $this->getId();
         $args['text'] = $this->getText();
         
-    	/*$serviceManager = ServiceUtil::getManager();
+    	$serviceManager = ServiceUtil::getManager();
     	$settingsHelper = $serviceManager->get('mueternizermodule.settings_helper');
 
-        $settingsHelper->handleModvarsPostPersist($args);*/
+        $settingsHelper->handleModvarsPostPersist($args);
         $this->performPostPersistCallback();
     }
     

@@ -58,7 +58,7 @@ class UserApi extends BaseUserApi
         if (UserUtil::isLoggedIn() == true) {
         	if (in_array('entry', $allowedObjectTypes)
             && SecurityUtil::checkPermission($this->name . ':Entry:', '::', $permLevel)) {
-            $links[] = array('url' => $router->generate('mueternizermodule_entry_view', array('ot' => 'entry',
+            $links[] = array('url' => $router->generate('mueternizermodule_entry_view', array('lct' => 'user',
                     'select' => 'mine')),
                     'text' => $this->__('My Entries'),
                     'title' => $this->__('View of my entries'));

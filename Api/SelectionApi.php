@@ -15,6 +15,9 @@ namespace MU\EternizerModule\Api;
 use MU\EternizerModule\MUEternizerModule;
 use MU\EternizerModule\Util;
 
+use Symfony\Component\HttpFoundation\Request;
+
+use LogUtil;
 use ModUtil;
 use Zikula\Core\Api\AbstractApi;
 use ServiceUtil;
@@ -38,19 +41,22 @@ class SelectionApi extends BaseSelectionApi
      */
     public function getEntities(array $args = array())
     {
-    	$request = $this->get('request');
+    	$request = Request::createFromGlobals();
         $select = $request->request->filter('select', '', FILTER_SANITIZE_STRING);
+        $serviceManager = ServiceUtil::getManager();
+        $modelHelper = $serviceManager->get('mueternizermodule.model_helper');
+        
         if ($select == 'mine') {
 
-            $args['where'] = Eternizer_Util_Model::getUserId();
+            $args['where'] = $modelHelper->getUserId();
         }
 
-        $type = $request->request->filter('type', '', FILTER_SANITIZE_STRING);
+        $lct = $request->request->filter('lct', '', FILTER_SANITIZE_STRING);
         
         $serviceManager = ServiceUtil::getManager();
         $modelHelper = $serviceManager->get('mueternizermodule.model_helper');
 
-        if ($type == 'user' || $type = '') {
+        if ($lct == 'user') {
             if ($args['where'] != '') {
                 $args['where'] .= ' AND ';
             }
@@ -81,20 +87,18 @@ class SelectionApi extends BaseSelectionApi
      */
     public function getEntitiesPaginated(array $args = array())
     {
-    	$request = $this->get('request');
-        $select = $request->request->filter('select', '', FILTER_SANITIZE_STRING);
-        if ($select == 'mine') {
-
-            $args['where'] = ModelUtil::getUserId();
-        }
-
-        $type = $request->request->filter('type', '', FILTER_SANITIZE_STRING);
-        
-        
+    	$request = Request::createFromGlobals();
+        $select = $request->query->get('select');
         $serviceManager = ServiceUtil::getManager();
         $modelHelper = $serviceManager->get('mueternizermodule.model_helper');
+        
+        if ($select == 'mine') {
+            $args['where'] = $modelHelper->getUserId();
+        }
 
-        if ($type == 'user' || $type == '') {
+        $lct = $request->query->get('lct');
+
+        if ($lct == 'user') {
             if ($args['where'] != '') {
                 $args['where'] .= ' AND ';
             }
