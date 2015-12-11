@@ -95,7 +95,7 @@
             {formtextinput group='entry' id='notes' mandatory=false __title='Enter the notes of the entry' textMode='multiline' rows='6' cssClass='form-control ' }
             </div>
         </div>
-        {if $lctUc eq 'admin'}
+        {if $lct eq 'admin'}
         <div class="form-group">
             {formlabel for='obj_status' __text='Obj_status' mandatorysym='1' cssClass=' col-sm-3 control-label'}
             <div class="col-sm-9">

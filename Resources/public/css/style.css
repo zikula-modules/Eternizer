@@ -124,15 +124,13 @@ input.validation-failed, textarea.validation-failed {
     -moz-border-radius: 6px; /* for Firefox */
     overflow: hidden; /* for MSIE8 */
     color: #444444;
-    margin: 1% 0;
+    margin: 5px 0;
     padding: 1%;
 }
 
 #eternizer .etz_entry .etz_author {
     border-right: 1px solid white;
-    float: left;
     padding-right: 1%;
-    width: 29%;
 }
 
 #eternizer .etz_entry .etz_author .etz_avatar {
@@ -157,8 +155,6 @@ input.validation-failed, textarea.validation-failed {
     border: none;
     padding: 0;
     color: #333333;
-    width: 69%;
-    float: right;
 }
 
 #eternizer .etz_entry .etz_body .etz_info {
