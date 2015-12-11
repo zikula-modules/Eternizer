@@ -17,7 +17,7 @@
         <h2>{$templateTitle}</h2>
     {/if}
 
-    {if $canBeCreated}
+    {if $canBeCreated && $lct eq 'admin'}
         {checkpermissionblock component='MUEternizerModule:Entry:' instance='::' level='ACCESS_EDIT'}
             {gt text='Create entry' assign='createTitle'}
             <a href="{route name='mueternizermodule_entry_edit' lct=$lct}" title="{$createTitle}" class="fa fa-plus">{$createTitle}</a>
@@ -177,17 +177,18 @@
             {$hook}
         {/foreach}
     	{/if} 
+    <div class="container-fluid">
     {foreach item='entry' from=$items}
-    <div id="eternizer">
+    <div id="eternizer" class="row">
         <div class="etz_entry z-clearfix {cycle values='etz_bg1,etz_bg2'}">
-            <div class="etz_author">
+            <div class="etz_author col-md-3">
                 <div class="etz_avatar">{useravatar uid=$entry.createdUserId}</div>
                 {if $entry.email ne '' || $entry.homepage ne '' || $entry.location ne ''}
                     <dl class="etz_options">
                         {if $entry.email ne ''}
                             <dt>{gt text='Email'}</dt>
                             <dd>
-                                <a href="mailto:{$entry.email|safehtml}" title="{gt text='Send an email'}">{icon type='mail' size='extrasmall' __alt='Email'}</a>
+                                <a href="mailto:{$entry.email|safehtml}" title="{gt text='Send an email'}"><span class="fa fa-envelope fa-2x"></span></a>
                             </dd>
                         {/if}
                         {if $entry.homepage ne ''}
@@ -203,7 +204,7 @@
                     </dl>
                 {/if}
             </div>
-            <div class="etz_body">
+            <div class="etz_body col-md-9">
                 <div class="etz_info">
                     <div class="etz_title">
                         <div class="etz_name">
@@ -250,11 +251,13 @@
             </div>
         </div>
         </div>
+
         {foreachelse}
         <tr class="z-datatableempty">
             <td class="z-left" colspan="9">{gt text='No entries found.'}</td>
         </tr>
     {/foreach}
+            </div>
 
     {if $formposition eq 'below'}
         {modfunc modname='MUEternizerModule' type='entry' func='edit'}
