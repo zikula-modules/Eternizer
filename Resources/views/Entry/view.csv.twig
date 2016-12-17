@@ -1,8 +1,8 @@
 {# purpose of this template: entries view csv view #}
-{% spaceless %}"{{ __('Ip') }}";"{{ __('Name') }}";"{{ __('Email') }}";"{{ __('Homepage') }}";"{{ __('Location') }}";"{{ __('Text') }}";"{{ __('Notes') }}";"{{ __('Obj_status') }}";"{{ __('Workflow state') }}"
+{% spaceless %}"{{ __('Ip') }}";"{{ __('Name') }}";"{{ __('Email') }}";"{{ __('Homepage') }}";"{{ __('Location') }}";"{{ __('Text') }}";"{{ __('Notes') }}";"{{ __('Workflow state') }}"
 {% endspaceless %}
 {% for entry in items %}
 {% spaceless %}
-    "{{ entry.ip }}";"{{ entry.name }}";"{{ entry.email }}";"{{ entry.homepage }}";"{{ entry.location }}";"{{ entry.text|safeHtml }}";"{{ entry.notes|safeHtml }}";"{{ entry.obj_status }}";"{{ entry.workflowState|mueternizermodule_objectState(false)|lower }}"
+    "{{ entry.ip }}";"{{ entry.name }}";"{{ entry.email }}";"{{ entry.homepage }}";"{{ entry.location }}";"{{ entry.text|safeHtml }}";"{{ entry.notes|safeHtml }}";"{{ entry.workflowState|mueternizermodule_objectState(false)|lower }}"
 {% endspaceless %}
 {% endfor %}

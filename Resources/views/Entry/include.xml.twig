@@ -8,6 +8,5 @@
     <location><![CDATA[{{ entry.location }}]]></location>
     <text><![CDATA[{{ entry.text|safeHtml }}]]></text>
     <notes><![CDATA[{{ entry.notes|safeHtml }}]]></notes>
-    <obj_status><![CDATA[{{ entry.obj_status }}]]></obj_status>
     <workflowState>{{ entry.workflowState|mueternizermodule_objectState(false)|lower }}</workflowState>
 </entry>

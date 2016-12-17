@@ -26,7 +26,6 @@
                 <col id="cLocation" />
                 <col id="cText" />
                 <col id="cNotes" />
-                <col id="cObj_status" />
                 <col id="cItemActions" />
             </colgroup>
             <thead>
@@ -56,9 +55,6 @@
                 </th>
                 <th id="hNotes" scope="col" class="text-left">
                     <a href="{{ sort.notes.url }}" title="{{ __f('Sort by %s', {'%s': 'notes'}) }}" class="{{ sort.notes.class }}">{{ __('Notes') }}</a>
-                </th>
-                <th id="hObj_status" scope="col" class="text-left">
-                    <a href="{{ sort.obj_status.url }}" title="{{ __f('Sort by %s', {'%s': 'obj_status'}) }}" class="{{ sort.obj_status.class }}">{{ __('Obj_status') }}</a>
                 </th>
                 <th id="hItemActions" scope="col" class="z-order-unsorted">{{ __('Actions') }}</th>
             </tr>
@@ -97,9 +93,6 @@
                 <td headers="hNotes" class="text-left">
                     {{ entry.notes|safeHtml }}
                 </td>
-                <td headers="hObj_status" class="text-left">
-                    {{ entry.obj_status }}
-                </td>
                 <td id="itemActions{{ entry.id }}" headers="hItemActions" class="actions nowrap z-w02">
                     {% set actionLinks = mueternizermodule_actions(entity=entry, area=routeArea, context='view') %}
                     {% if actionLinks|length > 0 %}
@@ -118,7 +111,7 @@
             </tr>
         {% else %}
             <tr class="z-{{ routeArea == 'admin' ? 'admin' : 'data' }}tableempty">
-                <td class="text-left" colspan="{% if routeArea == 'admin' %}10{% else %}9{% endif %}">
+                <td class="text-left" colspan="{% if routeArea == 'admin' %}9{% else %}8{% endif %}">
             {{ __('No entries found.') }}
               </td>
             </tr>

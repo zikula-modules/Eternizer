@@ -33,7 +33,6 @@
         <option value="location"{if $sort eq 'location'} selected="selected"{/if}>{gt text='Location'}</option>
         <option value="text"{if $sort eq 'text'} selected="selected"{/if}>{gt text='Text'}</option>
         <option value="notes"{if $sort eq 'notes'} selected="selected"{/if}>{gt text='Notes'}</option>
-        <option value="obj_status"{if $sort eq 'obj_status'} selected="selected"{/if}>{gt text='Obj_status'}</option>
         <option value="createdDate"{if $sort eq 'createdDate'} selected="selected"{/if}>{gt text='Creation date'}</option>
         <option value="createdUserId"{if $sort eq 'createdUserId'} selected="selected"{/if}>{gt text='Creator'}</option>
         <option value="updatedDate"{if $sort eq 'updatedDate'} selected="selected"{/if}>{gt text='Update date'}</option>

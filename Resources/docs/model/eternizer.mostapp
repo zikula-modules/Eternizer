@@ -8,7 +8,8 @@ application "Eternizer" {
   generatorSettings {
 		settingsContainer "Einstellungen"
 		targetCoreVersion ZK14
-		generateNewsletterPlugin false generateTagSupport false generatePoweredByBacklinksIntoFooterTemplates false
+		generateNewsletterPlugin false generateTagSupport false versionAllGeneratedFiles false
+        generatePoweredByBacklinksIntoFooterTemplates false
 		generateTests false
 		writeModelToDocs true
 		skipFiles "CHANGELOG.md,
@@ -43,12 +44,9 @@ application "Eternizer" {
 						text "notes" nullable {
 							defaultValue ""
 							mandatory false
-						},
-						string "obj_status" {
-							length 1
 						}
-					}
-					actions {
+            }
+            actions {
                 mainAction "Main",
                 viewAction "View",                             
                 displayAction "Display",
@@ -63,7 +61,7 @@ application "Eternizer" {
 						intVar "pagesize" {
 							value "10"
 						},
-						textVar "mail" { value "\"\"" } ,
+						textVar "mail" { value "" } ,
 						listVar "order" {
 							items {
 								listVarItem default "descending",
