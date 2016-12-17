@@ -12,17 +12,17 @@
 
 namespace MU\EternizerModule\Listener;
 
-use MU\EternizerModule\Listener\Base\InstallerListener as BaseInstallerListener;
+use MU\EternizerModule\Listener\Base\AbstractInstallerListener;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
 
 /**
  * Event handler implementation class for module installer events.
  */
-class InstallerListener extends BaseInstallerListener
+class InstallerListener extends AbstractInstallerListener
 {
     /**
-     * Makes our handlers known to the event system.
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
@@ -30,12 +30,7 @@ class InstallerListener extends BaseInstallerListener
     }
     
     /**
-     * Listener for the `module.install` event.
-     *
-     * Called after a module has been successfully installed.
-     * Receives `$modinfo` as args.
-     *
-     * @param ModuleStateEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function moduleInstalled(ModuleStateEvent $event)
     {
@@ -62,12 +57,7 @@ class InstallerListener extends BaseInstallerListener
     }
     
     /**
-     * Listener for the `module.postinstall` event.
-     *
-     * Called after a module has been installed (on reload of the extensions view).
-     * Receives `$modinfo` as args.
-     *
-     * @param ModuleStateEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function modulePostInstalled(ModuleStateEvent $event)
     {
@@ -94,12 +84,7 @@ class InstallerListener extends BaseInstallerListener
     }
     
     /**
-     * Listener for the `module.upgrade` event.
-     *
-     * Called after a module has been successfully upgraded.
-     * Receives `$modinfo` as args.
-     *
-     * @param ModuleStateEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function moduleUpgraded(ModuleStateEvent $event)
     {
@@ -126,12 +111,7 @@ class InstallerListener extends BaseInstallerListener
     }
     
     /**
-     * Listener for the `module.enable` event.
-     *
-     * Called after a module has been successfully enabled.
-     * Receives `$modinfo` as args.
-     *
-     * @param ModuleStateEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function moduleEnabled(ModuleStateEvent $event)
     {
@@ -158,12 +138,7 @@ class InstallerListener extends BaseInstallerListener
     }
     
     /**
-     * Listener for the `module.disable` event.
-     *
-     * Called after a module has been successfully disabled.
-     * Receives `$modinfo` as args.
-     *
-     * @param ModuleStateEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function moduleDisabled(ModuleStateEvent $event)
     {
@@ -190,12 +165,7 @@ class InstallerListener extends BaseInstallerListener
     }
     
     /**
-     * Listener for the `module.remove` event.
-     *
-     * Called after a module has been successfully removed.
-     * Receives `$modinfo` as args.
-     *
-     * @param ModuleStateEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function moduleRemoved(ModuleStateEvent $event)
     {
@@ -222,12 +192,7 @@ class InstallerListener extends BaseInstallerListener
     }
     
     /**
-     * Listener for the `installer.subscriberarea.uninstalled` event.
-     *
-     * Called after a hook subscriber area has been unregistered.
-     * Receives args['areaid'] as the areaId. Use this to remove orphan data associated with this area.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function subscriberAreaUninstalled(GenericEvent $event)
     {

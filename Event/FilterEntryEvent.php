@@ -12,12 +12,12 @@
 
 namespace MU\EternizerModule\Event;
 
-use MU\EternizerModule\Event\Base\FilterEntryEvent as BaseFilterEntryEvent;
+use MU\EternizerModule\Event\Base\AbstractFilterEntryEvent;
 
 /**
  * Event implementation class for filtering entry processing.
  */
-class FilterEntryEvent extends BaseFilterEntryEvent
+class FilterEntryEvent extends AbstractFilterEntryEvent
 {
     // feel free to extend the event class here
 }

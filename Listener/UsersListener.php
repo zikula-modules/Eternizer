@@ -12,16 +12,16 @@
 
 namespace MU\EternizerModule\Listener;
 
-use MU\EternizerModule\Listener\Base\UsersListener as BaseUsersListener;
+use MU\EternizerModule\Listener\Base\AbstractUsersListener;
 use Zikula\Core\Event\GenericEvent;
 
 /**
  * Event handler implementation class for events of the Users module.
  */
-class UsersListener extends BaseUsersListener
+class UsersListener extends AbstractUsersListener
 {
     /**
-     * Makes our handlers known to the event system.
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
@@ -29,12 +29,7 @@ class UsersListener extends BaseUsersListener
     }
     
     /**
-     * Listener for the `module.users.config.updated` event.
-     *
-     * Occurs after the Users module configuration has been
-     * updated via the administration interface.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function configUpdated(GenericEvent $event)
     {

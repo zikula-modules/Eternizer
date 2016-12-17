@@ -1,0 +1,7 @@
+{# purpose of this template: entries index view #}
+{% extends routeArea == 'admin' ? 'MUEternizerModule::adminBase.html.twig' : 'MUEternizerModule::base.html.twig' %}
+{% block title __('entries') %}
+{% block admin_page_icon 'home' %}
+{% block content %}
+    <p>{{ __('Welcome to the entry section of the Eternizer application.') }}</p>
+{% endblock %}

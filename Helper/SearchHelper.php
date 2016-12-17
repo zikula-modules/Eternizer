@@ -12,12 +12,12 @@
 
 namespace MU\EternizerModule\Helper;
 
-use MU\EternizerModule\Helper\Base\SearchHelper as BaseSearchHelper;
+use MU\EternizerModule\Helper\Base\AbstractSearchHelper;
 
 /**
  * Search helper implementation class.
  */
-class SearchHelper extends BaseSearchHelper
+class SearchHelper extends AbstractSearchHelper
 {
     // feel free to extend the search helper here
 }

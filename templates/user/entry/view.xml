@@ -1,9 +1,0 @@
-{* purpose of this template: entries view xml view in user area *}
-        {eternizerTemplateHeaders contentType='text/xml'}<?xml version="1.0" encoding="{charset}" ?>
-<entries>
-    {foreach item='item' from=$items}
-    {include file='user/entry/include.xml'}
-    {foreachelse}
-    <noEntry/>
-    {/foreach}
-</entries>

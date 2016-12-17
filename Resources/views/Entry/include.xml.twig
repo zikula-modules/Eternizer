@@ -1,0 +1,13 @@
+{# purpose of this template: entries xml inclusion template #}
+<entry id="{{ entry.id }}" createdon="{{ entry.createdDate|localizeddate('medium', 'short') }}" updatedon="{{ entry.updatedDate|localizeddate('medium', 'short') }}">
+    <id>{{ entry.id }}</id>
+    <ip><![CDATA[{{ entry.ip }}]]></ip>
+    <name><![CDATA[{{ entry.name }}]]></name>
+    <email>{{ entry.email }}</email>
+    <homepage>{{ entry.homepage }}</homepage>
+    <location><![CDATA[{{ entry.location }}]]></location>
+    <text><![CDATA[{{ entry.text|safeHtml }}]]></text>
+    <notes><![CDATA[{{ entry.notes|safeHtml }}]]></notes>
+    <obj_status><![CDATA[{{ entry.obj_status }}]]></obj_status>
+    <workflowState>{{ entry.workflowState|mueternizermodule_objectState(false)|lower }}</workflowState>
+</entry>

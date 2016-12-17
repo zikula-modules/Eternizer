@@ -1,0 +1,7 @@
+{# purpose of this template: entries view json view #}
+[
+{% for entry in items %}
+    {% if not loop.first %},{% endif %}
+    {{ entry.toJson() }}
+{% endfor %}
+]

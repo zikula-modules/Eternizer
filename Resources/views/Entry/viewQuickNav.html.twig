@@ -1,0 +1,55 @@
+{# purpose of this template: entries view filter form #}
+{% if hasPermission('MUEternizerModule:Entry:', '::', 'ACCESS_EDIT') %}
+    {% form_theme quickNavForm with [
+        'bootstrap_3_layout.html.twig'
+    ] %}
+    {{ form_start(quickNavForm, {attr: {id: 'mUEternizerModuleEntryQuickNavForm', class: 'mueternizermodule-quicknav navbar-form', role: 'navigation'}}) }}
+    {{ form_errors(quickNavForm) }}
+    <fieldset>
+        <h3>{{ __('Quick navigation') }}</h3>
+        {% if workflowStateFilter is defined and workflowStateFilter != true %}
+            <div class="hidden">
+        {% endif %}
+            {{ form_row(quickNavForm.workflowState) }}
+        {% if workflowStateFilter is defined and workflowStateFilter != true %}
+            </div>
+        {% endif %}
+        {% if searchFilter is defined and searchFilter != true %}
+            <div class="hidden">
+        {% endif %}
+            {{ form_row(quickNavForm.q) }}
+        {% if searchFilter is defined and searchFilter != true %}
+            </div>
+        {% endif %}
+        {% if sorting is defined and sorting != true %}
+            <div class="hidden">
+        {% endif %}
+            {{ form_row(quickNavForm.sort) }}
+            {{ form_row(quickNavForm.sortdir) }}
+        {% if sorting is defined and sorting != true %}
+            </div>
+        {% endif %}
+        {% if pageSizeSelector is defined and pageSizeSelector != true %}
+            <div class="hidden">
+        {% endif %}
+            {{ form_row(quickNavForm.num) }}
+        {% if pageSizeSelector is defined and pageSizeSelector != true %}
+        	</div>
+        {% endif %}
+        {{ form_widget(quickNavForm.updateview) }}
+    </fieldset>
+    {{ form_end(quickNavForm) }}
+    <script type="text/javascript">
+    /* <![CDATA[ */
+        ( function($) {
+            $(document).ready(function() {
+                mUEternizerInitQuickNavigation('entry');
+                {% if searchFilter|default and searchFilter == false %}
+                    {# we can hide the submit button if we have no quick search field #}
+                    $('#mueternizermodule_entryquicknav_updateview').addClass('hidden');
+                {% endif %}
+            });
+        })(jQuery);
+    /* ]]> */
+    </script>
+{% endif %}

@@ -1,6 +1,6 @@
 services:
     # Log processor
     mu_eternizer_module.log.processor:
-        class: "Monolog\\Processor\\PsrLogMessageProcessor"
+        class: Monolog\Processor\PsrLogMessageProcessor
         tags:
             - { name: monolog.processor }

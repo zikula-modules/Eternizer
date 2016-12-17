@@ -12,7 +12,7 @@
 
 namespace MU\EternizerModule\Controller;
 
-use MU\EternizerModule\Controller\Base\AjaxController as BaseAjaxController;
+use MU\EternizerModule\Controller\Base\AbstractAjaxController;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -23,21 +23,20 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @Route("/ajax")
  */
-class AjaxController extends BaseAjaxController
+class AjaxController extends AbstractAjaxController
 {
     /**
-     * This is the default action handling the mainnull area called without defining arguments.
+     * This is the default action handling the main area called without defining arguments.
      *
      * @Route("/ajax",
      *        methods = {"GET"}
      * )
      *
      * @param Request  $request      Current request instance
-     * @param string  $ot           Treated object type.
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function indexAction(Request $request)
     {
@@ -51,9 +50,9 @@ class AjaxController extends BaseAjaxController
      * @Route("/getItemListFinder", options={"expose"=true})
     
      *
-     * @param string $ot      Name of currently used object type.
-     * @param string $sort    Sorting field.
-     * @param string $sortdir Sorting direction.
+     * @param string $ot      Name of currently used object type
+     * @param string $sort    Sorting field
+     * @param string $sortdir Sorting direction
      *
      * @return AjaxResponse
      */

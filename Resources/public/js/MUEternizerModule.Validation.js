@@ -35,6 +35,7 @@ function mUEternizerToday(format)
         }
         todayDate += hours + ':' + minutes;// + ':' + seconds;
     }
+
     return todayDate;
 }
 
@@ -52,6 +53,7 @@ function mUEternizerReadDate(val, includeTime)
         if (includeTime === true) {
             newVal += ' ' + val.substr(11, 5);
         }
+
         return newVal;
     }
 }
@@ -70,8 +72,8 @@ function mUEternizerValidateNoSpace(val)
 function mUEternizerPerformCustomValidationRules(objectType, currentEntityId)
 {
     jQuery('.validate-nospace').each( function() {
-        if (mUEternizerValidateNoSpace(jQuery(this).val())) {
-            document.getElementById(jQuery(this).attr('id')).setCustomValidity(Zikula.__('This value must not contain spaces.', 'mueternizermodule_js'));
+        if (!mUEternizerValidateNoSpace(jQuery(this).val())) {
+            document.getElementById(jQuery(this).attr('id')).setCustomValidity(/*Zikula.__(*/'This value must not contain spaces.'/*, 'mueternizermodule_js')*/);
         } else {
             document.getElementById(jQuery(this).attr('id')).setCustomValidity('');
         }

@@ -12,12 +12,12 @@
 
 namespace MU\EternizerModule\Container;
 
-use MU\EternizerModule\Container\Base\LinkContainer as BaseLinkContainer;
+use MU\EternizerModule\Container\Base\AbstractLinkContainer;
 
 /**
  * This is the link container service implementation class.
  */
-class LinkContainer extends BaseLinkContainer
+class LinkContainer extends AbstractLinkContainer
 {
     // feel free to add own extensions here
 }

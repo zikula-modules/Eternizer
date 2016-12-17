@@ -12,74 +12,12 @@
 
 namespace MU\EternizerModule;
 
-use MU\EternizerModule\Base\EternizerModuleInstaller as BaseEternizerModuleInstaller;
-
-use DoctrineHelper;
-use EventUtil;
-use HookUtil;
-use LogUtil;
-use ModUtil;
-use System;
-use UserUtil;
-use Zikula_AbstractInstaller;
-use Zikula_Workflow_Util;
-use StringUtil;
+use MU\EternizerModule\Base\AbstractEternizerModuleInstaller;
 
 /**
  * Installer implementation class.
  */
-class EternizerModuleInstaller extends BaseEternizerModuleInstaller
+class EternizerModuleInstaller extends AbstractEternizerModuleInstaller
 {
-	 /**
-     * Install the MUEternizerModule application.
-     *
-     * @return boolean True on success, or false.
-     *
-     * @throws RuntimeException Thrown if database tables can not be created or another error occurs
-     */
-    public function install()
-    {
-		// create temp folder eternizer_cache
-    	$this->createTempDir();
-    
-    	return parent::install();
-    }
-    
-    // -----------------------------------------------------------------------
-    // Create default data for a new install
-    // -----------------------------------------------------------------------
-    protected function createTempDir()
-    {
-        $tempdir = System::getVar('temp');
-        if(StringUtil::left($tempdir, 1) <> '/') {
-            // tempdir does not start with a / which means it does not reside outside
-            // the webroot, continue
-            if(StringUtil::right($tempdir, 1) <> '/') {
-                $tempdir .= '/';
-            }
-            if(FileUtil::mkdirs($tempdir . 'eternizer_cache', System::getVar('system.chmod_dir', 0777))) {
-                $res1 = FileUtil::writeFile($tempdir . 'eternizer_cache/index.html');
-                $res2 = FileUtil::writeFile($tempdir . 'eternizer_cache/.htaccess', 'SetEnvIf Request_URI "\.gif$" object_is_gif=gif
-SetEnvIf Request_URI "\.png$" object_is_png=png
-SetEnvIf Request_URI "\.jpg$" object_is_jpg=jpg
-Order deny,allow
-Deny from all
-Allow from env=object_is_gif
-Allow from env=object_is_png
-Allow from env=object_is_jpg
-');
-                if($res1===false || $res2===false){
-                    LogUtil::registerStatus($this->__('The installer could not create eternizer_cache/index.html and/or eternizer_cache/.htaccess, please refer to the manual before using the module!'));
-                } else {
-                    LogUtil::registerStatus($this->__('The installer successfully created the eternizer_cache directory in Zikula\'s temporary directory with a .htaccess file for security in there.'));
-                }
-            } else {
-                LogUtil::registerStatus($this->__('The installer could not create the eternizer_cache directory, please refer to the manual before using the module!'));
-            }
-        } else {
-            // tempdir starts with /, so it is an absolute path, probably outside the webroot
-            LogUtil::registerStatus($this->__('The directory \'ztemp\' found outside of the webroot, please consult the manual of how to create the eternizer_cache directory in this case.'));
-        }
-    
-    }
+    // feel free to extend the installer here
 }

@@ -12,38 +12,32 @@
 
 /**
  * Delete operation.
- * @param object $entity The treated object.
- * @param array  $params Additional arguments.
  *
- * @return bool False on failure or true if everything worked well.
+ * @param object $entity The treated object
+ * @param array  $params Additional arguments
+ *
+ * @return bool False on failure or true if everything worked well
  *
  * @throws RuntimeException Thrown if executing the workflow action fails
  */
 function MUEternizerModule_operation_delete(&$entity, $params)
 {
-    $dom = ZLanguage::getModuleDomain('MUEternizerModule');
-
-
-    // initialise the result flag
-    $result = false;
 
     // get entity manager
-    $serviceManager = ServiceUtil::getManager();
-    $entityManager = $serviceManager->get('doctrine.entitymanager');
+    $serviceManager = \ServiceUtil::getManager();
+    $entityManager = $serviceManager->get('doctrine.orm.default_entity_manager');
+    $logger = $serviceManager->get('logger');
+    $logArgs = ['app' => 'MUEternizerModule', 'user' => $serviceManager->get('zikula_users_module.current_user')->get('uname')];
     
     // delete entity
     try {
         $entityManager->remove($entity);
         $entityManager->flush();
         $result = true;
-    
-        $logger = $serviceManager->get('logger');
-        $logger->notice('{app}: User {user} deleted an entity.', array('app' => 'MUEternizerModule', 'user' => UserUtil::getVar('uname')));
+        $logger->notice('{app}: User {user} deleted an entity.', $logArgs);
     } catch (\Exception $e) {
+        $logger->error('{app}: User {user} tried to delete an entity, but failed.', $logArgs);
         throw new \RuntimeException($e->getMessage());
-    
-        $logger = $serviceManager->get('logger');
-        $logger->error('{app}: User {user} tried to delete an entity, but failed.', array('app' => 'MUEternizerModule', 'user' => UserUtil::getVar('uname')));
     }
 
     // return result of this operation

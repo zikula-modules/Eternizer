@@ -12,12 +12,12 @@
 
 namespace MU\EternizerModule\Form\Plugin;
 
-use MU\EternizerModule\Form\Plugin\Base\ItemSelector as BaseItemSelector;
+use MU\EternizerModule\Form\Plugin\Base\AbstractItemSelector;
 
 /**
  * Item selector plugin implementation class.
  */
-class ItemSelector extends BaseItemSelector
+class ItemSelector extends AbstractItemSelector
 {
     // feel free to add your customisation here
 }

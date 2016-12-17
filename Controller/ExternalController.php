@@ -12,7 +12,7 @@
 
 namespace MU\EternizerModule\Controller;
 
-use MU\EternizerModule\Controller\Base\ExternalController as BaseExternalController;
+use MU\EternizerModule\Controller\Base\AbstractExternalController;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -21,7 +21,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
  *
  * @Route("/external")
  */
-class ExternalController extends BaseExternalController
+class ExternalController extends AbstractExternalController
 {
     /**
      * Displays one item of a certain object type using a separate template for external usages.
@@ -32,12 +32,12 @@ class ExternalController extends BaseExternalController
      *        methods = {"GET"}
      * )
      *
-     * @param string $ot          The currently treated object type.
-     * @param int    $id          Identifier of the entity to be shown.
-     * @param string $source      Source of this call (contentType or scribite).
-     * @param string $displayMode Display mode (link or embed).
+     * @param string $ot          The currently treated object type
+     * @param int    $id          Identifier of the entity to be shown
+     * @param string $source      Source of this call (contentType or scribite)
+     * @param string $displayMode Display mode (link or embed)
      *
-     * @return string Desired data output.
+     * @return string Desired data output
      */
     public function displayAction($ot, $id, $source, $displayMode)
     {
@@ -55,12 +55,12 @@ class ExternalController extends BaseExternalController
      *        options={"expose"=true}
      * )
      *
-     * @param string $objectType The object type.
-     * @param string $editor     Name of used Scribite editor.
-     * @param string $sort       Sorting field.
-     * @param string $sortdir    Sorting direction.
-     * @param int    $pos        Current pager position.
-     * @param int    $num        Amount of entries to display.
+     * @param string $objectType The object type
+     * @param string $editor     Name of used Scribite editor
+     * @param string $sort       Sorting field
+     * @param string $sortdir    Sorting direction
+     * @param int    $pos        Current pager position
+     * @param int    $num        Amount of entries to display
      *
      * @return output The external item finder page
      *

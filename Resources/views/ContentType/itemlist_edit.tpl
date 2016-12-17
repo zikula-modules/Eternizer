@@ -9,6 +9,7 @@
     </div>
 </div>
 
+{if $featureActivationHelper->isEnabled(const('MU\\EternizerModule\\Helper\\FeatureActivationHelper::CATEGORIES', $objectType))}
 {formvolatile}
 {if $properties ne null && is_array($properties)}
     {nocache}
@@ -20,7 +21,7 @@
             {/if}
         {/foreach}
         <div class="form-group">
-            {modapifunc modname='MUEternizerModule' type='category' func='hasMultipleSelection' ot=$objectType registry=$propertyName assign='hasMultiSelection'}
+            {assign var='hasMultiSelection' value=$categoryHelper->hasMultipleSelection($objectType, $propertyName)}
             {gt text='Category' domain='mueternizermodule' assign='categorySelectorLabel'}
             {assign var='selectionMode' value='single'}
             {if $hasMultiSelection eq true}
@@ -37,6 +38,7 @@
     {/nocache}
 {/if}
 {/formvolatile}
+{/if}
 
 <div class="form-group">
     {gt text='Sorting' domain='mueternizermodule' assign='sortingLabel'}
@@ -95,5 +97,4 @@
 
 {pageaddvar name='stylesheet' value='web/bootstrap/css/bootstrap.min.css'}
 {pageaddvar name='stylesheet' value='web/bootstrap/css/bootstrap-theme.min.css'}
-{pageaddvar name='javascript' value='jquery'}
 {pageaddvar name='javascript' value='web/bootstrap/js/bootstrap.min.js'}

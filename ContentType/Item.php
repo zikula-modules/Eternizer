@@ -12,12 +12,12 @@
 
 namespace MU\EternizerModule\ContentType;
 
-use MU\EternizerModule\ContentType\Base\Item as BaseItem;
+use MU\EternizerModule\ContentType\Base\AbstractItem;
 
 /**
  * Generic single item display content plugin implementation class.
  */
-class Item extends BaseItem
+class Item extends AbstractItem
 {
     // feel free to extend the content type here
 }

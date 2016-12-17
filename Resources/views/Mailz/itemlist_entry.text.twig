@@ -1,0 +1,8 @@
+{# Purpose of this template: Display entries in text mailings #}
+{% for entry in items %}
+{{ entry.getTitleFromDisplayPattern() }}
+{{ url('mueternizermodule_entry_display', { 'id': entry.id }) }}
+-----
+{% else %}
+{{ __('No entries found.') }}
+{% endfor %}

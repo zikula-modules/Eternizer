@@ -12,12 +12,12 @@
 
 namespace MU\EternizerModule\Helper;
 
-use MU\EternizerModule\Helper\Base\HookHelper as BaseHookHelper;
+use MU\EternizerModule\Helper\Base\AbstractHookHelper;
 
 /**
- * Utility implementation class for hook helper methods.
+ * Helper implementation class for hook related methods.
  */
-class HookHelper extends BaseHookHelper
+class HookHelper extends AbstractHookHelper
 {
     // feel free to add your own convenience methods here
 }

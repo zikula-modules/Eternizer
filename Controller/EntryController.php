@@ -12,39 +12,40 @@
 
 namespace MU\EternizerModule\Controller;
 
-use MU\EternizerModule\Controller\Base\EntryController as BaseEntryController;
-use MU\EternizerModule\Entity\EntryEntity;
+use MU\EternizerModule\Controller\Base\AbstractEntryController;
 
+use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use FormUtil;
-use JCSSUtil;
-use ModUtil;
-use SecurityUtil;
-use System;
-use UserUtil;
-use Zikula_AbstractController;
-use Zikula_View;
-use ZLanguage;
-use Zikula\Core\Hook\ProcessHook;
-use Zikula\Core\Hook\ValidationHook;
-use Zikula\Core\Hook\ValidationProviders;
-use Zikula\Core\ModUrl;
-use Zikula\Core\RouteUrl;
-use Zikula\Core\Response\PlainResponse;
+use MU\EternizerModule\Entity\EntryEntity;
 
 /**
  * Entry controller class providing navigation and interaction functionality.
  */
-class EntryController extends BaseEntryController
+class EntryController extends AbstractEntryController
 {
     /**
-     * This method is the default function handling the main area called without defining arguments.
+     * This is the default action handling the main admin area called without defining arguments.
+     *
+     * @Route("/admin/entries",
+     *        methods = {"GET"}
+     * )
+     *
+     * @param Request  $request      Current request instance
+     *
+     * @return mixed Output
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     */
+    public function adminIndexAction(Request $request)
+    {
+        return parent::adminIndexAction($request);
+    }
+    
+    /**
+     * This is the default action handling the main area called without defining arguments.
      *
      * @Route("/entries",
      *        methods = {"GET"}
@@ -52,195 +53,85 @@ class EntryController extends BaseEntryController
      *
      * @param Request  $request      Current request instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function indexAction(Request $request)
     {
         return parent::indexAction($request);
     }
-    
     /**
-     * This method provides a item list overview.
+     * This action provides an item list overview in the admin area.
      *
-     * @Route("/entries/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
+     * @Route("/admin/entries/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
      *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|csv|rss|atom|xml|json|kml"},
-     *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 0, "_format" = "html"},
+     *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
      *
      * @param Request  $request      Current request instance
-     * @param string  $sort         Sorting field.
-     * @param string  $sortdir      Sorting direction.
-     * @param int     $pos          Current pager position.
-     * @param int     $num          Amount of entries to display.
-     * @param string  $tpl          Name of alternative template (to be used instead of the default template).
+     * @param string  $sort         Sorting field
+     * @param string  $sortdir      Sorting direction
+     * @param int     $pos          Current pager position
+     * @param int     $num          Amount of entries to display
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
-    public function viewAction(Request $request, $sort, $sortdir, $pos, $num)
+    public function adminViewAction(Request $request, $sort, $sortdir, $pos, $num)
     {
-    	$legacyControllerType = $request->query->filter('lct', 'user', FILTER_SANITIZE_STRING);
-        System::queryStringSetVar('type', $legacyControllerType);
-        $request->query->set('type', $legacyControllerType);
-    
-        $controllerHelper = $this->serviceManager->get('mueternizermodule.controller_helper');
-        
-        // parameter specifying which type of objects we are treating
-        $objectType = 'entry';
-        $utilArgs = array('controller' => 'entry', 'action' => 'view');
-        $permLevel = $legacyControllerType == 'admin' ? ACCESS_ADMIN : ACCESS_READ;
-        if (!SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
-            throw new AccessDeniedException();
-        }
-        $repository = $this->serviceManager->get('mueternizermodule.' . $objectType . '_factory')->getRepository();
-        $repository->setRequest($this->request);
-        $viewHelper = $this->serviceManager->get('mueternizermodule.view_helper');
-        
-        // parameter for used sorting field
-        if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields())) {
-            $sort = $repository->getDefaultSortingField();
-            System::queryStringSetVar('sort', $sort);
-            $request->query->set('sort', $sort);
-            // set default sorting in route parameters (e.g. for the pager)
-            $routeParams = $request->attributes->get('_route_params');
-            $routeParams['sort'] = $sort;
-            $request->attributes->set('_route_params', $routeParams);
-        }
-        
-        // parameter for used sort order
-        $sortdir = strtolower($sortdir);
-        
-        // convenience vars to make code clearer
-        $currentUrlArgs = array();
-        
-        $where = '';
-        
-        $selectionArgs = array(
-            'ot' => $objectType,
-            'where' => $where,
-            'orderBy' => $sort . ' ' . $sortdir
-        );
-        
-        $showOwnEntries = (int) $request->query->filter('own', $this->getVar('showOnlyOwnEntries', 0), false, FILTER_VALIDATE_INT);
-        $showAllEntries = (int) $request->query->filter('all', 0, false, FILTER_VALIDATE_INT);
-        
-        if (!$showAllEntries) {
-            $csv = $request->getRequestFormat() == 'csv' ? 1 : 0;
-            if ($csv == 1) {
-                $showAllEntries = 1;
-            }
-        }
-        
-        $this->view->assign('showOwnEntries', $showOwnEntries)
-                   ->assign('showAllEntries', $showAllEntries);
-        if ($showOwnEntries == 1) {
-            $currentUrlArgs['own'] = 1;
-        }
-        if ($showAllEntries == 1) {
-            $currentUrlArgs['all'] = 1;
-        }
-        
-        // prepare access level for cache id
-        $accessLevel = ACCESS_READ;
-        $component = 'MUEternizerModule:' . ucfirst($objectType) . ':';
-        $instance = '::';
-        if (SecurityUtil::checkPermission($component, $instance, ACCESS_COMMENT)) {
-            $accessLevel = ACCESS_COMMENT;
-        }
-        if (SecurityUtil::checkPermission($component, $instance, ACCESS_EDIT)) {
-            $accessLevel = ACCESS_EDIT;
-        }
-        
-        $templateFile = $viewHelper->getViewTemplate($this->view, $objectType, 'view', $request);
-        $cacheId = $objectType . '_view|_sort_' . $sort . '_' . $sortdir;
-        $resultsPerPage = 0;
-        if ($showAllEntries == 1) {
-            // set cache id
-            $this->view->setCacheId($cacheId . '_all_1_own_' . $showOwnEntries . '_' . $accessLevel);
-        
-            // if page is cached return cached content
-            if ($this->view->is_cached($templateFile)) {
-                return $viewHelper->processTemplate($this->view, $objectType, 'view', $request, $templateFile);
-            }
-        
-            // retrieve item list without pagination
-            $entities = ModUtil::apiFunc($this->name, 'selection', 'getEntities', $selectionArgs);
-        } else {
-            // the current offset which is used to calculate the pagination
-            $currentPage = $pos;
-        
-            // the number of items displayed on a page for pagination
-            $resultsPerPage = $num;
-            if ($resultsPerPage == 0) {
-                $resultsPerPage = $this->getVar('pagesize', 10);
-            }
-        
-            // set cache id
-            $this->view->setCacheId($cacheId . '_amount_' . $resultsPerPage . '_page_' . $currentPage . '_own_' . $showOwnEntries . '_' . $accessLevel);
-        
-            // if page is cached return cached content
-            if ($this->view->is_cached($templateFile)) {
-                return $viewHelper->processTemplate($this->view, $objectType, 'view', $request, $templateFile);
-            }
-        
-            // retrieve item list with pagination
-            $selectionArgs['currentPage'] = $currentPage;
-            $selectionArgs['resultsPerPage'] = $resultsPerPage;
-            list($entities, $objectCount) = ModUtil::apiFunc($this->name, 'selection', 'getEntitiesPaginated', $selectionArgs);
-        
-            $this->view->assign('currentPage', $currentPage)
-                       ->assign('pager', array('numitems'     => $objectCount,
-                                               'itemsperpage' => $resultsPerPage));
-        }
-        
-        foreach ($entities as $k => $entity) {
-            $entity->initWorkflow();
-        }
-        
-        // build ModUrl instance for display hooks
-        $currentUrlObject = new ModUrl($this->name, 'entry', 'view', ZLanguage::getLanguageCode(), $currentUrlArgs);
-        
-        // assign the object data, sorting information and details for creating the pager
-        $this->view->assign('items', $entities)
-                   ->assign('sort', $sort)
-                   ->assign('sdir', $sortdir)
-                   ->assign('pageSize', $resultsPerPage)
-                   ->assign('currentUrlObject', $currentUrlObject)
-                   ->assign($repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
-        
-        $modelHelper = $this->serviceManager->get('mueternizermodule.model_helper');
-        $this->view->assign('canBeCreated', $modelHelper->canBeCreated($objectType));
-        
-    	// We rule the position of the form
-        $formposition = ModUtil::getVar($this->name, 'formposition');
-
-        //We check the userid for ruling the edit button
-        $userid = UserUtil::getVar('uid');
-
-        //We check for editing of entries
-        $editentries = ModUtil::getVar($this->name, 'editentries');
-
-        // We assign to the template
-        $this->view->assign('formposition', $formposition);
-        $this->view->assign('userid', $userid);
-        $this->view->assign('editentries', $editentries);
-
-        $order = ModUtil::getVar($this->name, 'order');
-        if ($order == 'descending') {
-            $sortdir = 'desc';
-        }
-        else {
-            $sortdir = 'asc';
-        }
-		return parent::viewAction($request, $sort, $sortdir, $pos, $num);
+        return parent::adminViewAction($request, $sort, $sortdir, $pos, $num);
     }
     
     /**
-     * This method provides a item detail view.
+     * This action provides an item list overview.
+     *
+     * @Route("/entries/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
+     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|csv|rss|atom|xml|json|kml"},
+     *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
+     *        methods = {"GET"}
+     * )
+     *
+     * @param Request  $request      Current request instance
+     * @param string  $sort         Sorting field
+     * @param string  $sortdir      Sorting direction
+     * @param int     $pos          Current pager position
+     * @param int     $num          Amount of entries to display
+     *
+     * @return mixed Output
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     */
+    public function viewAction(Request $request, $sort, $sortdir, $pos, $num)
+    {
+        return parent::viewAction($request, $sort, $sortdir, $pos, $num);
+    }
+    /**
+     * This action provides a item detail view in the admin area.
+     *
+     * @Route("/admin/entry/{id}.{_format}",
+     *        requirements = {"id" = "\d+", "_format" = "html|xml|json|kml|ics"},
+     *        defaults = {"_format" = "html"},
+     *        methods = {"GET"}
+     * )
+     *
+     * @param Request  $request      Current request instance
+     * @param EntryEntity $entry      Treated entry instance
+     *
+     * @return mixed Output
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by param converter if item to be displayed isn't found
+     */
+    public function adminDisplayAction(Request $request, EntryEntity $entry)
+    {
+        return parent::adminDisplayAction($request, $entry);
+    }
+    
+    /**
+     * This action provides a item detail view.
      *
      * @Route("/entry/{id}.{_format}",
      *        requirements = {"id" = "\d+", "_format" = "html|xml|json|kml|ics"},
@@ -249,21 +140,41 @@ class EntryController extends BaseEntryController
      * )
      *
      * @param Request  $request      Current request instance
-     * @param EntryEntity $entry      Treated entry instance.
-     * @param string  $tpl          Name of alternative template (to be used instead of the default template).
+     * @param EntryEntity $entry      Treated entry instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
-     * @throws NotFoundHttpException Thrown by param converter if item to be displayed isn't found.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by param converter if item to be displayed isn't found
      */
     public function displayAction(Request $request, EntryEntity $entry)
     {
         return parent::displayAction($request, $entry);
     }
+    /**
+     * This action provides a handling of edit requests in the admin area.
+     *
+     * @Route("/admin/entry/edit/{id}.{_format}",
+     *        requirements = {"id" = "\d+", "_format" = "html"},
+     *        defaults = {"id" = "0", "_format" = "html"},
+     *        methods = {"GET", "POST"}
+     * )
+     *
+     * @param Request  $request      Current request instance
+     *
+     * @return mixed Output
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by form handler if item to be edited isn't found
+     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
+     */
+    public function adminEditAction(Request $request)
+    {
+        return parent::adminEditAction($request);
+    }
     
     /**
-     * This method provides a handling of edit requests.
+     * This action provides a handling of edit requests.
      *
      * @Route("/entry/edit/{id}.{_format}",
      *        requirements = {"id" = "\d+", "_format" = "html"},
@@ -272,46 +183,42 @@ class EntryController extends BaseEntryController
      * )
      *
      * @param Request  $request      Current request instance
-     * @param string  $tpl          Name of alternative template (to be used instead of the default template).
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
-     * @throws NotFoundHttpException Thrown by form handler if item to be edited isn't found.
-     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available).
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by form handler if item to be edited isn't found
+     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
      */
     public function editAction(Request $request)
     {
-            //We check for parameters
-        $func = $this->request->getGet()->filter('func', 'view', FILTER_SANITIZE_STRING);
-        $id = $this->request->getGet()->filter('id', null, FILTER_SANITIZE_NUMBER_INT);
-
-        //We check for editing of entries
-        $editentries = ModUtil::getVar($this->name, 'editentries');
-
-        // if editing is allowed we call the parent method
-        if ($editentries == 1) {
-            return parent::editAction($request);
-        }
-        else {
-            if (($func == 'edit' || $func == 'view')) {
-                if ($id == null) {
-                    return parent::editAction($request);
-                }
-                // otherwise we make a redirect
-                else {
-                    $url = ModUtil::url($this->name, 'user', 'view');
-                    LogUtil::registerError($this->__('Sorry. The editing of entries is disabled.'));
-                    System::redirect($url);
-
-                }
-            }
-        }
         return parent::editAction($request);
+    }
+    /**
+     * This action provides a handling of simple delete requests in the admin area.
+     *
+     * @Route("/admin/entry/delete/{id}.{_format}",
+     *        requirements = {"id" = "\d+", "_format" = "html"},
+     *        defaults = {"_format" = "html"},
+     *        methods = {"GET", "POST"}
+     * )
+     *
+     * @param Request  $request      Current request instance
+     * @param EntryEntity $entry      Treated entry instance
+     *
+     * @return mixed Output
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by param converter if item to be deleted isn't found
+     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
+     */
+    public function adminDeleteAction(Request $request, EntryEntity $entry)
+    {
+        return parent::adminDeleteAction($request, $entry);
     }
     
     /**
-     * This method provides a handling of simple delete requests.
+     * This action provides a handling of simple delete requests.
      *
      * @Route("/entry/delete/{id}.{_format}",
      *        requirements = {"id" = "\d+", "_format" = "html"},
@@ -320,21 +227,18 @@ class EntryController extends BaseEntryController
      * )
      *
      * @param Request  $request      Current request instance
-     * @param EntryEntity $entry      Treated entry instance.
-     * @param boolean $confirmation Confirm the deletion, else a confirmation page is displayed.
-     * @param string  $tpl          Name of alternative template (to be used instead of the default template).
+     * @param EntryEntity $entry      Treated entry instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
-     * @throws NotFoundHttpException Thrown by param converter if item to be deleted isn't found.
-     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available).
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by param converter if item to be deleted isn't found
+     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
      */
     public function deleteAction(Request $request, EntryEntity $entry)
     {
         return parent::deleteAction($request, $entry);
     }
-    
 
     /**
      * Process status changes for multiple items.
@@ -346,36 +250,35 @@ class EntryController extends BaseEntryController
      *        methods = {"POST"}
      * )
      *
-     * @param string $action The action to be executed.
-     * @param array  $items  Identifier list of the items to be processed.
+     * @param Request $request Current request instance
      *
-     * @return bool true on sucess, false on failure.
+     * @return bool true on sucess, false on failure
+     *
+     * @throws RuntimeException Thrown if executing the workflow action fails
+     */
+    public function adminHandleSelectedEntriesAction(Request $request)
+    {
+        return parent::adminHandleSelectedEntriesAction($request);
+    }
+    /**
+     * Process status changes for multiple items.
+     *
+     * This function processes the items selected in the admin view page.
+     * Multiple items may have their state changed or be deleted.
+     *
+     * @Route("/entries/handleSelectedEntries",
+     *        methods = {"POST"}
+     * )
+     *
+     * @param Request $request Current request instance
+     *
+     * @return bool true on sucess, false on failure
      *
      * @throws RuntimeException Thrown if executing the workflow action fails
      */
     public function handleSelectedEntriesAction(Request $request)
     {
         return parent::handleSelectedEntriesAction($request);
-    }
-
-    /**
-     * This method cares for a redirect within an inline frame.
-     *
-     * @Route("/entry/handleInlineRedirect/{idPrefix}/{commandName}/{id}",
-     *        requirements = {"id" = "\d+"},
-     *        defaults = {"commandName" = "", "id" = 0},
-     *        methods = {"GET"}
-     * )
-     *
-     * @param string  $idPrefix    Prefix for inline window element identifier.
-     * @param string  $commandName Name of action to be performed (create or edit).
-     * @param integer $id          Id of created item (used for activating auto completion after closing the modal window).
-     *
-     * @return boolean Whether the inline redirect has been performed or not.
-     */
-    public function handleInlineRedirectAction($idPrefix, $commandName, $id = 0)
-    {
-        return parent::handleInlineRedirectAction($idPrefix, $commandName, $id);
     }
 
     // feel free to add your own controller methods here

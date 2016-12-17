@@ -12,12 +12,12 @@
 
 namespace MU\EternizerModule\Helper;
 
-use MU\EternizerModule\Helper\Base\ModelHelper as BaseModelHelper;
+use MU\EternizerModule\Helper\Base\AbstractModelHelper;
 
 /**
- * Utility implementation class for model helper methods.
+ * Helper implementation class for model layer methods.
  */
-class ModelHelper extends BaseModelHelper
+class ModelHelper extends AbstractModelHelper
 {
     // feel free to add your own convenience methods here
 }

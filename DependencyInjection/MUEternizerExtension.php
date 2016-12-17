@@ -12,12 +12,12 @@
 
 namespace MU\EternizerModule\DependencyInjection;
 
-use MU\EternizerModule\DependencyInjection\Base\MUEternizerExtension as BaseMUEternizerExtension;
+use MU\EternizerModule\DependencyInjection\Base\AbstractMUEternizerExtension;
 
 /**
  * Implementation class for service definition loader using the DependencyInjection extension.
  */
-class MUEternizerExtension extends BaseMUEternizerExtension
+class MUEternizerExtension extends AbstractMUEternizerExtension
 {
     // custom enhancements can go here
 }

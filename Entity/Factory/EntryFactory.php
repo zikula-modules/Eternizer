@@ -12,14 +12,14 @@
 
 namespace MU\EternizerModule\Entity\Factory;
 
-use MU\EternizerModule\Entity\Factory\Base\EntryFactory as BaseEntryFactory;
+use MU\EternizerModule\Entity\Factory\Base\AbstractEntryFactory;
 
 /**
  * Factory class used to retrieve entity and repository instances.
  *
  * This is the concrete factory class for entry entities.
  */
-class EntryFactory extends BaseEntryFactory
+class EntryFactory extends AbstractEntryFactory
 {
     // feel free to customise the manager
 }

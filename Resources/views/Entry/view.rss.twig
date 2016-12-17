@@ -1,0 +1,54 @@
+{# purpose of this template: entries rss feed #}
+<?xml version="1.0" encoding="{% set charset = pageGetVar('meta.charset') %}{% if charset == 'ISO-8859-15' %}ISO-8859-1{% else %}{{ charset }}{% endif %}" ?>
+<rss version="2.0"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+    xmlns:admin="http://webns.net/mvcb/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:content="http://purl.org/rss/1.0/modules/content/"
+    xmlns:atom="http://www.w3.org/2005/Atom">
+{*<rss version="0.92">*}
+    <channel>
+        <title>{{ __('Latest entries') }}</title>
+        <link>{{ app.request.getSchemeAndHttpHost() ~ app.request.getBasePath()|e }}</link>
+        <atom:link href="{{ app.request.getSchemeAndHttpHost() ~ app.request.getPathInfo() }}" rel="self" type="application/rss+xml" />
+        <description>{{ __('A direct feed showing the list of entries') }} - {{ getModVar('ZConfig', 'slogan') }}</description>
+        <language>{{ app.request.locale }}</language>
+        {# commented out as imagepath is not defined and we can't know whether this logo exists or not
+        <image>
+            <title>{{ getModVar('ZConfig', 'sitename') }}</title>
+            <url>{{ app.request.getSchemeAndHttpHost() ~ app.request.getBasePath()|e }}{{ imagepath }}/logo.jpg</url>
+            <link>{{ app.request.getSchemeAndHttpHost() ~ app.request.getBasePath()|e }}</link>
+        </image>
+        #}
+        <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+        <copyright>Copyright (c) {{ 'now'|date('Y') }}, {{ app.request.getSchemeAndHttpHost()|e }}</copyright>
+        <webMaster>{{ pageGetVar('adminmail)|e }} ({{ mueternizermodule_userVar('name', 2, 'admin') }})</webMaster>
+{% for entry in items %}
+    {{ block('entry') }}
+{% endfor %}
+    </channel>
+</rss>
+{% block entry %}
+    <item>
+        {{ block('entry_content') }}
+    </item>
+{% endblock %}
+{% block entry_content %}
+    <title><![CDATA[{% if entry.updatedDate|default %}{{ entry.updatedDate|localizeddate('medium', 'short') }} - {% endif %}{{ entry.getTitleFromDisplayPattern()|notifyFilters('mueternizermodule.filterhook.entries') }}]]></title>
+    <link>{{ url('mueternizermodule_entry_' ~ routeArea ~ 'display', { 'id': entry.id }) }}</link>
+    <guid>{{ url('mueternizermodule_entry_' ~ routeArea ~ 'display', { 'id': entry.id }) }}</guid>
+    {% if entry.createdUserId is defined %}
+        {% set cr_uname = mueternizermodule_userVar('uname', obj.createdUserId) %}
+        {% set cr_name = mueternizermodule_userVar('name', obj.createdUserId) %}
+        <author>{{ mueternizermodule_userVar('email', entry.createdUserId) }} ({{ cr_name|default(cr_uname) }})</author>
+    {% endif %}
+    <description>
+        <![CDATA[
+        {{ entry.text|replace({ '<br>': '<br />' }) }}
+        ]]>
+    </description>
+    {% if entry.createdDate|default %}
+        <pubDate>{{ entry.createdDate|date('a, d b Y T +0100') }}</pubDate>
+    {% endif %}
+{% endblock %}

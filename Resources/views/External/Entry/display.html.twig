@@ -1,0 +1,39 @@
+{# Purpose of this template: Display one certain entry within an external context #}
+<div id="entry{$entry.id}" class="mueternizermodule-external-entry">
+{% if displayMode == 'link' %}
+    <p class="mueternizermodule-external-link">
+    <a href="{{ path('mueternizermodule_entry_display', { 'id': entry.id }) }}" title="{{ entry.getTitleFromDisplayPattern()|e('html_attr') }}">
+    {{ entry.getTitleFromDisplayPattern()|notifyFilters('eternizer.filter_hooks.entries.filter') }}
+    </a>
+    </p>
+{% endif %}
+{% if hasPermission('MUEternizerModule::', '::', 'ACCESS_EDIT') %}
+    {# for normal users without edit permission show only the actual file per default #}
+    {% if displayMode == 'embed' %}
+        <p class="mueternizermodule-external-title">
+            <strong>{{ entry.getTitleFromDisplayPattern()|notifyFilters('eternizer.filter_hooks.entries.filter') }}</strong>
+        </p>
+    {% endif %}
+{% endif %}
+
+{% if displayMode == 'link' %}
+{% elseif displayMode == 'embed' %}
+    <div class="mueternizermodule-external-snippet">
+        &nbsp;
+    </div>
+
+    {# you can distinguish the context like this: #}
+    {# % if source == 'contentType' %}
+        ...
+    {% elseif source == 'scribite' %}
+        ...
+    {% endif % #}
+
+    {# you can enable more details about the item: #}
+    {#
+        <p class="mueternizermodule-external-description">
+            {% if entry.text is not empty %}{{ entry.text }}<br />{% endif %}
+        </p>
+    #}
+{/if}
+</div>

@@ -1,8 +1,0 @@
-{* purpose of this template: entries view json view in admin area *}
-{eternizerTemplateHeaders contentType='application/json'}
-[
-{foreach item='item' from=$items name='entries'}
-    {if not $smarty.foreach.entries.first},{/if}
-    {$item->toJson()}
-{/foreach}
-]

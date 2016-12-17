@@ -1,3 +1,0 @@
-{* purpose of this template: entries display json view in admin area *}
-{eternizerTemplateHeaders contentType='application/json'}
-{$entry->toJson()}

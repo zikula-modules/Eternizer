@@ -12,12 +12,12 @@
 
 namespace MU\EternizerModule\ContentType;
 
-use MU\EternizerModule\ContentType\Base\ItemList as BaseItemList;
+use MU\EternizerModule\ContentType\Base\AbstractItemList;
 
 /**
  * Generic item list content plugin implementation class.
  */
-class ItemList extends BaseItemList
+class ItemList extends AbstractItemList
 {
     // feel free to extend the content type here
 }

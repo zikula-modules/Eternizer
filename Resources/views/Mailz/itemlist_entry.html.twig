@@ -1,0 +1,16 @@
+{# Purpose of this template: Display entries in html mailings #}
+{#
+<ul>
+{% for entry in items %}
+    <li>
+        <a href="{{ url('mueternizermodule_entry_display', { 'id': entry.id }) }}
+        ">{{ entry.getTitleFromDisplayPattern() }}
+        </a>
+    </li>
+{% else %}
+    <li>{{ __('No entries found.') }}</li>
+{% endfor %}
+</ul>
+#}
+
+{{ include('@MUEternizerModule/ContentType/itemlist_entry_display_description.html.twig') }}

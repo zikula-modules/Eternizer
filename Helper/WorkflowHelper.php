@@ -12,12 +12,12 @@
 
 namespace MU\EternizerModule\Helper;
 
-use MU\EternizerModule\Helper\Base\WorkflowHelper as BaseWorkflowHelper;
+use MU\EternizerModule\Helper\Base\AbstractWorkflowHelper;
 
 /**
- * Utility implementation class for workflow helper methods.
+ * Helper implementation class for workflow methods.
  */
-class WorkflowHelper extends BaseWorkflowHelper
+class WorkflowHelper extends AbstractWorkflowHelper
 {
     // feel free to add your own convenience methods here
 }

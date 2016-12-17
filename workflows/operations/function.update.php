@@ -12,24 +12,17 @@
 
 /**
  * Update operation.
- * @param object $entity The treated object.
- * @param array  $params Additional arguments.
  *
- * @return bool False on failure or true if everything worked well.
+ * @param object $entity The treated object
+ * @param array  $params Additional arguments
+ *
+ * @return bool False on failure or true if everything worked well
  *
  * @throws RuntimeException Thrown if executing the workflow action fails
  */
 function MUEternizerModule_operation_update(&$entity, $params)
 {
-    $dom = ZLanguage::getModuleDomain('MUEternizerModule');
 
-
-    // initialise the result flag
-    $result = false;
-
-    $objectType = $entity['_objectType'];
-    $currentState = $entity['workflowState'];
-    
     // get attributes read from the workflow
     if (isset($params['nextstate']) && !empty($params['nextstate'])) {
         // assign value to the data object
@@ -41,8 +34,10 @@ function MUEternizerModule_operation_update(&$entity, $params)
     }
     
     // get entity manager
-    $serviceManager = ServiceUtil::getManager();
-    $entityManager = $serviceManager->get('doctrine.entitymanager');
+    $serviceManager = \ServiceUtil::getManager();
+    $entityManager = $serviceManager->get('doctrine.orm.default_entity_manager');
+    $logger = $serviceManager->get('logger');
+    $logArgs = ['app' => 'MUEternizerModule', 'user' => $serviceManager->get('zikula_users_module.current_user')->get('uname')];
     
     // save entity data
     try {
@@ -51,14 +46,10 @@ function MUEternizerModule_operation_update(&$entity, $params)
         $entityManager->flush();
         //});
         $result = true;
-    
-        $logger = $serviceManager->get('logger');
-        $logger->notice('{app}: User {user} updated an entity.', array('app' => 'MUEternizerModule', 'user' => UserUtil::getVar('uname')));
+        $logger->notice('{app}: User {user} updated an entity.', $logArgs);
     } catch (\Exception $e) {
+        $logger->error('{app}: User {user} tried to update an entity, but failed.', $logArgs);
         throw new \RuntimeException($e->getMessage());
-    
-        $logger = $serviceManager->get('logger');
-        $logger->error('{app}: User {user} tried to update an entity, but failed.', array('app' => 'MUEternizerModule', 'user' => UserUtil::getVar('uname')));
     }
 
     // return result of this operation

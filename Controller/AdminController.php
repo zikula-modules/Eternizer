@@ -12,7 +12,7 @@
 
 namespace MU\EternizerModule\Controller;
 
-use MU\EternizerModule\Controller\Base\AdminController as BaseAdminController;
+use MU\EternizerModule\Controller\Base\AbstractAdminController;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,56 +20,25 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Admin controller class providing navigation and interaction functionality.
  */
-class AdminController extends BaseAdminController
+class AdminController extends AbstractAdminController
 {
     /**
-     * This is the default action handling the mainnull area called without defining arguments.
+     * This is the default action handling the main area called without defining arguments.
      *
      * @Route("/admin",
      *        methods = {"GET"}
      * )
      *
      * @param Request  $request      Current request instance
-     * @param string  $ot           Treated object type.
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function indexAction(Request $request)
     {
         return parent::indexAction($request);
     }
 
-
-    /**
-     * This method cares for a redirect within an inline frame.
-     *
-     * @param string  $idPrefix    Prefix for inline window element identifier.
-     * @param string  $commandName Name of action to be performed (create or edit).
-     * @param integer $id          Id of created item (used for activating auto completion after closing the modal window).
-     *
-     * @return boolean Whether the inline redirect has been performed or not.
-     */
-    public function handleInlineRedirectAction($idPrefix, $commandName, $id = 0)
-    {
-        return parent::handleInlineRedirectAction($idPrefix, $commandName, $id);
-    }
-
-    /**
-     * This method takes care of the application configuration.
-     *
-     * @Route("/config",
-     *        methods = {"GET", "POST"}
-     * )
-     *
-     * @return string Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     */
-    public function configAction()
-    {
-        return parent::configAction();
-    }
     // feel free to add your own controller methods here
 }

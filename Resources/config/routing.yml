@@ -2,4 +2,4 @@ mueternizermodule:
     # define routing support for these controllers
     resource: "@MUEternizerModule/Controller"
     # enable support for defining routes by annotations
-    type:     annotation
+    type: annotation

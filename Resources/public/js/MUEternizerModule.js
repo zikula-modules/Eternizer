@@ -22,23 +22,24 @@ function mUEternizerInitQuickNavigation(objectType)
         return;
     }
 
-    if (jQuery('#catid').length > 0) {
-        jQuery('#catid').change(function () { mUEternizerSubmitQuickNavForm(objectType); });
+    var fieldPrefix = 'mueternizermodule_' + objectType.toLowerCase() + 'quicknav_';
+    if (jQuery('#' + fieldPrefix + 'catid').length > 0) {
+        jQuery('#' + fieldPrefix + 'catid').change(function () { mUEternizerSubmitQuickNavForm(objectType); });
     }
-    if (jQuery('#sortBy').length > 0) {
-        jQuery('#sortBy').change(function () { mUEternizerSubmitQuickNavForm(objectType); });
+    if (jQuery('#' + fieldPrefix + 'sortBy').length > 0) {
+        jQuery('#' + fieldPrefix + 'sortBy').change(function () { mUEternizerSubmitQuickNavForm(objectType); });
     }
-    if (jQuery('#sortDir').length > 0) {
-        jQuery('#sortDir').change(function () { mUEternizerSubmitQuickNavForm(objectType); });
+    if (jQuery('#' + fieldPrefix + 'sortDir').length > 0) {
+        jQuery('#' + fieldPrefix + 'sortDir').change(function () { mUEternizerSubmitQuickNavForm(objectType); });
     }
-    if (jQuery('#num').length > 0) {
-        jQuery('#num').change(function () { mUEternizerSubmitQuickNavForm(objectType); });
+    if (jQuery('#' + fieldPrefix + 'num').length > 0) {
+        jQuery('#' + fieldPrefix + 'num').change(function () { mUEternizerSubmitQuickNavForm(objectType); });
     }
 
     switch (objectType) {
     case 'entry':
-        if (jQuery('#workflowState').length > 0) {
-            jQuery('#workflowState').change(function () { mUEternizerSubmitQuickNavForm(objectType); });
+        if (jQuery('#' + fieldPrefix + 'workflowState').length > 0) {
+            jQuery('#' + fieldPrefix + 'workflowState').change(function () { mUEternizerSubmitQuickNavForm(objectType); });
         }
         break;
     default:

@@ -12,12 +12,12 @@
 
 namespace MU\EternizerModule\Api;
 
-use MU\EternizerModule\Api\Base\MailzApi as BaseMailzApi;
+use MU\EternizerModule\Api\Base\AbstractMailzApi;
 
 /**
  * Mailz api implementation class.
  */
-class MailzApi extends BaseMailzApi
+class MailzApi extends AbstractMailzApi
 {
     // feel free to extend the mailz api here
 }

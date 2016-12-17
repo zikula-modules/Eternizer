@@ -1,8 +1,0 @@
-$Id: install.txt,v 2.1 2012/04/13 13:00:00 Michael Ueberschaer
-
-Install Eternizer like each other module
-
-Save your database before updating the module!
-
-If you want to update from Eternizer 1.1.2 to 1.1.3 be sure that the temp dir (normally ztemp) is there
-and is writable (777). Otherwise it is possible, that you get problems.

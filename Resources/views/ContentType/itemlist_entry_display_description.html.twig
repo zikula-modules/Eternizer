@@ -1,0 +1,13 @@
+{# Purpose of this template: Display entries within an external context #}
+<dl>
+    {% for entry in items %}
+        <dt>{{ entry.getTitleFromDisplayPattern() }}</dt>
+        {% if entry.text %}
+            <dd>{{ entry.text|striptags|truncate(200, true, '&hellip;') }}</dd>
+        {% endif %}
+        <dd><a href="{{ path('mueternizermodule_entry_display', { 'id': entry.id }) }}">{{ __('Read more') }}</a>
+        </dd>
+    {% else %}
+        <dt>{{ __('No entries found.') }}</dt>
+    {% endfor %}
+</dl>

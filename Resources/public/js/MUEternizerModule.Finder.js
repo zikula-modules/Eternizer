@@ -53,14 +53,15 @@ mUEternizerModule.finder = {};
 
 mUEternizerModule.finder.onLoad = function (baseId, selectedId)
 {
-    jQuery('div.categoryselector select').change(mUEternizerModule.finder.onParamChanged);
-    jQuery('#mUEternizerModuleSort').change(mUEternizerModule.finder.onParamChanged);
-    jQuery('#mUEternizerModuleSortDir').change(mUEternizerModule.finder.onParamChanged);
-    jQuery('#mUEternizerModulePageSize').change(mUEternizerModule.finder.onParamChanged);
-    jQuery('#mUEternizerModuleSearchGo').click(mUEternizerModule.finder.onParamChanged);
-    jQuery('#mUEternizerModuleSearchGo').keypress(mUEternizerModule.finder.onParamChanged);
-    jQuery('#mUEternizerModuleSubmit').addClass('hidden');
-    jQuery('#mUEternizerModuleCancel').click(mUEternizerModule.finder.handleCancel);
+    jQuery('select').change(mUEternizerModule.finder.onParamChanged);
+    jQuery('.btn-success').addClass('hidden');
+    jQuery('.btn-default').click(mUEternizerModule.finder.handleCancel);
+
+    var selectedItems = jQuery('#mueternizermoduleItemContainer li a');
+    selectedItems.bind('click keypress', function (e) {
+        e.preventDefault();
+        mUEternizerModule.finder.selectItem(jQuery(this).data('itemid'));
+    });
 };
 
 mUEternizerModule.finder.onParamChanged = function ()
@@ -72,8 +73,8 @@ mUEternizerModule.finder.handleCancel = function ()
 {
     var editor, w;
 
-    editor = jQuery('#editorName').val();
-    if (editor === 'xinha') {
+    editor = jQuery("[id$='editorName']").first().val();
+    if ('xinha' === editor) {
         w = parent.window;
         window.close();
         w.focus();
@@ -95,7 +96,7 @@ function mUEternizerGetPasteSnippet(mode, itemId)
     itemUrl = jQuery('#url' + itemId).val().replace(quoteFinder, '');
     itemTitle = jQuery('#title' + itemId).val().replace(quoteFinder, '');
     itemDescription = jQuery('#desc' + itemId).val().replace(quoteFinder, '');
-    pasteMode = jQuery('#mUEternizerModulePasteAs').val();
+    pasteMode = jQuery("[id$='pasteAs']").first().val();
 
     if (pasteMode === '2' || pasteMode !== '1') {
         return itemId;
@@ -117,9 +118,9 @@ mUEternizerModule.finder.selectItem = function (itemId)
 {
     var editor, html;
 
-    editor = jQuery('#editorName').val();
-    if (editor === 'xinha') {
-        if (window.opener.currentMUEternizerModuleEditor !== null) {
+    editor = jQuery("[id$='editorName']").first().val();
+    if ('xinha' === editor) {
+        if (null !== window.opener.currentMUEternizerModuleEditor) {
             html = mUEternizerGetPasteSnippet('html', itemId);
 
             window.opener.currentMUEternizerModuleEditor.focusEditor();
@@ -128,10 +129,10 @@ mUEternizerModule.finder.selectItem = function (itemId)
             html = mUEternizerGetPasteSnippet('url', itemId);
             var currentInput = window.opener.currentMUEternizerModuleInput;
 
-            if (currentInput.tagName === 'INPUT') {
+            if ('INPUT' === currentInput.tagName) {
                 // Simply overwrite value of input elements
                 currentInput.value = html;
-            } else if (currentInput.tagName === 'TEXTAREA') {
+            } else if ('TEXTAREA' === currentInput.tagName) {
                 // Try to paste into textarea - technique depends on environment
                 if (typeof document.selection !== 'undefined') {
                     // IE: Move focus to textarea (which fortunately keeps its current selection) and overwrite selection
@@ -150,12 +151,12 @@ mUEternizerModule.finder.selectItem = function (itemId)
                 }
             }
         }
-    } else if (editor === 'tinymce') {
+    } else if ('tinymce' === editor) {
         html = mUEternizerGetPasteSnippet('html', itemId);
         tinyMCE.activeEditor.execCommand('mceInsertContent', false, html);
         // other tinymce commands: mceImage, mceInsertLink, mceReplaceContent, see http://www.tinymce.com/wiki.php/Command_identifiers
-    } else if (editor === 'ckeditor') {
-        if (window.opener.currentMUEternizerModuleEditor !== null) {
+    } else if ('ckeditor' === editor) {
+        if (null !== window.opener.currentMUEternizerModuleEditor) {
             html = mUEternizerGetPasteSnippet('html', itemId);
 
             window.opener.currentMUEternizerModuleEditor.insertHtml(html);
@@ -165,7 +166,6 @@ mUEternizerModule.finder.selectItem = function (itemId)
     }
     mUEternizerClosePopup();
 };
-
 
 function mUEternizerClosePopup()
 {
@@ -193,9 +193,9 @@ mUEternizerModule.itemSelector.onLoad = function (baseId, selectedId)
     // required as a changed object type requires a new instance of the item selector plugin
     jQuery('#mUEternizerModuleObjectType').change(mUEternizerModule.itemSelector.onParamChanged);
 
-    if (jQuery('#' + baseId + '_catidMain').size() > 0) {
+    if (jQuery('#' + baseId + '_catidMain').length > 0) {
         jQuery('#' + baseId + '_catidMain').change(mUEternizerModule.itemSelector.onParamChanged);
-    } else if (jQuery('#' + baseId + '_catidsMain').size() > 0) {
+    } else if (jQuery('#' + baseId + '_catidsMain').length > 0) {
         jQuery('#' + baseId + '_catidsMain').change(mUEternizerModule.itemSelector.onParamChanged);
     }
     jQuery('#' + baseId + 'Id').change(mUEternizerModule.itemSelector.onItemChanged);
@@ -220,9 +220,9 @@ mUEternizerModule.itemSelector.getItemList = function ()
 
     baseId = eternizer.itemSelector.baseId;
     params = 'ot=' + baseId + '&';
-    if (jQuery('#' + baseId + '_catidMain').size() > 0) {
+    if (jQuery('#' + baseId + '_catidMain').length > 0) {
         params += 'catidMain=' + jQuery('#' + baseId + '_catidMain').val() + '&';
-    } else if (jQuery('#' + baseId + '_catidsMain').size() > 0) {
+    } else if (jQuery('#' + baseId + '_catidsMain').length > 0) {
         params += 'catidsMain=' + jQuery('#' + baseId + '_catidsMain').val() + '&';
     }
     params += 'sort=' + jQuery('#' + baseId + 'Sort').val() + '&' +
@@ -286,7 +286,7 @@ mUEternizerModule.itemSelector.updatePreview = function ()
         }
     }
 
-    if (selectedElement !== null) {
+    if (null !== selectedElement) {
         jQuery('#' + baseId + 'PreviewContainer')
             .html(window.atob(selectedElement.previewInfo))
             .removeClass('hidden');

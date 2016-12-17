@@ -12,8 +12,6 @@
 
 namespace MU\EternizerModule\Entity\Base;
 
-use MU\EternizerModule\EternizerEvents;
-use MU\EternizerModule\Event\FilterEntryEvent;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
@@ -21,14 +19,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 use DataUtil;
 use FormUtil;
-use ModUtil;
+use RuntimeException;
 use ServiceUtil;
-use System;
 use UserUtil;
-use Zikula_EntityAccess;
-use Zikula_Exception;
 use Zikula_Workflow_Util;
-use ZLanguage;
+use Zikula\Core\Doctrine\EntityAccess;
 
 /**
  * Entity class that defines the entity structure and behaviours.
@@ -41,29 +36,23 @@ use ZLanguage;
  *
  * @abstract
  */
-abstract class AbstractEntryEntity extends Zikula_EntityAccess
+abstract class AbstractEntryEntity extends EntityAccess
 {
     /**
-     * @var string The tablename this object maps to.
+     * @var string The tablename this object maps to
      */
     protected $_objectType = 'entry';
     
     /**
      * @Assert\Type(type="bool")
-     * @var boolean Option to bypass validation if needed.
+     * @var boolean Option to bypass validation if needed
      */
     protected $_bypassValidation = false;
     
     /**
-     * @Assert\Type(type="array")
-     * @var array List of available item actions.
+     * @var array The current workflow data of this object
      */
-    protected $_actions = array();
-    
-    /**
-     * @var array The current workflow data of this object.
-     */
-    protected $__WORKFLOW__ = array();
+    protected $__WORKFLOW__ = [];
     
     /**
      * @ORM\Id
@@ -72,7 +61,7 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
      * @Assert\Type(type="integer")
      * @Assert\NotNull()
      * @Assert\LessThan(value=1000000000, message="Length of field value must not be higher than 9.")) {
-     * @var integer $id.
+     * @var integer $id
      */
     protected $id = 0;
     
@@ -81,14 +70,14 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
      * @ORM\Column(length=20)
      * @Assert\NotBlank()
      * @Assert\Choice(callback="getWorkflowStateAllowedValues", multiple=false)
-     * @var string $workflowState.
+     * @var string $workflowState
      */
     protected $workflowState = 'initial';
     
     /**
      * @ORM\Column(length=15, nullable=true)
      * @Assert\Length(min="0", max="15")
-     * @var string $ip.
+     * @var string $ip
      */
     protected $ip = '';
     
@@ -96,7 +85,7 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
      * @ORM\Column(length=100)
      * @Assert\NotNull()
      * @Assert\Length(min="0", max="100")
-     * @var string $name.
+     * @var string $name
      */
     protected $name = '';
     
@@ -104,7 +93,7 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
      * @ORM\Column(length=100)
      * @Assert\NotNull()
      * @Assert\Length(min="0", max="100")
-     * @var string $email.
+     * @var string $email
      */
     protected $email = '';
     
@@ -112,8 +101,8 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
      * @ORM\Column(length=255)
      * @Assert\NotNull()
      * @Assert\Length(min="0", max="255")
-     * @Assert\Url()
-     * @var string $homepage.
+     * @Assert\Url(checkDNS=false)
+     * @var string $homepage
      */
     protected $homepage = '';
     
@@ -121,7 +110,7 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
      * @ORM\Column(length=100)
      * @Assert\NotNull()
      * @Assert\Length(min="0", max="100")
-     * @var string $location.
+     * @var string $location
      */
     protected $location = '';
     
@@ -129,14 +118,14 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
      * @ORM\Column(type="text", length=2000)
      * @Assert\NotBlank()
      * @Assert\Length(min="0", max="2000")
-     * @var text $text.
+     * @var text $text
      */
     protected $text = '';
     
     /**
      * @ORM\Column(type="text", length=2000, nullable=true)
      * @Assert\Length(min="0", max="2000")
-     * @var text $notes.
+     * @var text $notes
      */
     protected $notes = '';
     
@@ -144,24 +133,22 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
      * @ORM\Column(length=1)
      * @Assert\NotBlank()
      * @Assert\Length(min="0", max="1")
-     * @var string $obj_status.
+     * @var string $obj_status
      */
-    protected $obj_status = 'A';
+    protected $obj_status = '';
     
     
     /**
      * @ORM\Column(type="integer")
      * @ZK\StandardFields(type="userid", on="create")
-     * @Assert\Type(type="integer")
-     * @var integer $createdUserId.
+     * @var integer $createdUserId
      */
     protected $createdUserId;
     
     /**
      * @ORM\Column(type="integer")
      * @ZK\StandardFields(type="userid", on="update")
-     * @Assert\Type(type="integer")
-     * @var integer $updatedUserId.
+     * @var integer $updatedUserId
      */
     protected $updatedUserId;
     
@@ -169,7 +156,7 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
      * @Assert\DateTime()
-     * @var datetime $createdDate.
+     * @var \DateTime $createdDate
      */
     protected $createdDate;
     
@@ -177,7 +164,7 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="update")
      * @Assert\DateTime()
-     * @var datetime $updatedDate.
+     * @var \DateTime $updatedDate
      */
     protected $updatedDate;
     
@@ -192,12 +179,11 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
      */
     public function __construct()
     {
-        $this->workflowState = 'initial';
         $this->initWorkflow();
     }
     
     /**
-     * Get _object type.
+     * Returns the _object type.
      *
      * @return string
      */
@@ -207,9 +193,9 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set _object type.
+     * Sets the _object type.
      *
-     * @param string $_objectType.
+     * @param string $_objectType
      *
      * @return void
      */
@@ -219,7 +205,7 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get _bypass validation.
+     * Returns the _bypass validation.
      *
      * @return boolean
      */
@@ -229,9 +215,9 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set _bypass validation.
+     * Sets the _bypass validation.
      *
-     * @param boolean $_bypassValidation.
+     * @param boolean $_bypassValidation
      *
      * @return void
      */
@@ -241,29 +227,7 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get _actions.
-     *
-     * @return array
-     */
-    public function get_actions()
-    {
-        return $this->_actions;
-    }
-    
-    /**
-     * Set _actions.
-     *
-     * @param array $_actions.
-     *
-     * @return void
-     */
-    public function set_actions(array $_actions = Array())
-    {
-        $this->_actions = $_actions;
-    }
-    
-    /**
-     * Get __ w o r k f l o w__.
+     * Returns the __ w o r k f l o w__.
      *
      * @return array
      */
@@ -273,20 +237,20 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set __ w o r k f l o w__.
+     * Sets the __ w o r k f l o w__.
      *
-     * @param array $__WORKFLOW__.
+     * @param array $__WORKFLOW__
      *
      * @return void
      */
-    public function set__WORKFLOW__(array $__WORKFLOW__ = Array())
+    public function set__WORKFLOW__($__WORKFLOW__ = [])
     {
         $this->__WORKFLOW__ = $__WORKFLOW__;
     }
     
     
     /**
-     * Get id.
+     * Returns the id.
      *
      * @return integer
      */
@@ -296,19 +260,19 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set id.
+     * Sets the id.
      *
-     * @param integer $id.
+     * @param integer $id
      *
      * @return void
      */
     public function setId($id)
     {
-        $this->id = $id;
+        $this->id = intval($id);
     }
     
     /**
-     * Get workflow state.
+     * Returns the workflow state.
      *
      * @return string
      */
@@ -318,19 +282,19 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set workflow state.
+     * Sets the workflow state.
      *
-     * @param string $workflowState.
+     * @param string $workflowState
      *
      * @return void
      */
     public function setWorkflowState($workflowState)
     {
-        $this->workflowState = $workflowState;
+        $this->workflowState = isset($workflowState) ? $workflowState : '';
     }
     
     /**
-     * Get ip.
+     * Returns the ip.
      *
      * @return string
      */
@@ -340,9 +304,9 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set ip.
+     * Sets the ip.
      *
-     * @param string $ip.
+     * @param string $ip
      *
      * @return void
      */
@@ -352,7 +316,7 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get name.
+     * Returns the name.
      *
      * @return string
      */
@@ -362,19 +326,19 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set name.
+     * Sets the name.
      *
-     * @param string $name.
+     * @param string $name
      *
      * @return void
      */
     public function setName($name)
     {
-        $this->name = $name;
+        $this->name = isset($name) ? $name : '';
     }
     
     /**
-     * Get email.
+     * Returns the email.
      *
      * @return string
      */
@@ -384,19 +348,19 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set email.
+     * Sets the email.
      *
-     * @param string $email.
+     * @param string $email
      *
      * @return void
      */
     public function setEmail($email)
     {
-        $this->email = $email;
+        $this->email = isset($email) ? $email : '';
     }
     
     /**
-     * Get homepage.
+     * Returns the homepage.
      *
      * @return string
      */
@@ -406,19 +370,19 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set homepage.
+     * Sets the homepage.
      *
-     * @param string $homepage.
+     * @param string $homepage
      *
      * @return void
      */
     public function setHomepage($homepage)
     {
-        $this->homepage = $homepage;
+        $this->homepage = isset($homepage) ? $homepage : '';
     }
     
     /**
-     * Get location.
+     * Returns the location.
      *
      * @return string
      */
@@ -428,19 +392,19 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set location.
+     * Sets the location.
      *
-     * @param string $location.
+     * @param string $location
      *
      * @return void
      */
     public function setLocation($location)
     {
-        $this->location = $location;
+        $this->location = isset($location) ? $location : '';
     }
     
     /**
-     * Get text.
+     * Returns the text.
      *
      * @return text
      */
@@ -450,19 +414,19 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set text.
+     * Sets the text.
      *
-     * @param text $text.
+     * @param text $text
      *
      * @return void
      */
     public function setText($text)
     {
-        $this->text = $text;
+        $this->text = isset($text) ? $text : '';
     }
     
     /**
-     * Get notes.
+     * Returns the notes.
      *
      * @return text
      */
@@ -472,9 +436,9 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set notes.
+     * Sets the notes.
      *
-     * @param text $notes.
+     * @param text $notes
      *
      * @return void
      */
@@ -484,7 +448,7 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get obj_status.
+     * Returns the obj_status.
      *
      * @return string
      */
@@ -494,21 +458,21 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set obj_status.
+     * Sets the obj_status.
      *
-     * @param string $obj_status.
+     * @param string $obj_status
      *
      * @return void
      */
     public function setObj_status($obj_status)
     {
-        $this->obj_status = $obj_status;
+        $this->obj_status = isset($obj_status) ? $obj_status : '';
     }
     
     /**
-     * Get created user id.
+     * Returns the created user id.
      *
-     * @return integer
+     * @return string
      */
     public function getCreatedUserId()
     {
@@ -516,9 +480,9 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set created user id.
+     * Sets the created user id.
      *
-     * @param integer $createdUserId.
+     * @param string $createdUserId
      *
      * @return void
      */
@@ -528,9 +492,9 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get updated user id.
+     * Returns the updated user id.
      *
-     * @return integer
+     * @return string
      */
     public function getUpdatedUserId()
     {
@@ -538,9 +502,9 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set updated user id.
+     * Sets the updated user id.
      *
-     * @param integer $updatedUserId.
+     * @param string $updatedUserId
      *
      * @return void
      */
@@ -550,9 +514,9 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get created date.
+     * Returns the created date.
      *
-     * @return datetime
+     * @return \DateTime
      */
     public function getCreatedDate()
     {
@@ -560,9 +524,9 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set created date.
+     * Sets the created date.
      *
-     * @param datetime $createdDate.
+     * @param \DateTime $createdDate
      *
      * @return void
      */
@@ -572,9 +536,9 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get updated date.
+     * Returns the updated date.
      *
-     * @return datetime
+     * @return \DateTime
      */
     public function getUpdatedDate()
     {
@@ -582,9 +546,9 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set updated date.
+     * Sets the updated date.
      *
-     * @param datetime $updatedDate.
+     * @param \DateTime $updatedDate
      *
      * @return void
      */
@@ -595,362 +559,17 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     
     
     
-    protected $processedLoadCallback = false;
-    
-    /**
-     * Post-Process the data after the entity has been constructed by the entity manager.
-     * The event happens after the entity has been loaded from database or after a refresh call.
-     *
-     * Restrictions:
-     *     - no access to entity manager or unit of work apis
-     *     - no access to associations (not initialised yet)
-     *
-     * @see MU\EternizerModule\Entity\EntryEntity::postLoadCallback()
-     * @return boolean true if completed successfully else false.
-     *
-     * @throws RuntimeException Thrown if upload file base path retrieval fails
-     */
-    protected function performPostLoadCallback()
-    {
-        // echo 'loaded a record ...';
-        if ($this->processedLoadCallback) {
-            return true;
-        }
-    
-        $currentFunc = FormUtil::getPassedValue('func', 'index', 'GETPOST', FILTER_SANITIZE_STRING);
-        $serviceManager = ServiceUtil::getManager();
-        $requestStack = $serviceManager->get('request_stack');
-        $usesCsvOutput = $requestStack->getCurrentRequest()->getRequestFormat() == 'csv' ? true : false;
-        
-        $this['id'] = (int) ((isset($this['id']) && !empty($this['id'])) ? DataUtil::formatForDisplay($this['id']) : 0);
-        $this->formatTextualField('workflowState', $currentFunc, $usesCsvOutput, true);
-        $this->formatTextualField('ip', $currentFunc, $usesCsvOutput);
-        $this->formatTextualField('name', $currentFunc, $usesCsvOutput);
-        $this->formatTextualField('email', $currentFunc, $usesCsvOutput);
-        $this['homepage'] = ((isset($this['homepage']) && !empty($this['homepage'])) ? DataUtil::formatForDisplay($this['homepage']) : '');
-        $this->formatTextualField('location', $currentFunc, $usesCsvOutput);
-        $this->formatTextualField('text', $currentFunc, $usesCsvOutput);
-        $this->formatTextualField('notes', $currentFunc, $usesCsvOutput);
-        $this->formatTextualField('obj_status', $currentFunc, $usesCsvOutput);
-    
-        $this->prepareItemActions();
-    
-        $serviceManager = ServiceUtil::getManager();
-        $dispatcher = $serviceManager->get('event_dispatcher');
-    
-        // create the new FilterEntryEvent and dispatch it
-        $event = new FilterEntryEvent($this);
-        $dispatcher->dispatch(EternizerEvents::ENTRY_POST_LOAD, $event);
-    
-        $this->processedLoadCallback = true;
-    
-        return true;
-    }
-    
-    /**
-     * Formats a given textual field depending on it's actual kind of content.
-     *
-     * @param string  $fieldName     Name of field to be formatted.
-     * @param string  $currentFunc   Name of current controller action.
-     * @param string  $usesCsvOutput Whether the output is CSV or not (defaults to false).
-     * @param boolean $allowZero     Whether 0 values are allowed or not (defaults to false).
-     */
-    protected function formatTextualField($fieldName, $currentFunc, $usesCsvOutput = false, $allowZero = false)
-    {
-        if ($currentFunc == 'edit') {
-            // apply no changes when editing the content
-            return;
-        }
-    
-        if ($usesCsvOutput == 1) {
-            // apply no changes for CSV output
-            return;
-        }
-    
-        $string = '';
-        if (isset($this[$fieldName])) {
-            if (!empty($this[$fieldName]) || ($allowZero && $this[$fieldName] == 0)) {
-                $string = $this[$fieldName];
-                if ($this->containsHtml($string)) {
-                    $string = DataUtil::formatForDisplayHTML($string);
-                } else {
-                    $string = DataUtil::formatForDisplay($string);
-                    $string = nl2br($string);
-                }
-            }
-        }
-    
-        // workaround for ampersand problem (#692)
-        $string = str_replace('&amp;', '&', $string);
-    
-        $this[$fieldName] = $string;
-    }
-    
-    /**
-     * Checks whether any html tags are contained in the given string.
-     * See http://stackoverflow.com/questions/10778035/how-to-check-if-string-contents-have-any-html-in-it for implementation details.
-     *
-     * @param $string string The given input string.
-     *
-     * @return boolean Whether any html tags are found or not.
-     */
-    protected function containsHtml($string)
-    {
-        return preg_match("/<[^<]+>/", $string, $m) != 0;
-    }
-    
-    /**
-     * Pre-Process the data prior to an insert operation.
-     * The event happens before the entity managers persist operation is executed for this entity.
-     *
-     * Restrictions:
-     *     - no access to entity manager or unit of work apis
-     *     - no identifiers available if using an identity generator like sequences
-     *     - Doctrine won't recognize changes on relations which are done here
-     *       if this method is called by cascade persist
-     *     - no creation of other entities allowed
-     *
-     * @see MU\EternizerModule\Entity\EntryEntity::prePersistCallback()
-     * @return boolean true if completed successfully else false.
-     */
-    protected function performPrePersistCallback()
-    {
-        $serviceManager = ServiceUtil::getManager();
-        $dispatcher = $serviceManager->get('event_dispatcher');
-    
-        // create the new FilterEntryEvent and dispatch it
-        $event = new FilterEntryEvent($this);
-        $dispatcher->dispatch(EternizerEvents::ENTRY_PRE_PERSIST, $event);
-        if ($event->isPropagationStopped()) {
-            return false;
-        }
-    
-        return true;
-    }
-    
-    /**
-     * Post-Process the data after an insert operation.
-     * The event happens after the entity has been made persistant.
-     * Will be called after the database insert operations.
-     * The generated primary key values are available.
-     *
-     * Restrictions:
-     *     - no access to entity manager or unit of work apis
-     *
-     * @see MU\EternizerModule\Entity\EntryEntity::postPersistCallback()
-     * @return boolean true if completed successfully else false.
-     */
-    protected function performPostPersistCallback()
-    {
-        $serviceManager = ServiceUtil::getManager();
-        $objectId = $this->createCompositeIdentifier();
-        $logger = $serviceManager->get('logger');
-        $logger->debug('{app}: User {user} created the {entity} with id {id}.', array('app' => 'MUEternizerModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'entry', 'id' => $objectId));
-    
-        $dispatcher = $serviceManager->get('event_dispatcher');
-    
-        // create the new FilterEntryEvent and dispatch it
-        $event = new FilterEntryEvent($this);
-        $dispatcher->dispatch(EternizerEvents::ENTRY_POST_PERSIST, $event);
-    
-        return true;
-    }
-    
-    /**
-     * Pre-Process the data prior a delete operation.
-     * The event happens before the entity managers remove operation is executed for this entity.
-     *
-     * Restrictions:
-     *     - no access to entity manager or unit of work apis
-     *     - will not be called for a DQL DELETE statement
-     *
-     * @see MU\EternizerModule\Entity\EntryEntity::preRemoveCallback()
-     * @return boolean true if completed successfully else false.
-     *
-     * @throws RuntimeException Thrown if workflow deletion fails
-     */
-    protected function performPreRemoveCallback()
-    {
-        $serviceManager = ServiceUtil::getManager();
-        $dispatcher = $serviceManager->get('event_dispatcher');
-    
-        // create the new FilterEntryEvent and dispatch it
-        $event = new FilterEntryEvent($this);
-        $dispatcher->dispatch(EternizerEvents::ENTRY_PRE_REMOVE, $event);
-        if ($event->isPropagationStopped()) {
-            return false;
-        }
-    
-        // delete workflow for this entity
-        $serviceManager = ServiceUtil::getManager();
-        $workflowHelper = $serviceManager->get('mueternizermodule.workflow_helper');
-        $workflowHelper->normaliseWorkflowData($this);
-        $workflow = $this['__WORKFLOW__'];
-        if ($workflow['id'] > 0) {
-            $serviceManager = ServiceUtil::getManager();
-            $entityManager = $serviceManager->get('doctrine.entitymanager');
-            $result = true;
-            try {
-                $workflow = $entityManager->find('Zikula\Core\Doctrine\Entity\WorkflowEntity', $workflow['id']);
-                $entityManager->remove($workflow);
-                $entityManager->flush();
-            } catch (\Exception $e) {
-                $result = false;
-            }
-            if ($result === false) {
-                $dom = ZLanguage::getModuleDomain('MUEternizerModule');
-                $session = $serviceManager->get('session');
-                $session->getFlashBag()->add('error', __('Error! Could not remove stored workflow. Deletion has been aborted.', $dom));
-                return false;
-            }
-        }
-    
-        return true;
-    }
-    
-    /**
-     * Post-Process the data after a delete.
-     * The event happens after the entity has been deleted.
-     * Will be called after the database delete operations.
-     *
-     * Restrictions:
-     *     - no access to entity manager or unit of work apis
-     *     - will not be called for a DQL DELETE statement
-     *
-     * @see MU\EternizerModule\Entity\EntryEntity::postRemoveCallback()
-     * @return boolean true if completed successfully else false.
-     */
-    protected function performPostRemoveCallback()
-    {
-        $serviceManager = ServiceUtil::getManager();
-    
-        $objectId = $this->createCompositeIdentifier();
-    
-    
-        $logger = $serviceManager->get('logger');
-        $logger->debug('{app}: User {user} removed the {entity} with id {id}.', array('app' => 'MUEternizerModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'entry', 'id' => $objectId));
-    
-        $dispatcher = $serviceManager->get('event_dispatcher');
-    
-        // create the new FilterEntryEvent and dispatch it
-        $event = new FilterEntryEvent($this);
-        $dispatcher->dispatch(EternizerEvents::ENTRY_POST_REMOVE, $event);
-    
-        return true;
-    }
-    
-    /**
-     * Pre-Process the data prior to an update operation.
-     * The event happens before the database update operations for the entity data.
-     *
-     * Restrictions:
-     *     - no access to entity manager or unit of work apis
-     *     - will not be called for a DQL UPDATE statement
-     *     - changes on associations are not allowed and won't be recognized by flush
-     *     - changes on properties won't be recognized by flush as well
-     *     - no creation of other entities allowed
-     *
-     * @see MU\EternizerModule\Entity\EntryEntity::preUpdateCallback()
-     * @return boolean true if completed successfully else false.
-     */
-    protected function performPreUpdateCallback()
-    {
-        $serviceManager = ServiceUtil::getManager();
-        $dispatcher = $serviceManager->get('event_dispatcher');
-    
-        // create the new FilterEntryEvent and dispatch it
-        $event = new FilterEntryEvent($this);
-        $dispatcher->dispatch(EternizerEvents::ENTRY_PRE_UPDATE, $event);
-        if ($event->isPropagationStopped()) {
-            return false;
-        }
-    
-        return true;
-    }
-    
-    /**
-     * Post-Process the data after an update operation.
-     * The event happens after the database update operations for the entity data.
-     *
-     * Restrictions:
-     *     - no access to entity manager or unit of work apis
-     *     - will not be called for a DQL UPDATE statement
-     *
-     * @see MU\EternizerModule\Entity\EntryEntity::postUpdateCallback()
-     * @return boolean true if completed successfully else false.
-     */
-    protected function performPostUpdateCallback()
-    {
-        $serviceManager = ServiceUtil::getManager();
-        $objectId = $this->createCompositeIdentifier();
-        $logger = $serviceManager->get('logger');
-        $logger->debug('{app}: User {user} updated the {entity} with id {id}.', array('app' => 'MUEternizerModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'entry', 'id' => $objectId));
-    
-        $dispatcher = $serviceManager->get('event_dispatcher');
-    
-        // create the new FilterEntryEvent and dispatch it
-        $event = new FilterEntryEvent($this);
-        $dispatcher->dispatch(EternizerEvents::ENTRY_POST_UPDATE, $event);
-    
-        return true;
-    }
-    
-    /**
-     * Pre-Process the data prior to a save operation.
-     * This combines the PrePersist and PreUpdate events.
-     * For more information see corresponding callback handlers.
-     *
-     * @see MU\EternizerModule\Entity\EntryEntity::preSaveCallback()
-     * @return boolean true if completed successfully else false.
-     */
-    protected function performPreSaveCallback()
-    {
-        $serviceManager = ServiceUtil::getManager();
-        $dispatcher = $serviceManager->get('event_dispatcher');
-    
-        // create the new FilterEntryEvent and dispatch it
-        $event = new FilterEntryEvent($this);
-        $dispatcher->dispatch(EternizerEvents::ENTRY_PRE_SAVE, $event);
-        if ($event->isPropagationStopped()) {
-            return false;
-        }
-    
-        return true;
-    }
-    
-    /**
-     * Post-Process the data after a save operation.
-     * This combines the PostPersist and PostUpdate events.
-     * For more information see corresponding callback handlers.
-     *
-     * @see MU\EternizerModule\Entity\EntryEntity::postSaveCallback()
-     * @return boolean true if completed successfully else false.
-     */
-    protected function performPostSaveCallback()
-    {
-        $serviceManager = ServiceUtil::getManager();
-        $objectId = $this->createCompositeIdentifier();
-        $logger = $serviceManager->get('logger');
-        $logger->debug('{app}: User {user} saved the {entity} with id {id}.', array('app' => 'MUEternizerModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'entry', 'id' => $objectId));
-    
-        $dispatcher = $serviceManager->get('event_dispatcher');
-    
-        // create the new FilterEntryEvent and dispatch it
-        $event = new FilterEntryEvent($this);
-        $dispatcher->dispatch(EternizerEvents::ENTRY_POST_SAVE, $event);
-    
-        return true;
-    }
-    
     
     /**
      * Returns the formatted title conforming to the display pattern
      * specified for this entity.
+     *
+     * @return string The display title
      */
     public function getTitleFromDisplayPattern()
     {
         $serviceManager = ServiceUtil::getManager();
-        $listHelper = $serviceManager->get('mueternizermodule.listentries_helper');
+        $listHelper = $serviceManager->get('mu_eternizer_module.listentries_helper');
     
         $formattedTitle = ''
                 . $this->getIp();
@@ -962,14 +581,16 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     /**
      * Returns a list of possible choices for the workflowState list field.
      * This method is used for validation.
+     *
+     * @return array List of allowed choices
      */
     public static function getWorkflowStateAllowedValues()
     {
         $serviceManager = ServiceUtil::getManager();
-        $helper = $serviceManager->get('mueternizermodule.listentries_helper');
+        $helper = $serviceManager->get('mu_eternizer_module.listentries_helper');
         $listEntries = $helper->getWorkflowStateEntriesForEntry();
     
-        $allowedValues = array();
+        $allowedValues = ['initial'];
         foreach ($listEntries as $entry) {
             $allowedValues[] = $entry['value'];
         }
@@ -980,7 +601,7 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     /**
      * Sets/retrieves the workflow details.
      *
-     * @param boolean $forceLoading load the workflow record.
+     * @param boolean $forceLoading load the workflow record
      *
      * @throws RuntimeException Thrown if retrieving the workflow object fails
      */
@@ -993,25 +614,24 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
         $idColumn = 'id';
         
         $serviceManager = ServiceUtil::getManager();
-        $workflowHelper = $serviceManager->get('mueternizermodule.workflow_helper');
+        $workflowHelper = $serviceManager->get('mu_eternizer_module.workflow_helper');
         
         $schemaName = $workflowHelper->getWorkflowName($this['_objectType']);
-        $this['__WORKFLOW__'] = array(
+        $this['__WORKFLOW__'] = [
             'module' => 'MUEternizerModule',
             'state' => $this['workflowState'],
             'obj_table' => $this['_objectType'],
             'obj_idcolumn' => $idColumn,
             'obj_id' => $this[$idColumn],
-            'schemaname' => $schemaName);
+            'schemaname' => $schemaName
+        ];
         
         // load the real workflow only when required (e. g. when func is edit or delete)
-        if ((!in_array($currentFunc, array('index', 'view', 'display')) && empty($isReuse)) || $forceLoading) {
+        if ((!in_array($currentFunc, ['index', 'view', 'display']) && empty($isReuse)) || $forceLoading) {
             $result = Zikula_Workflow_Util::getWorkflowForObject($this, $this['_objectType'], $idColumn, 'MUEternizerModule');
             if (!$result) {
-                $dom = ZLanguage::getModuleDomain('MUEternizerModule');
-                $serviceManager = ServiceUtil::getManager();
-                $session = $serviceManager->get('session');
-                $session->getFlashBag()->add('error', __('Error! Could not load the associated workflow.', $dom));
+                $flashBag = $serviceManager->get('session')->getFlashBag();
+                $flashBag->add('error', $serviceManager->get('translator.default')->__('Error! Could not load the associated workflow.'));
             }
         }
         
@@ -1031,22 +651,23 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
         $this->setWorkflowState('initial');
     
         $serviceManager = ServiceUtil::getManager();
-        $workflowHelper = $serviceManager->get('mueternizermodule.workflow_helper');
+        $workflowHelper = $serviceManager->get('mu_eternizer_module.workflow_helper');
     
         $schemaName = $workflowHelper->getWorkflowName($this['_objectType']);
-        $this['__WORKFLOW__'] = array(
+        $this['__WORKFLOW__'] = [
             'module' => 'MUEternizerModule',
             'state' => $this['workflowState'],
             'obj_table' => $this['_objectType'],
             'obj_idcolumn' => 'id',
             'obj_id' => 0,
-            'schemaname' => $schemaName);
+            'schemaname' => $schemaName
+        ];
     }
     
     /**
      * Start validation and raise exception if invalid data is found.
      *
-     * @return void.
+     * @return boolean Whether everything is valid or not
      */
     public function validate()
     {
@@ -1064,10 +685,11 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
         $errors = $validator->validate($this);
     
         if (count($errors) > 0) {
-            $session = $serviceManager->get('session');
+            $flashBag = $serviceManager->get('session')->getFlashBag();
             foreach ($errors as $error) {
-                $session->getFlashBag()->add('error', $error->getMessage());
+                $flashBag->add('error', $error->getMessage());
             }
+    
             return false;
         }
     
@@ -1077,7 +699,7 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     /**
      * Return entity data in JSON format.
      *
-     * @return string JSON-encoded data.
+     * @return string JSON-encoded data
      */
     public function toJson()
     {
@@ -1085,121 +707,13 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Collect available actions for this entity.
-     */
-    protected function prepareItemActions()
-    {
-        if (!empty($this->_actions)) {
-            return;
-        }
-    
-        $currentLegacyControllerType = FormUtil::getPassedValue('lct', 'user', 'GETPOST', FILTER_SANITIZE_STRING);
-        $currentFunc = FormUtil::getPassedValue('func', 'index', 'GETPOST', FILTER_SANITIZE_STRING);
-        $component = 'MUEternizerModule:Entry:';
-        $instance = $this->id . '::';
-        $dom = ZLanguage::getModuleDomain('MUEternizerModule');
-        $serviceManager = ServiceUtil::getManager();
-        $permissionHelper = $serviceManager->get('zikula_permissions_module.api.permission');
-        if ($currentLegacyControllerType == 'admin') {
-            if (in_array($currentFunc, array('index', 'view'))) {
-                $this->_actions[] = array(
-                    'url' => array('type' => 'entry', 'func' => 'display', 'arguments' => array('id' => $this['id'])),
-                    'icon' => 'search-plus',
-                    'linkTitle' => __('Open preview page', $dom),
-                    'linkText' => __('Preview', $dom)
-                );
-                $this->_actions[] = array(
-                    'url' => array('type' => 'entry', 'func' => 'admindisplay', 'arguments' => array('id' => $this['id'])),
-                    'icon' => 'eye',
-                    'linkTitle' => str_replace('"', '', $this->getTitleFromDisplayPattern()),
-                    'linkText' => __('Details', $dom)
-                );
-            }
-            if (in_array($currentFunc, array('index', 'view', 'display'))) {
-                if ($permissionHelper->hasPermission($component, $instance, ACCESS_EDIT)) {
-                    $this->_actions[] = array(
-                        'url' => array('type' => 'entry', 'func' => 'adminedit', 'arguments' => array('id' => $this['id'])),
-                        'icon' => 'pencil-square-o',
-                        'linkTitle' => __('Edit', $dom),
-                        'linkText' => __('Edit', $dom)
-                    );
-                    $this->_actions[] = array(
-                        'url' => array('type' => 'entry', 'func' => 'adminedit', 'arguments' => array('astemplate' => $this['id'])),
-                        'icon' => 'files-o',
-                        'linkTitle' => __('Reuse for new item', $dom),
-                        'linkText' => __('Reuse', $dom)
-                    );
-                }
-                if ($permissionHelper->hasPermission($component, $instance, ACCESS_DELETE)) {
-                    $this->_actions[] = array(
-                        'url' => array('type' => 'entry', 'func' => 'admindelete', 'arguments' => array('id' => $this['id'])),
-                        'icon' => 'trash-o',
-                        'linkTitle' => __('Delete', $dom),
-                        'linkText' => __('Delete', $dom)
-                    );
-                }
-            }
-            if ($currentFunc == 'display') {
-                $this->_actions[] = array(
-                    'url' => array('type' => 'entry', 'func' => 'adminview', 'arguments' => array()),
-                    'icon' => 'reply',
-                    'linkTitle' => __('Back to overview', $dom),
-                    'linkText' => __('Back to overview', $dom)
-                );
-            }
-        }
-        if ($currentLegacyControllerType == 'user') {
-            if (in_array($currentFunc, array('index', 'view'))) {
-                $this->_actions[] = array(
-                    'url' => array('type' => 'entry', 'func' => 'display', 'arguments' => array('id' => $this['id'])),
-                    'icon' => 'eye',
-                    'linkTitle' => str_replace('"', '', $this->getTitleFromDisplayPattern()),
-                    'linkText' => __('Details', $dom)
-                );
-            }
-            if (in_array($currentFunc, array('index', 'view', 'display'))) {
-                if ($permissionHelper->hasPermission($component, $instance, ACCESS_EDIT)) {
-                    $this->_actions[] = array(
-                        'url' => array('type' => 'entry', 'func' => 'edit', 'arguments' => array('id' => $this['id'])),
-                        'icon' => 'pencil-square-o',
-                        'linkTitle' => __('Edit', $dom),
-                        'linkText' => __('Edit', $dom)
-                    );
-                    $this->_actions[] = array(
-                        'url' => array('type' => 'entry', 'func' => 'edit', 'arguments' => array('astemplate' => $this['id'])),
-                        'icon' => 'files-o',
-                        'linkTitle' => __('Reuse for new item', $dom),
-                        'linkText' => __('Reuse', $dom)
-                    );
-                }
-                if ($permissionHelper->hasPermission($component, $instance, ACCESS_DELETE)) {
-                    $this->_actions[] = array(
-                        'url' => array('type' => 'entry', 'func' => 'delete', 'arguments' => array('id' => $this['id'])),
-                        'icon' => 'trash-o',
-                        'linkTitle' => __('Delete', $dom),
-                        'linkText' => __('Delete', $dom)
-                    );
-                }
-            }
-            if ($currentFunc == 'display') {
-                $this->_actions[] = array(
-                    'url' => array('type' => 'entry', 'func' => 'view', 'arguments' => array()),
-                    'icon' => 'reply',
-                    'linkTitle' => __('Back to overview', $dom),
-                    'linkText' => __('Back to overview', $dom)
-                );
-            }
-        }
-    }
-    
-    /**
      * Creates url arguments array for easy creation of display urls.
      *
-     * @return Array The resulting arguments list.
+     * @return array The resulting arguments list
      */
     public function createUrlArgs()
     {
-        $args = array();
+        $args = [];
     
         $args['id'] = $this['id'];
     
@@ -1213,7 +727,7 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     /**
      * Create concatenated identifier string (for composite keys).
      *
-     * @return String concatenated identifiers.
+     * @return String concatenated identifiers
      */
     public function createCompositeIdentifier()
     {
@@ -1245,22 +759,24 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     /**
      * Returns an array of all related objects that need to be persisted after clone.
      * 
-     * @param array $objects The objects are added to this array. Default: array()
+     * @param array $objects The objects are added to this array. Default: []
      * 
-     * @return array of entity objects.
+     * @return array of entity objects
      */
-    public function getRelatedObjectsToPersist(&$objects = array()) 
+    public function getRelatedObjectsToPersist(&$objects = []) 
     {
-        return array();
+        return [];
     }
     
     /**
      * ToString interceptor implementation.
      * This method is useful for debugging purposes.
+     *
+     * @return string The output string for this entity
      */
     public function __toString()
     {
-        return $this->getId();
+        return 'Entry ' . $this->createCompositeIdentifier();
     }
     
     /**
@@ -1272,7 +788,6 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
      * (1) http://docs.doctrine-project.org/en/latest/cookbook/implementing-wakeup-or-clone.html
      * (2) http://www.php.net/manual/en/language.oop5.cloning.php
      * (3) http://stackoverflow.com/questions/185934/how-do-i-create-a-copy-of-an-object-in-php
-     * (4) http://www.pantovic.com/article/26/doctrine2-entity-cloning
      */
     public function __clone()
     {
@@ -1289,7 +804,6 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
             $this->setUpdatedDate(null);
             $this->setUpdatedUserId(null);
     
-            
         }
         // otherwise do nothing, do NOT throw an exception!
     }

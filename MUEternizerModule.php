@@ -12,12 +12,12 @@
 
 namespace MU\EternizerModule;
 
-use MU\EternizerModule\Base\MUEternizerModule as BaseMUEternizerModule;
+use MU\EternizerModule\Base\AbstractMUEternizerModule;
 
 /**
  * Module implementation class.
  */
-class MUEternizerModule extends BaseMUEternizerModule
+class MUEternizerModule extends AbstractMUEternizerModule
 {
     // custom enhancements can go here
 }

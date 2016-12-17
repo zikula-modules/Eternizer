@@ -1,5 +1,4 @@
-INSTALLATION INSTRUCTIONS
-=========================
+# INSTALLATION INSTRUCTIONS
 
 1) Copy MUEternizerModule to your modules folder.
 2) Initialize and activate MUEternizerModule in the modules administration.

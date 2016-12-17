@@ -12,16 +12,18 @@
 
 namespace MU\EternizerModule\Listener;
 
-use MU\EternizerModule\Listener\Base\ThemeListener as BaseThemeListener;
+use MU\EternizerModule\Listener\Base\AbstractThemeListener;
+use Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent;
+use Zikula\ThemeModule\Bridge\Event\TwigPreRenderEvent;
 use Zikula\Core\Event\GenericEvent;
 
 /**
  * Event handler implementation class for theme-related events.
  */
-class ThemeListener extends BaseThemeListener
+class ThemeListener extends AbstractThemeListener
 {
     /**
-     * Makes our handlers known to the event system.
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
@@ -29,17 +31,11 @@ class ThemeListener extends BaseThemeListener
     }
     
     /**
-     * Listener for the `theme.preinit` event.
-     *
-     * Occurs on the startup of the `Zikula_View_Theme#__construct()`.
-     * The subject is the Zikula_View_Theme instance.
-     * Is useful to setup a customized theme configuration or cache_id.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
-    public function preInit(GenericEvent $event)
+    public function smartyPreInit(GenericEvent $event)
     {
-        parent::preInit($event);
+        parent::smartyPreInit($event);
     
         // you can access general data available in the event
         
@@ -62,16 +58,11 @@ class ThemeListener extends BaseThemeListener
     }
     
     /**
-     * Listener for the `theme.init` event.
-     *
-     * Occurs just before `Zikula_View_Theme#__construct()` finishes.
-     * The subject is the Zikula_View_Theme instance.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
-    public function init(GenericEvent $event)
+    public function smartyInit(GenericEvent $event)
     {
-        parent::init($event);
+        parent::smartyInit($event);
     
         // you can access general data available in the event
         
@@ -94,16 +85,11 @@ class ThemeListener extends BaseThemeListener
     }
     
     /**
-     * Listener for the `theme.load_config` event.
-     *
-     * Runs just before `Theme#load_config()` completed.
-     * Subject is the Theme instance.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
-    public function loadConfig(GenericEvent $event)
+    public function smartyLoadConfig(GenericEvent $event)
     {
-        parent::loadConfig($event);
+        parent::smartyLoadConfig($event);
     
         // you can access general data available in the event
         
@@ -126,17 +112,11 @@ class ThemeListener extends BaseThemeListener
     }
     
     /**
-     * Listener for the `theme.prefetch` event.
-     *
-     * Occurs in `Theme::themefooter()` just after getting the `$maincontent`.
-     * The event subject is `$this` (Theme instance) and has $maincontent as the event data
-     * which you can modify with `$event->setData()` in the event handler.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
-    public function preFetch(GenericEvent $event)
+    public function smartyPreFetch(GenericEvent $event)
     {
-        parent::preFetch($event);
+        parent::smartyPreFetch($event);
     
         // you can access general data available in the event
         
@@ -159,17 +139,11 @@ class ThemeListener extends BaseThemeListener
     }
     
     /**
-     * Listener for the `theme.postfetch` event.
-     *
-     * Occurs in `Theme::themefooter()` just after rendering the theme.
-     * The event subject is `$this` (Theme instance) and the event data is the rendered
-     * output which you can modify with `$event->setData()` in the event handler.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
-    public function postFetch(GenericEvent $event)
+    public function smartyPostFetch(GenericEvent $event)
     {
-        parent::postFetch($event);
+        parent::smartyPostFetch($event);
     
         // you can access general data available in the event
         
@@ -189,5 +163,21 @@ class ThemeListener extends BaseThemeListener
         
         // the currently handled request
         // $request = $event->getRequest();
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function twigPreRender(TwigPreRenderEvent $event)
+    {
+        parent::twigPreRender($event);
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function twigPostRender(TwigPostRenderEvent $event)
+    {
+        parent::twigPostRender($event);
     }
 }

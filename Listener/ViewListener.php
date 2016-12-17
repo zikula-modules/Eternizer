@@ -12,16 +12,16 @@
 
 namespace MU\EternizerModule\Listener;
 
-use MU\EternizerModule\Listener\Base\ViewListener as BaseViewListener;
+use MU\EternizerModule\Listener\Base\AbstractViewListener;
 use Zikula\Core\Event\GenericEvent;
 
 /**
  * Event handler implementation class for view-related events.
  */
-class ViewListener extends BaseViewListener
+class ViewListener extends AbstractViewListener
 {
     /**
-     * Makes our handlers known to the event system.
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
@@ -29,12 +29,7 @@ class ViewListener extends BaseViewListener
     }
     
     /**
-     * Listener for the `view.init` event.
-     *
-     * Occurs just before `Zikula_View#__construct()` finishes.
-     * The subject is the Zikula_View instance.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function init(GenericEvent $event)
     {
@@ -61,14 +56,7 @@ class ViewListener extends BaseViewListener
     }
     
     /**
-     * Listener for the `view.postfetch` event.
-     *
-     * Filter of result of a fetch.
-     * Receives `Zikula_View` instance as subject,
-     * args are `array('template' => $template)`,
-     * $data was the result of the fetch to be filtered.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function postFetch(GenericEvent $event)
     {

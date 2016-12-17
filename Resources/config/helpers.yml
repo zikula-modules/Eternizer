@@ -1,31 +1,29 @@
 services:
-    # Utility classes
-    mu_eternizer_module.model_helper:
-        class: "MU\\EternizerModule\\Helper\\ModelHelper"
-        arguments:
-            serviceManager: "@service_container"
-    
+    # Helper classes
     mu_eternizer_module.controller_helper:
-        class: "MU\\EternizerModule\\Helper\\ControllerHelper"
-        arguments:
-            serviceManager: "@service_container"
-            translator: "@translator"
-            session: "@session"
-            logger: "@logger"
+        class: MU\EternizerModule\Helper\ControllerHelper
+        arguments: ["@service_container", "@translator.default", "@session", "@logger"]
     
-    mu_eternizer_module.view_helper:
-        class: "MU\\EternizerModule\\Helper\\ViewHelper"
-        arguments:
-            serviceManager: "@service_container"
-            translator: "@translator"
-    
-    mu_eternizer_module.workflow_helper:
-        class: "MU\\EternizerModule\\Helper\\WorkflowHelper"
-        arguments:
-            serviceManager: "@service_container"
-            translator: "@translator"
+    mu_eternizer_module.hook_helper:
+        class: MU\EternizerModule\Helper\HookHelper
+        arguments: ["@hook_dispatcher"]
     
     mu_eternizer_module.listentries_helper:
-        class: "MU\\EternizerModule\\Helper\\ListEntriesHelper"
-        arguments:
-            translator: "@translator"
+        class: MU\EternizerModule\Helper\ListEntriesHelper
+        arguments: ["@translator.default"]
+    
+    mu_eternizer_module.model_helper:
+        class: MU\EternizerModule\Helper\ModelHelper
+        arguments: ["@service_container"]
+    
+    mu_eternizer_module.selection_helper:
+        class: MU\EternizerModule\Helper\SelectionHelper
+        arguments: ["@service_container", "@doctrine.orm.entity_manager", "@translator.default", "@mu_eternizer_module.controller_helper"]
+    
+    mu_eternizer_module.view_helper:
+        class: MU\EternizerModule\Helper\ViewHelper
+        arguments: ["@service_container", "@translator.default"]
+    
+    mu_eternizer_module.workflow_helper:
+        class: MU\EternizerModule\Helper\WorkflowHelper
+        arguments: ["@service_container", "@translator.default"]

@@ -12,148 +12,25 @@
 
 namespace MU\EternizerModule\Entity;
 
-use MU\EternizerModule\Entity\Base\AbstractEntryEntity as BaseAbstractEntryEntity;
+use MU\EternizerModule\Entity\Base\AbstractEntryEntity as BaseEntity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
 use Symfony\Component\Validator\Constraints as Assert;
 
-use ServiceUtil;
-
 /**
  * Entity class that defines the entity structure and behaviours.
  *
  * This is the concrete entity class for entry entities.
- * @ORM\Entity(repositoryClass="\MU\EternizerModule\Entity\Repository\Entry")
+ * @ORM\Entity(repositoryClass="\MU\EternizerModule\Entity\Repository\EntryRepository")
  * @ORM\Table(name="mu_eternizer_entry",
  *     indexes={
-*         @ORM\Index(name="workflowstateindex", columns={"workflowState"})
+ *         @ORM\Index(name="workflowstateindex", columns={"workflowState"})
  *     }
  * )
-* @ORM\HasLifecycleCallbacks
  */
-class EntryEntity extends BaseAbstractEntryEntity
+class EntryEntity extends BaseEntity
 {
     // feel free to add your own methods here
-
-    /**
-     * Post-Process the data after the entity has been constructed by the entity manager.
-     *
-     * @ORM\PostLoad
-     * @see MU\EternizerModule\Entity\EntryEntity::performPostLoadCallback()
-     * @return void.
-     */
-    public function postLoadCallback()
-    {
-        $this->performPostLoadCallback();
-    }
-    
-    /**
-     * Pre-Process the data prior to an insert operation.
-     *
-     * @ORM\PrePersist
-     * @see MU\EternizerModule\Entity\EntryEntity::performPrePersistCallback()
-     * @return void.
-     */
-    public function prePersistCallback()
-    {
-    	$serviceManager = ServiceUtil::getManager();
-    	$settingsHelper = $serviceManager->get('mueternizermodule.settings_helper');
-        $settingsHelper->handleModvarsPreSave();
-        $this->performPrePersistCallback();
-    }
-    
-    /**
-     * Post-Process the data after an insert operation.
-     *
-     * @ORM\PostPersist
-     * @see MU\EternizerModule\Entity\EntryEntity::performPostPersistCallback()
-     * @return void.
-     */
-    public function postPersistCallback()
-    {
-        $args['id'] = $this->getId();
-        $args['text'] = $this->getText();
-        
-    	$serviceManager = ServiceUtil::getManager();
-    	$settingsHelper = $serviceManager->get('mueternizermodule.settings_helper');
-
-        $settingsHelper->handleModvarsPostPersist($args);
-        $this->performPostPersistCallback();
-    }
-    
-    /**
-     * Pre-Process the data prior a delete operation.
-     *
-     * @ORM\PreRemove
-     * @see MU\EternizerModule\Entity\EntryEntity::performPreRemoveCallback()
-     * @return void.
-     */
-    public function preRemoveCallback()
-    {
-        $this->performPreRemoveCallback();
-    }
-    
-    /**
-     * Post-Process the data after a delete.
-     *
-     * @ORM\PostRemove
-     * @see MU\EternizerModule\Entity\EntryEntity::performPostRemoveCallback()
-     * @return void
-     */
-    public function postRemoveCallback()
-    {
-        $this->performPostRemoveCallback();
-    }
-    
-    /**
-     * Pre-Process the data prior to an update operation.
-     *
-     * @ORM\PreUpdate
-     * @see MU\EternizerModule\Entity\EntryEntity::performPreUpdateCallback()
-     * @return void.
-     */
-    public function preUpdateCallback()
-    {
-        $this->performPreUpdateCallback();
-    }
-    
-    /**
-     * Post-Process the data after an update operation.
-     *
-     * @ORM\PostUpdate
-     * @see MU\EternizerModule\Entity\EntryEntity::performPostUpdateCallback()
-     * @return void.
-     */
-    public function postUpdateCallback()
-    {
-        $this->performPostUpdateCallback();
-    }
-    
-    /**
-     * Pre-Process the data prior to a save operation.
-     *
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     * @see MU\EternizerModule\Entity\EntryEntity::performPreSaveCallback()
-     * @return void.
-     */
-    public function preSaveCallback()
-    {
-        $this->performPreSaveCallback();
-    }
-    
-    /**
-     * Post-Process the data after a save operation.
-     *
-     * @ORM\PostPersist
-     * @ORM\PostUpdate
-     * @see MU\EternizerModule\Entity\EntryEntity::performPostSaveCallback()
-     * @return void.
-     */
-    public function postSaveCallback()
-    {
-        $this->performPostSaveCallback();
-    }
 }

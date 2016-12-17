@@ -1,0 +1,9 @@
+{# purpose of this template: entries view xml view #}
+<?xml version="1.0" encoding="{{ pageGetVar('meta.charset') }}" ?>
+<entries>
+{% for entry in items %}
+    {{ include('@MUEternizerModule/Entry/include.xml.twig') }}
+{% else %}
+    <noEntry />
+{% endfor %}
+</entries>

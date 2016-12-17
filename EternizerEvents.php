@@ -12,12 +12,12 @@
 
 namespace MU\EternizerModule;
 
-use MU\EternizerModule\Base\EternizerEvents as BaseEternizerEvents;
+use MU\EternizerModule\Base\AbstractEternizerEvents;
 
 /**
  * Events definition implementation class.
  */
-class EternizerEvents extends BaseEternizerEvents
+class EternizerEvents extends AbstractEternizerEvents
 {
     // feel free to extend the events definition here
 }

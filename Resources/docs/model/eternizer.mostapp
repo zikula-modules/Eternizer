@@ -1,131 +1,113 @@
-application Eternizer {
-  vendor MU
+application "Eternizer" {
+  vendor "MU"
 	author "Michael Ueberschaer"
 	email "kontakt@webdesign-in-bremen.com"
 	url "http://www.webdesign-in-bremen.com"
-	version "1.1.4"
-	prefix eternizer
+	version "1.4.0"
+	prefix "eternizer"
   generatorSettings {
-		settingsContainer Einstellungen
-		targetCoreVersion ZKPRE14
-		generateOnlyBaseClasses false
-		generatePoweredByBacklinksIntoFooterTemplates false
+		settingsContainer "Einstellungen"
+		targetCoreVersion ZK14
+		generateNewsletterPlugin false generateTagSupport false generatePoweredByBacklinksIntoFooterTemplates false
 		generateTests false
 		writeModelToDocs true
-		skipFiles "
-                    CHANGELOG.md,
-                    README.md
-               "
-               markFiles "
-               EternizerModuleInstaller.php,
-                   Api/UserApi.php,
-                   Api/SelectionApi.php,
-                   Controller/EntryController.php,
-                   Entity/EntryEntity.php,
-                   Entity/Repository/Entry.php,
-                   Form/Handler/Entry/EditHandler.php,
-                   Resources/public/css/style.css,
-                   Resources/public/images/admin.png,         
-                   Resources/views/Entry/edit.tpl,
-                   Resources/views/Entry/view.tpl,
-                   Util/ControllerUtil.php,
-                   Util/ViewUtil.php
-               "
+		skipFiles "CHANGELOG.md,
+               README.md"
+               markFiles ""
 	}
 			entities {
-				entity entry leading {
-					nameMultiple entries
-                                        displayPattern "#ip#"
+				entity "entry" leading {
+					nameMultiple "entries"
+          displayPattern "#ip#"
 					fields {
-						string ip nullable {
+						string "ip" nullable {
 							mandatory false
 							length 15
 						},
-						string name {
+						string "name" {
 							mandatory false
 							length 100
 						},
-						email ^email {
+						email "email" {
 							mandatory false
 							length 100
 						},
-						url homepage {
+						url "homepage" {
 							mandatory false
 						},
-						string location {
+						string "location" {
 							mandatory false
 							length 100
 						},
-						text ^text,
-						text notes nullable {
+						text "text",
+						text "notes" nullable {
 							defaultValue ""
 							mandatory false
 						},
-						string obj_status {
-							defaultValue A
+						string "obj_status" {
 							length 1
 						}
 					}
 					actions {
-                	                     mainAction Main,
-                                             viewAction View,
-                                             displayAction Display,
-                                             editAction Edit,
-                                             deleteAction Delete
-                                        }
+                mainAction "Main",
+                viewAction "View",                             
+                displayAction "Display",
+               editAction "Edit",
+               deleteAction "Delete"                             
+                                        }	                     
 				}
 			}
 			variables {
-				varContainer Variables {
+				varContainer "Variables" {
 					vars {
-						intVar pagesize {
+						intVar "pagesize" {
 							value "10"
 						},
-						textVar mail,
-						listVar order {
+						textVar "mail" { value "\"\"" } ,
+						listVar "order" {
 							items {
-								listVarItem default descending,
-								listVarItem ascending
+								listVarItem default "descending",
+								listVarItem "ascending"
 							}
 						},
-						listVar moderate {
+						listVar "moderate" {
 							items {
-								listVarItem nothing,
-								listVarItem default guests,
-								listVarItem all
+								listVarItem "nothing",
+								listVarItem default "guests",
+								listVarItem "all"
 							}
 						},
-						listVar formposition {
+						listVar "formposition" {
 							value ""
 							items {
-								listVarItem above,
-								listVarItem default below,
-								listVarItem menue
+								listVarItem "above",
+								listVarItem default "below",
+								listVarItem "menue"
 							}
 						},
-						boolVar ipsave,
-						boolVar editentries,
-						intVar period {
+						boolVar "ipsave" { value "0" } ,
+						boolVar "editentries" { value "0" } ,
+						intVar "period" {
 							documentation "Here we can decide how long a user may edit his entry; input of hours"
-						},
-						boolVar simplecaptcha
-					}
+						value "" } ,
+						boolVar "simplecaptcha"
+					{ value "0" } }
 				}
 			}
 			controllers {
-				adminController Admin {
+				adminController "Admin" {
 					actions {
-						mainAction Main
+						mainAction "Main"
 					}
 				},
-				userController User {
+				userController "User" {
 					actions {
-						mainAction Main
+						mainAction "Main"
 					}
 				},
-				ajaxController Ajax {
+				ajaxController "Ajax" {
 					actions {
-						mainAction Main
+						mainAction "Main"
 					}
 				}
 			}

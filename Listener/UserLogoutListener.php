@@ -12,16 +12,16 @@
 
 namespace MU\EternizerModule\Listener;
 
-use MU\EternizerModule\Listener\Base\UserLogoutListener as BaseUserLogoutListener;
+use MU\EternizerModule\Listener\Base\AbstractUserLogoutListener;
 use Zikula\Core\Event\GenericEvent;
 
 /**
  * Event handler implementation class for user logout events.
  */
-class UserLogoutListener extends BaseUserLogoutListener
+class UserLogoutListener extends AbstractUserLogoutListener
 {
     /**
-     * Makes our handlers known to the event system.
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
@@ -29,15 +29,7 @@ class UserLogoutListener extends BaseUserLogoutListener
     }
     
     /**
-     * Listener for the `module.users.ui.logout.succeeded` event.
-     *
-     * Occurs right after a successful logout.
-     * All handlers are notified.
-     * The event's subject contains the user's user record.
-     * Args contain array of `array('authentication_method' => $authenticationMethod,
-     *                              'uid'                   => $uid));`
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function succeeded(GenericEvent $event)
     {

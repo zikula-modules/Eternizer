@@ -12,13 +12,13 @@
 
 namespace MU\EternizerModule\Form\Handler\Common;
 
-use MU\EternizerModule\Form\Handler\Common\Base\EditHandler as BaseEditHandler;
+use MU\EternizerModule\Form\Handler\Common\Base\AbstractEditHandler;
 
 /**
  * This handler class handles the page events of editing forms.
  * It collects common functionality required by different object types.
  */
-class EditHandler extends BaseEditHandler
+abstract class EditHandler extends AbstractEditHandler
 {
     // feel free to extend the base handler class here
 }

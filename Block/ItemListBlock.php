@@ -12,12 +12,12 @@
 
 namespace MU\EternizerModule\Block;
 
-use MU\EternizerModule\Block\Base\ItemListBlock as BaseItemListBlock;
+use MU\EternizerModule\Block\Base\AbstractItemListBlock;
 
 /**
  * Generic item list block implementation class.
  */
-class ItemListBlock extends BaseItemListBlock
+class ItemListBlock extends AbstractItemListBlock
 {
     // feel free to extend the item list block here
 }

@@ -12,13 +12,13 @@
 
 namespace MU\EternizerModule\Listener;
 
-use MU\EternizerModule\Listener\Base\ModuleDispatchListener as BaseModuleDispatchListener;
+use MU\EternizerModule\Listener\Base\AbstractModuleDispatchListener;
 use Zikula\Core\Event\GenericEvent;
 
 /**
  * Event handler implementation class for dispatching modules.
  */
-class ModuleDispatchListener extends BaseModuleDispatchListener
+class ModuleDispatchListener extends AbstractModuleDispatchListener
 {
     /**
      * Makes our handlers known to the event system.
@@ -29,12 +29,7 @@ class ModuleDispatchListener extends BaseModuleDispatchListener
     }
     
     /**
-     * Listener for the `module_dispatch.postloadgeneric` event.
-     *
-     * Called after a module api or controller has been loaded.
-     * Receives the args `array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api)`.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function postLoadGeneric(GenericEvent $event)
     {
@@ -61,18 +56,7 @@ class ModuleDispatchListener extends BaseModuleDispatchListener
     }
     
     /**
-     * Listener for the `module_dispatch.preexecute` event.
-     *
-     * Occurs in `ModUtil::exec()` before function call with the following args:
-     *     `array('modname' => $modname,
-     *            'modfunc' => $modfunc,
-     *            'args' => $args,
-     *            'modinfo' => $modinfo,
-     *            'type' => $type,
-     *            'api' => $api)`
-     * .
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function preExecute(GenericEvent $event)
     {
@@ -99,20 +83,7 @@ class ModuleDispatchListener extends BaseModuleDispatchListener
     }
     
     /**
-     * Listener for the `module_dispatch.postexecute` event.
-     *
-     * Occurs in `ModUtil::exec()` after function call with the following args:
-     *     `array('modname' => $modname,
-     *            'modfunc' => $modfunc,
-     *            'args' => $args,
-     *            'modinfo' => $modinfo,
-     *            'type' => $type,
-     *            'api' => $api)`
-     * .
-     * Receives the modules output with `$event->getData();`.
-     * Can modify this output with `$event->setData($data);`.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function postExecute(GenericEvent $event)
     {
@@ -139,15 +110,7 @@ class ModuleDispatchListener extends BaseModuleDispatchListener
     }
     
     /**
-     * Listener for the `module_dispatch.custom_classname` event.
-     *
-     * In order to override the classname calculated in `ModUtil::exec()`.
-     * In order to override a pre-existing controller/api method, use this event type to override the class name that is loaded.
-     * This allows to override the methods using inheritance.
-     * Receives no subject, args of `array('modname' => $modname, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api)`
-     * and 'event data' of `$className`. This can be altered by setting `$event->setData()` followed by `$event->stopPropagation()`.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function customClassname(GenericEvent $event)
     {
@@ -174,20 +137,15 @@ class ModuleDispatchListener extends BaseModuleDispatchListener
     }
     
     /**
-     * Listener for the `module_dispatch.service_links` event.
-     *
-     * Occurs when building admin menu items.
-     * Adds sublinks to a Services menu that is appended to all modules if populated.
-     * Triggered by module_dispatch.postexecute in bootstrap.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function serviceLinks(GenericEvent $event)
     {
         parent::customClassName($event);
     
         // Format data like so:
-        // $event->data[] = array('url' => ModUtil::url('MUEternizerModule', 'user', 'index'), 'text' => __('Link Text'));
+        // $serviceManager = \ServiceUtil::getManager();
+        // $event->data[] = ['url' => $serviceManager->get('router')->generate('mueternizermodule_user_index'), 'text' => $serviceManager->get('translator.default')->__('Link text')];
     
         // you can access general data available in the event
         

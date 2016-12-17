@@ -12,12 +12,12 @@
 
 namespace MU\EternizerModule\Helper;
 
-use MU\EternizerModule\Helper\Base\ViewHelper as BaseViewHelper;
+use MU\EternizerModule\Helper\Base\AbstractViewHelper;
 
 /**
- * Utility implementation class for view helper methods.
+ * Helper implementation class for view layer methods.
  */
-class ViewHelper extends BaseViewHelper
+class ViewHelper extends AbstractViewHelper
 {
     // feel free to add your own convenience methods here
 }

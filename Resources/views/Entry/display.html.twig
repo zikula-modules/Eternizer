@@ -1,0 +1,88 @@
+{# purpose of this template: entries display view #}
+{% extends routeArea == 'admin' ? 'MUEternizerModule::adminBase.html.twig' : 'MUEternizerModule::base.html.twig' %}
+{% block pageTitle %}{{ entry.getTitleFromDisplayPattern()|default(__('Entry')) }}{% endblock %}
+{% block title %}
+    {% set templateTitle = entry.getTitleFromDisplayPattern()|default(__('Entry')) %}
+    {{ templateTitle|notifyFilters('mueternizermodule.filter_hooks.entries.filter') }}
+    {% set actionLinks = mueternizermodule_actions(entity=entry, area=routeArea, context='display') %}
+    {% if actionLinks|length > 0 %}
+        <div class="dropdown">
+            <a id="itemActions{{ entry.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
+            
+            <ul class="dropdown-menu" role="menu" aria-labelledby="itemActions{{ entry.id }}DropDownToggle">
+                {% for option in actionLinks %}
+                    <li role="presentation"><a href="{{ option.url }}" title="{{ option.linkTitle|e('html_attr') }}" role="menuitem" tabindex="-1" class="fa fa-{{ option.icon }}">{{ option.linkText }}</a></li>
+                    
+                {% endfor %}
+            </ul>
+        </div>
+        <script type="text/javascript">
+        /* <![CDATA[ */
+            ( function($) {
+                $(document).ready(function() {
+                    $('.dropdown-toggle').dropdown();
+                    $('a.fa-zoom-in').attr('target', '_blank');
+                });
+            })(jQuery);
+        /* ]]> */
+        </script>
+    {% endif %}
+{% endblock %}
+{% block admin_page_icon 'eye' %}
+{% block content %}
+    <div class="mueternizermodule-entry mueternizermodule-display">
+
+
+    <dl>
+        <dt>{{ __('Ip') }}</dt>
+        <dd>{{ entry.ip }}</dd>
+        <dt>{{ __('Name') }}</dt>
+        <dd>{{ entry.name }}</dd>
+        <dt>{{ __('Email') }}</dt>
+        <dd>{% if entry.email is not empty %}
+        {% if app.request.query.get('theme') != 'ZikulaPrinterTheme' %}
+        <a href="mailto:{{ entry.email|protectMail }}" title="{{ __('Send an email') }}" class="fa fa-envelope"></a>
+        {% else %}
+          {{ entry.email|protectMail }}
+        {% endif %}
+        {% else %}&nbsp;{% endif %}
+        </dd>
+        <dt>{{ __('Homepage') }}</dt>
+        <dd>{% if entry.homepage is not empty %}
+        {% if app.request.query.get('theme') != 'ZikulaPrinterTheme' %}
+        <a href="{{ entry.homepage }}" title="{{ __('Visit this page') }}" class="fa fa-external-link-square"></a>
+        {% else %}
+          {{ entry.homepage }}
+        {% endif %}
+        {% else %}&nbsp;{% endif %}
+        </dd>
+        <dt>{{ __('Location') }}</dt>
+        <dd>{{ entry.location }}</dd>
+        <dt>{{ __('Text') }}</dt>
+        <dd>{{ entry.text|safeHtml }}</dd>
+        <dt>{{ __('Notes') }}</dt>
+        <dd>{{ entry.notes|safeHtml }}</dd>
+        <dt>{{ __('Obj_status') }}</dt>
+        <dd>{{ entry.obj_status }}</dd>
+        
+    </dl>
+    {{ include('@MUEternizerModule/Helper/includeStandardFieldsDisplay.html.twig', { obj: entry }) }}
+
+    {% if app.request.query.get('theme') != 'ZikulaPrinterTheme' %}
+        {# include display hooks #}
+        {{ block('display_hooks') }}
+    {% endif %}
+</div>
+{% endblock %}
+{% block display_hooks %}
+    {% set hooks = notifyDisplayHooks(eventName='mueternizermodule.ui_hooks.entries.display_view', id=entry.id, urlObject=currentUrlObject) %}
+    {% for providerArea, hook in hooks %}
+        {% if providerArea != 'provider.scribite.ui_hooks.editor' %}{# fix for #664 #}
+            {{ hook }}
+        {% endif %}
+    {% endfor %}
+{% endblock %}
+{% block footer %}
+    {{ parent() }}
+
+{% endblock %}
