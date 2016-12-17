@@ -18,12 +18,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use JCSSUtil;
 use ModUtil;
-use SecurityUtil;
 use System;
 use UserUtil;
-use Zikula_AbstractController;
 use Zikula_View;
 use ZLanguage;
+use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Hook\ProcessHook;
 use Zikula\Core\Hook\ValidationHook;
 use Zikula\Core\Hook\ValidationProviders;
@@ -33,23 +32,11 @@ use Zikula\Core\Response\PlainResponse;
 /**
  * User controller class.
  */
-class UserController extends Zikula_AbstractController
+class UserController extends AbstractController
 {
-    /**
-     * Post initialise.
-     *
-     * Run after construction.
-     *
-     * @return void
-     */
-    protected function postInitialize()
-    {
-        // Set caching to true by default.
-        $this->view->setCaching(Zikula_View::CACHE_ENABLED);
-    }
 
     /**
-     * This method is the default function handling the main area called without defining arguments.
+     * This is the default action handling the mainnull area called without defining arguments.
      *
      * @param Request  $request      Current request instance
      * @param string  $ot           Treated object type.
@@ -61,19 +48,20 @@ class UserController extends Zikula_AbstractController
     public function indexAction(Request $request)
     {
         // parameter specifying which type of objects we are treating
-        $objectType = $request->query->filter('ot', 'entry', false, FILTER_SANITIZE_STRING);
+        $objectType = $request->query->getAlnum('ot', 'entry');
         
         $permLevel = ACCESS_OVERVIEW;
-        if (!SecurityUtil::checkPermission($this->name . '::', '::', $permLevel)) {
+        if (!$this->hasPermission($this->name . '::', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
         
         // redirect to view action
-        $redirectUrl = $this->serviceManager->get('router')->generate('mueternizermodule_' . strtolower($objectType) . '_view', array('lct' => 'user'));
+        $routeArea = '';
+        $redirectUrl = $this->get('router')->generate('mueternizermodule_' . strtolower($objectType) . '_' . $routeArea . 'view');
         
         return new RedirectResponse(System::normalizeUrl($redirectUrl));
     }
-    
+
 
     /**
      * This method cares for a redirect within an inline frame.
@@ -86,18 +74,19 @@ class UserController extends Zikula_AbstractController
      */
     public function handleInlineRedirectAction($idPrefix, $commandName, $id = 0)
     {
-        $id = (int) $this->request->query->filter('id', 0, FILTER_VALIDATE_INT);
-        $idPrefix = $this->request->query->filter('idPrefix', '', FILTER_SANITIZE_STRING);
-        $commandName = $this->request->query->filter('commandName', '', FILTER_SANITIZE_STRING);
+        $id = (int) $this->request->query->filter('id', 0, false, FILTER_VALIDATE_INT);
+        $idPrefix = $this->request->query->filter('idPrefix', '', false, FILTER_SANITIZE_STRING);
+        $commandName = $this->request->query->filter('commandName', '', false, FILTER_SANITIZE_STRING);
         if (empty($idPrefix)) {
             return false;
         }
         
-        $this->view->assign('itemId', $id)
-                   ->assign('idPrefix', $idPrefix)
-                   ->assign('commandName', $commandName)
-                   ->assign('jcssConfig', JCSSUtil::getJSConfig());
+        $view = Zikula_View::getInstance('MUEternizerModule', false);
+        $view->assign('itemId', $id)
+             ->assign('idPrefix', $idPrefix)
+             ->assign('commandName', $commandName)
+             ->assign('jcssConfig', JCSSUtil::getJSConfig());
         
-        return new PlainResponse($this->view->display('User/inlineRedirectHandler.tpl'));
+        return new PlainResponse($view->fetch('User/inlineRedirectHandler.tpl'));
     }
 }

@@ -13,15 +13,14 @@
 namespace MU\EternizerModule\Api\Base;
 
 use ModUtil;
-use SecurityUtil;
 use ServiceUtil;
 use UserUtil;
-use Zikula\Core\Api\AbstractApi;
+use Zikula_AbstractBase;
 
 /**
  * Account api base class.
  */
-class AccountApi extends AbstractApi
+class AccountApi extends Zikula_AbstractBase
 {
     /**
      * Return an array of items to show in the your account panel.
@@ -35,7 +34,7 @@ class AccountApi extends AbstractApi
         // collect items in an array
         $items = array();
     
-        $useAccountPage = ModUtil::getVar('MUEternizerModule', 'useAccountPage', true);
+        $useAccountPage = $this->get('zikula_extensions_module.api.variable')->get('MUEternizerModule', 'useAccountPage', true);
         if ($useAccountPage === false) {
             return $items;
         }
@@ -47,12 +46,13 @@ class AccountApi extends AbstractApi
             return $items;
         }
     
-        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_OVERVIEW)) {
+        $permissionHelper = $this->get('zikula_permissions_module.api.permission');
+        if (!$permissionHelper->hasPermission($this->name . '::', '::', ACCESS_OVERVIEW)) {
             return $items;
         }
     
         // Create an array of links to return
-        if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
+        if ($permissionHelper->hasPermission($this->name . '::', '::', ACCESS_ADMIN)) {
             $items[] = array(
                 'url'   => $this->get('router')->generate('mueternizermodule_admin_index'),
                 'title'  => $this->__('Eternizer Backend'),

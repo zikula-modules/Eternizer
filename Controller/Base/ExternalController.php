@@ -17,30 +17,17 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 use ModUtil;
 use PageUtil;
-use SecurityUtil;
 use ThemeUtil;
 use UserUtil;
-use Zikula_AbstractController;
 use Zikula_View;
+use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\PlainResponse;
 
 /**
  * Controller for external calls base class.
  */
-class ExternalController extends Zikula_AbstractController
+class ExternalController extends AbstractController
 {
-    /**
-     * Post initialise.
-     *
-     * Run after construction.
-     *
-     * @return void
-     */
-    protected function postInitialize()
-    {
-        // Set caching to false by default.
-        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
-    }
 
     /**
      * Displays one item of a certain object type using a separate template for external usages.
@@ -54,7 +41,7 @@ class ExternalController extends Zikula_AbstractController
      */
     public function displayAction($ot, $id, $source, $displayMode)
     {
-        $controllerHelper = $this->serviceManager->get('mueternizermodule.controller_helper');
+        $controllerHelper = $this->get('mueternizermodule.controller_helper');
         
         $objectType = $ot;
         $utilArgs = array('controller' => 'external', 'action' => 'display');
@@ -63,12 +50,12 @@ class ExternalController extends Zikula_AbstractController
         }
         
         $component = $this->name . ':' . ucfirst($objectType) . ':';
-        if (!SecurityUtil::checkPermission($component, $id . '::', ACCESS_READ)) {
+        if (!$this->hasPermission($component, $id . '::', ACCESS_READ)) {
             return '';
         }
         
-        $repository = $this->serviceManager->get('mueternizermodule.' . $objectType . '_factory')->getRepository();
-        $repository->setRequest($this->request);
+        $repository = $this->get('mueternizermodule.' . $objectType . '_factory')->getRepository();
+        $repository->setRequest($this->get('request'));
         $idFields = ModUtil::apiFunc('MUEternizerModule', 'selection', 'getIdFields', array('ot' => $objectType));
         $idValues = array('id' => $id);
         
@@ -87,23 +74,24 @@ class ExternalController extends Zikula_AbstractController
         
         $instance = $entity->createCompositeIdentifier() . '::';
         
-        $this->view->setCaching(Zikula_View::CACHE_ENABLED);
+        $view = Zikula_View::getInstance('MUEternizerModule', false);
+        $view->setCaching(Zikula_View::CACHE_ENABLED);
         // set cache id
         $accessLevel = ACCESS_READ;
-        if (SecurityUtil::checkPermission($component, $instance, ACCESS_COMMENT)) {
+        if ($this->hasPermission($component, $instance, ACCESS_COMMENT)) {
             $accessLevel = ACCESS_COMMENT;
         }
-        if (SecurityUtil::checkPermission($component, $instance, ACCESS_EDIT)) {
+        if ($this->hasPermission($component, $instance, ACCESS_EDIT)) {
             $accessLevel = ACCESS_EDIT;
         }
-        $this->view->setCacheId($objectType . '|' . $id . '|a' . $accessLevel);
+        $view->setCacheId($objectType . '|' . $id . '|a' . $accessLevel);
         
-        $this->view->assign('objectType', $objectType)
-                  ->assign('source', $source)
-                  ->assign($objectType, $entity)
-                  ->assign('displayMode', $displayMode);
+        $view->assign('objectType', $objectType)
+             ->assign('source', $source)
+             ->assign($objectType, $entity)
+             ->assign('displayMode', $displayMode);
         
-        return $this->response($this->view->fetch('External/' . ucfirst($objectType) . '/display.tpl'));
+        return $this->response($view->fetch('External/' . ucfirst($objectType) . '/display.tpl'));
     }
     
     /**
@@ -126,19 +114,19 @@ class ExternalController extends Zikula_AbstractController
         PageUtil::addVar('stylesheet', '@MUEternizerModule/Resources/public/css/style.css');
         
         $getData = $this->request->query;
-        $controllerHelper = $this->serviceManager->get('mueternizermodule.controller_helper');
+        $controllerHelper = $this->get('mueternizermodule.controller_helper');
         
         $utilArgs = array('controller' => 'external', 'action' => 'finder');
         if (!in_array($objectType, $controllerHelper->getObjectTypes('controller', $utilArgs))) {
             $objectType = $controllerHelper->getDefaultObjectType('controllerType', $utilArgs);
         }
         
-        if (!SecurityUtil::checkPermission('MUEternizerModule:' . ucfirst($objectType) . ':', '::', ACCESS_COMMENT)) {
+        if (!$this->hasPermission('MUEternizerModule:' . ucfirst($objectType) . ':', '::', ACCESS_COMMENT)) {
             throw new AccessDeniedException();
         }
         
-        $repository = $this->serviceManager->get('mueternizermodule.' . $objectType . '_factory')->getRepository();
-        $repository->setRequest($this->request);
+        $repository = $this->get('mueternizermodule.' . $objectType . '_factory')->getRepository();
+        $repository->setRequest($this->get('request'));
         
         if (empty($editor) || !in_array($editor, array('xinha', 'tinymce', 'ckeditor'))) {
             return $this->__('Error: Invalid editor context given for external controller action.');
@@ -180,6 +168,6 @@ class ExternalController extends Zikula_AbstractController
              ->assign('pager', array('numitems'     => $objectCount,
                                      'itemsperpage' => $resultsPerPage));
         
-        return new PlainResponse($view->display('External/' . ucfirst($objectType) . '/find.tpl'));
+        return new PlainResponse($view->fetch('External/' . ucfirst($objectType) . '/find.tpl'));
     }
 }

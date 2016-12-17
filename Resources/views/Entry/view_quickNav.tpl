@@ -1,10 +1,9 @@
 {* purpose of this template: entries view filter form *}
 {checkpermissionblock component='MUEternizerModule:Entry:' instance='::' level='ACCESS_EDIT'}
 {assign var='objectType' value='entry'}
-<form action="{route name='mueternizermodule_entry_view'}" method="get" id="mUEternizerModuleEntryQuickNavForm" class="mueternizermodule-quicknav {*form-inline*}navbar-form" role="navigation">
+<form action="{route name="mueternizermodule_entry_`$routeArea`view"}" method="get" id="mUEternizerModuleEntryQuickNavForm" class="mueternizermodule-quicknav {*form-inline*}navbar-form" role="navigation">
     <fieldset>
         <h3>{gt text='Quick navigation'}</h3>
-        <input type="hidden" name="lct" value="{$lct}" />
         <input type="hidden" name="all" value="{$all|default:0}" />
         <input type="hidden" name="own" value="{$own|default:0}" />
         {gt text='All' assign='lblDefault'}

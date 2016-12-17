@@ -10,7 +10,7 @@ function mUEternizerCapitaliseFirstLetter(string)
  */
 function mUEternizerSubmitQuickNavForm(objectType)
 {
-    $('#mueternizermodule' + mUEternizerCapitaliseFirstLetter(objectType) + 'QuickNavForm').submit();
+    jQuery('#mueternizermodule' + mUEternizerCapitaliseFirstLetter(objectType) + 'QuickNavForm').submit();
 }
 
 /**
@@ -64,6 +64,6 @@ function mUEternizerSimpleAlert(beforeElem, title, content, alertId, cssClass)
     beforeElem.before(alertBox);
 
     jQuery('#' + alertId).delay(200).addClass('in').fadeOut(4000, function () {
-        $(this).remove();
+        jQuery(this).remove();
     });
 }

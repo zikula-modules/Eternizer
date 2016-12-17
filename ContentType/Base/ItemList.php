@@ -13,7 +13,6 @@
 namespace MU\EternizerModule\ContentType\Base;
 
 use ModUtil;
-use SecurityUtil;
 use ServiceUtil;
 use Zikula_View;
 use ZLanguage;
@@ -165,15 +164,17 @@ class ItemList extends \Content_AbstractContentType
         // ensure that the view does not look for templates in the Content module (#218)
         $this->view->toplevelmodule = 'MUEternizerModule';
     
+        $permissionHelper = $serviceManager->get('zikula_permissions_module.api.permission');
+    
         $this->view->setCaching(Zikula_View::CACHE_ENABLED);
         // set cache id
         $component = 'MUEternizerModule:' . ucfirst($this->objectType) . ':';
         $instance = '::';
         $accessLevel = ACCESS_READ;
-        if (SecurityUtil::checkPermission($component, $instance, ACCESS_COMMENT)) {
+        if ($permissionHelper->hasPermission($component, $instance, ACCESS_COMMENT)) {
             $accessLevel = ACCESS_COMMENT;
         }
-        if (SecurityUtil::checkPermission($component, $instance, ACCESS_EDIT)) {
+        if ($permissionHelper->hasPermission($component, $instance, ACCESS_EDIT)) {
             $accessLevel = ACCESS_EDIT;
         }
         $this->view->setCacheId('view|ot_' . $this->objectType . '_sort_' . $this->sorting . '_amount_' . $this->amount . '_' . $accessLevel);
@@ -306,6 +307,6 @@ class ItemList extends \Content_AbstractContentType
         $this->view->toplevelmodule = 'MUEternizerModule';
     
         // ensure our custom plugins are loaded
-        array_push($this->view->plugins_dir, 'modules/Resources/views/?/plugins');
+        array_push($this->view->plugins_dir, 'modules/MUEternizerModule/Resources/views/?/plugins');
     }
 }

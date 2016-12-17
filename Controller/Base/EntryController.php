@@ -23,39 +23,44 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use FormUtil;
 use JCSSUtil;
 use ModUtil;
-use SecurityUtil;
 use System;
 use UserUtil;
-use Zikula_AbstractController;
 use Zikula_View;
 use ZLanguage;
+use Zikula\Component\SortableColumns\Column;
+use Zikula\Component\SortableColumns\SortableColumns;
+use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Hook\ProcessHook;
 use Zikula\Core\Hook\ValidationHook;
 use Zikula\Core\Hook\ValidationProviders;
 use Zikula\Core\ModUrl;
 use Zikula\Core\RouteUrl;
 use Zikula\Core\Response\PlainResponse;
+use Zikula\Core\Theme\Annotation\Theme;
 
 /**
  * Entry controller base class.
  */
-class EntryController extends Zikula_AbstractController
+class EntryController extends AbstractController
 {
     /**
-     * Post initialise.
+     * This is the default action handling the main admin area called without defining arguments.
+     * @Theme("admin")
+     * @Cache(expires="+7 days", public=true)
      *
-     * Run after construction.
+     * @param Request  $request      Current request instance
      *
-     * @return void
+     * @return mixed Output.
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
      */
-    protected function postInitialize()
+    public function adminIndexAction(Request $request)
     {
-        // Set caching to false by default.
-        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
+        return $this->indexInternal($request, true);
     }
-
+    
     /**
-     * This method is the default function handling the main area called without defining arguments.
+     * This is the default action handling the mainnull area called without defining arguments.
      * @Cache(expires="+7 days", public=true)
      *
      * @param Request  $request      Current request instance
@@ -66,43 +71,68 @@ class EntryController extends Zikula_AbstractController
      */
     public function indexAction(Request $request)
     {
-        $legacyControllerType = $request->query->filter('lct', 'user', FILTER_SANITIZE_STRING);
-        System::queryStringSetVar('type', $legacyControllerType);
-        $request->query->set('type', $legacyControllerType);
+        return $this->indexInternal($request, false);
+    }
     
-        $controllerHelper = $this->serviceManager->get('mueternizermodule.controller_helper');
+    /**
+     * This method includes the common implementation code for adminIndex() and index().
+     */
+    protected function indexInternal(Request $request, $isAdmin = false)
+    {
+        $controllerHelper = $this->get('mueternizermodule.controller_helper');
         
         // parameter specifying which type of objects we are treating
         $objectType = 'entry';
         $utilArgs = array('controller' => 'entry', 'action' => 'main');
-        $permLevel = $legacyControllerType == 'admin' ? ACCESS_ADMIN : ACCESS_OVERVIEW;
-        if (!SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
+        $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_OVERVIEW;
+        if (!$this->hasPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
         
-        if ($legacyControllerType == 'admin') {
+        if ($isAdmin) {
             
-            $redirectUrl = $this->serviceManager->get('router')->generate('mueternizermodule_entry_view', array('lct' => $legacyControllerType));
+            $redirectUrl = $this->get('router')->generate('mueternizermodule_entry_' . ($isAdmin ? 'admin' : '') . 'view');
             
             return new RedirectResponse(System::normalizeUrl($redirectUrl));
         }
         
-        if ($legacyControllerType != 'admin') {
+        if (!$isAdmin) {
             
-            $redirectUrl = $this->serviceManager->get('router')->generate('mueternizermodule_entry_view', array('lct' => $legacyControllerType));
+            $redirectUrl = $this->get('router')->generate('mueternizermodule_entry_' . ($isAdmin ? 'admin' : '') . 'view');
             
             return new RedirectResponse(System::normalizeUrl($redirectUrl));
         }
         
         // set caching id
-        $this->view->setCacheId('entry_index');
+        $view = Zikula_View::getInstance('MUEternizerModule', false);
+        $view->setCacheId('entry_index');
         
         // return index template
-        return $this->response($this->view->fetch('Entry/index.tpl'));
+        return $this->response($view->fetch('Entry/index.tpl'));
+    }
+    /**
+     * This action provides an item list overview in the admin area.
+     * @Theme("admin")
+     * @Cache(expires="+2 hours", public=false)
+     *
+     * @param Request  $request      Current request instance
+     * @param string  $sort         Sorting field.
+     * @param string  $sortdir      Sorting direction.
+     * @param int     $pos          Current pager position.
+     * @param int     $num          Amount of entries to display.
+     * @param string  $tpl          Name of alternative template (to be used instead of the default template).
+     *
+     * @return mixed Output.
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     */
+    public function adminViewAction(Request $request, $sort, $sortdir, $pos, $num)
+    {
+        return $this->viewInternal($request, $sort, $sortdir, $pos, $num, true);
     }
     
     /**
-     * This method provides a item list overview.
+     * This action provides an item list overviewnull.
      * @Cache(expires="+2 hours", public=false)
      *
      * @param Request  $request      Current request instance
@@ -118,22 +148,68 @@ class EntryController extends Zikula_AbstractController
      */
     public function viewAction(Request $request, $sort, $sortdir, $pos, $num)
     {
-        $legacyControllerType = $request->query->filter('lct', 'user', FILTER_SANITIZE_STRING);
-        System::queryStringSetVar('type', $legacyControllerType);
-        $request->query->set('type', $legacyControllerType);
+        return $this->viewInternal($request, $sort, $sortdir, $pos, $num, false);
+    }
     
-        $controllerHelper = $this->serviceManager->get('mueternizermodule.controller_helper');
+    /**
+     * This method includes the common implementation code for adminView() and view().
+     */
+    protected function viewInternal(Request $request, $sort, $sortdir, $pos, $num, $isAdmin = false)
+    {
+        $controllerHelper = $this->get('mueternizermodule.controller_helper');
         
         // parameter specifying which type of objects we are treating
         $objectType = 'entry';
         $utilArgs = array('controller' => 'entry', 'action' => 'view');
-        $permLevel = $legacyControllerType == 'admin' ? ACCESS_ADMIN : ACCESS_READ;
-        if (!SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
+        $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_READ;
+        if (!$this->hasPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
-        $repository = $this->serviceManager->get('mueternizermodule.' . $objectType . '_factory')->getRepository();
-        $repository->setRequest($this->request);
-        $viewHelper = $this->serviceManager->get('mueternizermodule.view_helper');
+        // temporary workarounds
+        // let repository know if we are in admin or user area
+        $request->query->set('lct', $isAdmin ? 'admin' : 'user');
+        // let entities know if we are in admin or user area
+        System::queryStringSetVar('lct', $isAdmin ? 'admin' : 'user');
+        
+        $repository = $this->get('mueternizermodule.' . $objectType . '_factory')->getRepository();
+        $repository->setRequest($request);
+        $view = Zikula_View::getInstance('MUEternizerModule', false);
+        $view->assign('routeArea', $isAdmin ? 'admin' : '');
+        $viewHelper = $this->get('mueternizermodule.view_helper');
+        
+        // convenience vars to make code clearer
+        $currentUrlArgs = array();
+        $where = '';
+        
+        $showOwnEntries = $request->query->getInt('own', $this->getVar('showOnlyOwnEntries', 0));
+        $showAllEntries = $request->query->getInt('all', 0);
+        
+        if (!$showAllEntries) {
+            $csv = $request->getRequestFormat() == 'csv' ? 1 : 0;
+            if ($csv == 1) {
+                $showAllEntries = 1;
+            }
+        }
+        
+        $view->assign('showOwnEntries', $showOwnEntries)
+             ->assign('showAllEntries', $showAllEntries);
+        if ($showOwnEntries == 1) {
+            $currentUrlArgs['own'] = 1;
+        }
+        if ($showAllEntries == 1) {
+            $currentUrlArgs['all'] = 1;
+        }
+        
+        $additionalParameters = $repository->getAdditionalTemplateParameters('controllerAction', $utilArgs);
+        
+        $resultsPerPage = 0;
+        if ($showAllEntries != 1) {
+            // the number of items displayed on a page for pagination
+            $resultsPerPage = $num;
+            if ($resultsPerPage == 0) {
+                $resultsPerPage = $this->getVar('pageSize', 10);
+            }
+        }
         
         // parameter for used sorting field
         if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields())) {
@@ -149,10 +225,28 @@ class EntryController extends Zikula_AbstractController
         // parameter for used sort order
         $sortdir = strtolower($sortdir);
         
-        // convenience vars to make code clearer
-        $currentUrlArgs = array();
+        $sortableColumns = new SortableColumns($this->get('router'), 'mueternizermodule_entry_' . ($isAdmin ? 'admin' : '') . 'view', 'sort', 'sortdir');
+        $sortableColumns->addColumn(new Column('ip'));
+        $sortableColumns->addColumn(new Column('name'));
+        $sortableColumns->addColumn(new Column('email'));
+        $sortableColumns->addColumn(new Column('homepage'));
+        $sortableColumns->addColumn(new Column('location'));
+        $sortableColumns->addColumn(new Column('text'));
+        $sortableColumns->addColumn(new Column('notes'));
+        $sortableColumns->addColumn(new Column('obj_status'));
+        $sortableColumns->addColumn(new Column('createdUserId'));
+        $sortableColumns->addColumn(new Column('createdDate'));
+        $sortableColumns->addColumn(new Column('updatedUserId'));
+        $sortableColumns->addColumn(new Column('updatedDate'));
+        $sortableColumns->setOrderBy($sortableColumns->getColumn($sort), strtoupper($sortdir));
         
-        $where = '';
+        $additionalUrlParameters = array(
+            'all' => $showAllEntries,
+            'own' => $showOwnEntries,
+            'pageSize' => $resultsPerPage
+        );
+        $additionalUrlParameters = array_merge($additionalUrlParameters, $additionalParameters);
+        $sortableColumns->setAdditionalUrlParameters($additionalUrlParameters);
         
         $selectionArgs = array(
             'ot' => $objectType,
@@ -160,46 +254,26 @@ class EntryController extends Zikula_AbstractController
             'orderBy' => $sort . ' ' . $sortdir
         );
         
-        $showOwnEntries = (int) $request->query->filter('own', $this->getVar('showOnlyOwnEntries', 0), false, FILTER_VALIDATE_INT);
-        $showAllEntries = (int) $request->query->filter('all', 0, false, FILTER_VALIDATE_INT);
-        
-        if (!$showAllEntries) {
-            $csv = $request->getRequestFormat() == 'csv' ? 1 : 0;
-            if ($csv == 1) {
-                $showAllEntries = 1;
-            }
-        }
-        
-        $this->view->assign('showOwnEntries', $showOwnEntries)
-                   ->assign('showAllEntries', $showAllEntries);
-        if ($showOwnEntries == 1) {
-            $currentUrlArgs['own'] = 1;
-        }
-        if ($showAllEntries == 1) {
-            $currentUrlArgs['all'] = 1;
-        }
-        
         // prepare access level for cache id
         $accessLevel = ACCESS_READ;
         $component = 'MUEternizerModule:' . ucfirst($objectType) . ':';
         $instance = '::';
-        if (SecurityUtil::checkPermission($component, $instance, ACCESS_COMMENT)) {
+        if ($this->hasPermission($component, $instance, ACCESS_COMMENT)) {
             $accessLevel = ACCESS_COMMENT;
         }
-        if (SecurityUtil::checkPermission($component, $instance, ACCESS_EDIT)) {
+        if ($this->hasPermission($component, $instance, ACCESS_EDIT)) {
             $accessLevel = ACCESS_EDIT;
         }
         
-        $templateFile = $viewHelper->getViewTemplate($this->view, $objectType, 'view', $request);
+        $templateFile = $viewHelper->getViewTemplate($view, $objectType, 'view', $request);
         $cacheId = $objectType . '_view|_sort_' . $sort . '_' . $sortdir;
-        $resultsPerPage = 0;
         if ($showAllEntries == 1) {
             // set cache id
-            $this->view->setCacheId($cacheId . '_all_1_own_' . $showOwnEntries . '_' . $accessLevel);
+            $view->setCacheId($cacheId . '_all_1_own_' . $showOwnEntries . '_' . $accessLevel);
         
             // if page is cached return cached content
-            if ($this->view->is_cached($templateFile)) {
-                return $viewHelper->processTemplate($this->view, $objectType, 'view', $request, $templateFile);
+            if ($view->is_cached($templateFile)) {
+                return $viewHelper->processTemplate($view, $objectType, 'view', $request, $templateFile);
             }
         
             // retrieve item list without pagination
@@ -208,18 +282,12 @@ class EntryController extends Zikula_AbstractController
             // the current offset which is used to calculate the pagination
             $currentPage = $pos;
         
-            // the number of items displayed on a page for pagination
-            $resultsPerPage = $num;
-            if ($resultsPerPage == 0) {
-                $resultsPerPage = $this->getVar('pageSize', 10);
-            }
-        
             // set cache id
-            $this->view->setCacheId($cacheId . '_amount_' . $resultsPerPage . '_page_' . $currentPage . '_own_' . $showOwnEntries . '_' . $accessLevel);
+            $view->setCacheId($cacheId . '_amount_' . $resultsPerPage . '_page_' . $currentPage . '_own_' . $showOwnEntries . '_' . $accessLevel);
         
             // if page is cached return cached content
-            if ($this->view->is_cached($templateFile)) {
-                return $viewHelper->processTemplate($this->view, $objectType, 'view', $request, $templateFile);
+            if ($view->is_cached($templateFile)) {
+                return $viewHelper->processTemplate($view, $objectType, 'view', $request, $templateFile);
             }
         
             // retrieve item list with pagination
@@ -227,9 +295,9 @@ class EntryController extends Zikula_AbstractController
             $selectionArgs['resultsPerPage'] = $resultsPerPage;
             list($entities, $objectCount) = ModUtil::apiFunc($this->name, 'selection', 'getEntitiesPaginated', $selectionArgs);
         
-            $this->view->assign('currentPage', $currentPage)
-                       ->assign('pager', array('numitems'     => $objectCount,
-                                               'itemsperpage' => $resultsPerPage));
+            $view->assign('currentPage', $currentPage)
+                 ->assign('pager', array('numitems'     => $objectCount,
+                                         'itemsperpage' => $resultsPerPage));
         }
         
         foreach ($entities as $k => $entity) {
@@ -240,22 +308,41 @@ class EntryController extends Zikula_AbstractController
         $currentUrlObject = new ModUrl($this->name, 'entry', 'view', ZLanguage::getLanguageCode(), $currentUrlArgs);
         
         // assign the object data, sorting information and details for creating the pager
-        $this->view->assign('items', $entities)
-                   ->assign('sort', $sort)
-                   ->assign('sdir', $sortdir)
-                   ->assign('pageSize', $resultsPerPage)
-                   ->assign('currentUrlObject', $currentUrlObject)
-                   ->assign($repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
+        $view->assign('items', $entities)
+             ->assign('sort', $sortableColumns->generateSortableColumns())
+             ->assign('sdir', $sortdir)
+             ->assign('pageSize', $resultsPerPage)
+             ->assign('currentUrlObject', $currentUrlObject)
+             ->assign($additionalParameters);
         
-        $modelHelper = $this->serviceManager->get('mueternizermodule.model_helper');
-        $this->view->assign('canBeCreated', $modelHelper->canBeCreated($objectType));
+        $modelHelper = $this->get('mueternizermodule.model_helper');
+        $view->assign('canBeCreated', $modelHelper->canBeCreated($objectType));
         
         // fetch and return the appropriate template
-        return $viewHelper->processTemplate($this->view, $objectType, 'view', $request, $templateFile);
+        return $viewHelper->processTemplate($view, $objectType, 'view', $request, $templateFile);
+    }
+    /**
+     * This action provides a item detail view in the admin area.
+     * @Theme("admin")
+     * @ParamConverter("entry", class="MUEternizerModule:EntryEntity", options={"id" = "id", "repository_method" = "selectById"})
+     * @Cache(lastModified="entry.getUpdatedDate()", ETag="'Entry' ~ entry.getid() ~ entry.getUpdatedDate().format('U')")
+     *
+     * @param Request  $request      Current request instance
+     * @param EntryEntity $entry      Treated entry instance.
+     * @param string  $tpl          Name of alternative template (to be used instead of the default template).
+     *
+     * @return mixed Output.
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws NotFoundHttpException Thrown by param converter if item to be displayed isn't found.
+     */
+    public function adminDisplayAction(Request $request, EntryEntity $entry)
+    {
+        return $this->displayInternal($request, $entry, true);
     }
     
     /**
-     * This method provides a item detail view.
+     * This action provides a item detail viewnull.
      * @ParamConverter("entry", class="MUEternizerModule:EntryEntity", options={"id" = "id", "repository_method" = "selectById"})
      * @Cache(lastModified="entry.getUpdatedDate()", ETag="'Entry' ~ entry.getid() ~ entry.getUpdatedDate().format('U')")
      *
@@ -270,22 +357,34 @@ class EntryController extends Zikula_AbstractController
      */
     public function displayAction(Request $request, EntryEntity $entry)
     {
-        $legacyControllerType = $request->query->filter('lct', 'user', FILTER_SANITIZE_STRING);
-        System::queryStringSetVar('type', $legacyControllerType);
-        $request->query->set('type', $legacyControllerType);
+        return $this->displayInternal($request, $entry, false);
+    }
     
-        $controllerHelper = $this->serviceManager->get('mueternizermodule.controller_helper');
+    /**
+     * This method includes the common implementation code for adminDisplay() and display().
+     */
+    protected function displayInternal(Request $request, EntryEntity $entry, $isAdmin = false)
+    {
+        $controllerHelper = $this->get('mueternizermodule.controller_helper');
         
         // parameter specifying which type of objects we are treating
         $objectType = 'entry';
         $utilArgs = array('controller' => 'entry', 'action' => 'display');
-        $permLevel = $legacyControllerType == 'admin' ? ACCESS_ADMIN : ACCESS_READ;
-        if (!SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
+        $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_READ;
+        if (!$this->hasPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
-        $repository = $this->serviceManager->get('mueternizermodule.' . $objectType . '_factory')->getRepository();
+        // temporary workarounds
+        // let repository know if we are in admin or user area
+        $request->query->set('lct', $isAdmin ? 'admin' : 'user');
+        // let entities know if we are in admin or user area
+        System::queryStringSetVar('lct', $isAdmin ? 'admin' : 'user');
+        
+        $repository = $this->get('mueternizermodule.' . $objectType . '_factory')->getRepository();
+        $repository->setRequest($request);
         
         $entity = $entry;
+        
         
         $entity->initWorkflow();
         
@@ -295,36 +394,56 @@ class EntryController extends Zikula_AbstractController
         $currentUrlArgs['id'] = $instanceId; // TODO remove this
         $currentUrlObject = new ModUrl($this->name, 'entry', 'display', ZLanguage::getLanguageCode(), $currentUrlArgs);
         
-        if (!SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', $instanceId . '::', $permLevel)) {
+        if (!$this->hasPermission($this->name . ':' . ucfirst($objectType) . ':', $instanceId . '::', $permLevel)) {
             throw new AccessDeniedException();
         }
         
-        $viewHelper = $this->serviceManager->get('mueternizermodule.view_helper');
-        $templateFile = $viewHelper->getViewTemplate($this->view, $objectType, 'display', $request);
+        $view = Zikula_View::getInstance('MUEternizerModule', false);
+        $view->assign('routeArea', $isAdmin ? 'admin' : '');
+        $viewHelper = $this->get('mueternizermodule.view_helper');
+        $templateFile = $viewHelper->getViewTemplate($view, $objectType, 'display', $request);
         
         // set cache id
         $component = $this->name . ':' . ucfirst($objectType) . ':';
         $instance = $instanceId . '::';
         $accessLevel = ACCESS_READ;
-        if (SecurityUtil::checkPermission($component, $instance, ACCESS_COMMENT)) {
+        if ($this->hasPermission($component, $instance, ACCESS_COMMENT)) {
             $accessLevel = ACCESS_COMMENT;
         }
-        if (SecurityUtil::checkPermission($component, $instance, ACCESS_EDIT)) {
+        if ($this->hasPermission($component, $instance, ACCESS_EDIT)) {
             $accessLevel = ACCESS_EDIT;
         }
-        $this->view->setCacheId($objectType . '_display|' . $instanceId . '|a' . $accessLevel);
+        $view->setCacheId($objectType . '_display|' . $instanceId . '|a' . $accessLevel);
         
         // assign output data to view object.
-        $this->view->assign($objectType, $entity)
-                   ->assign('currentUrlObject', $currentUrlObject)
-                   ->assign($repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
+        $view->assign($objectType, $entity)
+             ->assign('currentUrlObject', $currentUrlObject)
+             ->assign($repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
         
         // fetch and return the appropriate template
-        return $viewHelper->processTemplate($this->view, $objectType, 'display', $request, $templateFile);
+        return $viewHelper->processTemplate($view, $objectType, 'display', $request, $templateFile);
+    }
+    /**
+     * This action provides a handling of edit requests in the admin area.
+     * @Theme("admin")
+     * @Cache(lastModified="entry.getUpdatedDate()", ETag="'Entry' ~ entry.getid() ~ entry.getUpdatedDate().format('U')")
+     *
+     * @param Request  $request      Current request instance
+     * @param string  $tpl          Name of alternative template (to be used instead of the default template).
+     *
+     * @return mixed Output.
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws NotFoundHttpException Thrown by form handler if item to be edited isn't found.
+     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available).
+     */
+    public function adminEditAction(Request $request)
+    {
+        return $this->editInternal($request, true);
     }
     
     /**
-     * This method provides a handling of edit requests.
+     * This action provides a handling of edit requestsnull.
      * @Cache(lastModified="entry.getUpdatedDate()", ETag="'Entry' ~ entry.getid() ~ entry.getUpdatedDate().format('U')")
      *
      * @param Request  $request      Current request instance
@@ -338,17 +457,21 @@ class EntryController extends Zikula_AbstractController
      */
     public function editAction(Request $request)
     {
-        $legacyControllerType = $request->query->filter('lct', 'user', FILTER_SANITIZE_STRING);
-        System::queryStringSetVar('type', $legacyControllerType);
-        $request->query->set('type', $legacyControllerType);
+        return $this->editInternal($request, false);
+    }
     
-        $controllerHelper = $this->serviceManager->get('mueternizermodule.controller_helper');
+    /**
+     * This method includes the common implementation code for adminEdit() and edit().
+     */
+    protected function editInternal(Request $request, $isAdmin = false)
+    {
+        $controllerHelper = $this->get('mueternizermodule.controller_helper');
         
         // parameter specifying which type of objects we are treating
         $objectType = 'entry';
         $utilArgs = array('controller' => 'entry', 'action' => 'edit');
-        $permLevel = $legacyControllerType == 'admin' ? ACCESS_ADMIN : ACCESS_EDIT;
-        if (!SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
+        $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_EDIT;
+        if (!$this->hasPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
         
@@ -359,15 +482,41 @@ class EntryController extends Zikula_AbstractController
         $handlerClass = '\\MU\\EternizerModule\\Form\\Handler\\Entry\\EditHandler';
         
         // determine the output template
-        $viewHelper = $this->serviceManager->get('mueternizermodule.view_helper');
-        $template = $viewHelper->getViewTemplate($this->view, $objectType, 'edit', $request);
+        $view->assign('routeArea', $isAdmin ? 'admin' : '');
+        $viewHelper = $this->get('mueternizermodule.view_helper');
+        $template = $viewHelper->getViewTemplate($view, $objectType, 'edit', $request);
+        
+        // temporary workaround until Symfony forms are adopted (#416)
+        // let legacy forms know if we are in admin or user area
+        $request->query->set('lct', $isAdmin ? 'admin' : 'user');
         
         // execute form using supplied template and page event handler
         return $this->response($view->execute($template, new $handlerClass()));
     }
+    /**
+     * This action provides a handling of simple delete requests in the admin area.
+     * @Theme("admin")
+     * @ParamConverter("entry", class="MUEternizerModule:EntryEntity", options={"id" = "id", "repository_method" = "selectById"})
+     * @Cache(lastModified="entry.getUpdatedDate()", ETag="'Entry' ~ entry.getid() ~ entry.getUpdatedDate().format('U')")
+     *
+     * @param Request  $request      Current request instance
+     * @param EntryEntity $entry      Treated entry instance.
+     * @param boolean $confirmation Confirm the deletion, else a confirmation page is displayed.
+     * @param string  $tpl          Name of alternative template (to be used instead of the default template).
+     *
+     * @return mixed Output.
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws NotFoundHttpException Thrown by param converter if item to be deleted isn't found.
+     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available).
+     */
+    public function adminDeleteAction(Request $request, EntryEntity $entry)
+    {
+        return $this->deleteInternal($request, $entry, true);
+    }
     
     /**
-     * This method provides a handling of simple delete requests.
+     * This action provides a handling of simple delete requestsnull.
      * @ParamConverter("entry", class="MUEternizerModule:EntryEntity", options={"id" = "id", "repository_method" = "selectById"})
      * @Cache(lastModified="entry.getUpdatedDate()", ETag="'Entry' ~ entry.getid() ~ entry.getUpdatedDate().format('U')")
      *
@@ -384,17 +533,21 @@ class EntryController extends Zikula_AbstractController
      */
     public function deleteAction(Request $request, EntryEntity $entry)
     {
-        $legacyControllerType = $request->query->filter('lct', 'user', FILTER_SANITIZE_STRING);
-        System::queryStringSetVar('type', $legacyControllerType);
-        $request->query->set('type', $legacyControllerType);
+        return $this->deleteInternal($request, $entry, false);
+    }
     
-        $controllerHelper = $this->serviceManager->get('mueternizermodule.controller_helper');
+    /**
+     * This method includes the common implementation code for adminDelete() and delete().
+     */
+    protected function deleteInternal(Request $request, EntryEntity $entry, $isAdmin = false)
+    {
+        $controllerHelper = $this->get('mueternizermodule.controller_helper');
         
         // parameter specifying which type of objects we are treating
         $objectType = 'entry';
         $utilArgs = array('controller' => 'entry', 'action' => 'delete');
-        $permLevel = $legacyControllerType == 'admin' ? ACCESS_ADMIN : ACCESS_DELETE;
-        if (!SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
+        $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_DELETE;
+        if (!$this->hasPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
         $entity = $entry;
@@ -402,11 +555,11 @@ class EntryController extends Zikula_AbstractController
         $entity->initWorkflow();
         
         // determine available workflow actions
-        $workflowHelper = $this->serviceManager->get('mueternizermodule.workflow_helper');
+        $workflowHelper = $this->get('mueternizermodule.workflow_helper');
         $actions = $workflowHelper->getActionsForObject($entity);
         if ($actions === false || !is_array($actions)) {
             $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! Could not determine workflow actions.'));
-            $logger = $this->serviceManager->get('logger');
+            $logger = $this->get('logger');
             $logger->error('{app}: User {user} tried to delete the {entity} with id {id}, but failed to determine available workflow actions.', array('app' => 'MUEternizerModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'entry', 'id' => $entity->createCompositeIdentifier()));
             throw new \RuntimeException($this->__('Error! Could not determine workflow actions.'));
         }
@@ -423,63 +576,71 @@ class EntryController extends Zikula_AbstractController
         }
         if (!$deleteAllowed) {
             $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! It is not allowed to delete this entry.'));
-            $logger = $this->serviceManager->get('logger');
+            $logger = $this->get('logger');
             $logger->error('{app}: User {user} tried to delete the {entity} with id {id}, but this action was not allowed.', array('app' => 'MUEternizerModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'entry', 'id' => $entity->createCompositeIdentifier()));
         }
         
-        $confirmation = (bool) $request->request->filter('confirmation', false, false, FILTER_VALIDATE_BOOLEAN);
+        $confirmation = $request->request->getBoolean('confirmation', false);
         if ($confirmation && $deleteAllowed) {
             $this->checkCsrfToken();
         
-            $hookAreaPrefix = $entity->getHookAreaPrefix();
-            $hookType = 'validate_delete';
-            // Let any hooks perform additional validation actions
-            $hook = new ValidationHook(new ValidationProviders());
-            $validators = $this->dispatchHooks($hookAreaPrefix . '.' . $hookType, $hook)->getValidators();
-            if (!$validators->hasErrors()) {
+            $hasErrors = false;
+            if ($entity->supportsHookSubscribers()) {
+                $hookAreaPrefix = $entity->getHookAreaPrefix();
+                $hookType = 'validate_delete';
+                // Let any hooks perform additional validation actions
+                $hook = new ValidationHook(new ValidationProviders());
+                $validators = $this->dispatchHooks($hookAreaPrefix . '.' . $hookType, $hook)->getValidators();
+                $hasErrors = $validators->hasErrors();
+            }
+        
+            if (!$hasErrors) {
                 // execute the workflow action
                 $success = $workflowHelper->executeAction($entity, $deleteActionId);
                 if ($success) {
                     $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Item deleted.'));
-                    $logger = $this->serviceManager->get('logger');
+                    $logger = $this->get('logger');
                     $logger->notice('{app}: User {user} deleted the {entity} with id {id}.', array('app' => 'MUEternizerModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'entry', 'id' => $entity->createCompositeIdentifier()));
                 }
         
-                // Let any hooks know that we have created, updated or deleted the entry
-                $hookType = 'process_delete';
-                $hook = new ProcessHook($entity->createCompositeIdentifier());
-                $this->dispatchHooks($hookAreaPrefix . '.' . $hookType, $hook);
+                if ($entity->supportsHookSubscribers()) {
+                    // Let any hooks know that we have created, updated or deleted the entry
+                    $hookType = 'process_delete';
+                    $hook = new ProcessHook($entity->createCompositeIdentifier());
+                    $this->dispatchHooks($hookAreaPrefix . '.' . $hookType, $hook);
+                }
         
                 // The entry was deleted, so we clear all cached pages this item.
                 $cacheArgs = array('ot' => $objectType, 'item' => $entity);
                 ModUtil::apiFunc($this->name, 'cache', 'clearItemCache', $cacheArgs);
         
-                if ($legacyControllerType == 'admin') {
+                if ($isAdmin) {
                     // redirect to the list of entries
-                    $redirectUrl = $this->serviceManager->get('router')->generate('mueternizermodule_entry_view', array('lct' => $legacyControllerType));
+                    $redirectUrl = $this->get('router')->generate('mueternizermodule_entry_' . ($isAdmin ? 'admin' : '') . 'view');
                 } else {
                     // redirect to the list of entries
-                    $redirectUrl = $this->serviceManager->get('router')->generate('mueternizermodule_entry_view', array('lct' => $legacyControllerType));
+                    $redirectUrl = $this->get('router')->generate('mueternizermodule_entry_' . ($isAdmin ? 'admin' : '') . 'view');
                 }
                 return new RedirectResponse(System::normalizeUrl($redirectUrl));
             }
         }
         
-        $repository = $this->serviceManager->get('mueternizermodule.' . $objectType . '_factory')->getRepository();
+        $repository = $this->get('mueternizermodule.' . $objectType . '_factory')->getRepository();
+        $view = Zikula_View::getInstance('MUEternizerModule', false);
+        $view->assign('routeArea', $isAdmin ? 'admin' : '');
         
         // set caching id
-        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
+        $view->setCaching(Zikula_View::CACHE_DISABLED);
         
         // assign the object we loaded above
-        $this->view->assign($objectType, $entity)
-                   ->assign($repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
+        $view->assign($objectType, $entity)
+             ->assign($repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
         
         // fetch and return the appropriate template
-        $viewHelper = $this->serviceManager->get('mueternizermodule.view_helper');
+        $viewHelper = $this->get('mueternizermodule.view_helper');
         
-        return $viewHelper->processTemplate($this->view, $objectType, 'delete', $request);
+        return $viewHelper->processTemplate($view, $objectType, 'delete', $request);
     }
-    
 
     /**
      * Process status changes for multiple items.
@@ -498,7 +659,7 @@ class EntryController extends Zikula_AbstractController
     {
         $this->checkCsrfToken();
         
-        $redirectUrl = $this->serviceManager->get('router')->generate('mueternizermodule_entry_index', array('lct' => 'admin'));
+        $redirectUrl = $this->get('router')->generate('mueternizermodule_entry_adminindex');
         
         $objectType = 'entry';
         
@@ -508,7 +669,7 @@ class EntryController extends Zikula_AbstractController
         
         $action = strtolower($action);
         
-        $workflowHelper = $this->serviceManager->get('mueternizermodule.workflow_helper');
+        $workflowHelper = $this->get('mueternizermodule.workflow_helper');
         
         // process each item
         foreach ($items as $itemid) {
@@ -540,11 +701,14 @@ class EntryController extends Zikula_AbstractController
         
             $success = false;
             try {
+                if (!$entity->validate()) {
+                    continue;
+                }
                 // execute the workflow action
                 $success = $workflowHelper->executeAction($entity, $action);
             } catch(\Exception $e) {
                 $this->request->getSession()->getFlashBag()->add('error', $this->__f('Sorry, but an unknown error occured during the %s action. Please apply the changes again!', array($action)));
-                $logger = $this->serviceManager->get('logger');
+                $logger = $this->get('logger');
                 $logger->error('{app}: User {user} tried to execute the {action} workflow action for the {entity} with id {id}, but failed. Error details: {errorMessage}.', array('app' => 'MUEternizerModule', 'user' => UserUtil::getVar('uname'), 'action' => $action, 'entity' => 'entry', 'id' => $itemid, 'errorMessage' => $e->getMessage()));
             }
         
@@ -554,11 +718,11 @@ class EntryController extends Zikula_AbstractController
         
             if ($action == 'delete') {
                 $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Item deleted.'));
-                $logger = $this->serviceManager->get('logger');
+                $logger = $this->get('logger');
                 $logger->notice('{app}: User {user} deleted the {entity} with id {id}.', array('app' => 'MUEternizerModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'entry', 'id' => $itemid));
             } else {
                 $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Item updated.'));
-                $logger = $this->serviceManager->get('logger');
+                $logger = $this->get('logger');
                 $logger->notice('{app}: User {user} executed the {action} workflow action for the {entity} with id {id}.', array('app' => 'MUEternizerModule', 'user' => UserUtil::getVar('uname'), 'action' => $action, 'entity' => 'entry', 'id' => $itemid));
             }
         
@@ -578,7 +742,8 @@ class EntryController extends Zikula_AbstractController
         }
         
         // clear view cache to reflect our changes
-        $this->view->clear_cache();
+        $view = Zikula_View::getInstance('MUEternizerModule', false);
+        $view->clear_cache();
         
         return new RedirectResponse(System::normalizeUrl($redirectUrl));
     }
@@ -598,11 +763,12 @@ class EntryController extends Zikula_AbstractController
             return false;
         }
         
-        $this->view->assign('itemId', $id)
-                   ->assign('idPrefix', $idPrefix)
-                   ->assign('commandName', $commandName)
-                   ->assign('jcssConfig', JCSSUtil::getJSConfig());
+        $view = Zikula_View::getInstance('MUEternizerModule', false);
+        $view->assign('itemId', $id)
+             ->assign('idPrefix', $idPrefix)
+             ->assign('commandName', $commandName)
+             ->assign('jcssConfig', JCSSUtil::getJSConfig());
         
-        return new PlainResponse($this->view->display('Entry/inlineRedirectHandler.tpl'));
+        return new PlainResponse($view->fetch('Entry/inlineRedirectHandler.tpl'));
     }
 }

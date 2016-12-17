@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 class UserController extends BaseUserController
 {
     /**
-     * This method is the default function handling the main area called without defining arguments.
+     * This is the default action handling the mainnull area called without defining arguments.
      *
      * @Route("/user",
      *        methods = {"GET"}
@@ -40,7 +40,7 @@ class UserController extends BaseUserController
     {
         return parent::indexAction($request);
     }
-    
+
 
     /**
      * This method cares for a redirect within an inline frame.

@@ -1,14 +1,13 @@
 {* purpose of this template: entries delete confirmation view *}
-{assign var='lct' value='user'}
-{if isset($smarty.get.lct) && $smarty.get.lct eq 'admin'}
-    {assign var='lct' value='admin'}
+{assign var='area' value='User'}
+{if $routeArea eq 'admin'}
+    {assign var='area' value='Admin'}
 {/if}
-{assign var='lctUc' value=$lct|ucfirst}
-{include file="`$lctUc`/header.tpl"}
+{include file="`$area`/header.tpl"}
 <div class="mueternizermodule-entry mueternizermodule-delete">
     {gt text='Delete entry' assign='templateTitle'}
     {pagesetvar name='title' value=$templateTitle}
-    {if $lct eq 'admin'}
+    {if $routeArea eq 'admin'}
         <h3>
             <span class="fa fa-trash-o"></span>
             {$templateTitle}
@@ -19,7 +18,7 @@
 
     <p class="alert alert-warningmsg">{gt text='Do you really want to delete this entry ?'}</p>
 
-    <form class="form-horizontal" action="{route name='mueternizermodule_entry_delete'  id=$entry.id lct=$lct}" method="post" role="form">
+    <form class="form-horizontal" action="{route name="mueternizermodule_entry_`$routeArea`delete"  id=$entry.id}" method="post" role="form">
         <div>
             <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <input type="hidden" id="confirmation" name="confirmation" value="1" />
@@ -29,7 +28,7 @@
                 <div class="col-sm-offset-3 col-sm-9">
                     {gt text='Delete' assign='deleteTitle'}
                     {button src='14_layer_deletelayer.png' set='icons/small' text=$deleteTitle title=$deleteTitle class='btn btn-danger'}
-                    <a href="{route name='mueternizermodule_entry_view' lct=$lct}" class="btn btn-default" role="button"><span class="fa fa-times"></span> {gt text='Cancel'}</a>
+                    <a href="{route name="mueternizermodule_entry_`$routeArea`view"}" class="btn btn-default" role="button"><span class="fa fa-times"></span> {gt text='Cancel'}</a>
                 </div>
                 </div>
             </fieldset>
@@ -44,4 +43,4 @@
         </div>
     </form>
 </div>
-{include file="`$lctUc`/footer.tpl"}
+{include file="`$area`/footer.tpl"}

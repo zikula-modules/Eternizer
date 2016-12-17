@@ -14,7 +14,6 @@ namespace MU\EternizerModule\Form\Plugin\Base;
 
 use FormUtil;
 use PageUtil;
-use SecurityUtil;
 use ServiceUtil;
 use ThemeUtil;
 use Zikula_Form_Plugin_TextInput;
@@ -102,7 +101,10 @@ class ItemSelector extends Zikula_Form_Plugin_TextInput
         }
         $firstTime = false;
 
-        if (!SecurityUtil::checkPermission('MUEternizerModule:' . ucfirst($this->objectType) . ':', '::', ACCESS_COMMENT)) {
+        $serviceManager = ServiceUtil::getManager();
+        $permissionHelper = $serviceManager->get('zikula_permissions_module.api.permission');
+
+        if (!$permissionHelper->hasPermission('MUEternizerModule:' . ucfirst($this->objectType) . ':', '::', ACCESS_COMMENT)) {
             return false;
         }
 

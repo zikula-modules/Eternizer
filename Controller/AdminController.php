@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 class AdminController extends BaseAdminController
 {
     /**
-     * This method is the default function handling the main area called without defining arguments.
+     * This is the default action handling the mainnull area called without defining arguments.
      *
      * @Route("/admin",
      *        methods = {"GET"}
@@ -40,7 +40,7 @@ class AdminController extends BaseAdminController
     {
         return parent::indexAction($request);
     }
-    
+
 
     /**
      * This method cares for a redirect within an inline frame.

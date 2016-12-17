@@ -1,0 +1,8 @@
+services:
+    mu_eternizer_module.link_container:
+        class: "MU\\EternizerModule\\Container\\LinkContainer"
+        arguments:
+            translator: "@translator"
+            router: "@router"
+        tags:
+            - { name: zikula.link_container }

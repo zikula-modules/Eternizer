@@ -67,7 +67,7 @@ function mUEternizerValidateNoSpace(val)
 /**
  * Runs special validation rules.
  */
-function mUEternizerPerformCustomValidationRules(objectType, id)
+function mUEternizerPerformCustomValidationRules(objectType, currentEntityId)
 {
     jQuery('.validate-nospace').each( function() {
         if (mUEternizerValidateNoSpace(jQuery(this).val())) {

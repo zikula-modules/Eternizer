@@ -53,26 +53,26 @@ mUEternizerModule.finder = {};
 
 mUEternizerModule.finder.onLoad = function (baseId, selectedId)
 {
-    $('div.categoryselector select').change(mUEternizerModule.finder.onParamChanged);
-    $('#mUEternizerModuleSort').change(mUEternizerModule.finder.onParamChanged);
-    $('#mUEternizerModuleSortDir').change(mUEternizerModule.finder.onParamChanged);
-    $('#mUEternizerModulePageSize').change(mUEternizerModule.finder.onParamChanged);
-    $('#mUEternizerModuleSearchGo').click(mUEternizerModule.finder.onParamChanged);
-    $('#mUEternizerModuleSearchGo').keypress(mUEternizerModule.finder.onParamChanged);
-    $('#mUEternizerModuleSubmit').addClass('hidden');
-    $('#mUEternizerModuleCancel').click(mUEternizerModule.finder.handleCancel);
+    jQuery('div.categoryselector select').change(mUEternizerModule.finder.onParamChanged);
+    jQuery('#mUEternizerModuleSort').change(mUEternizerModule.finder.onParamChanged);
+    jQuery('#mUEternizerModuleSortDir').change(mUEternizerModule.finder.onParamChanged);
+    jQuery('#mUEternizerModulePageSize').change(mUEternizerModule.finder.onParamChanged);
+    jQuery('#mUEternizerModuleSearchGo').click(mUEternizerModule.finder.onParamChanged);
+    jQuery('#mUEternizerModuleSearchGo').keypress(mUEternizerModule.finder.onParamChanged);
+    jQuery('#mUEternizerModuleSubmit').addClass('hidden');
+    jQuery('#mUEternizerModuleCancel').click(mUEternizerModule.finder.handleCancel);
 };
 
 mUEternizerModule.finder.onParamChanged = function ()
 {
-    $('#mUEternizerModuleSelectorForm').submit();
+    jQuery('#mUEternizerModuleSelectorForm').submit();
 };
 
 mUEternizerModule.finder.handleCancel = function ()
 {
     var editor, w;
 
-    editor = $('#editorName').val();
+    editor = jQuery('#editorName').val();
     if (editor === 'xinha') {
         w = parent.window;
         window.close();
@@ -92,10 +92,10 @@ function mUEternizerGetPasteSnippet(mode, itemId)
     var quoteFinder, itemUrl, itemTitle, itemDescription, pasteMode;
 
     quoteFinder = new RegExp('"', 'g');
-    itemUrl = $('#url' + itemId).val().replace(quoteFinder, '');
-    itemTitle = $('#title' + itemId).val().replace(quoteFinder, '');
-    itemDescription = $('#desc' + itemId).val().replace(quoteFinder, '');
-    pasteMode = $('#mUEternizerModulePasteAs').val();
+    itemUrl = jQuery('#url' + itemId).val().replace(quoteFinder, '');
+    itemTitle = jQuery('#title' + itemId).val().replace(quoteFinder, '');
+    itemDescription = jQuery('#desc' + itemId).val().replace(quoteFinder, '');
+    pasteMode = jQuery('#mUEternizerModulePasteAs').val();
 
     if (pasteMode === '2' || pasteMode !== '1') {
         return itemId;
@@ -117,7 +117,7 @@ mUEternizerModule.finder.selectItem = function (itemId)
 {
     var editor, html;
 
-    editor = $('#editorName').val();
+    editor = jQuery('#editorName').val();
     if (editor === 'xinha') {
         if (window.opener.currentMUEternizerModuleEditor !== null) {
             html = mUEternizerGetPasteSnippet('html', itemId);
@@ -191,25 +191,25 @@ mUEternizerModule.itemSelector.onLoad = function (baseId, selectedId)
     mUEternizerModule.itemSelector.selectedId = selectedId;
 
     // required as a changed object type requires a new instance of the item selector plugin
-    $('#mUEternizerModuleObjectType').change(mUEternizerModule.itemSelector.onParamChanged);
+    jQuery('#mUEternizerModuleObjectType').change(mUEternizerModule.itemSelector.onParamChanged);
 
-    if ($('#' + baseId + '_catidMain').size() > 0) {
-        $('#' + baseId + '_catidMain').change(mUEternizerModule.itemSelector.onParamChanged);
-    } else if ($('#' + baseId + '_catidsMain').size() > 0) {
-        $('#' + baseId + '_catidsMain').change(mUEternizerModule.itemSelector.onParamChanged);
+    if (jQuery('#' + baseId + '_catidMain').size() > 0) {
+        jQuery('#' + baseId + '_catidMain').change(mUEternizerModule.itemSelector.onParamChanged);
+    } else if (jQuery('#' + baseId + '_catidsMain').size() > 0) {
+        jQuery('#' + baseId + '_catidsMain').change(mUEternizerModule.itemSelector.onParamChanged);
     }
-    $('#' + baseId + 'Id').change(mUEternizerModule.itemSelector.onItemChanged);
-    $('#' + baseId + 'Sort').change(mUEternizerModule.itemSelector.onParamChanged);
-    $('#' + baseId + 'SortDir').change(mUEternizerModule.itemSelector.onParamChanged);
-    $('#mUEternizerModuleSearchGo').click(mUEternizerModule.itemSelector.onParamChanged);
-    $('#mUEternizerModuleSearchGo').keypress(mUEternizerModule.itemSelector.onParamChanged);
+    jQuery('#' + baseId + 'Id').change(mUEternizerModule.itemSelector.onItemChanged);
+    jQuery('#' + baseId + 'Sort').change(mUEternizerModule.itemSelector.onParamChanged);
+    jQuery('#' + baseId + 'SortDir').change(mUEternizerModule.itemSelector.onParamChanged);
+    jQuery('#mUEternizerModuleSearchGo').click(mUEternizerModule.itemSelector.onParamChanged);
+    jQuery('#mUEternizerModuleSearchGo').keypress(mUEternizerModule.itemSelector.onParamChanged);
 
     mUEternizerModule.itemSelector.getItemList();
 };
 
 mUEternizerModule.itemSelector.onParamChanged = function ()
 {
-    $('ajax_indicator').removeClass('hidden');
+    jQuery('#ajax_indicator').removeClass('hidden');
 
     mUEternizerModule.itemSelector.getItemList();
 };
@@ -220,16 +220,16 @@ mUEternizerModule.itemSelector.getItemList = function ()
 
     baseId = eternizer.itemSelector.baseId;
     params = 'ot=' + baseId + '&';
-    if ($('#' + baseId + '_catidMain').size() > 0) {
-        params += 'catidMain=' + $('#' + baseId + '_catidMain').val() + '&';
-    } else if ($('#' + baseId + '_catidsMain').size() > 0) {
-        params += 'catidsMain=' + $('#' + baseId + '_catidsMain').val() + '&';
+    if (jQuery('#' + baseId + '_catidMain').size() > 0) {
+        params += 'catidMain=' + jQuery('#' + baseId + '_catidMain').val() + '&';
+    } else if (jQuery('#' + baseId + '_catidsMain').size() > 0) {
+        params += 'catidsMain=' + jQuery('#' + baseId + '_catidsMain').val() + '&';
     }
-    params += 'sort=' + $('#' + baseId + 'Sort').val() + '&' +
-              'sortdir=' + $('#' + baseId + 'SortDir').val() + '&' +
-              'q=' + $('#' + baseId + 'SearchTerm').val();
+    params += 'sort=' + jQuery('#' + baseId + 'Sort').val() + '&' +
+              'sortdir=' + jQuery('#' + baseId + 'SortDir').val() + '&' +
+              'q=' + jQuery('#' + baseId + 'SearchTerm').val();
 
-    $.ajax({
+    jQuery.ajax({
         type: 'POST',
         url: Routing.generate('mueternizermodule_ajax_getitemlistfinder'),
         data: params
@@ -238,7 +238,7 @@ mUEternizerModule.itemSelector.getItemList = function ()
         var baseId;
         baseId = mUEternizerModule.itemSelector.baseId;
         mUEternizerModule.itemSelector.items[baseId] = res.data;
-        $('#ajax_indicator').addClass('hidden');
+        jQuery('#ajax_indicator').addClass('hidden');
         mUEternizerModule.itemSelector.updateItemDropdownEntries();
         mUEternizerModule.itemSelector.updatePreview();
     });
@@ -249,7 +249,7 @@ mUEternizerModule.itemSelector.updateItemDropdownEntries = function ()
     var baseId, itemSelector, items, i, item;
 
     baseId = mUEternizerModule.itemSelector.baseId;
-    itemSelector = $('#' + baseId + 'Id');
+    itemSelector = jQuery('#' + baseId + 'Id');
     itemSelector.length = 0;
 
     items = mUEternizerModule.itemSelector.items[baseId];
@@ -259,7 +259,7 @@ mUEternizerModule.itemSelector.updateItemDropdownEntries = function ()
     }
 
     if (mUEternizerModule.itemSelector.selectedId > 0) {
-        $('#' + baseId + 'Id').val(mUEternizerModule.itemSelector.selectedId);
+        jQuery('#' + baseId + 'Id').val(mUEternizerModule.itemSelector.selectedId);
     }
 };
 
@@ -270,7 +270,7 @@ mUEternizerModule.itemSelector.updatePreview = function ()
     baseId = mUEternizerModule.itemSelector.baseId;
     items = mUEternizerModule.itemSelector.items[baseId];
 
-    $('#' + baseId + 'PreviewContainer').addClass('hidden');
+    jQuery('#' + baseId + 'PreviewContainer').addClass('hidden');
 
     if (items.length === 0) {
         return;
@@ -287,7 +287,7 @@ mUEternizerModule.itemSelector.updatePreview = function ()
     }
 
     if (selectedElement !== null) {
-        $('#' + baseId + 'PreviewContainer')
+        jQuery('#' + baseId + 'PreviewContainer')
             .html(window.atob(selectedElement.previewInfo))
             .removeClass('hidden');
     }
@@ -298,9 +298,9 @@ mUEternizerModule.itemSelector.onItemChanged = function ()
     var baseId, itemSelector, preview;
 
     baseId = mUEternizerModule.itemSelector.baseId;
-    itemSelector = $('#' + baseId + 'Id');
+    itemSelector = jQuery('#' + baseId + 'Id');
     preview = window.atob(mUEternizerModule.itemSelector.items[baseId][itemSelector.selectedIndex].previewInfo);
 
-    $(baseId + 'PreviewContainer').html(preview);
-    mUEternizerModule.itemSelector.selectedId = $('#' + baseId + 'Id').val();
+    jQuery('#' + baseId + 'PreviewContainer').html(preview);
+    mUEternizerModule.itemSelector.selectedId = jQuery('#' + baseId + 'Id').val();
 };

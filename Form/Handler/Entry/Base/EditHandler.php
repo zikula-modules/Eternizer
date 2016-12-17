@@ -14,6 +14,7 @@ namespace MU\EternizerModule\Form\Handler\Entry\Base;
 
 use MU\EternizerModule\Form\Handler\Common\EditHandler as BaseEditHandler;
 
+
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use FormUtil;
@@ -139,11 +140,12 @@ class EditHandler extends BaseEditHandler
     {
         $serviceManager = $this->view->getServiceManager();
     
-        $legacyControllerType = $this->request->query->filter('lct', 'user', FILTER_SANITIZE_STRING);
+        $legacyControllerType = $this->request->query->getAlpha('lct', 'user');
+        $routeArea = ($legacyControllerType == 'admin' ? 'admin' : '');
     
         // redirect to the list of entries
-        $viewArgs = array('lct' => $legacyControllerType);
-        $url = $serviceManager->get('router')->generate('mueternizermodule_' . strtolower($this->objectType) . '_view', $viewArgs);
+        $viewArgs = array();
+        $url = $serviceManager->get('router')->generate('mueternizermodule_' . strtolower($this->objectType) . '_' . $routeArea . 'view', $viewArgs);
     
         return $url;
     }
@@ -216,8 +218,13 @@ class EditHandler extends BaseEditHandler
         // get treated entity reference from persisted member var
         $entity = $this->entityRef;
     
+        if (!$entity->validate()) {
+            return false;
+        }
+    
         $action = $args['commandName'];
     
+        $success = false;
         try {
             // execute the workflow action
             $workflowHelper = $this->view->getServiceManager()->get('mueternizermodule.workflow_helper');
@@ -276,28 +283,26 @@ class EditHandler extends BaseEditHandler
         // parse given redirect code and return corresponding url
         switch ($this->returnTo) {
             case 'admin':
-                return $serviceManager->get('router')->generate('mueternizermodule_' . strtolower($this->objectType) . '_index', array('lct' => 'admin'));
+                return $serviceManager->get('router')->generate('mueternizermodule_' . strtolower($this->objectType) . '_adminindex');
             case 'adminView':
-                return $serviceManager->get('router')->generate('mueternizermodule_' . strtolower($this->objectType) . '_view', array('lct' => 'admin'));
+                return $serviceManager->get('router')->generate('mueternizermodule_' . strtolower($this->objectType) . '_adminview');
             case 'adminDisplay':
                 if ($args['commandName'] != 'delete' && !($this->mode == 'create' && $args['commandName'] == 'cancel')) {
                     foreach ($this->idFields as $idField) {
                         $urlArgs[$idField] = $this->idValues[$idField];
                     }
-                    $urlArgs['lct'] = 'admin';
-                    return $serviceManager->get('router')->generate('mueternizermodule_' . strtolower($this->objectType) . '_display', $urlArgs);
+                    return $serviceManager->get('router')->generate('mueternizermodule_' . strtolower($this->objectType) . '_admindisplay', $urlArgs);
                 }
                 return $this->getDefaultReturnUrl($args);
             case 'user':
-                return $serviceManager->get('router')->generate('mueternizermodule_' . strtolower($this->objectType) . '_index', array('lct' => 'user'));
+                return $serviceManager->get('router')->generate('mueternizermodule_' . strtolower($this->objectType) . '_index');
             case 'userView':
-                return $serviceManager->get('router')->generate('mueternizermodule_' . strtolower($this->objectType) . '_view', array('lct' => 'user'));
+                return $serviceManager->get('router')->generate('mueternizermodule_' . strtolower($this->objectType) . '_view');
             case 'userDisplay':
                 if ($args['commandName'] != 'delete' && !($this->mode == 'create' && $args['commandName'] == 'cancel')) {
                     foreach ($this->idFields as $idField) {
                         $urlArgs[$idField] = $this->idValues[$idField];
                     }
-                    $urlArgs['lct'] = 'user';
                     return $serviceManager->get('router')->generate('mueternizermodule_' . strtolower($this->objectType) . '_display', $urlArgs);
                 }
                 return $this->getDefaultReturnUrl($args);

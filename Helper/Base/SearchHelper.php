@@ -12,13 +12,13 @@
 
 namespace MU\EternizerModule\Helper\Base;
 
+use FormUtil;
 use ModUtil;
-use SecurityUtil;
 use ServiceUtil;
 use ZLanguage;
 
 use Zikula\Core\RouteUrl;
-use Zikula\Module\SearchModule\AbstractSearchable;
+use Zikula\SearchModule\AbstractSearchable;
 
 /**
  * Search helper base class.
@@ -28,14 +28,17 @@ class SearchHelper extends AbstractSearchable
     /**
      * Display the search form.
      *
-     * @param boolean    $active
-     * @param array|null $modVars
+     * @param boolean    $active  if the module should be checked as active
+     * @param array|null $modVars module form vars as previously set
      *
      * @return string Template output
      */
     public function getOptions($active, $modVars = null)
     {
-        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
+        $serviceManager = ServiceUtil::getManager();
+        $permissionHelper = $serviceManager->get('zikula_permissions_module.api.permission');
+    
+        if (!$permissionHelper->hasPermission($this->name . '::', '::', ACCESS_READ)) {
             return '';
         }
     
@@ -55,11 +58,12 @@ class SearchHelper extends AbstractSearchable
      */
     public function getResults(array $words, $searchType = 'AND', $modVars = null)
     {
-        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
+        $serviceManager = ServiceUtil::getManager();
+        $permissionHelper = $serviceManager->get('zikula_permissions_module.api.permission');
+    
+        if (!$permissionHelper->hasPermission($this->name . '::', '::', ACCESS_READ)) {
             return array();
         }
-    
-        $serviceManager = ServiceUtil::getManager();
     
         // save session id as it is used when inserting search results below
         $session = $serviceManager->get('session');
@@ -72,7 +76,7 @@ class SearchHelper extends AbstractSearchable
         $records = array();
     
         // retrieve list of activated object types
-        $searchTypes = isset($modVars['objectTypes']) ? (array)$modVars['objectTypes'] : array();
+        $searchTypes = isset($modVars['objectTypes']) ? (array)$modVars['objectTypes'] : (array) FormUtil::getPassedValue('mUEternizerModuleSearchTypes', array(), 'GETPOST');
     
         $controllerHelper = $serviceManager->get('mueternizermodule.controller_helper');
         $utilArgs = array('helper' => 'search', 'action' => 'getResults');
@@ -132,7 +136,7 @@ class SearchHelper extends AbstractSearchable
     
                 $instanceId = $entity->createCompositeIdentifier();
                 // perform permission check
-                if (!SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', $instanceId . '::', ACCESS_OVERVIEW)) {
+                if (!$permissionHelper->hasPermission($this->name . ':' . ucfirst($objectType) . ':', $instanceId . '::', ACCESS_OVERVIEW)) {
                     continue;
                 }
     

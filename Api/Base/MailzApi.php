@@ -14,13 +14,13 @@ namespace MU\EternizerModule\Api\Base;
 
 use ModUtil;
 use ServiceUtil;
-use Zikula\Core\Api\AbstractApi;
+use Zikula_AbstractBase;
 use Zikula_View;
 
 /**
  * Mailz api base class.
  */
-class MailzApi extends AbstractApi
+class MailzApi extends Zikula_AbstractBase
 {
     /**
      * Returns existing Mailz plugins with type / title.

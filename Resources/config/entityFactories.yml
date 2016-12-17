@@ -1,0 +1,8 @@
+services:
+    # Entity factory classes
+    mu_eternizer_module.entry_factory:
+        class: "MU\\EternizerModule\\Entity\\Factory\\EntryFactory"
+        arguments:
+            objectManager: "@doctrine.orm.entity_manager"
+            className: "MU\\EternizerModule\\Entity\\EntryEntity"
+    

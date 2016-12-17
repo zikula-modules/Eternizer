@@ -1,15 +1,14 @@
 {* purpose of this template: entries display view *}
-{assign var='lct' value='user'}
-{if isset($smarty.get.lct) && $smarty.get.lct eq 'admin'}
-    {assign var='lct' value='admin'}
+{assign var='area' value='User'}
+{if $routeArea eq 'admin'}
+    {assign var='area' value='Admin'}
 {/if}
-{assign var='lctUc' value=$lct|ucfirst}
-{include file="`$lctUc`/header.tpl"}
+{include file="`$area`/header.tpl"}
 <div class="mueternizermodule-entry mueternizermodule-display">
     {gt text='Entry' assign='templateTitle'}
     {assign var='templateTitle' value=$entry->getTitleFromDisplayPattern()|default:$templateTitle}
     {pagesetvar name='title' value=$templateTitle|@html_entity_decode}
-    {if $lct eq 'admin'}
+    {if $routeArea eq 'admin'}
         <h3>
             <span class="fa fa-eye"></span>
             {$templateTitle|notifyfilters:'mueternizermodule.filter_hooks.entries.filter'}
@@ -64,6 +63,7 @@
         </h2>
     {/if}
 
+
     <dl>
         <dt>{gt text='Ip'}</dt>
         <dd>{$entry.ip}</dd>
@@ -109,4 +109,4 @@
         {/foreach}
     {/if}
 </div>
-{include file="`$lctUc`/footer.tpl"}
+{include file="`$area`/footer.tpl"}

@@ -15,7 +15,6 @@ namespace MU\EternizerModule\Block\Base;
 use BlockUtil;
 use DataUtil;
 use ModUtil;
-use SecurityUtil;
 use Zikula\Core\Controller\AbstractBlockController;
 use Zikula_View;
 
@@ -29,7 +28,7 @@ class ItemListBlock extends AbstractBlockController
      */
     public function init()
     {
-        SecurityUtil::registerPermissionSchema('MUEternizerModule:ItemListBlock:', 'Block title::');
+        //SecurityUtil::registerPermissionSchema('MUEternizerModule:ItemListBlock:', 'Block title::');
     }
     
     /**
@@ -66,7 +65,7 @@ class ItemListBlock extends AbstractBlockController
     public function display($blockinfo)
     {
         // only show block content if the user has the required permissions
-        if (!SecurityUtil::checkPermission('MUEternizerModule:ItemListBlock:', "$blockinfo[title]::", ACCESS_OVERVIEW)) {
+        if (!$this->hasPermission('MUEternizerModule:ItemListBlock:', "$blockinfo[title]::", ACCESS_OVERVIEW)) {
             return false;
         }
     
@@ -117,10 +116,10 @@ class ItemListBlock extends AbstractBlockController
         $component = 'MUEternizerModule:' . ucfirst($objectType) . ':';
         $instance = '::';
         $accessLevel = ACCESS_READ;
-        if (SecurityUtil::checkPermission($component, $instance, ACCESS_COMMENT)) {
+        if ($this->hasPermission($component, $instance, ACCESS_COMMENT)) {
             $accessLevel = ACCESS_COMMENT;
         }
-        if (SecurityUtil::checkPermission($component, $instance, ACCESS_EDIT)) {
+        if ($this->hasPermission($component, $instance, ACCESS_EDIT)) {
             $accessLevel = ACCESS_EDIT;
         }
         $this->view->setCacheId('view|ot_' . $objectType . '_sort_' . $vars['sorting'] . '_amount_' . $vars['amount'] . '_' . $accessLevel);
@@ -288,11 +287,11 @@ class ItemListBlock extends AbstractBlockController
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
         $request = $this->get('request');
     
-        $vars['objectType'] = $request->request->filter('objecttype', 'entry', false, FILTER_SANITIZE_STRING);
-        $vars['sorting'] = $request->request->filter('sorting', 'default', false, FILTER_SANITIZE_STRING);
-        $vars['amount'] = (int) $request->request->filter('amount', 5, false, FILTER_VALIDATE_INT);
-        $vars['template'] = $request->request->get('template', '');
-        $vars['customTemplate'] = $request->request->get('customtemplate', '');
+        $vars['objectType'] = $request->request->getAlnum('objecttype', 'entry');
+        $vars['sorting'] = $request->request->getAlpha('sorting', 'default');
+        $vars['amount'] = $request->request->getInt('amount', 5);
+        $vars['template'] = $request->request->getAlnum('template', '');
+        $vars['customTemplate'] = $request->request->getAlnum('customtemplate', '');
         $vars['filter'] = $request->request->get('filter', '');
     
         $controllerHelper = $this->get('mueternizermodule.controller_helper');

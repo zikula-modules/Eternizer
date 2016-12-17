@@ -1,8 +1,4 @@
 {* purpose of this template: entries rss feed *}
-{assign var='lct' value='user'}
-{if isset($smarty.get.lct) && $smarty.get.lct eq 'admin'}
-    {assign var='lct' value='admin'}
-{/if}
 <?xml version="1.0" encoding="{charset assign='charset'}{if $charset eq 'ISO-8859-15'}ISO-8859-1{else}{$charset}{/if}" ?>
 <rss version="2.0"
     xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -34,8 +30,8 @@
 {foreach item='entry' from=$items}
     <item>
         <title><![CDATA[{if isset($entry.updatedDate) && $entry.updatedDate ne null}{$entry.updatedDate|dateformat} - {/if}{$entry->getTitleFromDisplayPattern()|notifyfilters:'mueternizermodule.filterhook.entries'}]]></title>
-        <link>{route name='mueternizermodule_entry_display'  id=$entry.id lct=$lct absolute=true}</link>
-        <guid>{route name='mueternizermodule_entry_display'  id=$entry.id lct=$lct absolute=true}</guid>
+        <link>{route name="mueternizermodule_entry_`$routeArea`display"  id=$entry.id absolute=true}</link>
+        <guid>{route name="mueternizermodule_entry_`$routeArea`display"  id=$entry.id absolute=true}</guid>
         {if isset($entry.createdUserId)}
             {usergetvar name='uname' uid=$entry.createdUserId assign='cr_uname'}
             {usergetvar name='name' uid=$entry.createdUserId assign='cr_name'}

@@ -18,7 +18,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use ModUtil;
-use SecurityUtil;
 use System;
 use UserUtil;
 use Zikula_Form_AbstractHandler;
@@ -205,10 +204,10 @@ class EditHandler extends Zikula_Form_AbstractHandler
     public function initialize(Zikula_Form_View $view)
     {
         $this->inlineUsage = ((UserUtil::getTheme() == 'Printer') ? true : false);
-        $this->idPrefix = $this->request->query->filter('idp', '', false, FILTER_SANITIZE_STRING);
+        $this->idPrefix = $this->request->query->getAlnum('idp', '');
     
         // initialise redirect goal
-        $this->returnTo = $this->request->query->filter('returnTo', null, false, FILTER_SANITIZE_STRING);
+        $this->returnTo = $this->request->query->getAlnum('returnTo', null);
         // store current uri for repeated creations
         $this->repeatReturnUrl = System::getCurrentURI();
     
@@ -226,8 +225,10 @@ class EditHandler extends Zikula_Form_AbstractHandler
         $entity = null;
         $this->mode = ($hasIdentifier) ? 'edit' : 'create';
     
+        $permissionHelper = $this->view->getServiceManager()->get('zikula_permissions_module.api.permission');
+    
         if ($this->mode == 'edit') {
-            if (!SecurityUtil::checkPermission($this->permissionComponent, $this->createCompositeIdentifier() . '::', ACCESS_EDIT)) {
+            if (!$permissionHelper->hasPermission($this->permissionComponent, $this->createCompositeIdentifier() . '::', ACCESS_EDIT)) {
                 throw new AccessDeniedException();
             }
     
@@ -243,7 +244,7 @@ class EditHandler extends Zikula_Form_AbstractHandler
                                                'returnUrl' => $this->getRedirectUrl(null)));
             }
         } else {
-            if (!SecurityUtil::checkPermission($this->permissionComponent, '::', ACCESS_EDIT)) {
+            if (!$permissionHelper->hasPermission($this->permissionComponent, '::', ACCESS_EDIT)) {
                 throw new AccessDeniedException();
             }
     
@@ -387,149 +388,153 @@ class EditHandler extends Zikula_Form_AbstractHandler
         return $codes;
     }
 
-    /**
-     * Command event handler.
-     *
-     * This event handler is called when a command is issued by the user. Commands are typically something
-     * that originates from a {@link Zikula_Form_Plugin_Button} plugin. The passed args contains different properties
-     * depending on the command source, but you should at least find a <var>$args['commandName']</var>
-     * value indicating the name of the command. The command name is normally specified by the plugin
-     * that initiated the command.
-     *
-     * @param Zikula_Form_View $view The form view instance.
-     * @param array            $args Additional arguments.
-     *
-     * @see Zikula_Form_Plugin_Button
-     * @see Zikula_Form_Plugin_ImageButton
-     *
-     * @return mixed Redirect or false on errors.
-     */
-    public function handleCommand(Zikula_Form_View $view, &$args)
-    {
-        $action = $args['commandName'];
-        $isRegularAction = !in_array($action, array('delete', 'cancel'));
+        /**
+         * Command event handler.
+         *
+         * This event handler is called when a command is issued by the user. Commands are typically something
+         * that originates from a {@link Zikula_Form_Plugin_Button} plugin. The passed args contains different properties
+         * depending on the command source, but you should at least find a <var>$args['commandName']</var>
+         * value indicating the name of the command. The command name is normally specified by the plugin
+         * that initiated the command.
+         *
+         * @param Zikula_Form_View $view The form view instance.
+         * @param array            $args Additional arguments.
+         *
+         * @see Zikula_Form_Plugin_Button
+         * @see Zikula_Form_Plugin_ImageButton
+         *
+         * @return mixed Redirect or false on errors.
+         */
+        public function handleCommand(Zikula_Form_View $view, &$args)
+        {
+            $action = $args['commandName'];
+            $isRegularAction = !in_array($action, array('delete', 'cancel'));
     
-        if ($isRegularAction) {
-            // do forms validation including checking all validators on the page to validate their input
-            if (!$this->view->isValid()) {
-                return false;
-            }
-        }
-    
-        if ($action != 'cancel') {
-            $otherFormData = $this->fetchInputData($view, $args);
-            if ($otherFormData === false) {
-                return false;
-            }
-        }
-    
-        // get treated entity reference from persisted member var
-        $entity = $this->entityRef;
-    
-        $hookAreaPrefix = $entity->getHookAreaPrefix();
-        if ($action != 'cancel') {
-            $hookType = $action == 'delete' ? 'validate_delete' : 'validate_edit';
-    
-            // Let any hooks perform additional validation actions
-            $hook = new ValidationHook(new ValidationProviders());
-            $validators = $this->dispatchHooks($hookAreaPrefix . '.' . $hookType, $hook)->getValidators();
-            if ($validators->hasErrors()) {
-                return false;
-            }
-        }
-    
-        if ($action != 'cancel') {
-            $success = $this->applyAction($args);
-            if (!$success) {
-                // the workflow operation failed
-                return false;
+            if ($isRegularAction) {
+                // do forms validation including checking all validators on the page to validate their input
+                if (!$this->view->isValid()) {
+                    return false;
+                }
             }
     
-            // Let any hooks know that we have created, updated or deleted an item
-            $hookType = $action == 'delete' ? 'process_delete' : 'process_edit';
-            $url = null;
-            if ($action != 'delete') {
-                $urlArgs = $entity->createUrlArgs();
-                $url = new RouteUrl('mueternizermodule_' . $this->objectType . '_display', $urlArgs);
+            if ($action != 'cancel') {
+                $otherFormData = $this->fetchInputData($view, $args);
+                if ($otherFormData === false) {
+                    return false;
+                }
             }
-            $hook = new ProcessHook($entity->createCompositeIdentifier(), $url);
-            $this->dispatchHooks($hookAreaPrefix . '.' . $hookType, $hook);
     
-            // An item was created, updated or deleted, so we clear all cached pages for this item.
-            $cacheArgs = array('ot' => $this->objectType, 'item' => $entity);
-            ModUtil::apiFunc($this->name, 'cache', 'clearItemCache', $cacheArgs);
+            // get treated entity reference from persisted member var
+            $entity = $this->entityRef;
     
-            // clear view cache to reflect our changes
-            $this->view->clear_cache();
-        }
+            if ($entity->supportsHookSubscribers()) {
+                $hookAreaPrefix = $entity->getHookAreaPrefix();
+                if ($action != 'cancel') {
+                    $hookType = $action == 'delete' ? 'validate_delete' : 'validate_edit';
     
-        if ($this->hasPageLockSupport === true && $this->mode == 'edit' && ModUtil::available('PageLock')) {
-            ModUtil::apiFunc('PageLock', 'user', 'releaseLock',
-                             array('lockName' => $this->name . $this->objectTypeCapital . $this->createCompositeIdentifier()));
-        }
-    
-        return $this->view->redirect($this->getRedirectUrl($args));
-    }
-    
-    /**
-     * Get success or error message for default operations.
-     *
-     * @param Array   $args    arguments from handleCommand method.
-     * @param Boolean $success true if this is a success, false for default error.
-     * @return String desired status or error message.
-     */
-    protected function getDefaultMessage($args, $success = false)
-    {
-        $message = '';
-        switch ($args['commandName']) {
-            case 'create':
-                    if ($success === true) {
-                        $message = $this->__('Done! Item created.');
-                    } else {
-                        $message = $this->__('Error! Creation attempt failed.');
+                    // Let any hooks perform additional validation actions
+                    $hook = new ValidationHook(new ValidationProviders());
+                    $validators = $this->dispatchHooks($hookAreaPrefix . '.' . $hookType, $hook)->getValidators();
+                    if ($validators->hasErrors()) {
+                        return false;
                     }
-                    break;
-            case 'update':
-                    if ($success === true) {
-                        $message = $this->__('Done! Item updated.');
-                    } else {
-                        $message = $this->__('Error! Update attempt failed.');
+                }
+            }
+    
+            if ($action != 'cancel') {
+                $success = $this->applyAction($args);
+                if (!$success) {
+                    // the workflow operation failed
+                    return false;
+                }
+    
+                if ($entity->supportsHookSubscribers()) {
+                    // Let any hooks know that we have created, updated or deleted an item
+                    $hookType = $action == 'delete' ? 'process_delete' : 'process_edit';
+                    $url = null;
+                    if ($action != 'delete') {
+                        $urlArgs = $entity->createUrlArgs();
+                        $url = new RouteUrl('mueternizermodule_' . $this->objectType . '_display', $urlArgs);
                     }
-                    break;
-            case 'delete':
-                    if ($success === true) {
-                        $message = $this->__('Done! Item deleted.');
-                    } else {
-                        $message = $this->__('Error! Deletion attempt failed.');
-                    }
-                    break;
+                    $hook = new ProcessHook($entity->createCompositeIdentifier(), $url);
+                    $this->dispatchHooks($hookAreaPrefix . '.' . $hookType, $hook);
+                }
+    
+                // An item was created, updated or deleted, so we clear all cached pages for this item.
+                $cacheArgs = array('ot' => $this->objectType, 'item' => $entity);
+                ModUtil::apiFunc($this->name, 'cache', 'clearItemCache', $cacheArgs);
+    
+                // clear view cache to reflect our changes
+                $this->view->clear_cache();
+            }
+    
+            if ($this->hasPageLockSupport === true && $this->mode == 'edit' && ModUtil::available('PageLock')) {
+                ModUtil::apiFunc('PageLock', 'user', 'releaseLock',
+                                 array('lockName' => $this->name . $this->objectTypeCapital . $this->createCompositeIdentifier()));
+            }
+    
+            return $this->view->redirect($this->getRedirectUrl($args));
         }
     
-        return $message;
-    }
+        /**
+         * Get success or error message for default operations.
+         *
+         * @param Array   $args    arguments from handleCommand method.
+         * @param Boolean $success true if this is a success, false for default error.
+         * @return String desired status or error message.
+         */
+        protected function getDefaultMessage($args, $success = false)
+        {
+            $message = '';
+            switch ($args['commandName']) {
+                case 'create':
+                        if ($success === true) {
+                            $message = $this->__('Done! Item created.');
+                        } else {
+                            $message = $this->__('Error! Creation attempt failed.');
+                        }
+                        break;
+                case 'update':
+                        if ($success === true) {
+                            $message = $this->__('Done! Item updated.');
+                        } else {
+                            $message = $this->__('Error! Update attempt failed.');
+                        }
+                        break;
+                case 'delete':
+                        if ($success === true) {
+                            $message = $this->__('Done! Item deleted.');
+                        } else {
+                            $message = $this->__('Error! Deletion attempt failed.');
+                        }
+                        break;
+            }
     
-    /**
-     * Add success or error message to session.
-     *
-     * @param Array   $args    arguments from handleCommand method.
-     * @param Boolean $success true if this is a success, false for default error.
-     *
-     * @throws RuntimeException Thrown if executing the workflow action fails
-     */
-    protected function addDefaultMessage($args, $success = false)
-    {
-        $message = $this->getDefaultMessage($args, $success);
-        if (!empty($message)) {
-            $flashType = ($success === true) ? 'status' : 'error';
-            $this->request->getSession()->getFlashBag()->add($flashType, $message);
-            $logger = $this->view->getServiceManager()->get('logger');
-            if ($success === true) {
-                $logger->notice('{app}: User {user} updated the {entity} with id {id}.', array('app' => 'MUEternizerModule', 'user' => UserUtil::getVar('uname'), 'entity' => $this->objectType, 'id' => $this->entityRef->createCompositeIdentifier()));
-            } else {
-                $logger->error('{app}: User {user} tried to update the {entity} with id {id}, but failed.', array('app' => 'MUEternizerModule', 'user' => UserUtil::getVar('uname'), 'entity' => $this->objectType, 'id' => $this->entityRef->createCompositeIdentifier()));
+            return $message;
+        }
+    
+        /**
+         * Add success or error message to session.
+         *
+         * @param Array   $args    arguments from handleCommand method.
+         * @param Boolean $success true if this is a success, false for default error.
+         *
+         * @throws RuntimeException Thrown if executing the workflow action fails
+         */
+        protected function addDefaultMessage($args, $success = false)
+        {
+            $message = $this->getDefaultMessage($args, $success);
+            if (!empty($message)) {
+                $flashType = ($success === true) ? 'status' : 'error';
+                $this->request->getSession()->getFlashBag()->add($flashType, $message);
+                $logger = $this->view->getServiceManager()->get('logger');
+                if ($success === true) {
+                    $logger->notice('{app}: User {user} updated the {entity} with id {id}.', array('app' => 'MUEternizerModule', 'user' => UserUtil::getVar('uname'), 'entity' => $this->objectType, 'id' => $this->entityRef->createCompositeIdentifier()));
+                } else {
+                    $logger->error('{app}: User {user} tried to update the {entity} with id {id}, but failed.', array('app' => 'MUEternizerModule', 'user' => UserUtil::getVar('uname'), 'entity' => $this->objectType, 'id' => $this->entityRef->createCompositeIdentifier()));
+                }
             }
         }
-    }
 
     /**
      * Input data processing called by handleCommand method.

@@ -156,7 +156,7 @@ class Item extends \Content_AbstractContentType
     public function startEditing()
     {
         // ensure our custom plugins are loaded
-        array_push($this->view->plugins_dir, 'modules/Resources/views//plugins');
+        array_push($this->view->plugins_dir, 'modules/MUEternizerModule/Resources/views//plugins');
     
         // required as parameter for the item selector plugin
         $this->view->assign('objectType', $this->objectType);

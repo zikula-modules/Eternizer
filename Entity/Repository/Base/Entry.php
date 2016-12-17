@@ -639,7 +639,7 @@ class Entry extends EntityRepository
     protected function applyDefaultFilters(QueryBuilder $qb, $parameters = array())
     {
         $currentModule = ModUtil::getName();//FormUtil::getPassedValue('module', '', 'GETPOST');
-        $currentLegacyControllerType = FormUtil::getPassedValue('lct', 'user', 'GETPOST');
+        $currentLegacyControllerType = $this->request->get('lct', 'user');
         if ($currentLegacyControllerType == 'admin' && $currentModule == 'MUEternizerModule') {
             return $qb;
         }
@@ -670,7 +670,6 @@ class Entry extends EntityRepository
     {
         $qb = $this->genericBaseQuery('', $orderBy, $useJoins);
         if (count($exclude) > 0) {
-            $exclude = implode(', ', $exclude);
             $qb->andWhere('tbl.id NOT IN (:excludeList)')
                ->setParameter('excludeList', $exclude);
         }
@@ -945,7 +944,9 @@ class Entry extends EntityRepository
         $filterUtil->enrichQuery();
         }
     
-        $showOnlyOwnEntries = (int) FormUtil::getPassedValue('own', ModUtil::getVar('MUEternizerModule', 'showOnlyOwnEntries', 0), 'GETPOST');
+        $serviceManager = ServiceUtil::getManager();
+        $varHelper = $serviceManager->get('zikula_extensions_module.api.variable');
+        $showOnlyOwnEntries = (int) FormUtil::getPassedValue('own', $varHelper->get('MUEternizerModule', 'showOnlyOwnEntries', 0), 'GETPOST');
         if ($showOnlyOwnEntries == 1) {
             $uid = UserUtil::getVar('uid');
             $qb->andWhere('tbl.createdUserId = :creator')

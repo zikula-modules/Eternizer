@@ -12,6 +12,25 @@ application Eternizer {
 		generatePoweredByBacklinksIntoFooterTemplates false
 		generateTests false
 		writeModelToDocs true
+		skipFiles "
+                    CHANGELOG.md,
+                    README.md
+               "
+               markFiles "
+               EternizerModuleInstaller.php,
+                   Api/UserApi.php,
+                   Api/SelectionApi.php,
+                   Controller/EntryController.php,
+                   Entity/EntryEntity.php,
+                   Entity/Repository/Entry.php,
+                   Form/Handler/Entry/EditHandler.php,
+                   Resources/public/css/style.css,
+                   Resources/public/images/admin.png,         
+                   Resources/views/Entry/edit.tpl,
+                   Resources/views/Entry/view.tpl,
+                   Util/ControllerUtil.php,
+                   Util/ViewUtil.php
+               "
 	}
 			entities {
 				entity entry leading {

@@ -1,0 +1,31 @@
+services:
+    # Utility classes
+    mu_eternizer_module.model_helper:
+        class: "MU\\EternizerModule\\Helper\\ModelHelper"
+        arguments:
+            serviceManager: "@service_container"
+    
+    mu_eternizer_module.controller_helper:
+        class: "MU\\EternizerModule\\Helper\\ControllerHelper"
+        arguments:
+            serviceManager: "@service_container"
+            translator: "@translator"
+            session: "@session"
+            logger: "@logger"
+    
+    mu_eternizer_module.view_helper:
+        class: "MU\\EternizerModule\\Helper\\ViewHelper"
+        arguments:
+            serviceManager: "@service_container"
+            translator: "@translator"
+    
+    mu_eternizer_module.workflow_helper:
+        class: "MU\\EternizerModule\\Helper\\WorkflowHelper"
+        arguments:
+            serviceManager: "@service_container"
+            translator: "@translator"
+    
+    mu_eternizer_module.listentries_helper:
+        class: "MU\\EternizerModule\\Helper\\ListEntriesHelper"
+        arguments:
+            translator: "@translator"

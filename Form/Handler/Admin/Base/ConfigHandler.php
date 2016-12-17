@@ -15,7 +15,6 @@ namespace MU\EternizerModule\Form\Handler\Admin\Base;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use ModUtil;
-use SecurityUtil;
 use ServiceUtil;
 use System;
 use UserUtil;
@@ -51,7 +50,8 @@ class ConfigHandler extends Zikula_Form_AbstractHandler
     public function initialize(Zikula_Form_View $view)
     {
         // permission check
-        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
+        $serviceManager = ServiceUtil::getManager();
+        if (!$serviceManager->get('zikula_permissions_module.api.permission')->hasPermission($this->name . '::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
@@ -131,6 +131,7 @@ class ConfigHandler extends Zikula_Form_AbstractHandler
     public function handleCommand(Zikula_Form_View $view, &$args)
     {
         $serviceManager = ServiceUtil::getManager();
+        $flashBag = $serviceManager->get('request')->getSession()->getFlashBag();
 
         if ($args['commandName'] == 'save') {
             // check if all fields are valid
@@ -143,17 +144,17 @@ class ConfigHandler extends Zikula_Form_AbstractHandler
 
             // update all module vars
             try {
-                $this->setVars($data['config']);
+                $serviceManager->get('zikula_extensions_module.api.variable')->setAll('MUEternizerModule', $data['config']);
             } catch (\Exception $e) {
                 $msg = $this->__('Error! Failed to set configuration variables.');
                 if (System::isDevelopmentMode()) {
                     $msg .= ' ' . $e->getMessage();
                 }
-                $this->request->getSession()->getFlashBag()->add('error', $msg);
+                $flashBag->add('error', $msg);
                 return false;
             }
 
-            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Module configuration updated.'));
+            $flashBag->add('status', $this->__('Done! Module configuration updated.'));
 
             $logger = $serviceManager->get('logger');
             $logger->notice('{app}: User {user} updated the configuration.', array('app' => 'MUEternizerModule', 'user' => UserUtil::getVar('uname')));

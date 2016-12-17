@@ -22,7 +22,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use DataUtil;
 use FormUtil;
 use ModUtil;
-use SecurityUtil;
 use ServiceUtil;
 use System;
 use UserUtil;
@@ -681,6 +680,9 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
             }
         }
     
+        // workaround for ampersand problem (#692)
+        $string = str_replace('&amp;', '&', $string);
+    
         $this[$fieldName] = $string;
     }
     
@@ -903,10 +905,6 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
      */
     protected function performPreSaveCallback()
     {
-        if (!$this->validate()) {
-            return false;
-        }
-    
         $serviceManager = ServiceUtil::getManager();
         $dispatcher = $serviceManager->get('event_dispatcher');
     
@@ -1100,39 +1098,41 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
         $component = 'MUEternizerModule:Entry:';
         $instance = $this->id . '::';
         $dom = ZLanguage::getModuleDomain('MUEternizerModule');
+        $serviceManager = ServiceUtil::getManager();
+        $permissionHelper = $serviceManager->get('zikula_permissions_module.api.permission');
         if ($currentLegacyControllerType == 'admin') {
             if (in_array($currentFunc, array('index', 'view'))) {
                 $this->_actions[] = array(
-                    'url' => array('type' => 'entry', 'func' => 'display', 'arguments' => array('lct' => 'user', 'id' => $this['id'])),
+                    'url' => array('type' => 'entry', 'func' => 'display', 'arguments' => array('id' => $this['id'])),
                     'icon' => 'search-plus',
                     'linkTitle' => __('Open preview page', $dom),
                     'linkText' => __('Preview', $dom)
                 );
                 $this->_actions[] = array(
-                    'url' => array('type' => 'entry', 'func' => 'display', 'arguments' => array('lct' => 'admin', 'id' => $this['id'])),
+                    'url' => array('type' => 'entry', 'func' => 'admindisplay', 'arguments' => array('id' => $this['id'])),
                     'icon' => 'eye',
                     'linkTitle' => str_replace('"', '', $this->getTitleFromDisplayPattern()),
                     'linkText' => __('Details', $dom)
                 );
             }
             if (in_array($currentFunc, array('index', 'view', 'display'))) {
-                if (SecurityUtil::checkPermission($component, $instance, ACCESS_EDIT)) {
+                if ($permissionHelper->hasPermission($component, $instance, ACCESS_EDIT)) {
                     $this->_actions[] = array(
-                        'url' => array('type' => 'entry', 'func' => 'edit', 'arguments' => array('lct' => 'admin', 'id' => $this['id'])),
+                        'url' => array('type' => 'entry', 'func' => 'adminedit', 'arguments' => array('id' => $this['id'])),
                         'icon' => 'pencil-square-o',
                         'linkTitle' => __('Edit', $dom),
                         'linkText' => __('Edit', $dom)
                     );
                     $this->_actions[] = array(
-                        'url' => array('type' => 'entry', 'func' => 'edit', 'arguments' => array('lct' => 'admin', 'astemplate' => $this['id'])),
+                        'url' => array('type' => 'entry', 'func' => 'adminedit', 'arguments' => array('astemplate' => $this['id'])),
                         'icon' => 'files-o',
                         'linkTitle' => __('Reuse for new item', $dom),
                         'linkText' => __('Reuse', $dom)
                     );
                 }
-                if (SecurityUtil::checkPermission($component, $instance, ACCESS_DELETE)) {
+                if ($permissionHelper->hasPermission($component, $instance, ACCESS_DELETE)) {
                     $this->_actions[] = array(
-                        'url' => array('type' => 'entry', 'func' => 'delete', 'arguments' => array('lct' => 'admin', 'id' => $this['id'])),
+                        'url' => array('type' => 'entry', 'func' => 'admindelete', 'arguments' => array('id' => $this['id'])),
                         'icon' => 'trash-o',
                         'linkTitle' => __('Delete', $dom),
                         'linkText' => __('Delete', $dom)
@@ -1141,7 +1141,7 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
             }
             if ($currentFunc == 'display') {
                 $this->_actions[] = array(
-                    'url' => array('type' => 'entry', 'func' => 'view', 'arguments' => array('lct' => 'admin')),
+                    'url' => array('type' => 'entry', 'func' => 'adminview', 'arguments' => array()),
                     'icon' => 'reply',
                     'linkTitle' => __('Back to overview', $dom),
                     'linkText' => __('Back to overview', $dom)
@@ -1151,30 +1151,30 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
         if ($currentLegacyControllerType == 'user') {
             if (in_array($currentFunc, array('index', 'view'))) {
                 $this->_actions[] = array(
-                    'url' => array('type' => 'entry', 'func' => 'display', 'arguments' => array('lct' => 'user', 'id' => $this['id'])),
+                    'url' => array('type' => 'entry', 'func' => 'display', 'arguments' => array('id' => $this['id'])),
                     'icon' => 'eye',
                     'linkTitle' => str_replace('"', '', $this->getTitleFromDisplayPattern()),
                     'linkText' => __('Details', $dom)
                 );
             }
             if (in_array($currentFunc, array('index', 'view', 'display'))) {
-                if (SecurityUtil::checkPermission($component, $instance, ACCESS_EDIT)) {
+                if ($permissionHelper->hasPermission($component, $instance, ACCESS_EDIT)) {
                     $this->_actions[] = array(
-                        'url' => array('type' => 'entry', 'func' => 'edit', 'arguments' => array('lct' => 'user', 'id' => $this['id'])),
+                        'url' => array('type' => 'entry', 'func' => 'edit', 'arguments' => array('id' => $this['id'])),
                         'icon' => 'pencil-square-o',
                         'linkTitle' => __('Edit', $dom),
                         'linkText' => __('Edit', $dom)
                     );
                     $this->_actions[] = array(
-                        'url' => array('type' => 'entry', 'func' => 'edit', 'arguments' => array('lct' => 'user', 'astemplate' => $this['id'])),
+                        'url' => array('type' => 'entry', 'func' => 'edit', 'arguments' => array('astemplate' => $this['id'])),
                         'icon' => 'files-o',
                         'linkTitle' => __('Reuse for new item', $dom),
                         'linkText' => __('Reuse', $dom)
                     );
                 }
-                if (SecurityUtil::checkPermission($component, $instance, ACCESS_DELETE)) {
+                if ($permissionHelper->hasPermission($component, $instance, ACCESS_DELETE)) {
                     $this->_actions[] = array(
-                        'url' => array('type' => 'entry', 'func' => 'delete', 'arguments' => array('lct' => 'user', 'id' => $this['id'])),
+                        'url' => array('type' => 'entry', 'func' => 'delete', 'arguments' => array('id' => $this['id'])),
                         'icon' => 'trash-o',
                         'linkTitle' => __('Delete', $dom),
                         'linkText' => __('Delete', $dom)
@@ -1183,7 +1183,7 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
             }
             if ($currentFunc == 'display') {
                 $this->_actions[] = array(
-                    'url' => array('type' => 'entry', 'func' => 'view', 'arguments' => array('lct' => 'user')),
+                    'url' => array('type' => 'entry', 'func' => 'view', 'arguments' => array()),
                     'icon' => 'reply',
                     'linkTitle' => __('Back to overview', $dom),
                     'linkText' => __('Back to overview', $dom)
@@ -1223,13 +1223,23 @@ abstract class AbstractEntryEntity extends Zikula_EntityAccess
     }
     
     /**
+     * Determines whether this entity supports hook subscribers or not.
+     *
+     * @return boolean
+     */
+    public function supportsHookSubscribers()
+    {
+        return true;
+    }
+    
+    /**
      * Return lower case name of multiple items needed for hook areas.
      *
      * @return string
      */
     public function getHookAreaPrefix()
     {
-        return 'eternizer.ui_hooks.entries';
+        return 'mueternizermodule.ui_hooks.entries';
     }
     
     /**

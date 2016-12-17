@@ -15,7 +15,6 @@ namespace MU\EternizerModule\NewsletterPlugin;
 use FormUtil;
 use ModUtil;
 use Newsletter_AbstractPlugin;
-use SecurityUtil;
 use ServiceUtil;
 
 /**
@@ -147,10 +146,13 @@ class ItemListPlugin extends Newsletter_AbstractPlugin
         $objectTypes = $this->getPluginVar('ObjectTypes', array());
         $args = $this->getPluginVar('Args', array());
     
+        $serviceManager = ServiceUtil::getManager();
+        $permissionHelper = $serviceManager->get('zikula_permissions_module.api.permission');
+    
         $output = array();
     
         foreach ($objectTypes as $objectType) {
-            if (!SecurityUtil::checkPermission($this->modname . ':' . ucfirst($objectType) . ':', '::', ACCESS_READ, $this->userNewsletter)) {
+            if (!$permissionHelper->hasPermission($this->modname . ':' . ucfirst($objectType) . ':', '::', ACCESS_READ, $this->userNewsletter)) {
                 // the newsletter has no permission for these items
                 continue;
             }

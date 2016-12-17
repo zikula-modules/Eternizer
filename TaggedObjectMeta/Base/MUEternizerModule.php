@@ -13,7 +13,6 @@
 namespace MU\EternizerModule\TaggedObjectMeta\Base;
 
 use DateUtil;
-use SecurityUtil;
 use ServiceUtil;
 use UserUtil;
 use Zikula\TagModule\AbstractTaggedObjectMeta;
@@ -42,13 +41,15 @@ class MUEternizerModule extends AbstractTaggedObjectMeta
         $urlArgs = $urlObject->getArgs();
         $objectType = isset($urlArgs['ot']) ? $urlArgs['ot'] : 'entry';
     
+        $serviceManager = ServiceUtil::getManager();
+    
+        $permissionHelper = $serviceManager->get('zikula_permissions_module.api.permission');
         $component = $module . ':' . ucfirst($objectType) . ':';
-        $perm = SecurityUtil::checkPermission($component, $objectId . '::', ACCESS_READ);
+        $perm = $permissionHelper->hasPermission($component, $objectId . '::', ACCESS_READ);
         if (!$perm) {
             return;
         }
     
-        $serviceManager = ServiceUtil::getManager();
         $repository = $serviceManager->get('mueternizermodule.' . $objectType . '_factory')->getRepository();
         $useJoins = false;
     

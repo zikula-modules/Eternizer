@@ -1,9 +1,8 @@
 {* purpose of this template: entries index view *}
-{assign var='lct' value='user'}
-{if isset($smarty.get.lct) && $smarty.get.lct eq 'admin'}
-    {assign var='lct' value='admin'}
+{assign var='area' value='User'}
+{if $routeArea eq 'admin'}
+    {assign var='area' value='Admin'}
 {/if}
-{assign var='lctUc' value=$lct|ucfirst}
-{include file="`$lctUc`/header.tpl"}
+{include file="`$area`/header.tpl"}
 <p>{gt text='Welcome to the entry section of the Eternizer application.'}</p>
-{include file="`$lctUc`/footer.tpl"}
+{include file="`$area`/footer.tpl"}

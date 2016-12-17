@@ -26,7 +26,7 @@ use Symfony\Component\HttpFoundation\Request;
 class AjaxController extends BaseAjaxController
 {
     /**
-     * This method is the default function handling the main area called without defining arguments.
+     * This is the default action handling the mainnull area called without defining arguments.
      *
      * @Route("/ajax",
      *        methods = {"GET"}
@@ -43,7 +43,7 @@ class AjaxController extends BaseAjaxController
     {
         return parent::indexAction($request);
     }
-    
+
     
     /**
      * Retrieve item list for finder selections in Forms, Content type plugin and Scribite.
