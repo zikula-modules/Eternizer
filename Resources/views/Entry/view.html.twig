@@ -39,16 +39,15 @@
                             {% if entry.name is not empty %}
                                 <span class="etz_attr">{{ entry.name|safeHtml }}</span>
                             {% else %}
-                                {% if entry.createdUserId is empty %}
-								{% set guest = getModVar('ZikulaUsersModule', 'anonymous') %}
+							{% set guest = getModVar('ZikulaUsersModule', 'anonymous') %}
+                                {% if entry.createdUserId is empty %}							
                                     {{ guest|safeHtml }}
                                 {% else %}
-                                    {#% usergetvar name='uname' uid=entry.createdUserId assign='uname' %}
-                                    {% if uname is not empty %}
-                                        {{ uname|safeHtml }}
-                                        {% else %}
+                                    {% if currentUser.uname is not empty %}
+                                        {{ currentUser.uname|safeHtml }}
+                                     {% else %}
                                         {{ guest|safeHtml }}
-                                    {% endif %#}
+                                    {% endif %}
                                 {% endif %}
                             {% endif %}
 							{{ __f('Created on %s', {'%s': entry.createdDate|date("d.m.Y")}) }}
@@ -81,7 +80,7 @@
                     {% endif %}
                     {% if entry.updatedDate > entry.createdDate and entry.createdUserId == entry.updatedUserId %}
                         <br/>
-                        <span class="etz_updated">{{ __('Updated on %s', {'%s':entry.updatedDate|date("d.m.Y")}) }}</span>
+                        <span class="etz_updated">{{ __f('Updated on %s', {'%s': entry.updatedDate|date("d.m.Y")}) }}</span>
                     {% endif %}
                 </div>
             </div>
