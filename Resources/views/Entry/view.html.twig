@@ -6,6 +6,7 @@
 <div class="mueternizermodule-entry mueternizermodule-view">
 
 {% if routeArea != 'admin' %}
+<div id="eternizer">
 {% for entry in items %}
         <div class="etz_entry z-clearfix {{ cycle (['etz_bg1','etz_bg2'], loop.index0) }}">
             <div class="col-md-4 etz_author">
@@ -38,8 +39,8 @@
                             {% if entry.name is not empty %}
                                 <span class="etz_attr">{{ entry.name|safeHtml }}</span>
                                 {% else %}
-                                {#% if entry.createdUserId is empty %}
-                                    {{ modgetvar module='Users' name='anonymous' assign='guest' }}
+                                {% if entry.createdUserId is empty %}
+                                    {{ modgetvar module='ZikulaUsersModule' name='anonymous' assign='guest' }}
                                     {{ guest|safeHtml }}
                                     {% else %}
                                     {% usergetvar name='uname' uid=entry.createdUserId assign='uname' %}
@@ -48,10 +49,9 @@
                                         {% else %}
                                         {{ guest|safeHtml }}
                                     {% endif %}
-                                {% /éndif %#}
+                                {% endif %}
                             {% endif %}
 							{{ __f('Created on %s', {'%s': entry.createdDate|date("d.m.Y")}) }}
-                            {#{ __('on %s') tag1=entry.createdDate|dateformat:datetimelong }#}
                         </div>
                     </div>
                     <div class="etz_action">
@@ -91,6 +91,7 @@
             <td class="z-left" colspan="9">{{ __('No entries found.') }}</td>
         </tr>
 		{% endfor %}
+		</div>
 		{% endif %}
 		
     {% if routeArea == 'admin' %}
