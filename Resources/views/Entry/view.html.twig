@@ -5,6 +5,95 @@
 {% block content %}
 <div class="mueternizermodule-entry mueternizermodule-view">
 
+{% if routeArea != 'admin' %}
+{% for entry in items %}
+        <div class="etz_entry z-clearfix {{ cycle (['etz_bg1','etz_bg2'], loop.index0) }}">
+            <div class="col-md-4 etz_author">
+                <div class="etz_avatar">{#{ useravatar uid=entry.createdUserId }#}</div>
+                {% if entry.email is not empty or entry.homepage is not empty or entry.location is not empty %}
+                    <dl class="etz_options">
+                        {% if entry.email is not empty %}
+                            <dt>{{ __('Email') }}</dt>
+                            <dd>
+                                <a href="mailto:{{ entry.email|protectMail }}" title="{{ __('Send an email') }}" class="fa fa-envelope"></a>
+                            </dd>
+                        {% endif %}
+                        {% if entry.homepage is not empty %}
+                            <dt>{{ __('Homepage') }}</dt>
+                            <dd>
+                                <a href="{{ entry.homepage }}" title="{{ __('Visit this page') }}" class="fa fa-external-link-square"></a>
+                            </dd>
+                        {% endif %}
+                        {% if entry.location is not empty %}
+                            <dt>{{ __('Location') }}</dt>
+                            <dd>{{ entry.location|safeHtml }}</dd>
+                        {% endif %}
+                    </dl>
+                {% endif %}
+            </div>
+            <div class="col-md-8 etz_body">
+                <div class="etz_info">
+                    <div class="etz_title">
+                        <div class="etz_name">
+                            {% if entry.name is not empty %}
+                                <span class="etz_attr">{{ entry.name|safeHtml }}</span>
+                                {% else %}
+                                {#% if entry.createdUserId is empty %}
+                                    {{ modgetvar module='Users' name='anonymous' assign='guest' }}
+                                    {{ guest|safeHtml }}
+                                    {% else %}
+                                    {% usergetvar name='uname' uid=entry.createdUserId assign='uname' %}
+                                    {% if uname is not empty %}
+                                        {{ uname|safeHtml }}
+                                        {% else %}
+                                        {{ guest|safeHtml }}
+                                    {% endif %}
+                                {% /éndif %#}
+                            {% endif %}
+							{{ __f('Created on %s', {'%s': entry.createdDate|date("d.m.Y")}) }}
+                            {#{ __('on %s') tag1=entry.createdDate|dateformat:datetimelong }#}
+                        </div>
+                    </div>
+                    <div class="etz_action">
+                        {#% if entry._actions.length > 0 %}
+                            {% if entry.createdUserId == userid and coredata.logged_in == true and editentries == 1 %}
+                            <div class="eternizer-user-entry-edit">{#{ entry.id|eternizerGetStateOfEditOfEntry }}</div>
+                               {{% strip %}
+                                    {% for option in entry._actions %}
+                                        <a href="{% $option.url.type|eternizerActionUrl:option.url.func:option.url.arguments %}" title="{% option.linkTitle|safetext %}"{% if option.icon eq 'preview' %} target="_blank"{% /if %}>{% icon type=option.icon size='extrasmall' alt=option.linkText|safetext %}</a>
+                                    {% /foreach %}
+                                {% /strip %} }
+                            {% endif %}
+                        {% endif %#}
+                    </div>
+                </div>
+                <div class="etz_content">
+				     {{ entry.text }}
+                    {#{ entry.text|notifyFilters:'eternizer.filter_hooks.entries.filter'|safeHtml|nl2br }#}
+                    {% if entry.notes is not empty %}
+                        {% if entry.updatedUserId == entry.createdUserId %}
+                        <p style="margin-top: 2em;" class="entry-comment">
+                            <strong class="entry-comment-label">{{ __('Comment:') }}</strong>
+                            <br/>
+                            {{ entry.notes|safeHtml }}
+                        </p>
+                        {% endif %}
+                    {% endif %}
+                    {% if entry.updatedDate > entry.createdDate and entry.createdUserId == entry.updatedUserId %}
+                        <br/>
+                        <span class="etz_updated">{{ __('Updated on %s', {'%s':entry.updatedDate|date("d.m.Y")}) }}</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <tr class="z-datatableempty">
+            <td class="z-left" colspan="9">{{ __('No entries found.') }}</td>
+        </tr>
+		{% endfor %}
+		{% endif %}
+		
+    {% if routeArea == 'admin' %}
     {{ block('page_nav_links') }}
 
     {{ include('@MUEternizerModule/Entry/viewQuickNav.html.twig', { workflowStateFilter: false }) }}{# see template file for available options #}
@@ -120,6 +209,7 @@
             </tbody>
         </table>
         </div>
+		{% endif %}
         
         {% if showAllEntries != 1 and pager|default %}
             {{ pager({ rowcount: pager.numitems, limit: pager.itemsperpage, display: 'page', route: 'mueternizermodule_entry_' ~ routeArea ~ 'view'}) }}
