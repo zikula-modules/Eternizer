@@ -38,31 +38,31 @@
                         <div class="etz_name">
                             {% if entry.name is not empty %}
                                 <span class="etz_attr">{{ entry.name|safeHtml }}</span>
-                                {% else %}
+                            {% else %}
                                 {% if entry.createdUserId is empty %}
-                                    {{ modgetvar module='ZikulaUsersModule' name='anonymous' assign='guest' }}
+								{% set guest = getModVar('ZikulaUsersModule', 'anonymous') %}
                                     {{ guest|safeHtml }}
-                                    {% else %}
-                                    {% usergetvar name='uname' uid=entry.createdUserId assign='uname' %}
+                                {% else %}
+                                    {#% usergetvar name='uname' uid=entry.createdUserId assign='uname' %}
                                     {% if uname is not empty %}
                                         {{ uname|safeHtml }}
                                         {% else %}
                                         {{ guest|safeHtml }}
-                                    {% endif %}
+                                    {% endif %#}
                                 {% endif %}
                             {% endif %}
 							{{ __f('Created on %s', {'%s': entry.createdDate|date("d.m.Y")}) }}
                         </div>
                     </div>
                     <div class="etz_action">
-                        {#% if entry._actions.length > 0 %}
+                        {#% if actionLinks|length > 0 %}
                             {% if entry.createdUserId == userid and coredata.logged_in == true and editentries == 1 %}
-                            <div class="eternizer-user-entry-edit">{#{ entry.id|eternizerGetStateOfEditOfEntry }}</div>
-                               {{% strip %}
-                                    {% for option in entry._actions %}
-                                        <a href="{% $option.url.type|eternizerActionUrl:option.url.func:option.url.arguments %}" title="{% option.linkTitle|safetext %}"{% if option.icon eq 'preview' %} target="_blank"{% /if %}>{% icon type=option.icon size='extrasmall' alt=option.linkText|safetext %}</a>
-                                    {% /foreach %}
-                                {% /strip %} }
+                            <div class="eternizer-user-entry-edit">{{ entry.id|mueternizerGetStateOfEditOfEntry }}</div>
+                               {% strip %}
+                                    {% for option in actionLinks %}
+                                        <a href="{{ option.url }}" title="{{ option.linkTitle|e('html_attr') }}" role="menuitem" tabindex="-1" class="fa fa-{{ option.icon }}">{{ option.linkText }}</a>
+                                    {% endfor %}
+                                {% strip %} }
                             {% endif %}
                         {% endif %#}
                     </div>
