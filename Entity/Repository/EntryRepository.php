@@ -21,5 +21,8 @@ use MU\EternizerModule\Entity\Repository\Base\AbstractEntryRepository;
  */
 class EntryRepository extends AbstractEntryRepository
 {
-    // feel free to add your own methods here, like for example reusable DQL queries
+    /**
+     * @var string The default sorting field/expression
+     */
+    protected $defaultSortingField = 'createdDate';
 }
