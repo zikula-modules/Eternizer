@@ -40,17 +40,18 @@
                                 <span class="etz_attr">{{ entry.name|safeHtml }}</span>
                             {% else %}
 							{% set guest = getModVar('ZikulaUsersModule', 'anonymous') %}
-                                {% if entry.createdUserId is empty %}							
+							{% set ownerName = mueternizermodule_userVar('uname', entry.createdUserId) %}
+                                {% if ownerName is empty %}							
                                     {{ guest|safeHtml }}
                                 {% else %}
-                                    {% if currentUser.uname is not empty %}
-                                        {{ currentUser.uname|safeHtml }}
+                                    {% if ownerName is not empty %}
+                                        {{ ownerName|safeHtml }}
                                      {% else %}
                                         {{ guest|safeHtml }}
                                     {% endif %}
                                 {% endif %}
                             {% endif %}
-							{{ __f('Created on %s', {'%s': entry.createdDate|date("d.m.Y")}) }}
+							{{ __f('created on %s', {'%s': entry.createdDate|date("d.m.Y")}) }}
                         </div>
                     </div>
                     <div class="etz_action">
