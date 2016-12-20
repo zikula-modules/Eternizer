@@ -7,10 +7,11 @@
 
 {% if routeArea != 'admin' %}
 <div id="eternizer">
+{#{ callFunc('MUEternizerModule', 'type' => 'user') }#}
 {% for entry in items %}
         <div class="etz_entry z-clearfix {{ cycle (['etz_bg1','etz_bg2'], loop.index0) }}">
             <div class="col-md-4 etz_author">
-                <div class="etz_avatar">{#{ useravatar uid=entry.createdUserId }#}</div>
+                <div class="etz_avatar">{{ mueternizermodule_userAvatar(uid=entry.updatedUserId, rating='g') }}</div>
                 {% if entry.email is not empty or entry.homepage is not empty or entry.location is not empty %}
                     <dl class="etz_options">
                         {% if entry.email is not empty %}
