@@ -55,6 +55,7 @@ abstract class AbstractEternizerModuleInstaller extends AbstractExtensionInstall
         $this->setVar('editentries', false);
         $this->setVar('period', 0);
         $this->setVar('simplecaptcha', false);
+        $this->setVar('moderationGroupForEntries', 2);
     
         // create the default data
         $this->createDefaultData();
@@ -322,7 +323,7 @@ abstract class AbstractEternizerModuleInstaller extends AbstractExtensionInstall
     
         // delete stored object workflows
         $result = Zikula_Workflow_Util::deleteWorkflowsForModule('MUEternizerModule');
-        if ($result === false) {
+        if (false === $result) {
             $this->addFlash('error', $this->__f('An error was encountered while removing stored object workflows for the %s extension.', ['%s' => 'MUEternizerModule']));
             $logger->error('{app}: Could not remove stored object workflows during uninstallation.', ['app' => 'MUEternizerModule']);
     
