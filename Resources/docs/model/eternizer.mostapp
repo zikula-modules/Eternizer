@@ -8,22 +8,24 @@ application "Eternizer" {
   generatorSettings {
 		settingsContainer "Einstellungen"
 		targetCoreVersion ZK14
-		generateNewsletterPlugin false generateTagSupport false versionAllGeneratedFiles false
+		generateNewsletterPlugin false generateTagSupport false generateOnlyBaseClasses false
+        versionAllGeneratedFiles false
         generatePoweredByBacklinksIntoFooterTemplates false
 		generateTests false
 		writeModelToDocs true
-		skipFiles "CHANGELOG.md,
-               README.md"
-               markFiles ""
+		skipFiles "CHANGELOG.md, README.md,\r\nResources/views/Entry/view.html.twig,\r\nResources/public/css/style.css,\r\ncomposer.json"
+               markFiles "Container/LinkContainer.php,\r\nController/EntryController.php,\r\nEntity/Repository/EntryRepository.php,\r\nEternizerModuleInstaller.php,\r\nTwig/TwigExtension.php"
 	}
 			entities {
 				entity "entry" leading {
 					nameMultiple "entries"
-          displayPattern "#ip#"
-					fields {
+          displayPattern "#name#"
+					workflow STANDARD
+            fields {
 						string "ip" nullable {
 							mandatory false
-							length 15
+							visible false
+                    length 15
 						},
 						string "name" {
 							mandatory false
@@ -44,7 +46,8 @@ application "Eternizer" {
 						text "notes" nullable {
 							defaultValue ""
 							mandatory false
-						}
+						visible false
+                }
             }
             actions {
                 mainAction "Main",
