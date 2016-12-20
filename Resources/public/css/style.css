@@ -188,7 +188,7 @@ input.validation-failed, textarea.validation-failed {
 #eternizer .etz_entry .etz_action {
     float: right;
     width: 15%;
-    postion: relative;
+    position: relative;
 }
 
 #eternizer .etz_avatar img {
