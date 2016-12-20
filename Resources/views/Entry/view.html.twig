@@ -5,9 +5,13 @@
 {% block content %}
 <div class="mueternizermodule-entry mueternizermodule-view">
 
+{% set formposition = getModVar('MUEternizerModule', 'formposition') %}
+
 {% if routeArea != 'admin' %}
 <div id="eternizer">
+{% if formposition == 'above' %}
 {{ mueternizermodule_showEditForm() }}
+{% endif %}
 {% for entry in items %}
         <div class="etz_entry z-clearfix {{ cycle (['etz_bg1','etz_bg2'], loop.index0) }}">
             <div class="col-md-4 etz_author">
@@ -94,6 +98,9 @@
 		{% endfor %}
 		</div>
 		{% endif %}
+		{% if formposition == 'below' %}
+              {{ mueternizermodule_showEditForm() }}
+        {% endif %}
 		
     {% if routeArea == 'admin' %}
     {{ block('page_nav_links') }}
