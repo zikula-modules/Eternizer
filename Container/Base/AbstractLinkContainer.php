@@ -21,7 +21,6 @@ use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\Api\CurrentUserApi;
-use MU\EternizerModule\Entity\EntryEntity;
 use MU\EternizerModule\Helper\ControllerHelper;
 
 /**
@@ -106,13 +105,13 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
 
         if (LinkContainerInterface::TYPE_ACCOUNT == $type) {
             $useAccountPage = $this->variableApi->get('MUEternizerModule', 'useAccountPage', true);
-            if ($useAccountPage === false) {
+            if (false === $useAccountPage) {
                 return $links;
             }
 
             $userName = isset($args['uname']) ? $args['uname'] : $this->currentUserApi->get('uname');
             // does this user exist?
-            if (UserUtil::getIdFromName($userName) === false) {
+            if (false === UserUtil::getIdFromName($userName)) {
                 // user does not exist
                 return $links;
             }
@@ -186,123 +185,6 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
                     'icon' => 'wrench'
                 ];
             }
-        }
-
-        return $links;
-    }
-
-    /**
-     * Returns action links for a given entity.
-     *
-     * @param EntityAccess $entity  The entity
-     * @param string       $area    The context area name (e.g. admin or nothing for user)
-     * @param string       $context The context page name (e.g. view, display, edit, delete)
-     *
-     * @return array Array of action links
-     */
-    public function getActionLinks(EntityAccess $entity, $area = '', $context = 'view')
-    {
-        // Create an array of links to return
-        $links = [];
-
-        
-        $currentLegacyControllerType = $area != '' ? $area : 'user';
-        $currentFunc = $context;
-        
-        if ($entity instanceof EntryEntity) {
-            $component = 'MUEternizerModule:Entry:';
-            $instance = $entity['id'] . '::';
-        
-        if ($currentLegacyControllerType == 'admin') {
-            if (in_array($currentFunc, ['index', 'view'])) {
-                $links[] = [
-                    'url' => $this->router->generate('mueternizermodule_entry_display', ['id' => $entity['id']]),
-                    'icon' => 'search-plus',
-                    'linkTitle' => $this->__('Open preview page'),
-                    'linkText' => $this->__('Preview')
-                ];
-                $links[] = [
-                    'url' => $this->router->generate('mueternizermodule_entry_admindisplay', ['id' => $entity['id']]),
-                    'icon' => 'eye',
-                    'linkTitle' => str_replace('"', '', $entity->getTitleFromDisplayPattern()),
-                    'linkText' => $this->__('Details')
-                ];
-            }
-            if (in_array($currentFunc, ['index', 'view', 'display'])) {
-                if ($this->permissionApi->hasPermission($component, $instance, ACCESS_EDIT)) {
-                    $links[] = [
-                        'url' => $this->router->generate('mueternizermodule_entry_adminedit', ['id' => $entity['id']]),
-                        'icon' => 'pencil-square-o',
-                        'linkTitle' => $this->__('Edit'),
-                        'linkText' => $this->__('Edit')
-                    ];
-                    $links[] = [
-                        'url' => $this->router->generate('mueternizermodule_entry_adminedit', ['astemplate' => $entity['id']]),
-                        'icon' => 'files-o',
-                        'linkTitle' => $this->__('Reuse for new item'),
-                        'linkText' => $this->__('Reuse')
-                    ];
-                }
-                if ($this->permissionApi->hasPermission($component, $instance, ACCESS_DELETE)) {
-                    $links[] = [
-                        'url' => $this->router->generate('mueternizermodule_entry_admindelete', ['id' => $entity['id']]),
-                        'icon' => 'trash-o',
-                        'linkTitle' => $this->__('Delete'),
-                        'linkText' => $this->__('Delete')
-                    ];
-                }
-            }
-            if ($currentFunc == 'display') {
-                $links[] = [
-                    'url' => $this->router->generate('mueternizermodule_entry_adminview'),
-                    'icon' => 'reply',
-                    'linkTitle' => $this->__('Back to overview'),
-                    'linkText' => $this->__('Back to overview')
-                ];
-            }
-        }
-        if ($currentLegacyControllerType == 'user') {
-            if (in_array($currentFunc, ['index', 'view'])) {
-                $links[] = [
-                    'url' => $this->router->generate('mueternizermodule_entry_display', ['id' => $entity['id']]),
-                    'icon' => 'eye',
-                    'linkTitle' => str_replace('"', '', $entity->getTitleFromDisplayPattern()),
-                    'linkText' => $this->__('Details')
-                ];
-            }
-            if (in_array($currentFunc, ['index', 'view', 'display'])) {
-                if ($this->permissionApi->hasPermission($component, $instance, ACCESS_EDIT)) {
-                    $links[] = [
-                        'url' => $this->router->generate('mueternizermodule_entry_edit', ['id' => $entity['id']]),
-                        'icon' => 'pencil-square-o',
-                        'linkTitle' => $this->__('Edit'),
-                        'linkText' => $this->__('Edit')
-                    ];
-                    $links[] = [
-                        'url' => $this->router->generate('mueternizermodule_entry_edit', ['astemplate' => $entity['id']]),
-                        'icon' => 'files-o',
-                        'linkTitle' => $this->__('Reuse for new item'),
-                        'linkText' => $this->__('Reuse')
-                    ];
-                }
-                if ($this->permissionApi->hasPermission($component, $instance, ACCESS_DELETE)) {
-                    $links[] = [
-                        'url' => $this->router->generate('mueternizermodule_entry_delete', ['id' => $entity['id']]),
-                        'icon' => 'trash-o',
-                        'linkTitle' => $this->__('Delete'),
-                        'linkText' => $this->__('Delete')
-                    ];
-                }
-            }
-            if ($currentFunc == 'display') {
-                $links[] = [
-                    'url' => $this->router->generate('mueternizermodule_entry_view'),
-                    'icon' => 'reply',
-                    'linkTitle' => $this->__('Back to overview'),
-                    'linkText' => $this->__('Back to overview')
-                ];
-            }
-        }
         }
 
         return $links;
