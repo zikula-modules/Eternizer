@@ -46,7 +46,11 @@ abstract class AbstractConfigController extends AbstractController
         
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('save')->isClicked()) {
-                $this->setVars($form->getData());
+                $formData = $form->getData();
+                foreach (['moderationGroupForEntries'] as $groupFieldName) {
+                    $formData[$groupFieldName] = is_object($formData[$groupFieldName]) ? $formData[$groupFieldName]->getGid() : $formData[$groupFieldName];
+                }
+                $this->setVars($formData);
         
                 $this->addFlash('status', $this->__('Done! Module configuration updated.'));
                 $userName = $this->get('zikula_users_module.current_user')->get('uname');
