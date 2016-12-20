@@ -18,7 +18,6 @@ use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use MU\EternizerModule\Helper\ListEntriesHelper;
 use MU\EternizerModule\Helper\WorkflowHelper;
-use MU\EternizerModule\Container\LinkContainer;
 
 /**
  * Twig extension base class.
@@ -31,11 +30,6 @@ abstract class AbstractTwigExtension extends \Twig_Extension
      * @var VariableApi
      */
     protected $variableApi;
-    
-    /**
-     * @var LinkContainer
-     */
-    protected $linkContainer;
     
     /**
      * @var WorkflowHelper
@@ -53,15 +47,13 @@ abstract class AbstractTwigExtension extends \Twig_Extension
      *
      * @param TranslatorInterface $translator     Translator service instance
      * @param VariableApi         $variableApi    VariableApi service instance
-     * @param LinkContainer       $linkContainer  LinkContainer service instance
      * @param WorkflowHelper      $workflowHelper WorkflowHelper service instance
      * @param ListEntriesHelper   $listHelper     ListEntriesHelper service instance
      */
-    public function __construct(TranslatorInterface $translator, VariableApi $variableApi, LinkContainer $linkContainer, WorkflowHelper $workflowHelper, ListEntriesHelper $listHelper)
+    public function __construct(TranslatorInterface $translator, VariableApi $variableApi, WorkflowHelper $workflowHelper, ListEntriesHelper $listHelper)
     {
         $this->setTranslator($translator);
         $this->variableApi = $variableApi;
-        $this->linkContainer = $linkContainer;
         $this->workflowHelper = $workflowHelper;
         $this->listHelper = $listHelper;
     }
@@ -84,7 +76,7 @@ abstract class AbstractTwigExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('mueternizermodule_actions', [$this, 'getActionLinks']),
+            new \Twig_SimpleFunction('mueternizermodule_moderationObjects', [$this, 'getModerationObjects']),
             new \Twig_SimpleFunction('mueternizermodule_objectTypeSelector', [$this, 'getObjectTypeSelector']),
             new \Twig_SimpleFunction('mueternizermodule_templateSelector', [$this, 'getTemplateSelector']),
             new \Twig_SimpleFunction('mueternizermodule_userVar', [$this, 'getUserVar']),
@@ -106,20 +98,6 @@ abstract class AbstractTwigExtension extends \Twig_Extension
     }
     
     /**
-     * Returns action links for a given entity.
-     *
-     * @param EntityAccess $entity  The entity
-     * @param string       $area    The context area name (e.g. admin or nothing for user)
-     * @param string       $context The context page name (e.g. view, display, edit, delete)
-     *
-     * @return array Array of action links
-     */
-    public function getActionLinks(/*EntityAccess */$entity, $area = '', $context = 'view')
-    {
-        return $this->linkContainer->getActionLinks($entity, $area, $context);
-    }
-    
-    /**
      * The mueternizermodule_objectState filter displays the name of a given object's workflow state.
      * Examples:
      *    {{ item.workflowState|mueternizermodule_objectState }}        {# with visual feedback #}
@@ -135,7 +113,7 @@ abstract class AbstractTwigExtension extends \Twig_Extension
         $stateInfo = $this->workflowHelper->getStateInfo($state);
     
         $result = $stateInfo['text'];
-        if ($uiFeedback === true) {
+        if (true === $uiFeedback) {
             $result = '<span class="label label-' . $stateInfo['ui'] . '">' . $result . '</span>';
         }
     
@@ -163,6 +141,20 @@ abstract class AbstractTwigExtension extends \Twig_Extension
         }
     
         return $this->listHelper->resolve($value, $objectType, $fieldName, $delimiter);
+    }
+    
+    
+    /**
+     * The mueternizermodule_moderationObjects function determines the amount of unapproved objects.
+     * It uses the same logic as the moderation block and the pending content listener.
+     *
+     * @return string The output of the plugin
+     */
+    public function getModerationObjects()
+    {
+        $result = $this->workflowHelper->collectAmountOfModerationItems();
+    
+        return $result;
     }
     
     
