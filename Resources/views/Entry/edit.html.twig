@@ -15,12 +15,15 @@
     '@MUEternizerModule/Form/bootstrap_3.html.twig',
     'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
 ] %}
-{{ form_start(form, {attr: {id: 'entryEditForm'}}) }}
+{% set returnUrl = path('mueternizermodule_entry_view') %}
+{{ form_start(form, {attr: {id: 'entryEditForm'}, action: path('mueternizermodule_entry_edit', { returnTo: returnUrl }) }) }}
 {{ form_errors(form) }}
 <fieldset>
     <legend>{{ __('Content') }}</legend>
     
-    {{ form_row(form.ip) }}
+    <div class="hidden">
+        {{ form_row(form.ip) }}
+    </div>
     
     {{ form_row(form.name) }}
     
@@ -32,7 +35,9 @@
     
     {{ form_row(form.text) }}
     
-    {{ form_row(form.notes) }}
+    <div class="hidden">
+        {{ form_row(form.notes) }}
+    </div>
 </fieldset>
 
 {% if mode != 'create' %}
@@ -56,6 +61,10 @@
     {% endfor %}
 {% endif %}
 
+<fieldset>
+    <legend>{{ __('Communication') }}</legend>
+    {{ form_row(form.additionalNotificationRemarks) }}
+</fieldset>
 
 {# include return control #}
 {% if mode == 'create' %}
