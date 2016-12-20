@@ -30,10 +30,6 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 use MU\EternizerModule\Entity\EntryEntity;
 
-
-
-
-
 /**
  * Entry controller class providing navigation and interaction functionality.
  */
@@ -311,6 +307,7 @@ class EntryController extends AbstractEntryController
         if (!$this->hasPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
+        
         $repository = $this->get('mu_eternizer_module.' . $objectType . '_factory')->getRepository();
         $repository->setRequest($request);
         $viewHelper = $this->get('mu_eternizer_module.view_helper');
@@ -355,7 +352,7 @@ class EntryController extends AbstractEntryController
             	if ($pageSize > 0 && $pageSize != '') {
             		$resultsPerPage = $pageSize;
             	} else {
-                    $resultsPerPage = $this->getVar('pageSize', 10);
+                    $resultsPerPage = $this->getVar('EntriesPerPage', 10);
             	}
             }
         }
@@ -376,7 +373,7 @@ class EntryController extends AbstractEntryController
         
         $modSortDir = \ModUtil::getVar($this->name, 'order');
         if ($modSortDir != '') {
-        	if ($modSortDir == 'Descending') {
+        	if ($modSortDir == 'descending') {
         	$sortdir = 'desc';
         	} else {
         		$sortdir = 'asc';
