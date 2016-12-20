@@ -164,4 +164,16 @@ abstract class AbstractItem extends \Content_AbstractContentType
         // required as parameter for the item selector plugin
         $this->view->assign('objectType', $this->objectType);
     }
+    
+    /**
+     * Returns the edit template path.
+     *
+     * @return string
+     */
+    public function getEditTemplate()
+    {
+        $absoluteTemplatePath = str_replace('ContentType/Base/AbstractItem.php', 'Resources/views/ContentType/item_edit.tpl', __FILE__);
+    
+        return 'file:' . $absoluteTemplatePath;
+    }
 }

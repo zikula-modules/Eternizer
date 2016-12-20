@@ -292,4 +292,16 @@ abstract class AbstractItemList extends \Content_AbstractContentType
         // ensure our custom plugins are loaded
         array_push($this->view->plugins_dir, 'modules/MUEternizerModule/Resources/views//plugins');
     }
+    
+    /**
+     * Returns the edit template path.
+     *
+     * @return string
+     */
+    public function getEditTemplate()
+    {
+        $absoluteTemplatePath = str_replace('ContentType/Base/AbstractItemList.php', 'Resources/views/ContentType/itemlist_edit.tpl', __FILE__);
+    
+        return 'file:' . $absoluteTemplatePath;
+    }
 }
