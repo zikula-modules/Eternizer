@@ -35,6 +35,7 @@
             "securityschema": {
                 "MUEternizerModule::": "::",
                 "MUEternizerModule:ItemListBlock:": "Block title::",
+                "MUEternizerModule:ModerationBlock:": "Block title::",
                 "MUEternizerModule:Entry:": "Entry ID::",
                 "MUEternizerModule::Ajax": "::"
             }
