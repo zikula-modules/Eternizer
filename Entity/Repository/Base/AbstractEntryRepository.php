@@ -40,7 +40,7 @@ abstract class AbstractEntryRepository extends EntityRepository
     /**
      * @var string The default sorting field/expression
      */
-    protected $defaultSortingField = 'ip';
+    protected $defaultSortingField = 'workflowState';
 
     /**
      * @var Request The request object given by the calling controller
@@ -55,6 +55,7 @@ abstract class AbstractEntryRepository extends EntityRepository
     public function getAllowedSortingFields()
     {
         return [
+            'workflowState',
             'ip',
             'name',
             'email',
@@ -617,6 +618,21 @@ abstract class AbstractEntryRepository extends EntityRepository
      */
     protected function applyDefaultFilters(QueryBuilder $qb, $parameters = [])
     {
+        if (null === $this->getRequest()) {
+            $this->request = ServiceUtil::get('request');
+        }
+        $routeName = $this->request->get('_route');
+        $isAdminArea = false !== strpos($routeName, 'mueternizermodule_entry_admin');
+        if ($isAdminArea) {
+            return $qb;
+        }
+    
+        if (!in_array('workflowState', array_keys($parameters)) || empty($parameters['workflowState'])) {
+            // per default we show approved entries only
+            $onlineStates = ['approved'];
+            $qb->andWhere('tbl.workflowState IN (:onlineStates)')
+               ->setParameter('onlineStates', $onlineStates);
+        }
     
         return $qb;
     }
@@ -668,6 +684,8 @@ abstract class AbstractEntryRepository extends EntityRepository
         $where = '';
         if (!$fragmentIsNumeric) {
             $where .= ((!empty($where)) ? ' OR ' : '');
+            $where .= 'tbl.workflowState = \'' . $fragment . '\'';
+            $where .= ((!empty($where)) ? ' OR ' : '');
             $where .= 'tbl.ip LIKE \'%' . $fragment . '%\'';
             $where .= ((!empty($where)) ? ' OR ' : '');
             $where .= 'tbl.name LIKE \'%' . $fragment . '%\'';
@@ -682,6 +700,8 @@ abstract class AbstractEntryRepository extends EntityRepository
             $where .= ((!empty($where)) ? ' OR ' : '');
             $where .= 'tbl.notes LIKE \'%' . $fragment . '%\'';
         } else {
+            $where .= ((!empty($where)) ? ' OR ' : '');
+            $where .= 'tbl.workflowState = \'' . $fragment . '\'';
             $where .= ((!empty($where)) ? ' OR ' : '');
             $where .= 'tbl.ip LIKE \'%' . $fragment . '%\'';
             $where .= ((!empty($where)) ? ' OR ' : '');
@@ -746,7 +766,7 @@ abstract class AbstractEntryRepository extends EntityRepository
         $useJoins = false;
     
         $selection = 'COUNT(tbl.id) AS numEntries';
-        if ($useJoins === true) {
+        if (true === $useJoins) {
             $selection .= $this->addJoinsToSelection();
         }
     
@@ -754,7 +774,7 @@ abstract class AbstractEntryRepository extends EntityRepository
         $qb->select($selection)
            ->from('MU\EternizerModule\Entity\EntryEntity', 'tbl');
     
-        if ($useJoins === true) {
+        if (true === $useJoins) {
             $this->addJoinsToFrom($qb);
         }
     
@@ -823,17 +843,17 @@ abstract class AbstractEntryRepository extends EntityRepository
         // normally we select the whole table
         $selection = 'tbl';
     
-        if ($slimMode === true) {
+        if (true === $slimMode) {
             // but for the slim version we select only the basic fields, and no joins
     
             $selection = 'tbl.id';
             
             
-            $selection .= ', tbl.ip';
+            $selection .= ', tbl.name';
             $useJoins = false;
         }
     
-        if ($useJoins === true) {
+        if (true === $useJoins) {
             $selection .= $this->addJoinsToSelection();
         }
     
@@ -841,7 +861,7 @@ abstract class AbstractEntryRepository extends EntityRepository
         $qb->select($selection)
            ->from('MU\EternizerModule\Entity\EntryEntity', 'tbl');
     
-        if ($useJoins === true) {
+        if (true === $useJoins) {
             $this->addJoinsToFrom($qb);
         }
     
@@ -946,7 +966,7 @@ abstract class AbstractEntryRepository extends EntityRepository
     
         // add order by clause
         if (!empty($orderBy)) {
-            if (strpos($orderBy, '.') === false) {
+            if (false === strpos($orderBy, '.')) {
                 $orderBy = 'tbl.' . $orderBy;
             }
             $qb->add('orderBy', $orderBy);

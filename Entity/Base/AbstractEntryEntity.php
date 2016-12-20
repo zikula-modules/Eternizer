@@ -442,7 +442,7 @@ abstract class AbstractEntryEntity extends EntityAccess
     /**
      * Returns the created user id.
      *
-     * @return string
+     * @return integer
      */
     public function getCreatedUserId()
     {
@@ -452,7 +452,7 @@ abstract class AbstractEntryEntity extends EntityAccess
     /**
      * Sets the created user id.
      *
-     * @param string $createdUserId
+     * @param integer $createdUserId
      *
      * @return void
      */
@@ -464,7 +464,7 @@ abstract class AbstractEntryEntity extends EntityAccess
     /**
      * Returns the updated user id.
      *
-     * @return string
+     * @return integer
      */
     public function getUpdatedUserId()
     {
@@ -474,7 +474,7 @@ abstract class AbstractEntryEntity extends EntityAccess
     /**
      * Sets the updated user id.
      *
-     * @param string $updatedUserId
+     * @param integer $updatedUserId
      *
      * @return void
      */
@@ -542,7 +542,7 @@ abstract class AbstractEntryEntity extends EntityAccess
         $listHelper = $serviceManager->get('mu_eternizer_module.listentries_helper');
     
         $formattedTitle = ''
-                . $this->getIp();
+                . $this->getName();
     
         return $formattedTitle;
     }
@@ -641,12 +641,12 @@ abstract class AbstractEntryEntity extends EntityAccess
      */
     public function validate()
     {
-        if ($this->_bypassValidation === true) {
+        if (true === $this->_bypassValidation) {
             return true;
         }
     
         // decode possibly encoded mail addresses (#201)
-        if (strpos($this['email'], '&#') !== false) {
+        if (false !== strpos($this['email'], '&#')) {
             $this['email'] = html_entity_decode($this['email']);
         }
         $serviceManager = ServiceUtil::getManager();

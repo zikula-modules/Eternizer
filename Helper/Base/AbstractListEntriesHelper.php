@@ -52,14 +52,14 @@ abstract class AbstractListEntriesHelper
         }
     
         $isMulti = $this->hasMultipleSelection($objectType, $fieldName);
-        if ($isMulti === true) {
+        if (true === $isMulti) {
             $value = $this->extractMultiList($value);
         }
     
         $options = $this->getEntries($objectType, $fieldName);
         $result = '';
     
-        if ($isMulti === true) {
+        if (true === $isMulti) {
             foreach ($options as $option) {
                 if (!in_array($option['value'], $value)) {
                     continue;
@@ -174,9 +174,23 @@ abstract class AbstractListEntriesHelper
     {
         $states = [];
         $states[] = [
+            'value'   => 'waiting',
+            'text'    => $this->translator->__('Waiting'),
+            'title'   => $this->translator->__('Content has been submitted and waits for approval.'),
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
             'value'   => 'approved',
             'text'    => $this->translator->__('Approved'),
             'title'   => $this->translator->__('Content has been approved and is available online.'),
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => '!waiting',
+            'text'    => $this->translator->__('All except waiting'),
+            'title'   => $this->translator->__('Shows all items except these which are waiting'),
             'image'   => '',
             'default' => false
         ];

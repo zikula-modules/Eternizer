@@ -17,6 +17,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 
 /**
  * Configuration form type base class.
@@ -38,14 +39,23 @@ abstract class AbstractAppSettingsType extends AbstractType
     /**
      * AppSettingsType constructor.
      *
-     * @param TranslatorInterface $translator  Translator service instance
-     * @param VariableApi         $variableApi VariableApi service instance
+     * @param TranslatorInterface      $translator      Translator service instance
+     * @param VariableApi              $variableApi     VariableApi service instance
+     * @param GroupRepositoryInterface $groupRepository GroupRepository service instance
      */
-    public function __construct(TranslatorInterface $translator, VariableApi $variableApi)
+    public function __construct(TranslatorInterface $translator, VariableApi $variableApi, GroupRepositoryInterface $groupRepository)
     {
         $this->setTranslator($translator);
         $this->variableApi = $variableApi;
         $this->modVars = $this->variableApi->getAll('MUEternizerModule');
+
+        foreach (['moderationGroupForEntries'] as $groupFieldName) {
+            $groupId = intval($this->modVars[$groupFieldName]);
+            if ($groupId < 1) {
+                $groupId = 2; // fallback to admin group
+            }
+            $this->modVars[$groupFieldName] = $groupRepository->find($groupId);
+        }
     }
 
     /**
@@ -64,6 +74,7 @@ abstract class AbstractAppSettingsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this->addVariablesFields($builder, $options);
+        $this->addModerationFields($builder, $options);
 
         $builder
             ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
@@ -120,8 +131,8 @@ abstract class AbstractAppSettingsType extends AbstractType
                 'attr' => [
                     'title' => $this->__('Choose the order.')
                 ],'choices' => [
-                    $this->__('descending') => 'Descending'
-                    ,$this->__('ascending') => 'Ascending'
+                    $this->__('Descending') => 'descending'
+                    ,$this->__('Ascending') => 'ascending'
                 ],
                 'choices_as_values' => true,
                 'multiple' => false
@@ -134,9 +145,9 @@ abstract class AbstractAppSettingsType extends AbstractType
                 'attr' => [
                     'title' => $this->__('Choose the moderate.')
                 ],'choices' => [
-                    $this->__('nothing') => 'Nothing'
-                    ,$this->__('guests') => 'Guests'
-                    ,$this->__('all') => 'All'
+                    $this->__('Nothing') => 'nothing'
+                    ,$this->__('Guests') => 'guests'
+                    ,$this->__('All') => 'all'
                 ],
                 'choices_as_values' => true,
                 'multiple' => false
@@ -149,9 +160,9 @@ abstract class AbstractAppSettingsType extends AbstractType
                 'attr' => [
                     'title' => $this->__('Choose the formposition.')
                 ],'choices' => [
-                    $this->__('above') => 'Above'
-                    ,$this->__('below') => 'Below'
-                    ,$this->__('menue') => 'Menue'
+                    $this->__('Above') => 'above'
+                    ,$this->__('Below') => 'below'
+                    ,$this->__('Menue') => 'menue'
                 ],
                 'choices_as_values' => true,
                 'multiple' => false
@@ -194,6 +205,34 @@ abstract class AbstractAppSettingsType extends AbstractType
                 'attr' => [
                     'title' => $this->__('The simplecaptcha option.')
                 ],
+            ])
+        ;
+    }
+
+    /**
+     * Adds fields for moderation fields.
+     *
+     * @param FormBuilderInterface $builder The form builder
+     * @param array                $options The options
+     */
+    public function addModerationFields(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('moderationGroupForEntries', 'Symfony\Bridge\Doctrine\Form\Type\EntityType', [
+                'label' => $this->__('Moderation group for entries') . ':',
+                'label_attr' => [
+                    'class' => 'tooltips',
+                    'title' => $this->__('Used to determine moderator user accounts for sending email notifications.')
+                ],
+                'help' => $this->__('Used to determine moderator user accounts for sending email notifications.'),
+                'data' => $this->modVars['moderationGroupForEntries'],
+                'attr' => [
+                    'title' => $this->__('Choose the moderation group for entries.')
+                ],'max_length' => 255,
+                // Zikula core should provide a form type for this to hide entity details
+                'class' => 'ZikulaGroupsModule:GroupEntity',
+                'choice_label' => 'name',
+                'choice_value' => 'gid'
             ])
         ;
     }

@@ -120,7 +120,7 @@ abstract class AbstractViewHelper
         }
     
         $response = null;
-        if ($raw == true) {
+        if (true === $raw) {
             // standalone output
             if ($templateExtension == 'pdf.twig') {
                 $template = str_replace('.pdf', '.html', $template);

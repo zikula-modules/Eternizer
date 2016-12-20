@@ -82,7 +82,7 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber
             } catch (\Exception $e) {
                 $result = false;
             }
-            if ($result === false) {
+            if (false === $result) {
                 $flashBag = $serviceManager->get('session')->getFlashBag();
                 $flashBag->add('error', $serviceManager->get('translator.default')->__('Error! Could not remove stored workflow. Deletion has been aborted.'));
         
