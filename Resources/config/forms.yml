@@ -39,6 +39,6 @@ services:
     
     mu_eternizer_module.form.type.appsettings:
         class: MU\EternizerModule\Form\AppSettingsType
-        arguments: ["@translator.default", "@zikula_extensions_module.api.variable"]
+        arguments: ["@translator.default", "@zikula_extensions_module.api.variable", "@zikula_groups_module.group_repository"]
         tags:
             - { name: form.type }
