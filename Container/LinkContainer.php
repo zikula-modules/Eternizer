@@ -21,5 +21,31 @@ use ModUtil;
  */
 class LinkContainer extends AbstractLinkContainer
 {
-    // feel free to add own extensions here
+	/**
+	 * Returns available header links.
+	 *
+	 * @param string $type The type to collect links for
+	 *
+	 * @return array Array of header links
+	 */
+	public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
+	{
+		$utilArgs = ['api' => 'linkContainer', 'action' => 'getLinks'];
+		$allowedObjectTypes = $this->controllerHelper->getObjectTypes('api', $utilArgs);
+		
+		$permLevel = LinkContainerInterface::TYPE_ADMIN == $type ? ACCESS_ADMIN : ACCESS_READ;
+		
+        $links = parent::getLinks();
+        
+        if (in_array('entry', $allowedObjectTypes)
+        		&& $this->permissionApi->hasPermission($this->getBundleName() . ':Entry:', '::', $permLevel) && \ModUtil::getVar('MUEternizerModule', 'formposition') == 'menue') {
+        			$links[] = [
+        					'url' => $this->router->generate('mueternizermodule_entry_edit'),
+        					'text' => $this->__('New entry'),
+        					'title' => $this->__('Create entry')
+        			];
+        }
+        
+        return $links;
+	}
 }

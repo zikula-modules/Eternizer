@@ -15,7 +15,7 @@
 {% for entry in items %}
         <div class="etz_entry z-clearfix {{ cycle (['etz_bg1','etz_bg2'], loop.index0) }}">
             <div class="col-md-4 etz_author">
-                <div class="etz_avatar">{{ mueternizermodule_userAvatar(uid=entry.updatedUserId, rating='g') }}</div>
+                <div class="etz_avatar">{{ mueternizermodule_userAvatar(uid=entry.createdUserId, rating='g') }}</div>
                 {% if entry.email is not empty or entry.homepage is not empty or entry.location is not empty %}
                     <dl class="etz_options">
                         {% if entry.email is not empty %}
@@ -98,9 +98,7 @@
 		{% endfor %}
 		</div>
 		{% endif %}
-		{% if formposition == 'below' %}
-              {{ mueternizermodule_showEditForm() }}
-        {% endif %}
+
 		
     {% if routeArea == 'admin' %}
     {{ block('page_nav_links') }}
@@ -215,6 +213,9 @@
         
         {% if showAllEntries != 1 and pager|default %}
             {{ pager({ rowcount: pager.numitems, limit: pager.itemsperpage, display: 'page', route: 'mueternizermodule_entry_' ~ routeArea ~ 'view'}) }}
+        {% endif %}
+		{% if formposition == 'below' and routeArea == 'user' %}
+              {{ mueternizermodule_showEditForm() }}
         {% endif %}
     {% if routeArea == 'admin' %}
             <fieldset>
