@@ -147,6 +147,7 @@ abstract class AbstractEntryQuickNavType extends AbstractType
                     'class' => 'input-sm'
                 ],
                 'choices' =>             [
+                    $this->__('Workflow state') => 'workflowState',
                     $this->__('Ip') => 'ip',
                     $this->__('Name') => 'name',
                     $this->__('Email') => 'email',

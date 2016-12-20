@@ -69,6 +69,11 @@ abstract class AbstractWorkflowHelper
              'ui' => 'danger'
          ];
          $states[] = [
+             'value' => 'waiting',
+             'text' => $this->translator->__('Waiting'),
+             'ui' => 'warning'
+         ];
+         $states[] = [
              'value' => 'approved',
              'text' => $this->translator->__('Approved'),
              'ui' => 'success'
@@ -116,7 +121,7 @@ abstract class AbstractWorkflowHelper
         $result = '';
         switch ($objectType) {
             case 'entry':
-                $result = 'none';
+                $result = 'standard';
                 break;
         }
     
@@ -197,6 +202,9 @@ abstract class AbstractWorkflowHelper
             case 'update':
                 $buttonClass = 'success';
                 break;
+            case 'approve':
+                $buttonClass = '';
+                break;
             case 'delete':
                 $buttonClass = 'danger';
                 break;
@@ -232,7 +240,7 @@ abstract class AbstractWorkflowHelper
     
         $result = Zikula_Workflow_Util::executeAction($schemaName, $entity, $actionId, $objectType, 'MUEternizerModule', $idColumn);
     
-        if ($result !== false && !$recursive) {
+        if (false !== $result && !$recursive) {
             $entities = $entity->getRelatedObjectsToPersist();
             foreach ($entities as $rel) {
                 if ($rel->getWorkflowState() == 'initial') {
@@ -241,7 +249,7 @@ abstract class AbstractWorkflowHelper
             }
         }
     
-        return ($result !== false);
+        return (false !== $result);
     }
     /**
      * Performs a conversion of the workflow object back to an array.
@@ -290,7 +298,27 @@ abstract class AbstractWorkflowHelper
     {
         $amounts = [];
     
-        // nothing required here as no entities use enhanced workflows including approval actions
+        $logger = $this->container->get('logger');
+    
+        // check if objects are waiting for approval
+        $state = 'waiting';
+        $objectType = 'entry';
+        $permissionApi = $this->container->get('zikula_permissions_module.api.permission');
+        if ($permissionApi->hasPermission('MUEternizerModule:' . ucfirst($objectType) . ':', '::', ACCESS_ADD)) {
+            $amount = $this->getAmountOfModerationItems($objectType, $state);
+            if ($amount > 0) {
+                $amounts[] = [
+                    'aggregateType' => 'entriesApproval',
+                    'description' => $this->translator->__('Entries pending approval'),
+                    'amount' => $amount,
+                    'objectType' => $objectType,
+                    'state' => $state,
+                    'message' => $this->translator->_fn('One entry is waiting for approval.', '%s entries are waiting for approval.', $amount, ['%s' => $amount])
+                ];
+        
+                $logger->info('{app}: There are {amount} {entities} waiting for approval.', ['app' => 'MUEternizerModule', 'amount' => $amount, 'entities' => 'entries']);
+            }
+        }
     
         return $amounts;
     }
@@ -308,7 +336,7 @@ abstract class AbstractWorkflowHelper
     {
         $repository = $this->container->get('mu_eternizer_module.' . $objectType . '_factory')->getRepository();
     
-        $where = 'tbl.workflowState = \'' . $state . '\'';
+        $where = 'tbl.workflowState:eq:' . $state;
         $parameters = ['workflowState' => $state];
         $useJoins = false;
         $amount = $repository->selectCount($where, $useJoins, $parameters);

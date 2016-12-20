@@ -68,6 +68,7 @@ abstract class AbstractEntryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this->addEntityFields($builder, $options);
+        $this->addAdditionalNotificationRemarksField($builder, $options);
         $this->addReturnControlField($builder, $options);
         $this->addSubmitButtons($builder, $options);
     }
@@ -146,6 +147,36 @@ abstract class AbstractEntryType extends AbstractType
     }
 
     /**
+     * Adds a field for additional notification remarks.
+     *
+     * @param FormBuilderInterface $builder The form builder
+     * @param array                $options The options
+     */
+    public function addAdditionalNotificationRemarksField(FormBuilderInterface $builder, array $options)
+    {
+        $helpText = '';
+        if ($options['isModerator']) {
+            $helpText = $this->__('These remarks (like a reason for deny) are not stored, but added to any notification emails send to the creator.');
+        } elseif ($options['isCreator']) {
+            $helpText = $this->__('These remarks (like questions about conformance) are not stored, but added to any notification emails send to our moderators.');
+        }
+    
+        $builder->add('additionalNotificationRemarks', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+            'mapped' => false,
+            'label' => $this->__('Additional remarks'),
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $helpText
+            ],
+            'attr' => [
+                'title' => $options['mode'] == 'create' ? $this->__('Enter any additions about your content') : $this->__('Enter any additions about your changes')
+            ],
+            'required' => false,
+            'help' => $helpText
+        ]);
+    }
+
+    /**
      * Adds the return control field.
      *
      * @param FormBuilderInterface $builder The form builder
@@ -219,12 +250,16 @@ abstract class AbstractEntryType extends AbstractType
                 'error_mapping' => [
                 ],
                 'mode' => 'create',
+                'isModerator' => false,
+                'isCreator' => false,
                 'actions' => [],
                 'inlineUsage' => false
             ])
             ->setRequired(['mode', 'actions'])
             ->setAllowedTypes([
                 'mode' => 'string',
+                'isModerator' => 'bool',
+                'isCreator' => 'bool',
                 'actions' => 'array',
                 'inlineUsage' => 'bool'
             ])

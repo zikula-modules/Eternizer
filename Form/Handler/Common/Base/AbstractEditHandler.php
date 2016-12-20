@@ -589,4 +589,30 @@ abstract class AbstractEditHandler
         // stub for subclasses
         return false;
     }
+
+    /**
+     * Prepares properties related to advanced workflow.
+     *
+     * @param bool $enterprise Whether the enterprise workflow is used instead of the standard workflow
+     *
+     * @return array List of additional form options
+     */
+    protected function prepareWorkflowAdditions($enterprise = false)
+    {
+        $roles = [];
+    
+        $uid = $this->container->get('zikula_users_module.current_user')->get('uid');
+        $roles['isCreator'] = $this->entityRef['createdUserId'] == $uid;
+        $varHelper = $this->container->get('zikula_extensions_module.api.variable');
+    
+        $groupArgs = ['uid' => $uid, 'gid' => $varHelper->get('MUEternizerModule', 'moderationGroupFor' . $this->objectTypeCapital, 2)];
+        $roles['isModerator'] = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember', $groupArgs);
+    
+        if (true === $enterprise) {
+            $groupArgs = ['uid' => $uid, 'gid' => $varHelper->get('MUEternizerModule', 'superModerationGroupFor' . $this->objectTypeCapital, 2)];
+            $roles['isSuperModerator'] = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember', $groupArgs);
+        }
+    
+        return $roles;
+    }
 }
