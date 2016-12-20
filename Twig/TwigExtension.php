@@ -31,6 +31,7 @@ class TwigExtension extends AbstractTwigExtension
     	$functions = parent::getFunctions();
     	$functions[] = new \Twig_SimpleFunction('mueternizermodule_showEditForm', [$this, 'showEditForm'], ['is_safe' => ['html']]);
     	$functions[] = new \Twig_SimpleFunction('mueternizermodule_editEntry', [$this, 'editEntry']);
+    	$functions[] = new \Twig_SimpleFunction('mueternizermodule_simpleCaptcha', [$this, 'simpleCaptcha']);
     	
     	return $functions;
     }
@@ -48,7 +49,7 @@ class TwigExtension extends AbstractTwigExtension
     }
     
     /**
-     * The mueternizermodule_objectTypeSelector function provides items for a dropdown selector.
+     * The mueternizermodule_editEntry function checks if an item is in edit period.
      *
      * @return string The output of the plugin
      */
@@ -103,9 +104,27 @@ class TwigExtension extends AbstractTwigExtension
         }
 
         return $out;
+    }*/
+    
+    /**
+     * The mueternizermodule_simpleCaptcha function adds a simplecaptcha image to a form.
+     *
+     * Example:
+     *     {{ zikulaformiculamodule_simpleCaptcha(font='quikhand', size=14, bgColour='ffffff', fgColour='000000') }}
+     *
+     * @param string $font     Name of font to use (arial, freesans, quickhand, vera)
+     * @param int    $size     Font size
+     * @param string $bgColour Background colour (hex code without the # char)
+     * @param string $fgColour Foreground colour (hex code without the # char)
+     *
+     * @return string The image markup
+     */
+    public function simpleCaptcha($font = 'quickhand', $size = 14, $bgColour = 'ffffff', $fgColour = '000000')
+    {
+    	return $this->captchaHelper->createCaptcha($font, $size, $bgColour, $fgColour);
     }
     
-    public function simpleCaptcha()
+    /*public function simpleCaptcha()
     {
     	// check which image types are supported
     	$freetype = function_exists('imagettfbbox');
