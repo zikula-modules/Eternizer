@@ -81,6 +81,9 @@ abstract class AbstractEditHandler extends EditHandler
             'actions' => $this->templateParameters['actions'],
         ];
     
+        $workflowRoles = $this->prepareWorkflowAdditions(false);
+        $options = array_merge($options, $workflowRoles);
+    
         return $this->container->get('form.factory')->create('MU\EternizerModule\Form\Type\EntryType', $this->entityRef, $options);
     }
 

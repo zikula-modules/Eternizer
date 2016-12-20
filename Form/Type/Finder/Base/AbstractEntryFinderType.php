@@ -119,6 +119,7 @@ abstract class AbstractEntryFinderType extends AbstractType
                 'empty_data' => '',
                 'choices' => [
                     $this->__('Id') => 'id',
+                    $this->__('Workflow state') => 'workflowState',
                     $this->__('Ip') => 'ip',
                     $this->__('Name') => 'name',
                     $this->__('Email') => 'email',
