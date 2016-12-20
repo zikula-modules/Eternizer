@@ -3,9 +3,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{{ app.request.locale }}" lang="{{ app.request.locale }}">
 <head>
     <title>{{ __('Search and select entry') }}</title>
-    {{ pageAddAsset('stylesheet', zasset('style/core.css') }}
-    {{ pageAddAsset('stylesheet', zasset('@MUEternizerModule:css/style.css') }}
-    {{ pageAddAsset('stylesheet', zasset('@MUEternizerModule:css/finder.css') }}
+    {{ pageAddAsset('stylesheet', zasset('style/core.css')) }}
+    {{ pageAddAsset('stylesheet', zasset('@MUEternizerModule:css/style.css')) }}
+    {{ pageAddAsset('stylesheet', zasset('@MUEternizerModule:css/finder.css')) }}
     <script type="text/javascript">/* <![CDATA[ */
         if (typeof(Zikula) == 'undefined') {var Zikula = {};}
         Zikula.Config = {'entrypoint': '{{ getModVar('ZConfig', 'entrypoint', 'index.php') }}', 'baseURL': '{{ app.request.getSchemeAndHttpHost() ~ '/' }}', 'baseURI': '{{ app.request.getBasePath() }}'}; /* ]]> */
@@ -14,7 +14,7 @@
     {{ pageAddAsset('stylesheet', asset('bootstrap/css/bootstrap-theme.min.css')) }}
     {{ pageAddAsset('javascript', asset('jquery/jquery.min.js')) }}
     {{ pageAddAsset('javascript', asset('bootstrap/js/bootstrap.min.js')) }}
-    {{ pageAddAsset('javascript', pagevars.homepath ~ 'javascript/helpers/Zikula.js')) }}
+    {{ pageAddAsset('javascript', pagevars.homepath ~ 'javascript/helpers/Zikula.js') }}
     {{ pageAddAsset('javascript', zasset('@MUEternizerModule:javascript/MUEternizerModule.Finder.js')) }}
 </head>
 <body>
@@ -36,7 +36,7 @@
                         <ul>
                         {% for entry in items %}
                             <li>
-                                {% set itemId = entry.id }}
+                                {% set itemId = entry.createCompositeIdentifier() %}
                                 <a href="#" data-itemid="{{ itemId }}">{{ entry.getTitleFromDisplayPattern() }}</a>
                                 <input type="hidden" id="url{{ itemId }}" value="{{ url('mueternizermodule_entry_display', { 'id': entry.id }) }}" />
                                 <input type="hidden" id="title{{ itemId }}" value="{{ entry.getTitleFromDisplayPattern()|e('html_attr') }}" />

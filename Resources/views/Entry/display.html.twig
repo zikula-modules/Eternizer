@@ -3,30 +3,27 @@
 {% block pageTitle %}{{ entry.getTitleFromDisplayPattern()|default(__('Entry')) }}{% endblock %}
 {% block title %}
     {% set templateTitle = entry.getTitleFromDisplayPattern()|default(__('Entry')) %}
-    {{ templateTitle|notifyFilters('mueternizermodule.filter_hooks.entries.filter') }}
-    {% set actionLinks = mueternizermodule_actions(entity=entry, area=routeArea, context='display') %}
-    {% if actionLinks|length > 0 %}
-        <div class="dropdown">
-            <a id="itemActions{{ entry.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
-            
-            <ul class="dropdown-menu" role="menu" aria-labelledby="itemActions{{ entry.id }}DropDownToggle">
-                {% for option in actionLinks %}
-                    <li role="presentation"><a href="{{ option.url }}" title="{{ option.linkTitle|e('html_attr') }}" role="menuitem" tabindex="-1" class="fa fa-{{ option.icon }}">{{ option.linkText }}</a></li>
-                    
-                {% endfor %}
-            </ul>
-        </div>
-        <script type="text/javascript">
-        /* <![CDATA[ */
-            ( function($) {
-                $(document).ready(function() {
-                    $('.dropdown-toggle').dropdown();
-                    $('a.fa-zoom-in').attr('target', '_blank');
+    {{ templateTitle|notifyFilters('mueternizermodule.filter_hooks.entries.filter') }} <small>({{ entry.workflowState|mueternizermodule_objectState(false)|lower }})</small>
+    {% set itemActions = knp_menu_get('MUEternizerModule:ItemActionsMenu:menu', [], { entity: entry, area: routeArea, context: 'display' }) %}
+    <div class="dropdown">
+        <a id="itemActions{{ entry.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
+        
+        {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
+    </div>
+    <script type="text/javascript">
+    /* <![CDATA[ */
+        ( function($) {
+            $(document).ready(function() {
+                $('.dropdown > ul').removeClass('list-inline').addClass('list-unstyled dropdown-menu dropdown-menu-right');
+                $('.dropdown > ul a').each(function (index) {
+                    $(this).html($(this).html() + $(this).find('i').first().data('original-title'));
                 });
-            })(jQuery);
-        /* ]]> */
-        </script>
-    {% endif %}
+                $('.dropdown > ul a i').addClass('fa-fw');
+                $('.dropdown-toggle').removeClass('hidden').dropdown();
+            });
+        })(jQuery);
+    /* ]]> */
+    </script>
 {% endblock %}
 {% block admin_page_icon 'eye' %}
 {% block content %}
@@ -34,34 +31,52 @@
 
 
     <dl>
-        <dt>{{ __('Ip') }}</dt>
-        <dd>{{ entry.ip }}</dd>
-        <dt>{{ __('Name') }}</dt>
-        <dd>{{ entry.name }}</dd>
-        <dt>{{ __('Email') }}</dt>
-        <dd>{% if entry.email is not empty %}
-        {% if app.request.query.get('theme') != 'ZikulaPrinterTheme' %}
-        <a href="mailto:{{ entry.email|protectMail }}" title="{{ __('Send an email') }}" class="fa fa-envelope"></a>
-        {% else %}
-          {{ entry.email|protectMail }}
+        {% if entry.workflowState is not empty %}
+            <dt>{{ __('State') }}</dt>
+            <dd>{{ entry.workflowState|mueternizermodule_listEntry('entry', 'workflowState') }}</dd>
         {% endif %}
-        {% else %}&nbsp;{% endif %}
-        </dd>
-        <dt>{{ __('Homepage') }}</dt>
-        <dd>{% if entry.homepage is not empty %}
-        {% if app.request.query.get('theme') != 'ZikulaPrinterTheme' %}
-        <a href="{{ entry.homepage }}" title="{{ __('Visit this page') }}" class="fa fa-external-link-square"></a>
-        {% else %}
-          {{ entry.homepage }}
+        {% if entry.ip is not empty %}
+            <dt>{{ __('Ip') }}</dt>
+            <dd>{{ entry.ip }}</dd>
         {% endif %}
-        {% else %}&nbsp;{% endif %}
-        </dd>
-        <dt>{{ __('Location') }}</dt>
-        <dd>{{ entry.location }}</dd>
-        <dt>{{ __('Text') }}</dt>
-        <dd>{{ entry.text|safeHtml }}</dd>
-        <dt>{{ __('Notes') }}</dt>
-        <dd>{{ entry.notes|safeHtml }}</dd>
+        {% if entry.name is not empty %}
+            <dt>{{ __('Name') }}</dt>
+            <dd>{{ entry.name }}</dd>
+        {% endif %}
+        {% if entry.email is not empty %}
+            <dt>{{ __('Email') }}</dt>
+            <dd>{% if entry.email is not empty %}
+            {% if app.request.query.get('theme') != 'ZikulaPrinterTheme' %}
+            <a href="mailto:{{ entry.email|protectMail }}" title="{{ __('Send an email') }}" class="fa fa-envelope"></a>
+            {% else %}
+              {{ entry.email|protectMail }}
+            {% endif %}
+            {% else %}&nbsp;{% endif %}
+            </dd>
+        {% endif %}
+        {% if entry.homepage is not empty %}
+            <dt>{{ __('Homepage') }}</dt>
+            <dd>{% if entry.homepage is not empty %}
+            {% if app.request.query.get('theme') != 'ZikulaPrinterTheme' %}
+            <a href="{{ entry.homepage }}" title="{{ __('Visit this page') }}" class="fa fa-external-link-square"></a>
+            {% else %}
+              {{ entry.homepage }}
+            {% endif %}
+            {% else %}&nbsp;{% endif %}
+            </dd>
+        {% endif %}
+        {% if entry.location is not empty %}
+            <dt>{{ __('Location') }}</dt>
+            <dd>{{ entry.location }}</dd>
+        {% endif %}
+        {% if entry.text is not empty %}
+            <dt>{{ __('Text') }}</dt>
+            <dd>{{ entry.text|safeHtml }}</dd>
+        {% endif %}
+        {% if entry.notes is not empty %}
+            <dt>{{ __('Notes') }}</dt>
+            <dd>{{ entry.notes|safeHtml }}</dd>
+        {% endif %}
         
     </dl>
     {{ include('@MUEternizerModule/Helper/includeStandardFieldsDisplay.html.twig', { obj: entry }) }}

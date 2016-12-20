@@ -27,6 +27,8 @@
 {% endblock %}
 {{ pageSetVar('title', block('pageTitle')|default(block('title'))) }}
 
+{{ block('moderation_panel') }}
+
 {{ showflashes() }}
 
 {% block content %}{% endblock %}
@@ -46,5 +48,20 @@
         </style>
         {% endset %}
         {{ pageAddAsset('header', pageStyles) }}
+    {% endif %}
+{% endblock %}
+
+{% block moderation_panel %}
+    {% if app.request.query.get('theme') != 'ZikulaPrinterTheme' %}
+        {% set moderationObjects = mueternizermodule_moderationObjects() %}
+        {% if moderationObjects|length > 0 %}
+            {% for modItem in moderationObjects %}
+                <p class="alert alert-info alert-dismissable text-center">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {% set itemObjectType = modItem.objectType|lower %}
+                    <a href="{{ path('mueternizermodule_' ~ itemObjectType ~ '_adminview', { workflowState: modItem.state }) }}" class="bold alert-link">{{ modItem.message }}</a>
+                </p>
+            {% endfor %}
+        {% endif %}
     {% endif %}
 {% endblock %}
