@@ -15,8 +15,13 @@
     '@MUEternizerModule/Form/bootstrap_3.html.twig',
     'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
 ] %}
+{{ mode }}
 {% set returnUrl = path('mueternizermodule_entry_view') %}
+{% if routeArea != 'admin' and mode != 'create' %}
 {{ form_start(form, {attr: {id: 'entryEditForm'}, action: path('mueternizermodule_entry_edit', { returnTo: returnUrl }) }) }}
+{% else %}
+{{ form_start(form, {attr: {id: 'entryEditForm'} }) }}
+{% endif %}
 {{ form_errors(form) }}
 <fieldset>
     <legend>{{ __('Content') }}</legend>
