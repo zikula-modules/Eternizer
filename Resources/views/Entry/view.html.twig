@@ -59,17 +59,18 @@
 							{{ __f('created on %s', {'%s': entry.createdDate|date("d.m.Y")}) }}
                         </div>
                     </div>
+					{% set itemActions = knp_menu_get('MUEternizerModule:ItemActionsMenu:menu', [], { entity: entry, area: routeArea, context: 'view' }) %}
                     <div class="etz_action">
-                        {#% if actionLinks|length > 0 %}
-                            {% if entry.createdUserId == userid and coredata.logged_in == true and editentries == 1 %}
-                            <div class="eternizer-user-entry-edit">{{ entry.id|mueternizerGetStateOfEditOfEntry }}</div>
-                               {% strip %}
-                                    {% for option in actionLinks %}
-                                        <a href="{{ option.url }}" title="{{ option.linkTitle|e('html_attr') }}" role="menuitem" tabindex="-1" class="fa fa-{{ option.icon }}">{{ option.linkText }}</a>
-                                    {% endfor %}
-                                {% strip %} }
+                        {% if itemActions|length > 0 %}
+						{% set userid = mueternizermodule_userVar('uid') %}
+						{% set editentries = getModVar('MUEternizerModule', 'editentries') %}
+                            {% if entry.createdUserId == userid and entry.createdUserId > 1 and editentries == 1 %}
+                            <div class="eternizer-user-entry-edit">{% set out = mueternizermodule_editEntry(entry.id, entry.createdUserId, entry.createdDate) %}{{ out|raw }}</div>
+                                {#% for option in itemActions %}
+                                    <a href="{{ option.url }}" title="{{ option.linkTitle|e('html_attr') }}" role="menuitem" tabindex="-1" class="fa fa-{{ option.icon }}">{{ option.linkText }}</a>
+                                {% endfor %#}
                             {% endif %}
-                        {% endif %#}
+                        {% endif %}
                     </div>
                 </div>
                 <div class="etz_content">
@@ -189,7 +190,7 @@
                 <td headers="hNotes" class="text-left">
                     {{ entry.notes|safeHtml }}
                 </td>
-              <td id="itemActions{{ entry.id }}" headers="hItemActions" class="actions text-right nowrap z-w02">
+                <td id="itemActions{{ entry.id }}" headers="hItemActions" class="actions text-right nowrap z-w02">
                     {% set itemActions = knp_menu_get('MUEternizerModule:ItemActionsMenu:menu', [], { entity: entry, area: routeArea, context: 'view' }) %}
                     <div class="dropdown">
                         <a id="itemActions{{ entry.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
@@ -214,8 +215,8 @@
         {% if showAllEntries != 1 and pager|default %}
             {{ pager({ rowcount: pager.numitems, limit: pager.itemsperpage, display: 'page', route: 'mueternizermodule_entry_' ~ routeArea ~ 'view'}) }}
         {% endif %}
-		{% if formposition == 'below' and routeArea == 'user' %}
-              {{ mueternizermodule_showEditForm() }}
+		{% if formposition == 'below' and routeArea != 'admin' %}
+            {{ mueternizermodule_showEditForm() }}
         {% endif %}
     {% if routeArea == 'admin' %}
             <fieldset>
