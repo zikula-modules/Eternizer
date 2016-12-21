@@ -13,8 +13,14 @@
 namespace MU\EternizerModule\Twig;
 
 use MU\EternizerModule\Twig\Base\AbstractTwigExtension;
-use MU\EternizerModule\Entity\Factory\Base;
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
+use DateUtil;
+use ModUtil;
+use SecurityUtil;
+use ServiceUtil;
+use UserUtil;
+use Symfony\Component\Routing\Generator;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Twig extension implementation class.
@@ -53,43 +59,37 @@ class TwigExtension extends AbstractTwigExtension
      *
      * @return string The output of the plugin
      */
-    /*public function editEntry($entryId, $kind = 1)
+    public function editEntry($entryid, $createdUserId, $createdDate,  $kind = 1)
     {
-    	$repository = $this->
-        //get repository for Entries
-        $repository = Eternizer_Util_Model::getEntryRepository();
-        // get entry
-        $entry = $repository->selectById($entryId);
-
-        // get userid of user created this posting
-        $createdUserId = $entry->getCreatedUserId();
-        // get created Date
-        $createdDate = $entry->getCreatedDate();
-        $createdDate = $createdDate->getTimestamp();
-
+    	$createdDate = $createdDate->getTimestamp();
+    	
         // get the actual time
-        $actualTime = DateUtil::getDatetime();
+        $actualTime = \DateUtil::getDatetime();
         // get modvar editTime
-        $editTime = ModUtil::getVar('Eternizer', 'period');
+        $editTime = \ModUtil::getVar('MUEternizerModule', 'period');
 
-        $diffTime = DateUtil::getDatetimeDiff($createdDate, $actualTime);
+        $diffTime = \DateUtil::getDatetimeDiff($createdDate, $actualTime);
         $diffTimeHours = $diffTime['d'] * 24 + $diffTime['h'];
 
-        if (UserUtil::isLoggedIn()== true) {
-            $userid = UserUtil::getVar('uid');
+        if (UserUtil::isLoggedIn() == true) {
+            $userid = \UserUtil::getVar('uid');
         } else {
             $out = '';
         }
-
+        
         if ($createdUserId == $userid && ($diffTimeHours < $editTime) ) {
             if ($kind == 1) {
-                $serviceManager = ServiceUtil::getManager();
+                $serviceManager = \ServiceUtil::getManager();
                 // generate an auth key to use in urls
-                $csrftoken = SecurityUtil::generateCsrfToken($serviceManager, true);
-                $url = ModUtil::url('Eternizer', 'user', 'edit', array('ot' => 'entry', 'id' => $entryid, 'token' => $csrftoken));
+                $csrftoken = \SecurityUtil::generateCsrfToken($serviceManager, true);
+
+                //$generator = new \Symfony\Component\Routing\Generator;
+                //$url = $generator->generate($name)
+                //$url = $generator->generate('mueternizermodule_entry_edit');
+                $url = \ModUtil::url('MUEternizerModule', 'entry', 'edit', array('id' => $entryid, 'token' => $csrftoken));
                 $title = __('You have permissions to edit this issue!');
                 $out = "<a title='{$title}' id='eternizer-user-entry-edit-creater' href='{$url}'>
-                <img src='/images/icons/extrasmall/xedit.png' />
+                <i class='fa fa-pencil-square-o' aria-hidden='true'></i>
                 </a>";
             } else {
                 $out = true;
@@ -104,7 +104,7 @@ class TwigExtension extends AbstractTwigExtension
         }
 
         return $out;
-    }*/
+    }
     
     /**
      * The mueternizermodule_simpleCaptcha function adds a simplecaptcha image to a form.
