@@ -24,7 +24,7 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
      * Display the block content.
      *
      * @param array $properties The block properties array
-    
+     *
      * @return array|string
      */
     public function display(array $properties)

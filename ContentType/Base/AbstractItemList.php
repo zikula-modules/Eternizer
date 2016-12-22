@@ -187,7 +187,7 @@ abstract class AbstractItemList extends \Content_AbstractContentType
             'objectType' => $this->objectType,
             'items' => $entities
         ];
-            $templateParameters = array_merge($templateData, $repository->getAdditionalTemplateParameters('contentType'));
+        $templateParameters = array_merge($templateData, $repository->getAdditionalTemplateParameters('contentType'));
     
         $template = $this->getDisplayTemplate();
     

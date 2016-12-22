@@ -13,8 +13,8 @@ application "Eternizer" {
         generatePoweredByBacklinksIntoFooterTemplates false
 		generateTests false
 		writeModelToDocs true
-		skipFiles "CHANGELOG.md, README.md,\r\nResources/views/Entry/view.html.twig,\r\nResources/public/css/style.css,\r\ncomposer.json"
-               markFiles "Container/LinkContainer.php,\r\nController/EntryController.php,\r\nEntity/Repository/EntryRepository.php,\r\nEternizerModuleInstaller.php,\r\nTwig/TwigExtension.php"
+		skipFiles "CHANGELOG.md, README.md,,\r\nResources/public/css/style.css,\r\ncomposer.json"
+               markFiles "Container/LinkContainer.php,\r\nController/EntryController.php,\r\nEntity/Repository/EntryRepository.php,\r\nEternizerModuleInstaller.php,\r\nResources/views/Entry/view.html.twig\r\nTwig/TwigExtension.php"
 	}
 			entities {
 				entity "entry" leading {
