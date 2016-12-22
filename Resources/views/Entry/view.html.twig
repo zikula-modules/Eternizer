@@ -99,12 +99,12 @@
 		{% endfor %}
 		</div>
 		{% endif %}
-
+		
 		
     {% if routeArea == 'admin' %}
     {{ block('page_nav_links') }}
 
-    {{ include('@MUEternizerModule/Entry/viewQuickNav.html.twig', { workflowStateFilter: false }) }}{# see template file for available options #}
+    {{ include('@MUEternizerModule/Entry/viewQuickNav.html.twig') }}{# see template file for available options #}
 
     {% if routeArea == 'admin' %}
     <form action="{{ path('mueternizermodule_entry_' ~ routeArea ~ 'handleselectedentries') }}" method="post" id="entriesViewForm" class="form-horizontal" role="form">
@@ -116,6 +116,7 @@
                 {% if routeArea == 'admin' %}
                     <col id="cSelect" />
                 {% endif %}
+                <col id="cWorkflowState" />
                 <col id="cIp" />
                 <col id="cName" />
                 <col id="cEmail" />
@@ -132,6 +133,9 @@
                         <input type="checkbox" id="toggleEntries" />
                     </th>
                 {% endif %}
+                <th id="hWorkflowState" scope="col" class="text-left">
+                    <a href="{{ sort.workflowState.url }}" title="{{ __f('Sort by %s', {'%s': 'state'}) }}" class="{{ sort.workflowState.class }}">{{ __('State') }}</a>
+                </th>
                 <th id="hIp" scope="col" class="text-left">
                     <a href="{{ sort.ip.url }}" title="{{ __f('Sort by %s', {'%s': 'ip'}) }}" class="{{ sort.ip.class }}">{{ __('Ip') }}</a>
                 </th>
@@ -153,7 +157,7 @@
                 <th id="hNotes" scope="col" class="text-left">
                     <a href="{{ sort.notes.url }}" title="{{ __f('Sort by %s', {'%s': 'notes'}) }}" class="{{ sort.notes.class }}">{{ __('Notes') }}</a>
                 </th>
-                <th id="hItemActions" scope="col" class="z-order-unsorted">{{ __('Actions') }}</th>
+                <th id="hItemActions" scope="col" class="text-right z-order-unsorted">{{ __('Actions') }}</th>
             </tr>
             </thead>
             <tbody>
@@ -165,6 +169,9 @@
                         <input type="checkbox" name="items[]" value="{{ entry.id }}" class="entries-checkbox" />
                     </td>
                 {% endif %}
+                <td headers="hWorkflowState" class="text-left nowrap">
+                    {{ entry.workflowState|mueternizermodule_objectState }}
+                </td>
                 <td headers="hIp" class="text-left">
                     {{ entry.ip }}
                 </td>
@@ -201,7 +208,7 @@
             </tr>
         {% else %}
             <tr class="z-{{ routeArea == 'admin' ? 'admin' : 'data' }}tableempty">
-                <td class="text-left" colspan="{% if routeArea == 'admin' %}9{% else %}8{% endif %}">
+                <td class="text-left" colspan="{% if routeArea == 'admin' %}10{% else %}9{% endif %}">
             {{ __('No entries found.') }}
               </td>
             </tr>
@@ -210,14 +217,16 @@
             </tbody>
         </table>
         </div>
-		{% endif %}
+        {% endif %}
         
         {% if showAllEntries != 1 and pager|default %}
             {{ pager({ rowcount: pager.numitems, limit: pager.itemsperpage, display: 'page', route: 'mueternizermodule_entry_' ~ routeArea ~ 'view'}) }}
         {% endif %}
-		{% if formposition == 'below' and routeArea != 'admin' %}
+        
+        {% if formposition == 'below' and routeArea != 'admin' %}
             {{ mueternizermodule_showEditForm() }}
         {% endif %}
+        
     {% if routeArea == 'admin' %}
             <fieldset>
                 <label for="mUEternizerModuleAction" class="col-sm-3 control-label">{{ __('With selected entries') }}</label>
@@ -241,7 +250,7 @@
 {% endblock %}
 {% block page_nav_links %}
     {% if canBeCreated %}
-        {% if hasPermission('MUEternizerModule:Entry:', '::', 'ACCESS_EDIT') %}
+        {% if hasPermission('MUEternizerModule:Entry:', '::', 'ACCESS_COMMENT') %}
             {% set createTitle = __('Create entry') %}
             <a href="{{ path('mueternizermodule_entry_' ~ routeArea ~ 'edit') }}" title="{{ createTitle|e('html_attr') }}" class="fa fa-plus">{{ createTitle }}</a>
         {% endif %}
