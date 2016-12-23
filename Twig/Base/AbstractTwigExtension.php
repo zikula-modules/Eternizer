@@ -14,10 +14,11 @@ namespace MU\EternizerModule\Twig\Base;
 
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
-use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use MU\EternizerModule\Helper\ControllerHelper;
 use MU\EternizerModule\Helper\ListEntriesHelper;
 use MU\EternizerModule\Helper\WorkflowHelper;
+
 
 /**
  * Twig extension base class.
@@ -42,20 +43,27 @@ abstract class AbstractTwigExtension extends \Twig_Extension
     protected $listHelper;
     
     /**
+     * @var ControllerHelper
+     */
+    protected $controllerHelper;
+    
+    /**
      * Constructor.
      * Initialises member vars.
      *
-     * @param TranslatorInterface $translator     Translator service instance
-     * @param VariableApi         $variableApi    VariableApi service instance
-     * @param WorkflowHelper      $workflowHelper WorkflowHelper service instance
-     * @param ListEntriesHelper   $listHelper     ListEntriesHelper service instance
+     * @param TranslatorInterface $translator           Translator service instance
+     * @param VariableApi         $variableApi          VariableApi service instance
+     * @param WorkflowHelper      $workflowHelper       WorkflowHelper service instance
+     * @param ListEntriesHelper   $listHelper           ListEntriesHelper service instance
+     * @param ControllerHelper    $controllerHelper     ControllerHelper service instance
      */
-    public function __construct(TranslatorInterface $translator, VariableApi $variableApi, WorkflowHelper $workflowHelper, ListEntriesHelper $listHelper)
+    public function __construct(TranslatorInterface $translator, VariableApi $variableApi, WorkflowHelper $workflowHelper, ListEntriesHelper $listHelper, ControllerHelper $controllerHelper)
     {
         $this->setTranslator($translator);
         $this->variableApi = $variableApi;
         $this->workflowHelper = $workflowHelper;
         $this->listHelper = $listHelper;
+        $this->controllerHelper = $controllerHelper;
     }
     
     /**

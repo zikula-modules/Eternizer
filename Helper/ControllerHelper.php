@@ -13,11 +13,65 @@
 namespace MU\EternizerModule\Helper;
 
 use MU\EternizerModule\Helper\Base\AbstractControllerHelper;
+use \DateUtil;
+use \ModUtil;
+use \UserUtil;
+use \SecurityUtil;
+use \ServiceUtil;
 
 /**
  * Helper implementation class for controller layer methods.
  */
 class ControllerHelper extends AbstractControllerHelper
 {
-    // feel free to add your own convenience methods here
+    /**
+     * 
+     * @param int     $entryid
+     * @param int     $createdUserId
+     * @param int     $createdDate
+     * @param int     $kind
+     * @return string|boolean
+     */
+	public function EditEntry($entryid, $createdUserId, $createdDate,  $kind = 1)
+	{
+		$createdDate = $createdDate->getTimestamp();
+		 
+		// get the actual time
+		$actualTime = \DateUtil::getDatetime();
+		// get modvar editTime
+		$editTime = \ModUtil::getVar('MUEternizerModule', 'period');
+		
+		$diffTime = \DateUtil::getDatetimeDiff($createdDate, $actualTime);
+		$diffTimeHours = $diffTime['d'] * 24 + $diffTime['h'];
+		
+		if (UserUtil::isLoggedIn() == true) {
+			$userid = \UserUtil::getVar('uid');
+		} else {
+			$out = '';
+		}
+		
+		if ($createdUserId == $userid && ($diffTimeHours < $editTime) ) {
+			if ($kind == 1) {
+				$serviceManager = \ServiceUtil::getManager();
+				// generate an auth key to use in urls
+				$csrftoken = \SecurityUtil::generateCsrfToken($serviceManager, true);
+		
+				$url = \ModUtil::url('MUEternizerModule', 'entry', 'edit', array('id' => $entryid, 'token' => $csrftoken));
+				$title = __('You have permissions to edit this issue!');
+				$out = "<a title='{$title}' id='eternizer-user-entry-edit-creater' href='{$url}'>
+				<i class='fa fa-pencil-square-o' aria-hidden='true'></i>
+				</a>";
+			} else {
+				$out = true;
+		
+			}
+		} else {
+			if ($kind == 1) {
+				$out = '';
+			} else {
+				$out = false;
+			}
+		}
+		return $out;
+	}
 }

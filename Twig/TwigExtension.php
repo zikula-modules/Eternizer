@@ -14,13 +14,10 @@ namespace MU\EternizerModule\Twig;
 
 use MU\EternizerModule\Twig\Base\AbstractTwigExtension;
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
-use DateUtil;
+
 use ModUtil;
 use SecurityUtil;
 use ServiceUtil;
-use UserUtil;
-use Symfony\Component\Routing\Generator;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Twig extension implementation class.
@@ -61,47 +58,7 @@ class TwigExtension extends AbstractTwigExtension
      */
     public function editEntry($entryid, $createdUserId, $createdDate,  $kind = 1)
     {
-    	$createdDate = $createdDate->getTimestamp();
-    	
-        // get the actual time
-        $actualTime = \DateUtil::getDatetime();
-        // get modvar editTime
-        $editTime = \ModUtil::getVar('MUEternizerModule', 'period');
-
-        $diffTime = \DateUtil::getDatetimeDiff($createdDate, $actualTime);
-        $diffTimeHours = $diffTime['d'] * 24 + $diffTime['h'];
-
-        if (UserUtil::isLoggedIn() == true) {
-            $userid = \UserUtil::getVar('uid');
-        } else {
-            $out = '';
-        }
-        
-        if ($createdUserId == $userid && ($diffTimeHours < $editTime) ) {
-            if ($kind == 1) {
-                $serviceManager = \ServiceUtil::getManager();
-                // generate an auth key to use in urls
-                $csrftoken = \SecurityUtil::generateCsrfToken($serviceManager, true);
-
-                //$generator = new \Symfony\Component\Routing\Generator;
-                //$url = $generator->generate($name)
-                //$url = $generator->generate('mueternizermodule_entry_edit');
-                $url = \ModUtil::url('MUEternizerModule', 'entry', 'edit', array('id' => $entryid, 'token' => $csrftoken));
-                $title = __('You have permissions to edit this issue!');
-                $out = "<a title='{$title}' id='eternizer-user-entry-edit-creater' href='{$url}'>
-                <i class='fa fa-pencil-square-o' aria-hidden='true'></i>
-                </a>";
-            } else {
-                $out = true;
-
-            }
-        } else {
-            if ($kind == 1) {
-                $out = '';
-            } else {
-                $out = false;
-            }
-        }
+    	$out = $this->controllerHelper->EditEntry($entryid, $createdUserId, $createdDate,  $kind = 1);
 
         return $out;
     }
