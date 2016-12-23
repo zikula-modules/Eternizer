@@ -382,6 +382,7 @@ class EntryController extends AbstractEntryController
         
         $sortableColumns = new SortableColumns($this->get('router'), 'mueternizermodule_entry_' . ($isAdmin ? 'admin' : '') . 'view', 'sort', 'sortdir');
         $sortableColumns->addColumns([
+        	new Column('workflowState'),
             new Column('ip'),
             new Column('name'),
             new Column('email'),
