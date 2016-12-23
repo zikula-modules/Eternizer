@@ -15,8 +15,9 @@
     '@MUEternizerModule/Form/bootstrap_3.html.twig',
     'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
 ] %}
+{% set formposition = getModVar('MUEternizerModule', 'formposition') %}
 {% set returnUrl = path('mueternizermodule_entry_view') %}
-{% if routeArea != 'admin' %}
+{% if routeArea != 'admin' and (formposition == 'above' or formposition == 'below') %}
 {{ form_start(form, {attr: {id: 'entryEditForm'}, action: path('mueternizermodule_entry_edit', { returnTo: returnUrl }) }) }}
 {% else %}
 {{ form_start(form, {attr: {id: 'entryEditForm'} }) }}
