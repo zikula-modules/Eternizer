@@ -56,7 +56,7 @@
                                     {% endif %}
                                 {% endif %}
                             {% endif %}
-							{{ __f('created on %s', {'%s': entry.createdDate|date("d.m.Y")}) }}
+							{{ __f('created on %s', {'%s': entry.createdDate|date("d.m.Y H:i:s")}) }}
                         </div>
                     </div>
 					{% set itemActions = knp_menu_get('MUEternizerModule:ItemActionsMenu:menu', [], { entity: entry, area: routeArea, context: 'view' }) %}
