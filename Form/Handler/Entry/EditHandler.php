@@ -13,6 +13,9 @@
 namespace MU\EternizerModule\Form\Handler\Entry;
 
 use MU\EternizerModule\Form\Handler\Entry\Base\AbstractEditHandler;
+use Zikula\RoutesModule\Controller\RedirectingController;
+use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * This handler class handles the page events of the Form called by the mUEternizerModule_entry_edit() function.
@@ -20,5 +23,58 @@ use MU\EternizerModule\Form\Handler\Entry\Base\AbstractEditHandler;
  */
 class EditHandler extends AbstractEditHandler
 {
-    // feel free to extend the base handler class here
+    /**
+     * Initialise existing entity for editing.
+     *
+     * @return EntityAccess|null Desired entity instance or null
+     *
+     * @throws NotFoundHttpException Thrown if item to be edited isn't found
+     */
+    protected function initEntityForEditing()
+    {
+        $selectionHelper = $this->container->get('mu_eternizer_module.selection_helper');
+        $entity = $selectionHelper->getEntity($this->objectType, $this->idValues);
+        if (null === $entity) {
+            throw new NotFoundHttpException($this->__('No such item.'));
+        }
+        $controllerHelper = $this->container->get('mu_eternizer_module.controller_helper');
+        $editEntryAllowed = $controllerHelper->editEntry($entity['id'], $entity['createdUserId'], $entity['createdDate'], 2);
+        
+        if ($editEntryAllowed == false) {       	
+        	return \System::redirect('/eternizer/entries/view');
+        }
+    
+        return parent::initEntityForEditing();
+    } 
+    
+    /**
+     * Command event handler.
+     *
+     * This event handler is called when a command is issued by the user.
+     *
+     * @param array $args List of arguments
+     *
+     * @return mixed Redirect or false on errors
+     */
+    public function handleCommand($args = [])
+    {
+    	$captchaHelper = $this->get('mu_eternizer_module.captcha_helper');
+    	$captcha = $captchaHelper->isCaptchaValid();
+    	$result = parent::handleCommand($args);
+    	if (false === $result) {
+    		return $result;
+    	}
+    
+    	// build $args for BC (e.g. used by redirect handling)
+    	foreach ($this->templateParameters['actions'] as $action) {
+    		if ($this->form->get($action['id'])->isClicked()) {
+    			$args['commandName'] = $action['id'];
+    		}
+    	}
+    	if ($this->form->get('cancel')->isClicked()) {
+    		$args['commandName'] = 'cancel';
+    	}
+    
+    	return new RedirectResponse($this->getRedirectUrl($args), 302);
+    }
 }
