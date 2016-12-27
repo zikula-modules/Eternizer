@@ -14,11 +14,29 @@ namespace MU\EternizerModule;
 
 use MU\EternizerModule\Base\AbstractEternizerModuleInstaller;
 
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+
 /**
  * Installer implementation class.
  */
 class EternizerModuleInstaller extends AbstractEternizerModuleInstaller
 {
+	/**
+	 * Install the MUEternizerModule application.
+	 *
+	 * @return boolean True on success, or false
+	 *
+	 * @throws RuntimeException Thrown if database tables can not be created or another error occurs
+	 */
+	public function install()
+	{
+		// try to create the cache directory
+		$this->createCacheDirectory();
+		
+		return parent::install();
+	}
+	
    /**
      * Upgrade the MUEternizerModule application from an older version.
      *
@@ -58,6 +76,9 @@ class EternizerModuleInstaller extends AbstractEternizerModuleInstaller
             	
             	// update module name in the workflows table
             	$this->updateWorkflowsFor14();
+            	
+            	// try to create the cache directory
+            	$this->createCacheDirectory();
 
                 // ...
                 // update the database schema
@@ -76,5 +97,52 @@ class EternizerModuleInstaller extends AbstractEternizerModuleInstaller
     
 
         return true;
+    }
+    
+    /**
+     * Returns path to cache directory.
+     *
+     * @return string Path to temporary cache directory
+     */
+    private function getCacheDirectory()
+    {
+    	return 'app/cache/eternizer';
+    }
+    /**
+     * Creates the cache directory.
+     *
+     * @return void
+     */
+    private function createCacheDirectory()
+    {
+    	$cacheDirectory = $this->getCacheDirectory();
+    	$fs = new Filesystem();
+    	try {
+    		if (!$fs->exists($cacheDirectory)) {
+    			$fs->mkdir($cacheDirectory);
+    			$fs->chmod($cacheDirectory, 0777);
+    		}
+    	} catch (IOExceptionInterface $e) {
+    		$this->addFlash('error', $this->__f('An error occurred while creating the cache directory at %s.', ['%s' => $e->getPath()]));
+    	}
+    	try {
+    		if ($fs->exists($cacheDirectory . '/.htaccess')) {
+    			return;
+    		}
+    		$fs->dumpFile($cacheDirectory . '/.htaccess', 'SetEnvIf Request_URI "\.gif$" object_is_gif=gif
+SetEnvIf Request_URI "\.png$" object_is_png=png
+SetEnvIf Request_URI "\.jpg$" object_is_jpg=jpg
+SetEnvIf Request_URI "\.jpeg$" object_is_jpeg=jpeg
+Order deny,allow
+Deny from all
+Allow from env=object_is_gif
+Allow from env=object_is_png
+Allow from env=object_is_jpg
+Allow from env=object_is_jpeg
+');
+    		$this->addFlash('status', $this->__('Successfully created the cache directory with a .htaccess file in it.'));
+    	} catch (IOExceptionInterface $e) {
+    		$this->addFlash('error', $this->__f('Could not create .htaccess file in %s, please refer to the manual before using the module!', ['%s' => $e->getPath()]));
+    	}
     }
 }
