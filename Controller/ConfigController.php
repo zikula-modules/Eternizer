@@ -40,6 +40,12 @@ class ConfigController extends AbstractConfigController
      */
     public function configAction(Request $request)
     {
+    	$simpleCaptcha = \ModUtil::getVar($this->name, 'simplecaptcha');
+    	if ($simpleCaptcha == true) {
+    	    $environmentHelper = $this->get('mu_eternizer_module.environment_helper');
+    	    $environment = $environmentHelper->check();
+    	}
+    	
         return parent::configAction($request);
     }
     // feel free to add your own controller methods here
