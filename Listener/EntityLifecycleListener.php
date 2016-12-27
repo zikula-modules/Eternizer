@@ -14,9 +14,74 @@ namespace MU\EternizerModule\Listener;
 
 use MU\EternizerModule\Listener\Base\AbstractEntityLifecycleListener;
 
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use ModUtil;
+use UserUtil;
 /**
  * Event subscriber implementation class for entity lifecycle events.
  */
 class EntityLifecycleListener extends AbstractEntityLifecycleListener
-{
+{	
+	/**
+	 * The postPersist event occurs for an entity after the entity has been made persistent.
+	 * It will be invoked after the database insert operations. Generated primary key values
+	 * are available in the postPersist event.
+	 *
+	 * @param LifecycleEventArgs $args Event arguments
+	 */
+	public function postPersist(LifecycleEventArgs $args)
+	{
+		parent::postPersist($args);
+		
+		$entity = $args->getObject();
+		$currentIp = $_SERVER["REMOTE_ADDR"];
+		
+		$saveIp = \ModUtil::getVar('MUEternizerModule', 'ipsave');
+		$moderation = \ModUtil::getVar('MUEternizerModule', 'moderate');
+		$userId = \UserUtil::getVar('uid');
+		$groupIds = \UserUtil::getGroupsForUser($userId);
+		
+        if (method_exists($entity, 'get_objectType')) {
+            if ($saveIp == true) {
+		        $entity->setIp($currentIp);
+            }
+            switch ($moderation) {
+        	case 'all':
+        		if ($userId != 2) {
+        		    $entity->setWorkflowState('waiting');
+        		} else {
+        			$entity->setWorkflowState('approved');
+        		}
+        		break;
+        	case 'guests':
+        		if ($userId == 1) {
+        			$entity->setWorkflowState('waiting');
+        		}
+        		break;
+        	case 'nothing':
+        		    $entity->setWorkflowState('approved');
+        		break;
+            }     		
+            	
+        }
+        if (!method_exists($entity, 'get_objectType')) {         
+            switch ($moderation) {
+        	    case 'all':
+        		    if ($userId != 2) {
+        		        $entity->setState('waiting');
+        		    } else {
+        		    	$entity->setState('approved');
+        		    }
+        		    break;
+        	    case 'guests':
+        		    if ($userId == 1) {
+        			    $entity->setState('waiting');
+        		    }
+        		    break;
+        	    case 'nothing':
+        		    $entity->setState('approved');
+        		    break;
+            }   
+        }
+	}
 }
