@@ -6,8 +6,10 @@
     {{ pageAddAsset('javascript', zasset('@MUEternizerModule:js/MUEternizerModule.EditFunctions.js')) }}
     {{ pageAddAsset('javascript', zasset('@MUEternizerModule:js/MUEternizerModule.Validation.js')) }}
 {% endblock %}
-
+{% set formposition = getModVar('MUEternizerModule', 'formposition') %}
+{% if formposition == 'menue' %}
 {% block title mode == 'create' ? __('Create entry') : __('Edit entry') %}
+{% endif %}
 {% block admin_page_icon mode == 'create' ? 'plus' : 'pencil-square-o' %}
 {% block content %}
     <div class="mueternizermodule-entry mueternizermodule-edit">
@@ -15,7 +17,7 @@
     '@MUEternizerModule/Form/bootstrap_3.html.twig',
     'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
 ] %}
-{% set formposition = getModVar('MUEternizerModule', 'formposition') %}
+
 {% set returnUrl = path('mueternizermodule_entry_view') %}
 {% if routeArea != 'admin' and (formposition == 'above' or formposition == 'below') %}
 {{ form_start(form, {attr: {id: 'entryEditForm'}, action: path('mueternizermodule_entry_edit', { returnTo: returnUrl }) }) }}
@@ -43,6 +45,20 @@
     <div class="hidden">
         {{ form_row(form.notes) }}
     </div>
+    {% set captcha = getModVar('MUEternizerModule', 'simplecaptcha') %}
+    {% if captcha %}
+    <div class="form-group">
+        <label for="eternizerMath" class="control-label required col-sm-3">{{ __('Please solve this calculation') }}</label>
+        <div class="col-sm-9">
+            {{ mueternizermodule_simpleCaptcha() }}
+            {# example for custom arguments:
+                mueternizermodule_simpleCaptcha(font='arial', size=20, bgColour='ffffff', fgColour='0000ff')
+            #}
+            <input id="eternizer_captcha" class="form-control" name="captcha" type="text" size="5" maxlength="5" value="" />
+            <span class="help-block">{{ __('(to prevent spam)') }}</span>
+        </div>
+    </div>
+    {% endif %}
 </fieldset>
 
 {% if mode != 'create' %}

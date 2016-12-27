@@ -31,3 +31,13 @@ services:
     mu_eternizer_module.workflow_helper:
         class: MU\EternizerModule\Helper\WorkflowHelper
         arguments: ["@service_container", "@translator.default"]
+        
+    mu_eternizer_module.captcha_helper:
+        class: MU\EternizerModule\Helper\CaptchaHelper
+        lazy: true
+        arguments: ["@translator.default", "@zikula_extensions_module.api.variable", "@zikula_permissions_module.api.permission", "@mu_eternizer_module.environment_helper", "@jms_i18n_routing.router", "@session"]
+        
+    mu_eternizer_module.environment_helper:
+        class: MU\EternizerModule\Helper\EnvironmentHelper
+        lazy: true
+        arguments: ["@kernel", "@translator.default", "@zikula_extensions_module.api.variable", "@session"]
