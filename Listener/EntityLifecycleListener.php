@@ -64,7 +64,7 @@ class EntityLifecycleListener extends AbstractEntityLifecycleListener
             }     		
             	
         }
-        if (!method_exists($entity, 'get_objectType')) {         
+        if (method_exists($entity, 'setState')) {         
             switch ($moderation) {
         	    case 'all':
         		    if ($userId != 2) {
