@@ -13,7 +13,15 @@
 namespace MU\EternizerModule\Container;
 
 use MU\EternizerModule\Container\Base\AbstractLinkContainer;
+
+use Symfony\Component\Routing\RouterInterface;
+use UserUtil;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
+use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\UsersModule\Api\CurrentUserApi;
+use MU\EternizerModule\Helper\ControllerHelper;
 use ModUtil;
 
 /**
@@ -21,6 +29,27 @@ use ModUtil;
  */
 class LinkContainer extends AbstractLinkContainer
 {
+    /**
+     * Constructor.
+     * Initialises member vars.
+     *
+     * @param TranslatorInterface $translator       Translator service instance
+     * @param Routerinterface     $router           Router service instance
+     * @param PermissionApi       $permissionApi    PermissionApi service instance
+     * @param ControllerHelper    $controllerHelper ControllerHelper service instance
+     * @param VariableApi         $variableApi      VariableApi service instance
+     * @param CurrentUserApi      $currentUserApi   CurrentUserApi service instance
+     */
+    public function __construct(TranslatorInterface $translator, RouterInterface $router, PermissionApi $permissionApi, ControllerHelper $controllerHelper, VariableApi $variableApi, CurrentUserApi $currentUserApi)
+    {
+        $this->setTranslator($translator);
+        $this->router = $router;
+        $this->permissionApi = $permissionApi;
+        $this->controllerHelper = $controllerHelper;
+        $this->variableApi = $variableApi;
+        $this->currentUserApi = $currentUserApi;
+    }
+	
     /**
      * Returns available header links.
      *
