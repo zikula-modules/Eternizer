@@ -7,9 +7,9 @@
     {{ pageAddAsset('javascript', zasset('@MUEternizerModule:js/MUEternizerModule.Validation.js')) }}
 {% endblock %}
 {% set formposition = getModVar('MUEternizerModule', 'formposition') %}
-{% if formposition == 'menue' %}
+{#% if formposition == 'menue' %#}
 {% block title mode == 'create' ? __('Create entry') : __('Edit entry') %}
-{% endif %}
+{#% endif %#}
 {% block admin_page_icon mode == 'create' ? 'plus' : 'pencil-square-o' %}
 {% block content %}
     <div class="mueternizermodule-entry mueternizermodule-edit">
