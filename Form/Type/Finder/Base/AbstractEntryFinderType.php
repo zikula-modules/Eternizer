@@ -118,7 +118,6 @@ abstract class AbstractEntryFinderType extends AbstractType
                 'label' => $this->__('Sort by') . ':',
                 'empty_data' => '',
                 'choices' => [
-                    $this->__('Id') => 'id',
                     $this->__('Workflow state') => 'workflowState',
                     $this->__('Ip') => 'ip',
                     $this->__('Name') => 'name',
@@ -217,7 +216,7 @@ abstract class AbstractEntryFinderType extends AbstractType
                 'editorName' => 'string'
             ])
             ->setAllowedValues([
-                'editorName' => ['xinha', 'tinymce', 'ckeditor']
+                'editorName' => ['tinymce', 'ckeditor']
             ])
         ;
     }

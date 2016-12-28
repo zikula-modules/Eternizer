@@ -150,7 +150,7 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
         $plugins->add(
             [
                 'name' => 'mueternizermodule',
-                'path' => 'modules/MU/EternizerModule/Resources/docs/scribite/plugins/TinyMce/plugins/mueternizermodule/editor_plugin.js'
+                'path' => 'modules/MU/EternizerModule/Resources/docs/scribite/plugins/TinyMce/vendor/tinymce/plugins/mueternizermodule/plugin.js'
             ]
         );
     }

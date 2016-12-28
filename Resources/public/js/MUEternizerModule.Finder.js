@@ -18,20 +18,6 @@ function getMUEternizerModulePopupAttributes()
 }
 
 /**
- * Open a popup window with the finder triggered by a Xinha button.
- */
-function MUEternizerModuleFinderXinha(editor, eternizerUrl)
-{
-    var popupAttributes;
-
-    // Save editor for access in selector window
-    currentMUEternizerModuleEditor = editor;
-
-    popupAttributes = getMUEternizerModulePopupAttributes();
-    window.open(eternizerUrl, '', popupAttributes);
-}
-
-/**
  * Open a popup window with the finder triggered by a CKEditor button.
  */
 function MUEternizerModuleFinderCKEditor(editor, eternizerUrl)
@@ -40,7 +26,7 @@ function MUEternizerModuleFinderCKEditor(editor, eternizerUrl)
     currentMUEternizerModuleEditor = editor;
 
     editor.popup(
-        Routing.generate('mueternizermodule_external_finder', { editor: 'ckeditor' }),
+        Routing.generate('mueternizermodule_external_finder', { objectType: 'entry', editor: 'ckeditor' }),
         /*width*/ '80%', /*height*/ '70%',
         'location=no,menubar=no,toolbar=no,dependent=yes,minimizable=no,modal=yes,alwaysRaised=yes,resizable=yes,scrollbars=yes'
     );
@@ -53,8 +39,8 @@ mUEternizerModule.finder = {};
 
 mUEternizerModule.finder.onLoad = function (baseId, selectedId)
 {
-    jQuery('select').change(mUEternizerModule.finder.onParamChanged);
-    jQuery('.btn-success').addClass('hidden');
+    jQuery('select').not("[id$='pasteas']").change(mUEternizerModule.finder.onParamChanged);
+    
     jQuery('.btn-default').click(mUEternizerModule.finder.handleCancel);
 
     var selectedItems = jQuery('#mueternizermoduleItemContainer li a');
@@ -71,16 +57,12 @@ mUEternizerModule.finder.onParamChanged = function ()
 
 mUEternizerModule.finder.handleCancel = function ()
 {
-    var editor, w;
+    var editor;
 
-    editor = jQuery("[id$='editorName']").first().val();
-    if ('xinha' === editor) {
-        w = parent.window;
-        window.close();
-        w.focus();
-    } else if (editor === 'tinymce') {
+    editor = jQuery("[id$='editor']").first().val();
+    if ('tinymce' === editor) {
         mUEternizerClosePopup();
-    } else if (editor === 'ckeditor') {
+    } else if ('ckeditor' === editor) {
         mUEternizerClosePopup();
     } else {
         alert('Close Editor: ' + editor);
@@ -94,12 +76,12 @@ function mUEternizerGetPasteSnippet(mode, itemId)
 
     quoteFinder = new RegExp('"', 'g');
     itemUrl = jQuery('#url' + itemId).val().replace(quoteFinder, '');
-    itemTitle = jQuery('#title' + itemId).val().replace(quoteFinder, '');
-    itemDescription = jQuery('#desc' + itemId).val().replace(quoteFinder, '');
-    pasteMode = jQuery("[id$='pasteAs']").first().val();
+    itemTitle = jQuery('#title' + itemId).val().replace(quoteFinder, '').trim();
+    itemDescription = jQuery('#desc' + itemId).val().replace(quoteFinder, '').trim();
+    pasteMode = jQuery("[id$='pasteas']").first().val();
 
     if (pasteMode === '2' || pasteMode !== '1') {
-        return itemId;
+        return '' + itemId;
     }
 
     // return link to item
@@ -118,40 +100,8 @@ mUEternizerModule.finder.selectItem = function (itemId)
 {
     var editor, html;
 
-    editor = jQuery("[id$='editorName']").first().val();
-    if ('xinha' === editor) {
-        if (null !== window.opener.currentMUEternizerModuleEditor) {
-            html = mUEternizerGetPasteSnippet('html', itemId);
-
-            window.opener.currentMUEternizerModuleEditor.focusEditor();
-            window.opener.currentMUEternizerModuleEditor.insertHTML(html);
-        } else {
-            html = mUEternizerGetPasteSnippet('url', itemId);
-            var currentInput = window.opener.currentMUEternizerModuleInput;
-
-            if ('INPUT' === currentInput.tagName) {
-                // Simply overwrite value of input elements
-                currentInput.value = html;
-            } else if ('TEXTAREA' === currentInput.tagName) {
-                // Try to paste into textarea - technique depends on environment
-                if (typeof document.selection !== 'undefined') {
-                    // IE: Move focus to textarea (which fortunately keeps its current selection) and overwrite selection
-                    currentInput.focus();
-                    window.opener.document.selection.createRange().text = html;
-                } else if (typeof currentInput.selectionStart !== 'undefined') {
-                    // Firefox: Get start and end points of selection and create new value based on old value
-                    var startPos = currentInput.selectionStart;
-                    var endPos = currentInput.selectionEnd;
-                    currentInput.value = currentInput.value.substring(0, startPos)
-                                        + html
-                                        + currentInput.value.substring(endPos, currentInput.value.length);
-                } else {
-                    // Others: just append to the current value
-                    currentInput.value += html;
-                }
-            }
-        }
-    } else if ('tinymce' === editor) {
+    editor = jQuery("[id$='editor']").first().val();
+    if ('tinymce' === editor) {
         html = mUEternizerGetPasteSnippet('html', itemId);
         tinyMCE.activeEditor.execCommand('mceInsertContent', false, html);
         // other tinymce commands: mceImage, mceInsertLink, mceReplaceContent, see http://www.tinymce.com/wiki.php/Command_identifiers

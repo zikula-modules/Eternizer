@@ -170,7 +170,7 @@ abstract class AbstractItemList extends \Content_AbstractContentType
         $currentPage = 1;
         $resultsPerPage = isset($this->amount) ? $this->amount : 1;
         list($query, $count) = $repository->getSelectWherePaginatedQuery($qb, $currentPage, $resultsPerPage);
-        $entities = $repository->retrieveCollectionResult($query, $orderBy, true);
+        list($entities, $objectCount) = $repository->retrieveCollectionResult($query, $orderBy, true);
     
         $data = [
             'objectType' => $this->objectType,

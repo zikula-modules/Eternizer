@@ -12,13 +12,11 @@
 
 namespace MU\EternizerModule\Controller\Base;
 
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-use ModUtil;
 use PageUtil;
-use ThemeUtil;
-use UserUtil;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\PlainResponse;
 
@@ -88,22 +86,23 @@ abstract class AbstractExternalController extends AbstractController
      * Popup selector for Scribite plugins.
      * Finds items of a certain object type.
      *
-     * @param string $objectType The object type
-     * @param string $editor     Name of used Scribite editor
-     * @param string $sort       Sorting field
-     * @param string $sortdir    Sorting direction
-     * @param int    $pos        Current pager position
-     * @param int    $num        Amount of entries to display
+     * @param Request $request    The current request
+     * @param string  $objectType The object type
+     * @param string  $editor     Name of used Scribite editor
+     * @param string  $sort       Sorting field
+     * @param string  $sortdir    Sorting direction
+     * @param int     $pos        Current pager position
+     * @param int     $num        Amount of entries to display
      *
      * @return output The external item finder page
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
-    public function finderAction($objectType, $editor, $sort, $sortdir, $pos = 1, $num = 0)
+    public function finderAction(Request $request, $objectType, $editor, $sort, $sortdir, $pos = 1, $num = 0)
     {
+        
         PageUtil::addVar('stylesheet', '@MUEternizerModule/Resources/public/css/style.css');
         
-        $getData = $this->request->query;
         $controllerHelper = $this->get('mu_eternizer_module.controller_helper');
         
         $utilArgs = ['controller' => 'external', 'action' => 'finder'];
@@ -116,9 +115,9 @@ abstract class AbstractExternalController extends AbstractController
         }
         
         $repository = $this->get('mu_eternizer_module.' . $objectType . '_factory')->getRepository();
-        $repository->setRequest($this->get('request_stack')->getCurrentRequest());
+        $repository->setRequest($request);
         
-        if (empty($editor) || !in_array($editor, ['xinha', 'tinymce', 'ckeditor'])) {
+        if (empty($editor) || !in_array($editor, ['tinymce', 'ckeditor'])) {
             return $this->__('Error: Invalid editor context given for external controller action.');
         }
         if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields())) {
@@ -130,8 +129,6 @@ abstract class AbstractExternalController extends AbstractController
             $sdir = 'asc';
         }
         
-        $sortParam = $sort . ' ' . $sdir;
-        
         // the current offset which is used to calculate the pagination
         $currentPage = (int) $pos;
         
@@ -140,22 +137,15 @@ abstract class AbstractExternalController extends AbstractController
         if ($resultsPerPage == 0) {
             $resultsPerPage = $this->getVar('pageSize', 20);
         }
-        $where = '';
-        list($entities, $objectCount) = $repository->selectWherePaginated($where, $sortParam, $currentPage, $resultsPerPage);
-        
-        foreach ($entities as $k => $entity) {
-            $entity->initWorkflow();
-        }
         
         $templateParameters = [
             'editorName' => $editor,
             'objectType' => $objectType,
-            'items' => $entities,
             'sort' => $sort,
             'sortdir' => $sdir,
-            'currentPage' => $currentPage,
-            'pager', ['numitems' => $objectCount, 'itemsperpage' => $resultsPerPage]
+            'currentPage' => $currentPage
         ];
+        $searchTerm = '';
         
         $formOptions = [
             'objectType' => $objectType,
@@ -163,8 +153,35 @@ abstract class AbstractExternalController extends AbstractController
         ];
         $form = $this->createForm('MU\EternizerModule\Form\Type\Finder\\' . ucfirst($objectType) . 'FinderType', $templateParameters, $formOptions);
         
+        if ($form->handleRequest($request)->isValid() && $form->get('update')->isClicked()) {
+            $formData = $form->getData();
+            $templateParameters = array_merge($templateParameters, $formData);
+            $currentPage = $formData['currentPage'];
+            $resultsPerPage = $formData['num'];
+            $sort = $formData['sort'];
+            $sdir = $formData['sortdir'];
+            $searchTerm = $formData['q'];
+        }
+        
+        $where = '';
+        $sortParam = $sort . ' ' . $sdir;
+        if ($searchTerm != '') {
+            list($entities, $objectCount) = $repository->selectSearch($searchTerm, [], $sortParam, $currentPage, $resultsPerPage);
+        } else {
+            list($entities, $objectCount) = $repository->selectWherePaginated($where, $sortParam, $currentPage, $resultsPerPage);
+        }
+        
+        foreach ($entities as $k => $entity) {
+            $entity->initWorkflow();
+        }
+        
+        $templateParameters['items'] = $entities;
         $templateParameters['finderForm'] = $form->createView();
         
+        $templateParameters['pager'] = [
+            'numitems' => $objectCount,
+            'itemsperpage' => $resultsPerPage
+        ];
         
         return $this->render('@MUEternizerModule/External/' . ucfirst($objectType) . '/find.html.twig', $templateParameters);
     }

@@ -177,7 +177,6 @@ abstract class AbstractItemListBlockType extends AbstractType
         $builder->add('filter', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
             'label' => $this->__('Filter (expert option)') . ':',
             'required' => false,
-            'help' => '<a class="fa fa-filter" data-toggle="modal" data-target="#filterSyntaxModal">' . $this->__('Show syntax examples') . '</a>',
             'max_length' => 255
         ]);
     }

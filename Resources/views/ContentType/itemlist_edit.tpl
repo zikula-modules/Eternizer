@@ -73,7 +73,7 @@
     </div>
 </div>
 
-<div id="customTemplateArea" class="form-group hidden" data-switch="mUEternizerModuleTemplate" data-switch-value="custom">
+<div id="customTemplateArea" class="form-group" data-switch="mUEternizerModuleTemplate" data-switch-value="custom">
     {gt text='Custom template' domain='mueternizermodule' assign='customTemplateLabel'}
     {formlabel for='mUEternizerModuleCustomTemplate' text=$customTemplateLabel cssClass='col-sm-3 control-label'}
     <div class="col-sm-9">

@@ -543,17 +543,6 @@ abstract class AbstractEntryRepository extends EntityRepository
         $qb = $this->genericBaseQuery($where, $orderBy, $useJoins, $slimMode);
     
         $page = $currentPage;
-    
-        // check if we have any filters set
-        $parameters = $this->getViewQuickNavParameters('', []);
-        $hasFilters = false;
-        foreach ($parameters as $k => $v) {
-            if ((!is_numeric($v) && $v != '') || (is_numeric($v) && $v > 0)) {
-                $hasFilters = true;
-                break;
-            }
-        }
-    
         
         list($query, $count) = $this->getSelectWherePaginatedQuery($qb, $page, $resultsPerPage);
     

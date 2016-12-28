@@ -15,6 +15,7 @@ namespace MU\EternizerModule\Controller;
 use MU\EternizerModule\Controller\Base\AbstractExternalController;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Controller for external calls implementation class.
@@ -49,26 +50,27 @@ class ExternalController extends AbstractExternalController
      * Finds items of a certain object type.
      *
      * @Route("/finder/{objectType}/{editor}/{sort}/{sortdir}/{pos}/{num}",
-     *        requirements = {"editor" = "xinha|tinymce|ckeditor", "sortdir" = "asc|desc", "pos" = "\d+", "num" = "\d+"},
+     *        requirements = {"editor" = "tinymce|ckeditor", "sortdir" = "asc|desc", "pos" = "\d+", "num" = "\d+"},
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 0},
      *        methods = {"GET"},
      *        options={"expose"=true}
      * )
      *
-     * @param string $objectType The object type
-     * @param string $editor     Name of used Scribite editor
-     * @param string $sort       Sorting field
-     * @param string $sortdir    Sorting direction
-     * @param int    $pos        Current pager position
-     * @param int    $num        Amount of entries to display
+     * @param Request $request    The current request
+     * @param string  $objectType The object type
+     * @param string  $editor     Name of used Scribite editor
+     * @param string  $sort       Sorting field
+     * @param string  $sortdir    Sorting direction
+     * @param int     $pos        Current pager position
+     * @param int     $num        Amount of entries to display
      *
      * @return output The external item finder page
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
-    public function finderAction($objectType, $editor, $sort, $sortdir, $pos = 1, $num = 0)
+    public function finderAction(Request $request, $objectType, $editor, $sort, $sortdir, $pos = 1, $num = 0)
     {
-        return parent::finderAction($objectType, $editor, $sort, $sortdir, $pos, $num);
+        return parent::finderAction($request, $objectType, $editor, $sort, $sortdir, $pos, $num);
     }
 
     // feel free to extend the external controller here

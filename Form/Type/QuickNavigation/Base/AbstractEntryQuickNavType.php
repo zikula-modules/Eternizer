@@ -69,6 +69,7 @@ abstract class AbstractEntryQuickNavType extends AbstractType
             ->setMethod('GET')
             ->add('all', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
             ->add('own', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
+            ->add('tpl', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
         ;
 
         $this->addListFields($builder, $options);

@@ -58,7 +58,7 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
         $currentPage = 1;
         $resultsPerPage = $properties['amount'];
         list($query, $count) = $repository->getSelectWherePaginatedQuery($qb, $currentPage, $resultsPerPage);
-        $entities = $repository->retrieveCollectionResult($query, $orderBy, true);
+        list($entities, $objectCount) = $repository->retrieveCollectionResult($query, $orderBy, true);
     
         // set a block title
         if (empty($properties['title'])) {
@@ -92,15 +92,17 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
         }
     
         $templateForObjectType = str_replace('itemlist_', 'itemlist_' . $properties['objectType'] . '_', $templateFile);
+        
+        $templateDirectory = str_replace('Block/Base/AbstractItemListBlock.php', 'Resources/views/', __FILE__);
     
         $template = '';
-        if ($this->view->template_exists('ContentType/' . $templateForObjectType)) {
+        if (file_exists($templateDirectory . 'ContentType/' . $templateForObjectType)) {
             $template = 'ContentType/' . $templateForObjectType;
-        } elseif ($this->view->template_exists('Block/' . $templateForObjectType)) {
+        } elseif (file_exists($templateDirectory . 'Block/' . $templateForObjectType)) {
             $template = 'Block/' . $templateForObjectType;
-        } elseif ($this->view->template_exists('ContentType/' . $templateFile)) {
+        } elseif (file_exists($templateDirectory . 'ContentType/' . $templateFile)) {
             $template = 'ContentType/' . $templateFile;
-        } elseif ($this->view->template_exists('Block/' . $templateFile)) {
+        } elseif (file_exists($templateDirectory . 'Block/' . $templateFile)) {
             $template = 'Block/' . $templateFile;
         } else {
             $template = 'Block/itemlist.html.twig';
@@ -162,8 +164,21 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
      */
     public function getFormOptions()
     {
+        $objectType = 'entry';
+    
+        $request = $this->get('request_stack')->getCurrentRequest();
+        if ($request->attributes->has('blockEntity')) {
+            $blockEntity = $request->attributes->get('blockEntity');
+            if (is_object($blockEntity) && method_exists($blockEntity, 'getContent')) {
+                $blockProperties = $blockEntity->getContent();
+                if (isset($blockProperties['objectType'])) {
+                    $objectType = $blockProperties['objectType'];
+                }
+            }
+        }
+    
         return [
-            'objectType' => $properties['objectType']
+            'objectType' => $objectType
         ];
     }
     

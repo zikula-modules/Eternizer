@@ -3,7 +3,7 @@
 {% block pageTitle %}{{ entry.getTitleFromDisplayPattern()|default(__('Entry')) }}{% endblock %}
 {% block title %}
     {% set templateTitle = entry.getTitleFromDisplayPattern()|default(__('Entry')) %}
-    {{ templateTitle|notifyFilters('mueternizermodule.filter_hooks.entries.filter') }} <small>({{ entry.workflowState|mueternizermodule_objectState(false)|lower }})</small>
+    {{ templateTitle|notifyFilters('mueternizermodule.filter_hooks.entries.filter') }}{% if routeArea == 'admin' %} <small>({{ entry.workflowState|mueternizermodule_objectState(false)|lower }})</small>{% endif %}
     {% set itemActions = knp_menu_get('MUEternizerModule:ItemActionsMenu:menu', [], { entity: entry, area: routeArea, context: 'display' }) %}
     <div class="dropdown">
         <a id="itemActions{{ entry.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
@@ -14,12 +14,12 @@
     /* <![CDATA[ */
         ( function($) {
             $(document).ready(function() {
-                $('.dropdown > ul').removeClass('list-inline').addClass('list-unstyled dropdown-menu');
-                $('.dropdown > ul a').each(function (index) {
+                $('h2 .dropdown > ul, h3 .dropdown > ul').removeClass('list-inline').addClass('list-unstyled dropdown-menu');
+                $('h2 .dropdown > ul a, h3 .dropdown > ul a').each(function (index) {
                     $(this).html($(this).html() + $(this).find('i').first().data('original-title'));
                 });
-                $('.dropdown > ul a i').addClass('fa-fw');
-                $('.dropdown-toggle').removeClass('hidden').dropdown();
+                $('h2 .dropdown > ul a i, h3 .dropdown > ul a i').addClass('fa-fw');
+                $('h2 .dropdown-toggle, h3 .dropdown-toggle').removeClass('hidden').dropdown();
             });
         })(jQuery);
     /* ]]> */
@@ -31,7 +31,7 @@
 
 
     <dl>
-        {% if entry.workflowState is not empty %}
+        {% if entry.workflowState is not empty and routeArea == 'admin' %}
             <dt>{{ __('State') }}</dt>
             <dd>{{ entry.workflowState|mueternizermodule_listEntry('entry', 'workflowState') }}</dd>
         {% endif %}
