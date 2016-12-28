@@ -76,7 +76,7 @@ abstract class AbstractCaptchaHelper
      */
     public function isSpamCheckEnabled()
     {
-        $enableSpamCheck = $this->variableApi->get('MUEternizerModule', 'simpleCaptcha', true);
+        $enableSpamCheck = $this->variableApi->get('MUEternizerModule', 'simplecaptcha', true);
         /*if ($enableSpamCheck) {
             $excludeSpamCheck = explode(',', $this->variableApi->get('ZikulaFormiculaModule', 'excludeSpamCheck', ''));
             if (is_array($excludeSpamCheck) && array_key_exists($form, array_flip($excludeSpamCheck))) {
@@ -148,7 +148,7 @@ abstract class AbstractCaptchaHelper
             $createImageFunction = 'imagegif';
         } else {
             // no image functions available
-            $this->variableApi->set('MUEternizerModule', 'simpleCaptcha', false);
+            $this->variableApi->set('MUEternizerModule', 'simplecaptcha', false);
             if ($this->permissionApi->hasPermission('MUEternizerModule::', '.*', ACCESS_ADMIN)) {
                 // admin permission, show error messages
                 return '<p class="alert alert-danger">' . $this->translator->__('There are no image function available - Captchas have been disabled.') . '</p>';
@@ -224,7 +224,8 @@ abstract class AbstractCaptchaHelper
      */
     private function getFontPath($font)
     {
-        $absoluteModulePathParts = explode('/', str_replace('/Helper', '', __DIR__));
+        /*$absoluteModulePathParts = explode('/', str_replace('/Helper', '', __DIR__));
+        //\LogUtil::registerError($absoluteModulePathParts);
         $relativeModulePathParts = [];
         $moduleRootFound = false;
         foreach ($absoluteModulePathParts as $folder) {
@@ -235,7 +236,8 @@ abstract class AbstractCaptchaHelper
                 $relativeModulePathParts[] = $folder;
             }
         }
-        $fontPath = implode('/', $relativeModulePathParts) . '/Resources/public/fonts/' . $font . '.ttf';
+        $fontPath = implode('/', $relativeModulePathParts) . '/Resources/public/fonts/' . $font . '.ttf';*/
+        $fontPath = 'modules/mu/eternizer-module/Resources/public/fonts/' . $font . '.ttf';
         return $fontPath;
     }
     /**

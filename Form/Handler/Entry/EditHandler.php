@@ -17,10 +17,13 @@ use Zikula\RoutesModule\Controller\RedirectingController;
 use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use UserUtil;
-
+use ModUtil;
+use Zikula_Request_Http;
+use SessionUtil;
 /**
  * This handler class handles the page events of the Form called by the mUEternizerModule_entry_edit() function.
  * It aims on the entry object type.
+ * 
  */
 class EditHandler extends AbstractEditHandler
 {
@@ -44,6 +47,16 @@ class EditHandler extends AbstractEditHandler
         if ($editEntryAllowed == false && \UserUtil::getVar('uid') != 2) {       	
         	return \System::redirect('/eternizer/entries/view');
         }
+        
+        // prepare captcha
+        /*$session = $this->get('session');
+        $simpleCaptcha = \ModUtil::getVar($this->name, 'simplecaptcha');
+        
+        // reset captcha
+        if ($simpleCaptcha && $session->has('formiculaCaptcha')) {
+        
+        	$session->del('eternizerCaptcha');
+        }*/
     
         return parent::initEntityForEditing();
     } 
@@ -59,23 +72,17 @@ class EditHandler extends AbstractEditHandler
      */
     public function handleCommand($args = [])
     {
-    	$captchaHelper = $this->get('mu_eternizer_module.captcha_helper');
-    	$captcha = $captchaHelper->isCaptchaValid();
-    	$result = parent::handleCommand($args);
-    	if (false === $result) {
-    		return $result;
-    	}
-    
-    	// build $args for BC (e.g. used by redirect handling)
-    	foreach ($this->templateParameters['actions'] as $action) {
-    		if ($this->form->get($action['id'])->isClicked()) {
-    			$args['commandName'] = $action['id'];
+    	/*if (\ModUtil::getVar('MUEternizerModule', 'simplecaptcha') == true) {
+    		$captcha = (int)$request->request->getDigits('captcha', 0);
+    		$operands = @unserialize($session->get('formiculaCaptcha'));
+    		$captchaValid = $captchaHelper->isCaptchaValid($operands, $captcha);
+    		if (false === $captchaValid) {
+    			$this->addFlash('error', $this->__('The calculation to prevent spam was incorrect. Please try again.'));
+    			$hasError = true;
     		}
-    	}
-    	if ($this->form->get('cancel')->isClicked()) {
-    		$args['commandName'] = 'cancel';
-    	}
-    
-    	return new RedirectResponse($this->getRedirectUrl($args), 302);
+    	}*/
+    	
+    	return parent::handleCommand($args);
+
     }
 }
