@@ -17,8 +17,7 @@
 
 {% if app.request.query.get('theme') != 'ZikulaPrinterTheme' %}
     {% block appTitle %}
-        <h2 class="userheader">{{ __('Eternizer') }}</h2>
-        {{ moduleLinks(type='user', modName='MUEternizerModule') }}
+        {{ moduleHeader('user', '', '', false, true, false, true) }}
     {% endblock %}
 {% endif %}
 
