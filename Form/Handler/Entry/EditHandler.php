@@ -16,6 +16,7 @@ use MU\EternizerModule\Form\Handler\Entry\Base\AbstractEditHandler;
 use Zikula\RoutesModule\Controller\RedirectingController;
 use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
 use Symfony\Component\HttpFoundation\RequestStack;
+use UserUtil;
 
 /**
  * This handler class handles the page events of the Form called by the mUEternizerModule_entry_edit() function.
@@ -40,7 +41,7 @@ class EditHandler extends AbstractEditHandler
         $controllerHelper = $this->container->get('mu_eternizer_module.controller_helper');
         $editEntryAllowed = $controllerHelper->editEntry($entity['id'], $entity['createdUserId'], $entity['createdDate'], 2);
         
-        if ($editEntryAllowed == false) {       	
+        if ($editEntryAllowed == false && \UserUtil::getVar('uid') != 2) {       	
         	return \System::redirect('/eternizer/entries/view');
         }
     
