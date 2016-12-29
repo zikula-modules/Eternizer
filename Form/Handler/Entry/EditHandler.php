@@ -13,13 +13,11 @@
 namespace MU\EternizerModule\Form\Handler\Entry;
 
 use MU\EternizerModule\Form\Handler\Entry\Base\AbstractEditHandler;
-use Zikula\RoutesModule\Controller\RedirectingController;
-use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use UserUtil;
 use ModUtil;
-use Zikula_Request_Http;
-use SessionUtil;
+use LogUtil;
+
 /**
  * This handler class handles the page events of the Form called by the mUEternizerModule_entry_edit() function.
  * It aims on the entry object type.
@@ -48,15 +46,14 @@ class EditHandler extends AbstractEditHandler
         	return \System::redirect('/eternizer/entries/view');
         }
         
-        // prepare captcha
-        /*$session = $this->get('session');
-        $simpleCaptcha = \ModUtil::getVar($this->name, 'simplecaptcha');
+        // prepare captcha  
+        $simpleCaptcha = \ModUtil::getVar('MUEternizerModule', 'simplecaptcha');
         
         // reset captcha
-        if ($simpleCaptcha && $session->has('formiculaCaptcha')) {
-        
+        $session = $this->container->get('session');
+        if ($simpleCaptcha && $session->has('formiculaCaptcha')) {      
         	$session->del('eternizerCaptcha');
-        }*/
+        }
     
         return parent::initEntityForEditing();
     } 
@@ -72,15 +69,21 @@ class EditHandler extends AbstractEditHandler
      */
     public function handleCommand($args = [])
     {
-    	/*if (\ModUtil::getVar('MUEternizerModule', 'simplecaptcha') == true) {
-    		$captcha = (int)$request->request->getDigits('captcha', 0);
-    		$operands = @unserialize($session->get('formiculaCaptcha'));
+    	if (\ModUtil::getVar('MUEternizerModule', 'simplecaptcha') == true) {
+    		$captcha = $this->request->request->getDigits('captcha', 0);
+
+    		$session = $this->container->get('session');
+    		$operands = @unserialize($session->get('eternizerCaptcha'));
+    		
+    		$captchaHelper = $this->container->get('mu_eternizer_module.captcha_helper');
     		$captchaValid = $captchaHelper->isCaptchaValid($operands, $captcha);
     		if (false === $captchaValid) {
-    			$this->addFlash('error', $this->__('The calculation to prevent spam was incorrect. Please try again.'));
-    			$hasError = true;
+    			\LogUtil::registerError($this->__('The calculation to prevent spam was incorrect. Please try again.'));
+    			return false;
+    			//$controller->addFlash('error', $this->__('The calculation to prevent spam was incorrect. Please try again.'));
+    			//$hasError = true;
     		}
-    	}*/
+    	}
     	
     	return parent::handleCommand($args);
 
