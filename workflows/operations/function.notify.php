@@ -33,7 +33,7 @@ function MUEternizerModule_operation_notify(&$entity, $params)
     ];
     
     $serviceManager = \ServiceUtil::getManager();
-    $serviceManager->get('mu_eternizer_module.notification_helper')->process($notifyArgs);
+    $result = $serviceManager->get('mu_eternizer_module.notification_helper')->process($notifyArgs);
 
     // return result of this operation
     return $result;

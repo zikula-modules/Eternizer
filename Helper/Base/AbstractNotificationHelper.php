@@ -147,6 +147,7 @@ abstract class AbstractNotificationHelper
         $this->templating = $twig;
         $this->mailerApi = $mailerApi;
         $this->workflowHelper = $workflowHelper;
+        $this->name = 'MUEternizerModule';
     }
     
     /**
@@ -161,6 +162,8 @@ abstract class AbstractNotificationHelper
     
     /**
      * Sends a mail to either an item's creator or a group of moderators.
+     * 
+     * @return boolean;
      */
     public function process($args)
     {
