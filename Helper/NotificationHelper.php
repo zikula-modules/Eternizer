@@ -13,11 +13,65 @@
 namespace MU\EternizerModule\Helper;
 
 use MU\EternizerModule\Helper\Base\AbstractNotificationHelper;
+use Swift_Message;
+use ModUtil;
+use ServiceUtil;
+
 
 /**
  * Notification helper implementation class.
  */
 class NotificationHelper extends AbstractNotificationHelper
-{
-    // feel free to extend the notification helper here
+{	
+	/**
+	 * 
+	 * @param object $entity
+	 */
+	public function moderationMailer($entity, $userId)
+	{
+		// create new message instance
+		/** @var Swift_Message */
+		$message = Swift_Message::newInstance();
+		
+		$serviceManager = ServiceUtil::getManager();
+		
+
+		$body = $this->__('Hallo. A new entry was submitted into the guestbook and has to get approved as appropriate.') . '<br />';
+		//$url = $this->request->request->get('returnurl', $this->router->generate('mueternizermodule_entry_edit', ['id' => $entity->getId()]));
+		$baseUrl = \System::getHomepageUrl();
+		$url = $this->router->generate('mueternizermodule_entry_edit', ['id' => $entity->getId()]);
+		$body .= '<a href=' . $baseUrl . $url . '>Zur Einreichung</a>';
+
+		if ($userId > 2) {
+			$userMail = \UserUtil::getVar('email', $userId);
+		    $message->setFrom($userMail);
+		
+		} else {
+			if ($entity->getEmail() != '') {
+				$message->setFrom($entity->getEmail());
+			} else {
+				$message->setFrom(\ModUtil::getVar('ZConfig', 'adminmail'));
+			}
+		}
+		$message->setTo(\ModUtil::getVar('ZConfig', 'adminmail'));
+		// send the email
+
+		$mailSent = $this->mailerApi->sendMessage($message, $this->__('New submission in the guestbook'), $body , '', true);
+		if (!$mailSent) {
+			$this->addFlash('error', $this->__('There was an error sending the email to our contact.'));
+		}
+		
+		if ($userId > 2) {
+		    $message2 = \Swift_Message::newInstance();
+		    $body2 = $this->__('Thank you for your entry in our guestbook. Maybe we have to approve it.');
+		    
+		    $userMail = \UserUtil::getVar('email', $userId);
+		    $message2->setTo($userMail);
+		    $message2->setFrom(\ModUtil::getVar('ZConfig', 'adminmail'));
+		    $mailSent2 = $this->mailerApi->sendMessage($message2,$this->__('Your submission in our guestbook'), $body2 , '', true);
+		    if (!$mailSent2) {
+		    	$this->addFlash('error', $this->__('There was an error sending the email to our contact.'));
+		    }
+		}
+	}
 }

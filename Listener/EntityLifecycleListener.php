@@ -17,7 +17,7 @@ use MU\EternizerModule\Listener\Base\AbstractEntityLifecycleListener;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use ModUtil;
 use UserUtil;
-use Zikula\MailerModule\Api;
+use ServiceUtil;
 
 /**
  * Event subscriber implementation class for entity lifecycle events.
@@ -42,6 +42,8 @@ class EntityLifecycleListener extends AbstractEntityLifecycleListener
 		$moderation = \ModUtil::getVar('MUEternizerModule', 'moderate');
 		$userId = \UserUtil::getVar('uid');
 		$groupIds = \UserUtil::getGroupsForUser($userId);
+		$serviceManager = ServiceUtil::getManager();
+		$notificationHelper = $serviceManager->get('mu_eternizer_module.notification_helper');
 		
         if (method_exists($entity, 'get_objectType')) {
             if ($saveIp == true) {
@@ -51,9 +53,10 @@ class EntityLifecycleListener extends AbstractEntityLifecycleListener
         	case 'all':
         		if ($userId != 2) {
         		    $entity->setWorkflowState('waiting');
-        		    $this->moderationMailer($entity);
+        		    $notificationHelper->moderationMailer($entity, $userId);
         		} else {
         			$entity->setWorkflowState('approved');
+        			$notificationHelper->moderationMailer($entity, $userId);
         		}
         		break;
         	case 'guests':
@@ -87,21 +90,5 @@ class EntityLifecycleListener extends AbstractEntityLifecycleListener
         		    break;
             }   
         }
-	}
-	
-	/**
-	 * 
-	 * @param object $entity
-	 */
-	private function moderationMailer($entity)
-	{
-		// create new message instance
-		/** @var Swift_Message */
-		$message = Swift_Message::newInstance();
-		
-		// send the email
-		$mailer = $this->get('zikula_mailer_module.api.mailer');
-		$mailSent = $mailer->sendMessage($message, 'ue.mi@gmx.de', 'Hallo', $altBody, ($format == 'html'));
-
 	}
 }
