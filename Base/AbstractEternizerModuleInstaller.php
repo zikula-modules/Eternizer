@@ -56,6 +56,7 @@ abstract class AbstractEternizerModuleInstaller extends AbstractExtensionInstall
         $this->setVar('period', 0);
         $this->setVar('simplecaptcha', false);
         $this->setVar('moderationGroupForEntries', 2);
+        $this->setVar('entryEntriesPerPage', 10);
     
         // create the default data
         $this->createDefaultData();

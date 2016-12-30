@@ -14,6 +14,7 @@ namespace MU\EternizerModule\Entity\Repository\Base;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
+
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -37,6 +38,7 @@ use MU\EternizerModule\Entity\EntryEntity;
  */
 abstract class AbstractEntryRepository extends EntityRepository
 {
+    
     /**
      * @var string The default sorting field/expression
      */
@@ -46,6 +48,7 @@ abstract class AbstractEntryRepository extends EntityRepository
      * @var Request The request object given by the calling controller
      */
     protected $request;
+    
 
     /**
      * Retrieves an array with all fields which can be used for sorting instances.

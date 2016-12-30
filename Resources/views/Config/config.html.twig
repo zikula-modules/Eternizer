@@ -14,6 +14,8 @@
         <li class="active" data-toggle="pill"><a href="#tab1" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a></li>
         {% set tabTitle = __('Moderation') %}
         <li data-toggle="pill"><a href="#tab2" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a></li>
+        {% set tabTitle = __('Listviews') %}
+        <li data-toggle="pill"><a href="#tab3" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a></li>
         </ul>
 
         {{ form_errors(form) }}
@@ -44,6 +46,16 @@
                     <p class="alert alert-info">{{ __('Here you can assign moderation groups for enhanced workflow actions.')|nl2br }}</p>
                 
                     {{ form_row(form.moderationGroupForEntries) }}
+                </fieldset>
+            </div>
+            {% set tabTitle = __('Listviews') %}
+            <div role="tabpanel" class="tab-pane fade" id="tab3">
+                <fieldset>
+                    <legend>{{ tabTitle }}</legend>
+                
+                    <p class="alert alert-info">{{ __('Here you can configure parameters for list views.')|nl2br }}</p>
+                
+                    {{ form_row(form.entryEntriesPerPage) }}
                 </fieldset>
             </div>
         </div>

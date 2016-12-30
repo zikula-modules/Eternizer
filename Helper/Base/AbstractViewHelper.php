@@ -82,7 +82,7 @@ abstract class AbstractViewHelper
         
         // check if custom template exists
         if (!empty($tpl)) {
-            $template .= '_' . DataUtil::formatForOS($tpl);
+            $template .= DataUtil::formatForOS(ucfirst($tpl));
         }
         $template .= $templateExtension;
     

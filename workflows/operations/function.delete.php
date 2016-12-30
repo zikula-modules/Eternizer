@@ -23,6 +23,12 @@
 function MUEternizerModule_operation_delete(&$entity, $params)
 {
 
+    // get attributes read from the workflow
+    if (isset($params['nextstate']) && !empty($params['nextstate'])) {
+        // assign value to the data object
+        $entity['workflowState'] = $params['nextstate'];
+    }
+    
     // get entity manager
     $serviceManager = \ServiceUtil::getManager();
     $entityManager = $serviceManager->get('doctrine.orm.default_entity_manager');

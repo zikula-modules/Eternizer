@@ -174,7 +174,7 @@ abstract class AbstractWorkflowHelper
         $actions = [];
         foreach ($wfActions as $actionId => $action) {
             $nextState = (isset($action['nextState']) ? $action['nextState'] : '');
-            if ($nextState != '' && !in_array($nextState, $allowedStates)) {
+            if (!in_array($nextState, ['', 'deleted']) && !in_array($nextState, $allowedStates)) {
                 continue;
             }
     

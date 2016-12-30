@@ -27,7 +27,6 @@ use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\MailerModule\Api\MailerApi;
-use Zikula\UsersModule\Api\CurrentUserApi;
 use MU\EternizerModule\Helper\WorkflowHelper;
 
 /**
@@ -61,11 +60,6 @@ abstract class AbstractNotificationHelper
      * @var VariableApi
      */
     protected $variableApi;
-    
-    /**
-     * @var CurrentUserApi
-     */
-    private $currentUserApi;
     
     /**
      * @var Twig_Environment
@@ -111,6 +105,13 @@ abstract class AbstractNotificationHelper
     private $action = '';
     
     /**
+     * Name of the application.
+     *
+     * @var string
+     */
+    protected $name;
+    
+    /**
      * Constructor.
      * Initialises member vars.
      *
@@ -120,7 +121,6 @@ abstract class AbstractNotificationHelper
      * @param KernelInterface     $kernel         Kernel service instance
      * @param RequestStack        $requestStack   RequestStack service instance
      * @param VariableApi         $variableApi    VariableApi service instance
-     * @param CurrentUserApi      $currentUserApi CurrentUserApi service instance
      * @param Twig_Environment    $twig           Twig service instance
      * @param MailerApi           $mailerApi      MailerApi service instance
      * @param WorkflowHelper      $workflowHelper WorkflowHelper service instance
@@ -132,7 +132,6 @@ abstract class AbstractNotificationHelper
         KernelInterface $kernel,
         RequestStack $requestStack,
         VariableApi $variableApi,
-        CurrentUserApi $currentUserApi,
         Twig_Environment $twig,
         MailerApi $mailerApi,
         WorkflowHelper $workflowHelper)
@@ -143,7 +142,6 @@ abstract class AbstractNotificationHelper
         $this->kernel = $kernel;
         $this->request = $requestStack->getMasterRequest();
         $this->variableApi = $variableApi;
-        $this->currentUserApi = $currentUserApi;
         $this->templating = $twig;
         $this->mailerApi = $mailerApi;
         $this->workflowHelper = $workflowHelper;
@@ -162,8 +160,8 @@ abstract class AbstractNotificationHelper
     
     /**
      * Sends a mail to either an item's creator or a group of moderators.
-     * 
-     * @return boolean;
+     *
+     * @return boolean
      */
     public function process($args)
     {
@@ -182,8 +180,6 @@ abstract class AbstractNotificationHelper
         $this->recipientType = $args['recipientType'];
         $this->action = $args['action'];
         $this->entity = $args['entity'];
-    
-        $uid = $this->currentUserApi->get('uid');
     
         $this->collectRecipients();
     
@@ -270,7 +266,7 @@ abstract class AbstractNotificationHelper
         // send one mail per recipient
         $totalResult = true;
         foreach ($this->recipients as $recipient) {
-            if (!isset($recipient['username']) || !$recipient['username']) {
+            if (!isset($recipient['name']) || !$recipient['name']) {
                 continue;
             }
             if (!isset($recipient['email']) || !$recipient['email']) {
@@ -293,7 +289,7 @@ abstract class AbstractNotificationHelper
             $message->setFrom([$adminMail => $siteName]);
             $message->setTo([$recipient['email'] => $recipient['name']]);
     
-            $totalResult &= $this->mailerApi->sendMessage($message, $subject, $msgBody, $altBody, $html);
+            $totalResult &= $this->mailerApi->sendMessage($message, $subject, $body, $altBody, $html);
         }
     
         return $totalResult;
@@ -305,11 +301,17 @@ abstract class AbstractNotificationHelper
         if ($this->recipientType == 'moderator' || $this->recipientType == 'superModerator') {
             if ($this->action == 'submit') {
                 $mailSubject = $this->__('New content has been submitted');
+            } elseif ($this->action == 'delete') {
+                $mailSubject = $this->__('Content has been deleted');
             } else {
                 $mailSubject = $this->__('Content has been updated');
             }
         } elseif ($this->recipientType == 'creator') {
-            $mailSubject = $this->__('Your submission has been updated');
+            if ($this->action == 'delete') {
+                $mailSubject = $this->__('Your submission has been deleted');
+            } else {
+                $mailSubject = $this->__('Your submission has been updated');
+            }
         }
     
         return $mailSubject;

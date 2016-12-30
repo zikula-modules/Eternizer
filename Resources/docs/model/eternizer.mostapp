@@ -14,7 +14,7 @@ application "Eternizer" {
 		generateTests false
 		writeModelToDocs true
 		skipFiles "CHANGELOG.md, README.md,,\r\nResources/public/css/style.css,\r\ncomposer.json"
-               markFiles "Container/LinkContainer.php,\r\nController/EntryController.php,\r\nEntity/Repository/EntryRepository.php,\r\nForm/Handler/Entry/EditHandler.php,\r\nListener/EntityLifecycleListener.php,\r\nEternizerModuleInstaller.php,\r\nTwig/Base/AbstractTwigExtension.php,\r\nTwig/TwigExtension.php,\r\nResources/views/Entry/view.html.twig,\r\nResources/config/forms.yml,\r\nResources/config/twig.yml"
+               markFiles "Container/LinkContainer.php,\r\nController/ConfigController.php,\r\nController/EntryController.php,\r\nEntity/Repository/EntryRepository.php,\r\nForm/Handler/Entry/EditHandler.php,\r\nHelper/ControllerHelper.php,\r\nHelper/NoticationHelper.php,\r\nListener/EntityLifecycleListener.php,\r\nEternizerModuleInstaller.php,\r\nTwig/Base/AbstractTwigExtension.php,\r\nTwig/TwigExtension.php,\r\nResources/views/Entry/view.html.twig,\r\nResources/views/Entry/edit.html.twig,\r\nResources/config/forms.yml,\r\nResources/config/helpers.yml,\r\nResources/config/twig.yml"
 	}
 			entities {
 				entity "entry" leading {

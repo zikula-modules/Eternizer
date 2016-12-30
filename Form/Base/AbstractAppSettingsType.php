@@ -75,6 +75,7 @@ abstract class AbstractAppSettingsType extends AbstractType
     {
         $this->addVariablesFields($builder, $options);
         $this->addModerationFields($builder, $options);
+        $this->addListviewsFields($builder, $options);
 
         $builder
             ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
@@ -233,6 +234,33 @@ abstract class AbstractAppSettingsType extends AbstractType
                 'class' => 'ZikulaGroupsModule:GroupEntity',
                 'choice_label' => 'name',
                 'choice_value' => 'gid'
+            ])
+        ;
+    }
+
+    /**
+     * Adds fields for listviews fields.
+     *
+     * @param FormBuilderInterface $builder The form builder
+     * @param array                $options The options
+     */
+    public function addListviewsFields(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('entryEntriesPerPage', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+                'label' => $this->__('Entry entries per page') . ':',
+                'label_attr' => [
+                    'class' => 'tooltips',
+                    'title' => $this->__('The amount of entries shown per page')
+                ],
+                'help' => $this->__('The amount of entries shown per page'),
+                'required' => false,
+                'data' => $this->modVars['entryEntriesPerPage'],
+                'empty_data' => intval('10'),
+                'attr' => [
+                    'title' => $this->__('Enter the entry entries per page. Only digits are allowed.')
+                ],'max_length' => 255,
+                'scale' => 0
             ])
         ;
     }

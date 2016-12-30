@@ -32,6 +32,7 @@
             <nextState>waiting</nextState>
         
             <operation>update</operation>
+            <operation recipientType="moderator" action="submit">notify</operation>
         </action>
         
         <action id="approve">
@@ -41,6 +42,7 @@
             <nextState>approved</nextState>
         
             <operation>update</operation>
+            <operation recipientType="creator" action="approve">notify</operation>
         </action>
         
         <!-- From state: Waiting -->
@@ -61,6 +63,7 @@
             <nextState>approved</nextState>
         
             <operation>update</operation>
+            <operation recipientType="creator" action="approve">notify</operation>
         </action>
         
         <!-- From state: Approved -->
@@ -81,6 +84,7 @@
             <description>Delete content permanently.</description>
             <permission>delete</permission>
             <state>waiting</state>
+            <nextState>deleted</nextState>
         
             <operation>delete</operation>
             <operation recipientType="creator" action="delete">notify</operation>
@@ -91,6 +95,7 @@
             <description>Delete content permanently.</description>
             <permission>delete</permission>
             <state>approved</state>
+            <nextState>deleted</nextState>
         
             <operation>delete</operation>
             <operation recipientType="creator" action="delete">notify</operation>
