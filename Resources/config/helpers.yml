@@ -18,8 +18,8 @@ services:
     
     mu_eternizer_module.notification_helper:
         class: MU\EternizerModule\Helper\NotificationHelper
-        arguments: ["@translator.default", "@session", "@router", "@kernel", "@request_stack", "@zikula_extensions_module.api.variable", "@zikula_users_module.current_user", "@twig", "@zikula_mailer_module.api.mailer", "@mu_eternizer_module.workflow_helper"]
-    
+        arguments: ["@translator.default", "@session", "@router", "@kernel", "@request_stack", "@zikula_extensions_module.api.variable", "@twig", "@zikula_mailer_module.api.mailer", "@mu_eternizer_module.workflow_helper"]
+       
     mu_eternizer_module.selection_helper:
         class: MU\EternizerModule\Helper\SelectionHelper
         arguments: ["@service_container", "@doctrine.orm.entity_manager", "@translator.default", "@mu_eternizer_module.controller_helper"]

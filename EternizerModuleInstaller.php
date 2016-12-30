@@ -59,6 +59,10 @@ class EternizerModuleInstaller extends AbstractEternizerModuleInstaller
             	// rename module for all modvars
             	$this->updateModVarsTo14();
             	
+            	$pageSize = $this->getVar('pagesize');
+            	$this->delVar('pagesize');
+            	$this->setVar('entryEntriesPerPage', $pageSize);
+            	
             	// update extension information about this app
             	$this->updateExtensionInfoFor14();
             	

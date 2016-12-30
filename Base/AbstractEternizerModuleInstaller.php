@@ -46,7 +46,6 @@ abstract class AbstractEternizerModuleInstaller extends AbstractExtensionInstall
         }
     
         // set up all our vars with initial values
-        $this->setVar('pagesize', 10);
         $this->setVar('mail', '');
         $this->setVar('order',  'descending' );
         $this->setVar('moderate',  'guests' );

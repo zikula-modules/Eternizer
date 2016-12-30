@@ -105,16 +105,6 @@ abstract class AbstractAppSettingsType extends AbstractType
     public function addVariablesFields(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('pagesize', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
-                'label' => $this->__('Pagesize') . ':',
-                'required' => false,
-                'data' => $this->modVars['pagesize'],
-                'empty_data' => intval('10'),
-                'attr' => [
-                    'title' => $this->__('Enter the pagesize. Only digits are allowed.')
-                ],'max_length' => 255,
-                'scale' => 0
-            ])
             ->add('mail', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $this->__('Mail') . ':',
                 'required' => false,
