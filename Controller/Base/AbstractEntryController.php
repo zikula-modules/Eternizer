@@ -181,7 +181,7 @@ abstract class AbstractEntryController extends AbstractController
         if ($showAllEntries != 1) {
             // the number of items displayed on a page for pagination
             $resultsPerPage = $num;
-            if ($resultsPerPage == 0) {
+            if (in_array($resultsPerPage, [0, 10])) {
                 $resultsPerPage = $this->getVar($objectType . 'EntriesPerPage', 10);
             }
         }

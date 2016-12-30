@@ -73,7 +73,7 @@ function mUEternizerPerformCustomValidationRules(objectType, currentEntityId)
 {
     jQuery('.validate-nospace').each( function() {
         if (!mUEternizerValidateNoSpace(jQuery(this).val())) {
-            document.getElementById(jQuery(this).attr('id')).setCustomValidity(/*Zikula.__(*/'This value must not contain spaces.'/*, 'mueternizermodule_js')*/);
+            document.getElementById(jQuery(this).attr('id')).setCustomValidity(Translator.__('This value must not contain spaces.'));
         } else {
             document.getElementById(jQuery(this).attr('id')).setCustomValidity('');
         }

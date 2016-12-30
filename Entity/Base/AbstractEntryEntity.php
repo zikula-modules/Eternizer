@@ -14,8 +14,8 @@ namespace MU\EternizerModule\Entity\Base;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
 use Symfony\Component\Validator\Constraints as Assert;
+use MU\EternizerModule\Traits\StandardFieldsTrait;
 
 use DataUtil;
 use FormUtil;
@@ -38,6 +38,12 @@ use Zikula\Core\Doctrine\EntityAccess;
  */
 abstract class AbstractEntryEntity extends EntityAccess
 {
+    /**
+     * Hook standard fields behaviour.
+     * Updates createdUserId, updatedUserId, createdDate, updatedDate fields.
+     */
+    use StandardFieldsTrait;
+
     /**
      * @var string The tablename this object maps to
      */
@@ -129,36 +135,6 @@ abstract class AbstractEntryEntity extends EntityAccess
      */
     protected $notes = '';
     
-    
-    /**
-     * @ORM\Column(type="integer")
-     * @ZK\StandardFields(type="userid", on="create")
-     * @var integer $createdUserId
-     */
-    protected $createdUserId;
-    
-    /**
-     * @ORM\Column(type="integer")
-     * @ZK\StandardFields(type="userid", on="update")
-     * @var integer $updatedUserId
-     */
-    protected $updatedUserId;
-    
-    /**
-     * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="create")
-     * @Assert\DateTime()
-     * @var \DateTime $createdDate
-     */
-    protected $createdDate;
-    
-    /**
-     * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="update")
-     * @Assert\DateTime()
-     * @var \DateTime $updatedDate
-     */
-    protected $updatedDate;
     
     
     /**
@@ -437,94 +413,6 @@ abstract class AbstractEntryEntity extends EntityAccess
     public function setNotes($notes)
     {
         $this->notes = $notes;
-    }
-    
-    /**
-     * Returns the created user id.
-     *
-     * @return integer
-     */
-    public function getCreatedUserId()
-    {
-        return $this->createdUserId;
-    }
-    
-    /**
-     * Sets the created user id.
-     *
-     * @param integer $createdUserId
-     *
-     * @return void
-     */
-    public function setCreatedUserId($createdUserId)
-    {
-        $this->createdUserId = $createdUserId;
-    }
-    
-    /**
-     * Returns the updated user id.
-     *
-     * @return integer
-     */
-    public function getUpdatedUserId()
-    {
-        return $this->updatedUserId;
-    }
-    
-    /**
-     * Sets the updated user id.
-     *
-     * @param integer $updatedUserId
-     *
-     * @return void
-     */
-    public function setUpdatedUserId($updatedUserId)
-    {
-        $this->updatedUserId = $updatedUserId;
-    }
-    
-    /**
-     * Returns the created date.
-     *
-     * @return \DateTime
-     */
-    public function getCreatedDate()
-    {
-        return $this->createdDate;
-    }
-    
-    /**
-     * Sets the created date.
-     *
-     * @param \DateTime $createdDate
-     *
-     * @return void
-     */
-    public function setCreatedDate($createdDate)
-    {
-        $this->createdDate = $createdDate;
-    }
-    
-    /**
-     * Returns the updated date.
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedDate()
-    {
-        return $this->updatedDate;
-    }
-    
-    /**
-     * Sets the updated date.
-     *
-     * @param \DateTime $updatedDate
-     *
-     * @return void
-     */
-    public function setUpdatedDate($updatedDate)
-    {
-        $this->updatedDate = $updatedDate;
     }
     
     
