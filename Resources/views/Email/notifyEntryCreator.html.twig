@@ -8,7 +8,7 @@
     <p>{{ __('Additional remarks:') }}<br />{{ mailData.remarks|nl2br }}</p>
 {% endif %}
 
-{% if mailData.newState != 'Deleted' %}
+{% if mailData.newState != __('Deleted') %}
     <p>{{ __('Link to your entry:') }} <a href="{{ mailData.displayUrl|e('html_attr') }}" title="{{ mailData.name|e('html_attr') }}">{{ mailData.displayUrl }}</a></p>
     {% set editentries = getModVar('MUEternizerModule', 'editentries') %}
     {% if editentries == 1 %}
