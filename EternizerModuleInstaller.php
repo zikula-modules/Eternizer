@@ -59,9 +59,14 @@ class EternizerModuleInstaller extends AbstractEternizerModuleInstaller
             	// rename module for all modvars
             	$this->updateModVarsTo14();
             	
+            	// handle renamed and deleted modvars
             	$pageSize = $this->getVar('pagesize');
             	$this->delVar('pagesize');
             	$this->setVar('entryEntriesPerPage', $pageSize);
+            	
+            	$this->setVar('moderationGroupForEntries', 2);
+            	$this->addFlash('status', __('The group of adminstrators will get emails now, if someone submit an entry. The setting variable for an email was deleted!'));           	
+            	$this->delVar('mail');
             	
             	// update extension information about this app
             	$this->updateExtensionInfoFor14();
@@ -84,7 +89,6 @@ class EternizerModuleInstaller extends AbstractEternizerModuleInstaller
             	// try to create the cache directory
             	$this->createCacheDirectory();
 
-                // ...
                 // update the database schema
                 try {
                     $this->schemaTool->update($this->listEntityClasses());
