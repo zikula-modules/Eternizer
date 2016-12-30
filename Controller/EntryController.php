@@ -342,21 +342,14 @@ class EntryController extends AbstractEntryController
         $additionalParameters = $repository->getAdditionalTemplateParameters('controllerAction', $utilArgs);
         
         $resultsPerPage = 0;
-
         if ($showAllEntries != 1) {
             // the number of items displayed on a page for pagination
             $resultsPerPage = $num;
-            if ($resultsPerPage == 0 || $resultsPerPage == '' || $resultsPerPage == $num) {
-            	$pageSize = \ModUtil::getVar($this->name, 'pagesize');
-
-            	if ($pageSize > 0 && $pageSize != '') {
-            		$resultsPerPage = $pageSize;
-            	} else {
-                    $resultsPerPage = $this->getVar('EntriesPerPage', 10);
-            	}
+            if (in_array($resultsPerPage, [0, 10])) {
+                $resultsPerPage = $this->getVar($objectType . 'EntriesPerPage', 10);
             }
         }
-        
+  
         // parameter for used sorting field
         if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields())) {
             $sort = $repository->getDefaultSortingField();
