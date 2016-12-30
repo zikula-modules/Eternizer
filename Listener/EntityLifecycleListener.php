@@ -53,10 +53,10 @@ class EntityLifecycleListener extends AbstractEntityLifecycleListener
         	case 'all':
         		if ($userId != 2) {
         		    $entity->setWorkflowState('waiting');
-        		    $notificationHelper->moderationMailer($entity, $userId);
+        		    //$notificationHelper->moderationMailer($entity, $userId);
         		} else {
         			$entity->setWorkflowState('approved');
-        			$notificationHelper->moderationMailer($entity, $userId);
+        			//$notificationHelper->moderationMailer($entity, $userId);
         		}
         		break;
         	case 'guests':
