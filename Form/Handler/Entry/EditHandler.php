@@ -13,7 +13,7 @@
 namespace MU\EternizerModule\Form\Handler\Entry;
 
 use MU\EternizerModule\Form\Handler\Entry\Base\AbstractEditHandler;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
 use UserUtil;
 use ModUtil;
 use LogUtil;
@@ -87,5 +87,53 @@ class EditHandler extends AbstractEditHandler
     	
     	return parent::handleCommand($args);
 
+    }
+    
+    /**
+     * Get success or error message for default operations.
+     *
+     * @param array   $args    Arguments from handleCommand method
+     * @param Boolean $success Becomes true if this is a success, false for default error
+     *
+     * @return String desired status or error message
+     */
+    protected function getDefaultMessage($args, $success = false)
+    {
+    	if (false === $success) {
+    		return parent::getDefaultMessage($args, $success);
+    	}
+    
+    	$message = '';
+    	switch ($args['commandName']) {
+    		case 'submit':
+    			if ($this->templateParameters['mode'] == 'create') {
+    				// get the actual user
+    				$userId = \UserUtil::getVar('uid');
+    				$message = $this->__('Done! Entry created.');
+    				// get moderate modvar
+    				$moderation = ModUtil::getVar('MUEternizerModule', 'moderate');
+    				if ($moderation == 'all') {					
+    					if ($userId != 2) {
+    					    $message .= $this->__('We will review your submit as soon as possible.');
+    					}
+    				}
+    				if ($moderation == 'guests') {
+    					if ($userId <= 1) {
+    						$message .= $this->__('We will review your submit as soon as possible');
+    					}
+    				}
+    			} else {
+    				$message = $this->__('Done! Entry updated.');
+    			}
+    			break;
+    		case 'delete':
+    			$message = $this->__('Done! Entry deleted.');
+    			break;
+    		default:
+    			$message = $this->__('Done! Entry updated.');
+    			break;
+    	}
+    
+    	return $message;
     }
 }
