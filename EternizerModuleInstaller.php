@@ -65,7 +65,7 @@ class EternizerModuleInstaller extends AbstractEternizerModuleInstaller
             	$this->setVar('entryEntriesPerPage', $pageSize);
             	
             	$this->setVar('moderationGroupForEntries', 2);
-            	$this->addFlash('status', __('The group of adminstrators will get emails now, if someone submit an entry. The setting variable for an email was deleted!'));           	
+            	$this->addFlash('status', __('The group of adminstrators will get emails now, if someone submit an entry. The setting variable for an email was deleted! You are able to change the group of moderators in the settings of this module'));           	
             	$this->delVar('mail');
             	
             	// update extension information about this app
