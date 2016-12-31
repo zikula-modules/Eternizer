@@ -69,7 +69,9 @@ class EditHandler extends AbstractEditHandler
      */
     public function handleCommand($args = [])
     {
-    	if (\ModUtil::getVar('MUEternizerModule', 'simplecaptcha') == true) {
+    	$routeArea = array_key_exists('routeArea', $this->templateParameters) ? $this->templateParameters['routeArea'] : '';
+    	$isAdmin = $routeArea == 'admin';
+    	if (\ModUtil::getVar('MUEternizerModule', 'simplecaptcha') == true and !$isAdmin) {
     		$captcha = $this->request->request->getDigits('captcha', 0);
 
     		$session = $this->container->get('session');

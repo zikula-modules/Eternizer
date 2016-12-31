@@ -45,7 +45,7 @@
         {{ form_row(form.notes) }}
     </div>
     {% set captcha = getModVar('MUEternizerModule', 'simplecaptcha') %}
-    {% if captcha %}
+    {% if captcha and routeArea != 'admin' %}
     <div class="form-group">
         <label for="eternizerMath" class="control-label required col-sm-3">{{ __('Please solve this calculation') }}</label>
         <div class="col-sm-9">
