@@ -26,6 +26,7 @@
             "class": "MU\\EternizerModule\\MUEternizerModule",
             "displayname": "Eternizer",
             "url": "eternizer",
+            "oldnames": ["Eternizer"],
             "capabilities": {
                 "user": {"route": "mueternizermodule_user_index"},
                 "admin": {"route": "mueternizermodule_admin_index"},
