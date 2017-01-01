@@ -24,6 +24,38 @@ use ServiceUtil;
 class NotificationHelper extends AbstractNotificationHelper
 {	
 	/**
+	 * Collects the recipients.
+	 */
+	protected function collectRecipients()
+	{
+		$this->recipients = [];
+	
+		if ($this->recipientType == 'moderator' || $this->recipientType == 'superModerator') {
+			$objectType = $this->entity['_objectType'];
+			$moderatorGroupId = $this->variableApi->get('MUEternizerModule', 'moderationGroupFor' . $objectType, 2);
+			if ($this->recipientType == 'superModerator') {
+				$moderatorGroupId = $this->variableApi->get('MUEternizerModule', 'superModerationGroupFor' . $objectType, 2);
+			}
+	
+			$moderatorGroup = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', ['gid' => $moderatorGroupId]);
+			foreach (array_keys($moderatorGroup['members']) as $uid) {
+				$this->addRecipient($uid);
+			}
+		} elseif ($this->recipientType == 'creator' && isset($this->entity['createdUserId'])) {
+			$creatorUid = $this->entity['createdUserId'];
+	
+			$this->addRecipient($creatorUid);
+		} elseif ($this->recipientType == 'creator') {
+			
+		}
+	
+		if (isset($args['debug']) && $args['debug']) {
+			// add the admin, too
+			$this->addRecipient(2);
+		}
+	}
+	
+	/**
 	 * 
 	 * @param object $entity
 	 */
