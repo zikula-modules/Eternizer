@@ -159,7 +159,7 @@ abstract class AbstractEternizerModuleInstaller extends AbstractExtensionInstall
         $conn->executeQuery("
             UPDATE $dbName.modules
             SET name = 'MUEternizerModule',
-                directory = 'MU/EternizerModule'
+                directory = 'mu/eternizer-module'
             WHERE name = 'Eternizer';
         ");
     }
