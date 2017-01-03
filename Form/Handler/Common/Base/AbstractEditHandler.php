@@ -387,7 +387,7 @@ abstract class AbstractEditHandler
             }
         }
     
-        if (is_null($entity)) {
+        if (null === $entity) {
             $factory = $this->container->get('mu_eternizer_module.' . $this->objectType . '_factory');
             $createMethod = 'create' . ucfirst($this->objectType);
             $entity = $factory->$createMethod();
@@ -479,7 +479,7 @@ abstract class AbstractEditHandler
                     $urlArgs['_locale'] = $this->container->get('request_stack')->getMasterRequest()->getLocale();
                     $url = new RouteUrl('mueternizermodule_' . $this->objectType . '_display', $urlArgs);
                 }
-                if (!is_null($hookHelper)) {
+                if (null !== $hookHelper) {
                     $hookHelper->callProcessHooks($entity, $hookType, $url);
                 }
             }
@@ -604,15 +604,18 @@ abstract class AbstractEditHandler
     {
         $roles = [];
     
-        $uid = $this->container->get('zikula_users_module.current_user')->get('uid');
-        $roles['isCreator'] = $this->entityRef['createdUserId'] == $uid;
-        $varHelper = $this->container->get('zikula_extensions_module.api.variable');
+        
+        $currentUserApi = $this->container->get('zikula_users_module.current_user');
+        $isLoggedIn = $currentUserApi->isLoggedIn();
+        $uid = $isLoggedIn ? $currentUserApi->get('uid') : 1;
+        $roles['isCreator'] = method_exists($this->entityRef, 'getCreatedBy') && $this->entityRef->getCreatedBy()->getUid() == $uid;
+        $variableApi = $this->container->get('zikula_extensions_module.api.variable');
     
-        $groupArgs = ['uid' => $uid, 'gid' => $varHelper->get('MUEternizerModule', 'moderationGroupFor' . $this->objectTypeCapital, 2)];
+        $groupArgs = ['uid' => $uid, 'gid' => $variableApi->get('MUEternizerModule', 'moderationGroupFor' . $this->objectTypeCapital, 2)];
         $roles['isModerator'] = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember', $groupArgs);
     
         if (true === $enterprise) {
-            $groupArgs = ['uid' => $uid, 'gid' => $varHelper->get('MUEternizerModule', 'superModerationGroupFor' . $this->objectTypeCapital, 2)];
+            $groupArgs = ['uid' => $uid, 'gid' => $variableApi->get('MUEternizerModule', 'superModerationGroupFor' . $this->objectTypeCapital, 2)];
             $roles['isSuperModerator'] = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember', $groupArgs);
         }
     

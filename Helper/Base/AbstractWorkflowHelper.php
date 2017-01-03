@@ -214,17 +214,15 @@ abstract class AbstractWorkflowHelper
             $buttonClass = 'default';
         }
     
-        $buttonClass = 'btn btn-' . $buttonClass;
-    
-        return $buttonClass;
+        return 'btn btn-' . $buttonClass;
     }
     
     /**
      * Executes a certain workflow action for a given entity object.
      *
-     * @param EntityAccess $entity   The given entity instance
-     * @param string        $actionId Name of action to be executed
-     * @param bool          $recursive true if the function called itself
+     * @param EntityAccess $entity    The given entity instance
+     * @param string       $actionId  Name of action to be executed
+     * @param bool         $recursive True if the function called itself
      *
      * @return bool False on error or true if everything worked well
      */
@@ -339,8 +337,7 @@ abstract class AbstractWorkflowHelper
         $where = 'tbl.workflowState:eq:' . $state;
         $parameters = ['workflowState' => $state];
         $useJoins = false;
-        $amount = $repository->selectCount($where, $useJoins, $parameters);
     
-        return $amount;
+        return $repository->selectCount($where, $useJoins, $parameters);
     }
 }

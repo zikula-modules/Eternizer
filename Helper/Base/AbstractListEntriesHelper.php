@@ -13,16 +13,14 @@
 namespace MU\EternizerModule\Helper\Base;
 
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Helper base class for list field entries related methods.
  */
 abstract class AbstractListEntriesHelper
 {
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
+    use TranslatorTrait;
 
     /**
      * Constructor.
@@ -31,6 +29,16 @@ abstract class AbstractListEntriesHelper
      * @param TranslatorInterface $translator Translator service instance
      */
     public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * Sets the translator.
+     *
+     * @param TranslatorInterface $translator Translator service instance
+     */
+    public function setTranslator(/*TranslatorInterface */$translator)
     {
         $this->translator = $translator;
     }
@@ -175,29 +183,29 @@ abstract class AbstractListEntriesHelper
         $states = [];
         $states[] = [
             'value'   => 'waiting',
-            'text'    => $this->translator->__('Waiting'),
-            'title'   => $this->translator->__('Content has been submitted and waits for approval.'),
+            'text'    => $this->__('Waiting'),
+            'title'   => $this->__('Content has been submitted and waits for approval.'),
             'image'   => '',
             'default' => false
         ];
         $states[] = [
             'value'   => 'approved',
-            'text'    => $this->translator->__('Approved'),
-            'title'   => $this->translator->__('Content has been approved and is available online.'),
+            'text'    => $this->__('Approved'),
+            'title'   => $this->__('Content has been approved and is available online.'),
             'image'   => '',
             'default' => false
         ];
         $states[] = [
             'value'   => '!waiting',
-            'text'    => $this->translator->__('All except waiting'),
-            'title'   => $this->translator->__('Shows all items except these which are waiting'),
+            'text'    => $this->__('All except waiting'),
+            'title'   => $this->__('Shows all items except these which are waiting'),
             'image'   => '',
             'default' => false
         ];
         $states[] = [
             'value'   => '!approved',
-            'text'    => $this->translator->__('All except approved'),
-            'title'   => $this->translator->__('Shows all items except these which are approved'),
+            'text'    => $this->__('All except approved'),
+            'title'   => $this->__('Shows all items except these which are approved'),
             'image'   => '',
             'default' => false
         ];

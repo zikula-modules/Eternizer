@@ -157,7 +157,7 @@ abstract class AbstractEntryQuickNavType extends AbstractType
                     $this->__('Text') => 'text',
                     $this->__('Notes') => 'notes',
                     $this->__('Creation date') => 'createdDate',
-                    $this->__('Creator') => 'createdUserId',
+                    $this->__('Creator') => 'createdBy',
                     $this->__('Update date') => 'updatedDate'
                 ],
                 'choices_as_values' => true,

@@ -66,9 +66,9 @@ abstract class AbstractEntryRepository extends EntityRepository
             'location',
             'text',
             'notes',
-            'createdUserId',
-            'updatedUserId',
+            'createdBy',
             'createdDate',
+            'updatedBy',
             'updatedDate',
         ];
     }
@@ -170,8 +170,9 @@ abstract class AbstractEntryRepository extends EntityRepository
     /**
      * Returns an array of additional template variables which are specific to the object type treated by this repository.
      *
-     * @param string $context Usage context (allowed values: controllerAction, api, actionHandler, block, contentType)
-     * @param array  $args    Additional arguments
+     * @param ImageHelper $imageHelper ImageHelper service instance
+     * @param string      $context     Usage context (allowed values: controllerAction, api, actionHandler, block, contentType)
+     * @param array       $args        Additional arguments
      *
      * @return array List of template variables to be assigned
      */
@@ -268,8 +269,8 @@ abstract class AbstractEntryRepository extends EntityRepository
     
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->update('MU\EternizerModule\Entity\EntryEntity', 'tbl')
-           ->set('tbl.createdUserId', $newUserId)
-           ->where('tbl.createdUserId = :creator')
+           ->set('tbl.createdBy', $newUserId)
+           ->where('tbl.createdBy= :creator')
            ->setParameter('creator', $userId);
         $query = $qb->getQuery();
         $query->execute();
@@ -301,8 +302,8 @@ abstract class AbstractEntryRepository extends EntityRepository
     
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->update('MU\EternizerModule\Entity\EntryEntity', 'tbl')
-           ->set('tbl.updatedUserId', $newUserId)
-           ->where('tbl.updatedUserId = :editor')
+           ->set('tbl.updatedBy', $newUserId)
+           ->where('tbl.updatedBy = :editor')
            ->setParameter('editor', $userId);
         $query = $qb->getQuery();
         $query->execute();
@@ -332,7 +333,7 @@ abstract class AbstractEntryRepository extends EntityRepository
     
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->delete('MU\EternizerModule\Entity\EntryEntity', 'tbl')
-           ->where('tbl.createdUserId = :creator')
+           ->where('tbl.createdBy = :creator')
            ->setParameter('creator', $userId);
         $query = $qb->getQuery();
     
@@ -363,7 +364,7 @@ abstract class AbstractEntryRepository extends EntityRepository
     
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->delete('MU\EternizerModule\Entity\EntryEntity', 'tbl')
-           ->where('tbl.updatedUserId = :editor')
+           ->where('tbl.updatedBy = :editor')
            ->setParameter('editor', $userId);
         $query = $qb->getQuery();
     
@@ -422,7 +423,7 @@ abstract class AbstractEntryRepository extends EntityRepository
     {
         $results = $this->selectByIdList([$id], $useJoins, $slimMode);
     
-        return (count($results) > 0) ? $results[0] : null;
+        return count($results) > 0 ? $results[0] : null;
     }
     
     /**
@@ -512,7 +513,7 @@ abstract class AbstractEntryRepository extends EntityRepository
      * @param integer      $currentPage    Where to start selection
      * @param integer      $resultsPerPage Amount of items to select
      *
-     * @return array Created query instance and amount of affected items
+     * @return Query Created query instance
      */
     public function getSelectWherePaginatedQuery(QueryBuilder $qb, $currentPage = 1, $resultsPerPage = 25)
     {
@@ -523,10 +524,8 @@ abstract class AbstractEntryRepository extends EntityRepository
     
         $query->setFirstResult($offset)
               ->setMaxResults($resultsPerPage);
-        $count = 0; // will be set at a later stage (in calling method)
-        
     
-        return [$query, $count];
+        return $query;
     }
     
     /**
@@ -547,7 +546,7 @@ abstract class AbstractEntryRepository extends EntityRepository
     
         $page = $currentPage;
         
-        list($query, $count) = $this->getSelectWherePaginatedQuery($qb, $page, $resultsPerPage);
+        $query = $this->getSelectWherePaginatedQuery($qb, $page, $resultsPerPage);
     
         return $this->retrieveCollectionResult($query, $orderBy, true);
     }
@@ -651,7 +650,7 @@ abstract class AbstractEntryRepository extends EntityRepository
     
         $qb = $this->addSearchFilter($qb, $fragment);
     
-        list($query, $count) = $this->getSelectWherePaginatedQuery($qb, $currentPage, $resultsPerPage);
+        $query = $this->getSelectWherePaginatedQuery($qb, $currentPage, $resultsPerPage);
     
         return $this->retrieveCollectionResult($query, $orderBy, true);
     }
@@ -874,50 +873,50 @@ abstract class AbstractEntryRepository extends EntityRepository
     protected function genericBaseQueryAddWhere(QueryBuilder $qb, $where = '')
     {
         if (!empty($where)) {
-        // Use FilterUtil to support generic filtering.
-        //$qb->where($where);
+            // Use FilterUtil to support generic filtering.
+            //$qb->where($where);
     
-        // Create filter configuration.
-        $filterConfig = new FilterConfig($qb);
+            // Create filter configuration.
+            $filterConfig = new FilterConfig($qb);
     
-        // Define plugins to be used during filtering.
-        $filterPluginManager = new FilterPluginManager(
-            $filterConfig,
+            // Define plugins to be used during filtering.
+            $filterPluginManager = new FilterPluginManager(
+                $filterConfig,
     
-            // Array of plugins to load.
-            // If no plugin with default = true given the compare plugin is loaded and used for unconfigured fields.
-            // Multiple objects of the same plugin with different configurations are possible.
-            [
-            ],
+                // Array of plugins to load.
+                // If no plugin with default = true given the compare plugin is loaded and used for unconfigured fields.
+                // Multiple objects of the same plugin with different configurations are possible.
+                [
+                ],
     
-            // Allowed operators per field.
-            // Array in the form "field name => operator array".
-            // If a field is not set in this array all operators are allowed.
-            []
-        );
+                // Allowed operators per field.
+                // Array in the form "field name => operator array".
+                // If a field is not set in this array all operators are allowed.
+                []
+            );
     
-        // Request object to obtain the filter string (only needed if the filter is set via GET or it reads values from GET).
-        // We do this not per default (for now) to prevent problems with explicite filters set by blocks or content types.
-        // TODO readd automatic request processing (basically replacing applyDefaultFilters() and addCommonViewFilters()).
-        $request = null;
+            // Request object to obtain the filter string (only needed if the filter is set via GET or it reads values from GET).
+            // We do this not per default (for now) to prevent problems with explicite filters set by blocks or content types.
+            // TODO readd automatic request processing (basically replacing applyDefaultFilters() and addCommonViewFilters()).
+            $request = null;
     
-        // Name of filter variable(s) (filterX).
-        $filterKey = 'filter';
+            // Name of filter variable(s) (filterX).
+            $filterKey = 'filter';
     
-        // initialise FilterUtil and assign both query builder and configuration
-        $filterUtil = new FilterUtil($filterPluginManager, $request, $filterKey);
+            // initialise FilterUtil and assign both query builder and configuration
+            $filterUtil = new FilterUtil($filterPluginManager, $request, $filterKey);
     
-        // set our given filter
-        $filterUtil->setFilter($where);
+            // set our given filter
+            $filterUtil->setFilter($where);
     
-        // you could add explicit filters at this point, something like
-        // $filterUtil->addFilter('foo:eq:something,bar:gt:100');
-        // read more at
-        // https://github.com/zikula/core/blob/master/src/lib/Zikula/Component/FilterUtil/README.md
-        // https://github.com/zikula/core/blob/master/src/lib/Zikula/Component/FilterUtil/Resources/docs/users.md
+            // you could add explicit filters at this point, something like
+            // $filterUtil->addFilter('foo:eq:something,bar:gt:100');
+            // read more at
+            // https://github.com/zikula/core/blob/master/src/lib/Zikula/Component/FilterUtil/README.md
+            // https://github.com/zikula/core/blob/master/src/lib/Zikula/Component/FilterUtil/Resources/docs/users.md
     
-        // now enrich the query builder
-        $filterUtil->enrichQuery();
+            // now enrich the query builder
+            $filterUtil->enrichQuery();
         }
     
         if (null === $this->getRequest()) {
@@ -926,11 +925,11 @@ abstract class AbstractEntryRepository extends EntityRepository
         }
     
         
-        $showOnlyOwnEntries = $this->getRequest()->query->getDigits('own', 0);
+        $showOnlyOwnEntries = $this->getRequest()->query->getInt('own', 0);
         if ($showOnlyOwnEntries == 1) {
             
             $uid = $this->getRequest()->getSession()->get('uid');
-            $qb->andWhere('tbl.createdUserId = :creator')
+            $qb->andWhere('tbl.createdBy = :creator')
                ->setParameter('creator', $uid);
         }
     

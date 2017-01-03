@@ -89,6 +89,6 @@ abstract class AbstractModelHelper
     
         $repository = $this->container->get('mu_eternizer_module.' . $objectType . '_factory')->getRepository();
     
-        return ($repository->selectCount() > 0);
+        return $repository->selectCount() > 0;
     }
 }

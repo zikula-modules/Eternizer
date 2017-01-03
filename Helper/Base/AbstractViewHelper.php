@@ -55,7 +55,7 @@ abstract class AbstractViewHelper
     /**
      * Determines the view template for a certain method with given parameters.
      *
-     * @param Twig_Environment $twig     Reference to view object
+     * @param Twig_Environment $twig    Reference to view object
      * @param string           $type    Current controller (name of currently treated entity)
      * @param string           $func    Current function (index, view, ...)
      * @param Request          $request Current request
@@ -92,12 +92,12 @@ abstract class AbstractViewHelper
     /**
      * Helper method for managing view templates.
      *
-     * @param Twig_Environment $twig     Reference to view object
-     * @param string           $type     Current controller (name of currently treated entity)
-     * @param string           $func     Current function (index, view, ...)
+     * @param Twig_Environment $twig               Reference to view object
+     * @param string           $type               Current controller (name of currently treated entity)
+     * @param string           $func               Current function (index, view, ...)
      * @param Request          $request            Current request
      * @param array            $templateParameters Template data
-     * @param string           $template Optional assignment of precalculated template file
+     * @param string           $template           Optional assignment of precalculated template file
      *
      * @return mixed Output
      */
@@ -167,7 +167,7 @@ abstract class AbstractViewHelper
     /**
      * Get extension of the currently treated template.
      *
-     * @param Twig_Environment $twig     Reference to view object
+     * @param Twig_Environment $twig    Reference to view object
      * @param string           $type    Current controller (name of currently treated entity)
      * @param string           $func    Current function (index, view, ...)
      * @param Request          $request Current request
@@ -223,10 +223,10 @@ abstract class AbstractViewHelper
     /**
      * Processes a template file using dompdf (LGPL).
      *
-     * @param Twig_Environment $twig     Reference to view object
+     * @param Twig_Environment $twig               Reference to view object
      * @param Request          $request            Current request
      * @param array            $templateParameters Template data
-     * @param string           $template Name of template to use
+     * @param string           $template           Name of template to use
      *
      * @return mixed Output
      */

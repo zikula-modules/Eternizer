@@ -27,13 +27,13 @@ function MUEternizerModule_needleapi_entry_base($args)
     // cache the results
     static $cache;
     if (!isset($cache)) {
-        $cache = array();
+        $cache = [];
     }
 
-    $dom = \ZLanguage::getModuleDomain('MUEternizerModule');
+    $translator = \ServiceUtil::get('translator.default');
 
     if (empty($nid)) {
-        return '<em>' . \DataUtil::formatForDisplay(__('No correct needle id given.', $dom)) . '</em>';
+        return '<em>' . \DataUtil::formatForDisplay(__('No correct needle id given.')) . '</em>';
     }
 
     if (isset($cache[$nid])) {
@@ -42,7 +42,7 @@ function MUEternizerModule_needleapi_entry_base($args)
     }
 
     if (!\ModUtil::available('MUEternizerModule')) {
-        $cache[$nid] = '<em>' . \DataUtil::formatForDisplay(__f('Module %s is not available.', array('MUEternizerModule'), $dom)) . '</em>';
+        $cache[$nid] = '<em>' . \DataUtil::formatForDisplay($translator->__f('Module %s is not available.', ['%s' => MUEternizerModule'])) . '</em>';
 
         return $cache[$nid];
     }
@@ -60,7 +60,7 @@ function MUEternizerModule_needleapi_entry_base($args)
         }
     }
 
-    $cache[$nid] = '<a href="' . $router->generate('mueternizermodule_entries_view') . '" title="' . __('View entries', $dom) . '">' . __('Entries', $dom) . '</a>';
+    $cache[$nid] = '<a href="' . $router->generate('mueternizermodule_entries_view') . '" title="' . $translator->__('View entries') . '">' . $translator->__('Entries') . '</a>';
     $needleParts = explode('-', $needleId);
     if ($needleParts[0] != 'ENTRY' || count($needleParts) < 2) {
         $cache[$nid] = '';
@@ -80,13 +80,12 @@ function MUEternizerModule_needleapi_entry_base($args)
     $selectionHelper = \ServiceUtil::get('mu_eternizer_module.selection_helper');
     $entity = $selectionHelper->getEntity('entry', $entityId);
     if (null === $entity) {
-        $cache[$nid] = '<em>' . __f('Entry with id %s could not be found', [$entityId], $dom) . '</em>';
+        $cache[$nid] = '<em>' . $translator->__f('Entry with id %s could not be found', ['%s' => $entityId]) . '</em>';
 
         return $cache[$nid];
     }
 
     $title = $entity->getTitleFromDisplayPattern();
-
     $cache[$nid] = '<a href="' . $router->generate('mueternizermodule_entries_display', ['id' => $entityId]) . '" title="' . str_replace('"', '', $title) . '">' . $title . '</a>';
 
     return $cache[$nid];
