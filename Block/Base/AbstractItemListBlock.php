@@ -48,7 +48,6 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
     
         $repository = $this->get('mu_eternizer_module.' . $objectType . '_factory')->getRepository();
     
-    
         // create query
         $where = $properties['filter'];
         $orderBy = $this->getSortParam($properties, $repository);
@@ -57,7 +56,7 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
         // get objects from database
         $currentPage = 1;
         $resultsPerPage = $properties['amount'];
-        list($query, $count) = $repository->getSelectWherePaginatedQuery($qb, $currentPage, $resultsPerPage);
+        $query = $repository->getSelectWherePaginatedQuery($qb, $currentPage, $resultsPerPage);
         list($entities, $objectCount) = $repository->retrieveCollectionResult($query, $orderBy, true);
     
         // set a block title
@@ -107,6 +106,7 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
         } else {
             $template = 'Block/itemlist.html.twig';
         }
+    
         $template = '@MUEternizerModule/' . $template;
     
         return $template;

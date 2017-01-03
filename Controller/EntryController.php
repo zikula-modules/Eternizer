@@ -383,9 +383,9 @@ class EntryController extends AbstractEntryController
             new Column('location'),
             new Column('text'),
             new Column('notes'),
-            new Column('createdUserId'),
+            new Column('createdBy'),
             new Column('createdDate'),
-            new Column('updatedUserId'),
+            new Column('updatedBy'),
             new Column('updatedDate'),
         ]);
         

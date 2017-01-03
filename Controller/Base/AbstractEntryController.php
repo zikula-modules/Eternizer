@@ -210,9 +210,9 @@ abstract class AbstractEntryController extends AbstractController
             new Column('location'),
             new Column('text'),
             new Column('notes'),
-            new Column('createdUserId'),
+            new Column('createdBy'),
             new Column('createdDate'),
-            new Column('updatedUserId'),
+            new Column('updatedBy'),
             new Column('updatedDate'),
         ]);
         
@@ -355,7 +355,6 @@ abstract class AbstractEntryController extends AbstractController
         $repository->setRequest($request);
         
         $entity = $entry;
-        
         
         $entity->initWorkflow();
         

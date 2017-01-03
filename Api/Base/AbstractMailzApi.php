@@ -96,8 +96,6 @@ abstract class AbstractMailzApi extends Zikula_AbstractBase
     
         $templateType = $args['contenttype'] == 't' ? 'text' : 'html';
     
-        $templating = $this->get('twig');
-    
         //$templateParameters = ['sorting' => $this->sorting, 'amount' => $this->amount, 'filter' => $this->filter, 'template' => $this->template];
         $templateParameters = [
             'objectType' => $objectType,
@@ -105,7 +103,7 @@ abstract class AbstractMailzApi extends Zikula_AbstractBase
         ];
         $templateParameters = array_merge($templateParameters, $repository->getAdditionalTemplateParameters('api', ['name' => 'mailz']));
     
-        return $templating->render(
+        return $this->get('twig')->render(
             '@MUEternizerModule/Mailz/itemlist_entry.' . $templateType . '.twig',
             $templateParameters
         );

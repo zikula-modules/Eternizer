@@ -146,9 +146,9 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
                 && $this->permissionApi->hasPermission($this->getBundleName() . ':Entry:', '::', $permLevel)) {
                 $links[] = [
                     'url' => $this->router->generate('mueternizermodule_entry_adminview'),
-                     'text' => $this->__('Entries'),
-                     'title' => $this->__('Entry list')
-                 ];
+                    'text' => $this->__('Entries'),
+                    'title' => $this->__('Entry list')
+                ];
             }
             if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
                 $links[] = [
@@ -173,9 +173,9 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
                 && $this->permissionApi->hasPermission($this->getBundleName() . ':Entry:', '::', $permLevel)) {
                 $links[] = [
                     'url' => $this->router->generate('mueternizermodule_entry_view'),
-                     'text' => $this->__('Entries'),
-                     'title' => $this->__('Entry list')
-                 ];
+                    'text' => $this->__('Entries'),
+                    'title' => $this->__('Entry list')
+                ];
             }
             if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
                 $links[] = [

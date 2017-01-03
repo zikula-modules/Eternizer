@@ -33,8 +33,6 @@ use Zikula\Core\Response\PlainResponse;
  */
 abstract class AbstractAjaxController extends AbstractController
 {
-
-
     /**
      * This is the default action handling the main area called without defining arguments.
      *
@@ -95,8 +93,7 @@ abstract class AbstractAjaxController extends AbstractController
             $sort = $repository->getDefaultSortingField();
         }
         
-        $sdir = $request->request->getAlpha('sortdir', '');
-        $sdir = strtolower($sdir);
+        $sdir = strtolower($request->request->getAlpha('sortdir', ''));
         if ($sdir != 'asc' && $sdir != 'desc') {
             $sdir = 'asc';
         }
@@ -136,10 +133,10 @@ abstract class AbstractAjaxController extends AbstractController
     {
         $view = Zikula_View::getInstance('MUEternizerModule', false);
         $view->assign($objectType, $item);
-        $previewInfo = base64_encode($view->fetch('External/' . ucfirst($objectType) . '/info.tpl'));
+        $previewInfo = base64_encode($view->fetch('External/' . ucfirst($objectType) . '/info.html.twig'));
     
         $title = $item->getTitleFromDisplayPattern();
-        $description = ($descriptionField != '') ? $item[$descriptionField] : '';
+        $description = $descriptionField != '' ? $item[$descriptionField] : '';
     
         return [
             'id'          => $itemId,

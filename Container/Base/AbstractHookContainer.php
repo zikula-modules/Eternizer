@@ -13,6 +13,7 @@
 namespace MU\EternizerModule\Container\Base;
 
 use Zikula\Bundle\HookBundle\AbstractHookContainer as ZikulaHookContainer;
+
 use Zikula\Bundle\HookBundle\Bundle\SubscriberBundle;
 
 /**

@@ -47,8 +47,8 @@ class AjaxController extends AbstractAjaxController
     
     /**
      * Retrieve item list for finder selections in Forms, Content type plugin and Scribite.
-     *
-     * @Route("/getItemListFinder", options={"expose"=true})
+    *
+    * @Route("/getItemListFinder", options={"expose"=true})
     
      *
      * @param string $ot      Name of currently used object type
@@ -61,5 +61,6 @@ class AjaxController extends AbstractAjaxController
     {
         return parent::getItemListFinderAction($request);
     }
+
     // feel free to add your own controller methods here
 }
