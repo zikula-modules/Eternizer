@@ -49,7 +49,7 @@
             {% if app.request.query.get('theme') != 'ZikulaPrinterTheme' %}
             <a href="mailto:{{ entry.email|protectMail }}" title="{{ __('Send an email') }}" class="fa fa-envelope"></a>
             {% else %}
-              {{ entry.email|protectMail }}
+                {{ entry.email|protectMail }}
             {% endif %}
             {% else %}&nbsp;{% endif %}
             </dd>
@@ -60,7 +60,7 @@
             {% if app.request.query.get('theme') != 'ZikulaPrinterTheme' %}
             <a href="{{ entry.homepage }}" title="{{ __('Visit this page') }}" class="fa fa-external-link-square"></a>
             {% else %}
-              {{ entry.homepage }}
+                {{ entry.homepage }}
             {% endif %}
             {% else %}&nbsp;{% endif %}
             </dd>
@@ -97,5 +97,4 @@
 {% endblock %}
 {% block footer %}
     {{ parent() }}
-
 {% endblock %}

@@ -33,18 +33,18 @@
                 <div class="col-sm-9">
                     <div id="mueternizermoduleItemContainer">
                         <ul>
-                        {% for entry in items %}
-                            <li>
-                                {% set itemId = entry.createCompositeIdentifier() %}
-                                <a href="#" data-itemid="{{ itemId }}">{{ entry.getTitleFromDisplayPattern() }}</a>
-                                <input type="hidden" id="url{{ itemId }}" value="{{ url('mueternizermodule_entry_display', { 'id': entry.id }) }}" />
-                                <input type="hidden" id="title{{ itemId }}" value="{{ entry.getTitleFromDisplayPattern()|e('html_attr') }}" />
-                                <input type="hidden" id="desc{{ itemId }}" value="{% set description %}{% if entry.text is not empty %}{{ entry.text }}{% endif %}
-                                {% endset %}{{ description|striptags|e('html_attr') }}" />
-                            </li>
-                        {% else %}
-                            <li>{{ __('No entries found.') }}</li>
-                        {% endfor %}
+                            {% for entry in items %}
+                                <li>
+                                    {% set itemId = entry.createCompositeIdentifier() %}
+                                    <a href="#" data-itemid="{{ itemId }}">{{ entry.getTitleFromDisplayPattern() }}</a>
+                                    <input type="hidden" id="url{{ itemId }}" value="{{ url('mueternizermodule_entry_display', { 'id': entry.id }) }}" />
+                                    <input type="hidden" id="title{{ itemId }}" value="{{ entry.getTitleFromDisplayPattern()|e('html_attr') }}" />
+                                    <input type="hidden" id="desc{{ itemId }}" value="{% set description %}{% if entry.text is not empty %}{{ entry.text }}{% endif %}
+                                    {% endset %}{{ description|striptags|e('html_attr') }}" />
+                                </li>
+                            {% else %}
+                                <li>{{ __('No entries found.') }}</li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>

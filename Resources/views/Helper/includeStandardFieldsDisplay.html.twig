@@ -1,5 +1,5 @@
 {# purpose of this template: reusable display of standard fields #}
-{% if (obj.createdUserId is defined and obj.createdUserId) or (obj.updatedUserId is defined and obj.updatedUserId) %}
+{% if obj.createdBy|default or obj.updatedBy|default %}
     {% if panel|default(false) == true %}
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -11,18 +11,16 @@
         <h3 class="standard-fields">{{ __('Creation and update') }}</h3>
     {% endif %}
     <dl class="propertylist">
-    {% if obj.createdUserId|default %}
+    {% if obj.createdBy|default %}
         <dt>{{ __('Creation') }}</dt>
-        {% set cr_uname = mueternizermodule_userVar('uname', obj.createdUserId) %}
-        {% set profileLink = obj.createdUserId|profileLinkByUserId() %}
-        <dd class="avatar">{{ mueternizermodule_userAvatar(uid=obj.createdUserId, rating='g') }}</dd>
+        {% set profileLink = obj.createdBy.getUid()|profileLinkByUserId() %}
+        <dd class="avatar">{{ mueternizermodule_userAvatar(uid=obj.createdBy.getUid(), rating='g') }}</dd>
         <dd>{{ __f('Created by %user on %date', {'%user': profileLink, '%date': obj.createdDate|localizeddate('medium', 'short')})|raw }}</dd>
     {% endif %}
-    {% if obj.updatedUserId|default %}
+    {% if obj.updatedBy|default %}
         <dt>{{ __('Last update') }}</dt>
-        {% set lu_uname = mueternizermodule_userVar('uname', obj.updatedUserId) %}
-        {% set profileLink = obj.updatedUserId|profileLinkByUserId() %}
-        <dd class="avatar">{{ mueternizermodule_userAvatar(uid=obj.updatedUserId, rating='g') }}</dd>
+        {% set profileLink = obj.updatedBy.getUid()|profileLinkByUserId() %}
+        <dd class="avatar">{{ mueternizermodule_userAvatar(uid=obj.updatedBy.getUid(), rating='g') }}</dd>
         <dd>{{ __f('Updated by %user on %date', {'%user': profileLink, '%date': obj.updatedDate|localizeddate('medium', 'short')})|raw }}</dd>
     {% endif %}
     </dl>

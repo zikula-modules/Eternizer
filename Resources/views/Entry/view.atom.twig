@@ -35,13 +35,12 @@
     {% if entry.createdDate|default %}
         <published>{{ entry.createdDate|date('Y-m-dTH:M:SZ') }}</published>
     {% endif %}
-    {% if entry.createdUserId|default %}
-        {% set cr_uname = mueternizermodule_userVar('uname', obj.createdUserId) %}
-        {% set cr_name = mueternizermodule_userVar('name', obj.createdUserId) %}
+    {% if entry.createdBy|default %}
+        {% set realName = mueternizermodule_userVar('name', obj.createdBy.getUid()) %}
         <author>
-           <name>{{ cr_name|default(cr_uname) }}</name>
-           <uri>{{ mueternizermodule_userVar('_UYOURHOMEPAGE', entry.createdUserId, '-') }}</uri>
-           <email>{{ mueternizermodule_userVar('email', entry.createdUserId) }}</email>
+           <name>{{ realName|default(obj.createdBy.getUname()) }}</name>
+           <uri>{{ mueternizermodule_userVar('_UYOURHOMEPAGE', entry.createdBy.getUid(), '-') }}</uri>
+           <email>{{ entry.createdBy.getEmail() }}</email>
         </author>
     {% endif %}
     <summary type="html">

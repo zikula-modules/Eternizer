@@ -295,7 +295,7 @@ class EntryController extends AbstractEntryController
         return parent::handleSelectedEntriesAction($request);
     }
 
-    /**
+   /**
      * This method includes the common implementation code for adminView() and view().
      */
     protected function viewInternal(Request $request, $sort, $sortdir, $pos, $num, $isAdmin = false)
@@ -307,7 +307,6 @@ class EntryController extends AbstractEntryController
         if (!$this->hasPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
-        
         $repository = $this->get('mu_eternizer_module.' . $objectType . '_factory')->getRepository();
         $repository->setRequest($request);
         $viewHelper = $this->get('mu_eternizer_module.view_helper');
@@ -349,7 +348,7 @@ class EntryController extends AbstractEntryController
                 $resultsPerPage = $this->getVar($objectType . 'EntriesPerPage', 10);
             }
         }
-  
+        
         // parameter for used sorting field
         if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields())) {
             $sort = $repository->getDefaultSortingField();
@@ -364,18 +363,9 @@ class EntryController extends AbstractEntryController
         // parameter for used sort order
         $sortdir = strtolower($sortdir);
         
-        $modSortDir = \ModUtil::getVar($this->name, 'order');
-        if ($modSortDir != '') {
-        	if ($modSortDir == 'descending') {
-        	$sortdir = 'desc';
-        	} else {
-        		$sortdir = 'asc';
-        	}
-        }
-        
         $sortableColumns = new SortableColumns($this->get('router'), 'mueternizermodule_entry_' . ($isAdmin ? 'admin' : '') . 'view', 'sort', 'sortdir');
         $sortableColumns->addColumns([
-        	new Column('workflowState'),
+            new Column('workflowState'),
             new Column('ip'),
             new Column('name'),
             new Column('email'),
@@ -404,6 +394,14 @@ class EntryController extends AbstractEntryController
         $templateParameters['sort'] = $sort;
         $templateParameters['sortdir'] = $sortdir;
         $templateParameters['num'] = $resultsPerPage;
+        
+        $tpl = '';
+        if ($request->isMethod('POST')) {
+            $tpl = $request->request->getAlnum('tpl', '');
+        } elseif ($request->isMethod('GET')) {
+            $tpl = $request->query->getAlnum('tpl', '');
+        }
+        $templateParameters['tpl'] = $tpl;
         
         $quickNavForm = $this->createForm('MU\EternizerModule\Form\Type\QuickNavigation\\' . ucfirst($objectType) . 'QuickNavType', $templateParameters);
         if ($quickNavForm->handleRequest($request) && $quickNavForm->isSubmitted()) {

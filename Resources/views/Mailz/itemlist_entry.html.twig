@@ -3,8 +3,7 @@
 <ul>
 {% for entry in items %}
     <li>
-        <a href="{{ url('mueternizermodule_entry_display', { 'id': entry.id }) }}
-        ">{{ entry.getTitleFromDisplayPattern() }}
+        <a href="{{ url('mueternizermodule_entry_display', { 'id': entry.id }) }}">{{ entry.getTitleFromDisplayPattern() }}
         </a>
     </li>
 {% else %}
