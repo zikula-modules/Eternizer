@@ -17,6 +17,7 @@ use MU\EternizerModule\Entity\Base\AbstractEntryEntity as BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use MU\EternizerModule\Traits\EntityWorkflowTrait;
 use MU\EternizerModule\Traits\StandardFieldsTrait;
 
 /**

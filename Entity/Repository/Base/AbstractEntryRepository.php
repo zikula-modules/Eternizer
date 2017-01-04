@@ -912,8 +912,8 @@ abstract class AbstractEntryRepository extends EntityRepository
             // you could add explicit filters at this point, something like
             // $filterUtil->addFilter('foo:eq:something,bar:gt:100');
             // read more at
-            // https://github.com/zikula/core/blob/master/src/lib/Zikula/Component/FilterUtil/README.md
-            // https://github.com/zikula/core/blob/master/src/lib/Zikula/Component/FilterUtil/Resources/docs/users.md
+            // https://github.com/zikula/core/blob/1.4/src/lib/legacy/util/FilterUtil/docs/developers.md
+            // https://github.com/zikula/core/blob/1.4/src/lib/legacy/util/FilterUtil/docs/users.md
     
             // now enrich the query builder
             $filterUtil->enrichQuery();

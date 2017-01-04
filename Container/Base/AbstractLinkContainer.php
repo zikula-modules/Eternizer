@@ -56,8 +56,7 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
     private $currentUserApi;
 
     /**
-     * Constructor.
-     * Initialises member vars.
+     * LinkContainer constructor.
      *
      * @param TranslatorInterface $translator       Translator service instance
      * @param Routerinterface     $router           Router service instance

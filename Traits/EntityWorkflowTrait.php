@@ -12,6 +12,7 @@
 
 namespace MU\EternizerModule\Traits;
 
+use FormUtil;
 use ServiceUtil;
 use Zikula_Workflow_Util;
 

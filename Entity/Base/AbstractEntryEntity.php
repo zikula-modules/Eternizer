@@ -135,7 +135,8 @@ abstract class AbstractEntryEntity extends EntityAccess
     
     
     /**
-     * Constructor.
+     * EntryEntity constructor.
+     *
      * Will not be called by Doctrine and can therefore be used
      * for own implementation purposes. It is also possible to add
      * arbitrary arguments as with every other class method.

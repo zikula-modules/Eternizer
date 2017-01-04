@@ -43,18 +43,17 @@ abstract class AbstractSelectionHelper
     protected $controllerHelper;
 
     /**
-     * Constructor.
-     * Initialises member vars.
+     * SelectionHelper constructor.
      *
      * @param ContainerBuilder    $container        ContainerBuilder service instance
-     * @param ObjectManager       $om               The object manager to be used for retrieving entity meta data
+     * @param ObjectManager       $objectManager    The object manager to be used for retrieving entity meta data
      * @param TranslatorInterface $translator       Translator service instance
      * @param ControllerHelper    $controllerHelper ControllerHelper service instance
      */
-    public function __construct(ContainerBuilder $container, ObjectManager $om, TranslatorInterface $translator, ControllerHelper $controllerHelper)
+    public function __construct(ContainerBuilder $container, ObjectManager $objectManager, TranslatorInterface $translator, ControllerHelper $controllerHelper)
     {
         $this->container = $container;
-        $this->objectManager = $om;
+        $this->objectManager = $objectManager;
         $this->translator = $translator;
         $this->controllerHelper = $controllerHelper;
     }

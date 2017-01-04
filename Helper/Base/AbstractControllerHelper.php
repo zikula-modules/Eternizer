@@ -33,8 +33,7 @@ abstract class AbstractControllerHelper
     protected $translator;
 
     /**
-     * Constructor.
-     * Initialises member vars.
+     * ControllerHelper constructor.
      *
      * @param ContainerBuilder    $container  ContainerBuilder service instance
      * @param TranslatorInterface $translator Translator service instance

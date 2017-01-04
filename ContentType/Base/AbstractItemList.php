@@ -12,7 +12,6 @@
 
 namespace MU\EternizerModule\ContentType\Base;
 
-use ModUtil;
 use ServiceUtil;
 use ZLanguage;
 
@@ -90,9 +89,7 @@ abstract class AbstractItemList extends \Content_AbstractContentType
      */
     public function getTitle()
     {
-        $serviceManager = ServiceUtil::getManager();
-    
-        return $serviceManager->get('translator.default')->__('MUEternizerModule list view');
+        return ServiceUtil::get('translator.default')->__('MUEternizerModule list view');
     }
     
     /**
@@ -102,9 +99,7 @@ abstract class AbstractItemList extends \Content_AbstractContentType
      */
     public function getDescription()
     {
-        $serviceManager = ServiceUtil::getManager();
-    
-        return $serviceManager->get('translator.default')->__('Display list of MUEternizerModule objects.');
+        return ServiceUtil::get('translator.default')->__('Display list of MUEternizerModule objects.');
     }
     
     /**
@@ -158,7 +153,6 @@ abstract class AbstractItemList extends \Content_AbstractContentType
     
         $serviceManager = ServiceUtil::getManager();
         $repository = $serviceManager->get('mu_eternizer_module.' . $this->objectType . '_factory')->getRepository();
-    
         $permissionApi = $serviceManager->get('zikula_permissions_module.api.permission');
     
         // create query
@@ -169,7 +163,7 @@ abstract class AbstractItemList extends \Content_AbstractContentType
         // get objects from database
         $currentPage = 1;
         $resultsPerPage = isset($this->amount) ? $this->amount : 1;
-        list($query, $count) = $repository->getSelectWherePaginatedQuery($qb, $currentPage, $resultsPerPage);
+        $query = $repository->getSelectWherePaginatedQuery($qb, $currentPage, $resultsPerPage);
         list($entities, $objectCount) = $repository->retrieveCollectionResult($query, $orderBy, true);
     
         $data = [
@@ -191,9 +185,7 @@ abstract class AbstractItemList extends \Content_AbstractContentType
     
         $template = $this->getDisplayTemplate();
     
-        $output = $serviceManager->get('twig')->render('@MUEternizerModule/' . $template, $templateParameters);
-    
-        return $output;
+        return $serviceManager->get('twig')->render('@MUEternizerModule/' . $template, $templateParameters);
     }
     
     /**
@@ -290,7 +282,7 @@ abstract class AbstractItemList extends \Content_AbstractContentType
         $this->view->toplevelmodule = 'MUEternizerModule';
     
         // ensure our custom plugins are loaded
-        array_push($this->view->plugins_dir, 'modules/MUEternizerModule/Resources/views//plugins');
+        array_push($this->view->plugins_dir, 'modules/MU/Eternizer/Resources/views//plugins');
     }
     
     /**
