@@ -98,7 +98,7 @@ class EntryController extends AbstractEntryController
      *
      * @Route("/entries/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
      *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|csv|rss|atom|xml|json|kml"},
-     *        defaults = {"sort" = "", "sortdir" = "", "pos" = 1, "num" = 10, "_format" = "html"},
+     *        defaults = {"sort" = "", "sortdir" = "desc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
      *
@@ -191,7 +191,9 @@ class EntryController extends AbstractEntryController
     			    $sortdir = 'asc';
     		    }
     	    } else {
-    	    	$sortdir = 'desc';
+    	    	if ($sortdir == '') {
+    	    	    $sortdir = 'desc';
+    	    	}
     	    }
     
     	$sortableColumns = new SortableColumns($this->get('router'), 'mueternizermodule_entry_' . ($isAdmin ? 'admin' : '') . 'view', 'sort', 'sortdir');
