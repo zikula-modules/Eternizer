@@ -42,7 +42,7 @@ function MUEternizerModule_needleapi_entry_base($args)
     }
 
     if (!\ModUtil::available('MUEternizerModule')) {
-        $cache[$nid] = '<em>' . \DataUtil::formatForDisplay($translator->__f('Module %s is not available.', ['%s' => MUEternizerModule'])) . '</em>';
+        $cache[$nid] = '<em>' . \DataUtil::formatForDisplay($translator->__f('Module %s is not available.', ['%s' => 'MUEternizerModule'])) . '</em>';
 
         return $cache[$nid];
     }
