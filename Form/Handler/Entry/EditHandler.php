@@ -36,11 +36,12 @@ class EditHandler extends AbstractEditHandler
     {
         $selectionHelper = $this->container->get('mu_eternizer_module.selection_helper');
         $entity = $selectionHelper->getEntity($this->objectType, $this->idValues);
+
         if (null === $entity) {
             throw new NotFoundHttpException($this->__('No such item.'));
         }
         $controllerHelper = $this->container->get('mu_eternizer_module.controller_helper');
-        $editEntryAllowed = $controllerHelper->editEntry($entity['id'], $entity['createdUserId'], $entity['createdDate'], 2);
+        $editEntryAllowed = $controllerHelper->editEntry($entity['id'], $entity['createdBy_id'], $entity['createdDate'], 2);
         
         if ($editEntryAllowed == false && \UserUtil::getVar('uid') != 2) {       	
         	return \System::redirect('/eternizer/entries/view');
@@ -54,8 +55,10 @@ class EditHandler extends AbstractEditHandler
         if ($simpleCaptcha && $session->has('formiculaCaptcha')) {      
         	$session->del('eternizerCaptcha');
         }
-    
-        return parent::initEntityForEditing();
+        
+        $entity->initWorkflow();
+        
+        return $entity;
     } 
     
     /**
