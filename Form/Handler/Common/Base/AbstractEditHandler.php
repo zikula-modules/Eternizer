@@ -27,6 +27,7 @@ use Zikula\Core\RouteUrl;
 use ModUtil;
 use RuntimeException;
 use UserUtil;
+use MU\EternizerModule\Traits\StandardFieldsTrait;
 
 /**
  * This handler class handles the page events of editing forms.
@@ -608,7 +609,7 @@ abstract class AbstractEditHandler
         $currentUserApi = $this->container->get('zikula_users_module.current_user');
         $isLoggedIn = $currentUserApi->isLoggedIn();
         $uid = $isLoggedIn ? $currentUserApi->get('uid') : 1;
-        $roles['isCreator'] = method_exists($this->entityRef, 'getCreatedBy') && $this->entityRef->getCreatedBy()->getUid() == $uid;
+        $roles['isCreator'] = $this->templateParameters['mode'] == 'create' || (method_exists($this->entityRef, 'getCreatedBy') && $this->entityRef->getCreatedBy()->getUid() == $uid);
         $variableApi = $this->container->get('zikula_extensions_module.api.variable');
     
         $groupArgs = ['uid' => $uid, 'gid' => $variableApi->get('MUEternizerModule', 'moderationGroupFor' . $this->objectTypeCapital, 2)];
