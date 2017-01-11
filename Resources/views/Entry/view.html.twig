@@ -15,7 +15,7 @@
 {% for entry in items %}
         <div class="etz_entry z-clearfix {{ cycle (['etz_bg1','etz_bg2'], loop.index0) }}">
             <div class="col-md-4 etz_author">
-                <div class="etz_avatar">{{ mueternizermodule_userAvatar(uid=entry.createdUserId, rating='g') }}</div>
+                <div class="etz_avatar">{{ mueternizermodule_userAvatar(uid=entry.createdBy.getUid(), rating='g') }}</div>
                 {% if entry.email is not empty or entry.homepage is not empty or entry.location is not empty %}
                     <dl class="etz_options">
                         {% if entry.email is not empty %}
@@ -45,7 +45,7 @@
                                 <span class="etz_attr">{{ entry.name|safeHtml }}</span>
                             {% else %}
 							{% set guest = getModVar('ZikulaUsersModule', 'anonymous') %}
-							{% set ownerName = mueternizermodule_userVar('uname', entry.createdUserId) %}
+							{% set ownerName = entry.createdBy.getUname() %}
                                 {% if ownerName is empty %}							
                                     {{ guest|safeHtml }}
                                 {% else %}
@@ -64,8 +64,8 @@
                         {% if itemActions|length > 0 %}
 						{% set userid = mueternizermodule_userVar('uid') %}
 						{% set editentries = getModVar('MUEternizerModule', 'editentries') %}
-                            {% if entry.createdUserId == userid and entry.createdUserId > 1 and editentries == 1 %}
-                            <div class="eternizer-user-entry-edit">{% set out = mueternizermodule_editEntry(entry.id, entry.createdUserId, entry.createdDate) %}{{ out|raw }}</div>
+                            {% if entry.createdBy.getUid() == userid and entry.createdBy.getUid() > 1 and editentries == 1 %}
+                            <div class="eternizer-user-entry-edit">{% set out = mueternizermodule_editEntry(entry.id, entry.createdBy.getUid(), entry.createdDate) %}{{ out|raw }}</div>
                                 {#% for option in itemActions %}
                                     <a href="{{ option.url }}" title="{{ option.linkTitle|e('html_attr') }}" role="menuitem" tabindex="-1" class="fa fa-{{ option.icon }}">{{ option.linkText }}</a>
                                 {% endfor %#}
@@ -77,7 +77,7 @@
 				     {{ entry.text }}
                     {#{ entry.text|notifyFilters:'eternizer.filter_hooks.entries.filter'|safeHtml|nl2br }#}
                     {% if entry.notes is not empty %}
-                        {% if entry.updatedUserId == entry.createdUserId %}
+                        {% if entry.updatedBy.getUid() == entry.createdBy.getUid() %}
                         <p style="margin-top: 2em;" class="entry-comment">
                             <strong class="entry-comment-label">{{ __('Comment:') }}</strong>
                             <br/>
@@ -85,7 +85,7 @@
                         </p>
                         {% endif %}
                     {% endif %}
-                    {% if entry.updatedDate > entry.createdDate and entry.createdUserId == entry.updatedUserId %}
+                    {% if entry.updatedDate > entry.createdDate and entry.createdBy.getUid() == entry.updatedBy.getUid() %}
                         <br/>
                         <span class="etz_updated">{{ __f('Updated on %s', {'%s': entry.updatedDate|date("d.m.Y")}) }}</span>
                     {% endif %}
@@ -116,7 +116,9 @@
                 {% if routeArea == 'admin' %}
                     <col id="cSelect" />
                 {% endif %}
+                {% if routeArea == 'admin' %}
                 <col id="cWorkflowState" />
+                {% endif %}
                 <col id="cIp" />
                 <col id="cName" />
                 <col id="cEmail" />
@@ -133,19 +135,21 @@
                         <input type="checkbox" id="toggleEntries" />
                     </th>
                 {% endif %}
+                {% if routeArea == 'admin' %}
                 <th id="hWorkflowState" scope="col" class="text-left">
                     <a href="{{ sort.workflowState.url }}" title="{{ __f('Sort by %s', {'%s': 'state'}) }}" class="{{ sort.workflowState.class }}">{{ __('State') }}</a>
                 </th>
+                {% endif %}
                 <th id="hIp" scope="col" class="text-left">
                     <a href="{{ sort.ip.url }}" title="{{ __f('Sort by %s', {'%s': 'ip'}) }}" class="{{ sort.ip.class }}">{{ __('Ip') }}</a>
                 </th>
                 <th id="hName" scope="col" class="text-left">
                     <a href="{{ sort.name.url }}" title="{{ __f('Sort by %s', {'%s': 'name'}) }}" class="{{ sort.name.class }}">{{ __('Name') }}</a>
                 </th>
-                <th id="hEmail" scope="col" class="text-left">
+                <th id="hEmail" scope="col" class="text-center">
                     <a href="{{ sort.email.url }}" title="{{ __f('Sort by %s', {'%s': 'email'}) }}" class="{{ sort.email.class }}">{{ __('Email') }}</a>
                 </th>
-                <th id="hHomepage" scope="col" class="text-left">
+                <th id="hHomepage" scope="col" class="text-center">
                     <a href="{{ sort.homepage.url }}" title="{{ __f('Sort by %s', {'%s': 'homepage'}) }}" class="{{ sort.homepage.class }}">{{ __('Homepage') }}</a>
                 </th>
                 <th id="hLocation" scope="col" class="text-left">
@@ -169,21 +173,21 @@
                         <input type="checkbox" name="items[]" value="{{ entry.id }}" class="entries-checkbox" />
                     </td>
                 {% endif %}
-                <td headers="hWorkflowState" class="text-left nowrap">
+                {% if routeArea == 'admin' %}<td headers="hWorkflowState" class="text-left nowrap">
                     {{ entry.workflowState|mueternizermodule_objectState }}
                 </td>
-                <td headers="hIp" class="text-left">
+                {% endif %}<td headers="hIp" class="text-left">
                     {{ entry.ip }}
                 </td>
                 <td headers="hName" class="text-left">
                     <a href="{{ path('mueternizermodule_entry_' ~ routeArea ~ 'display', { 'id': entry.id }) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ entry.name|notifyFilters('mueternizermodule.filterhook.entries') }}</a>
                 </td>
-                <td headers="hEmail" class="text-left">
+                <td headers="hEmail" class="text-center">
                     {% if entry.email is not empty %}
                     <a href="mailto:{{ entry.email|protectMail }}" title="{{ __('Send an email') }}" class="fa fa-envelope"></a>
                     {% else %}&nbsp;{% endif %}
                 </td>
-                <td headers="hHomepage" class="text-left">
+                <td headers="hHomepage" class="text-center">
                     {% if entry.homepage is not empty %}
                     <a href="{{ entry.homepage }}" title="{{ __('Visit this page') }}" class="fa fa-external-link-square"></a>
                     {% else %}&nbsp;{% endif %}
@@ -276,26 +280,26 @@
 {% block footer %}
     {{ parent() }}
 
-<script type="text/javascript">
-/* <![CDATA[ */
-    ( function($) {
-        $(document).ready(function() {
-            $('.dropdown > ul').removeClass('list-inline').addClass('list-unstyled dropdown-menu dropdown-menu-right');
-            $('.dropdown > ul a').each(function (index) {
-                $(this).html($(this).html() + $(this).find('i').first().data('original-title'));
+    <script type="text/javascript">
+    /* <![CDATA[ */
+        ( function($) {
+            $(document).ready(function() {
+                $('.mueternizermodule-entry .dropdown > ul').removeClass('list-inline').addClass('list-unstyled dropdown-menu dropdown-menu-right');
+                $('.mueternizermodule-entry .dropdown > ul a').each(function (index) {
+                    $(this).html($(this).html() + $(this).find('i').first().data('original-title'));
+                });
+                $('.mueternizermodule-entry .dropdown > ul a i').addClass('fa-fw');
+                $('.mueternizermodule-entry .dropdown-toggle').removeClass('hidden').dropdown();
+                {% if routeArea == 'admin' %}
+                    {# init the "toggle all" functionality #}
+                    if ($('#toggleEntries').length > 0) {
+                        $('#toggleEntries').click(function (event) {
+                            $('.entries-checkbox').prop('checked', $(this).prop('checked'));
+                        });
+                    }
+                {% endif %}
             });
-            $('.dropdown > ul a i').addClass('fa-fw');
-            $('.dropdown-toggle').removeClass('hidden').dropdown();
-            {% if routeArea == 'admin' %}
-                {# init the "toggle all" functionality #}
-                if ($('#toggleEntries').length > 0) {
-                    $('#toggleEntries').click(function (event) {
-                        $('.entries-checkbox').prop('checked', $(this).prop('checked'));
-                    });
-                }
-            {% endif %}
-        });
-    })(jQuery);
-/* ]]> */
-</script>
+        })(jQuery);
+    /* ]]> */
+    </script>
 {% endblock %}
