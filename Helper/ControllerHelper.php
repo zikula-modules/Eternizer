@@ -50,7 +50,7 @@ class ControllerHelper extends AbstractControllerHelper
 			$out = '';
 		}
 		
-		if ($createdUserId == $userid && ($diffTimeHours < $editTime) ) {
+		if ($createdBy.getUid() == $userid && ($diffTimeHours < $editTime) ) {
 			if ($kind == 1) {
 				$serviceManager = \ServiceUtil::getManager();
 				// generate an auth key to use in urls
