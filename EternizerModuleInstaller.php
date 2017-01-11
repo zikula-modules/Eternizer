@@ -16,7 +16,7 @@ use MU\EternizerModule\Base\AbstractEternizerModuleInstaller;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
-use DBUtil;
+use ServiceUtil;
 
 /**
  * Installer implementation class.
@@ -149,23 +149,20 @@ class EternizerModuleInstaller extends AbstractEternizerModuleInstaller
     
                     return false;
                 }
-                
-                $dbName = $this->getDbName();
-                $conn = $this->getConnection();
-                	
-                $conn->executeQuery("
-                		UPDATE $dbName.mu_eternizer_entry
-                		SET workflowState = 'approved';
-                		");
                                 
-                /*$result2 = DBUtil::executeSQL('SELECT * FROM `mu_eternizer_entry`');
-                $entries = $result2->fetchAll(Doctrine::FETCH_ASSOC);
+                $entries = $this->entityManager->getRepository('MU\EternizerModule\Entity\EntryEntity')->findAll();
+                $connection = $this->container->get('doctrine.entitymanager')->getConnection();
                 
 		        // we set the workflow
-                foreach ($entries as $key => $entry) {
-                	$sql[] = "INSERT INTO workflows (spalte1, spalte2, splate3) VALUES ($tr, ?, ?)";
+                foreach ($entries as $entry) {
+                	$entity = $this->entityManager->getRepository('MU\EternizerModule\Entity\EntryEntity')->find($entry['id']);
+                	$entity->setWorkflowState('approved');
+                	$this->entityManager->flush();
+                	$sql = "INSERT INTO workflows (metaid, module, schemaname, state, type, obj_table, obj_idcolumn, obj_id, busy, debug) VALUES (0, 'MUEternizerModule', 'standard', 'approved', 1, 'entry', 'id'," . $entity['id'] . ", 0, NULL)"; 
+                	$smt = $connection->prepare($sql);
+                	$smt->execute();
 
-                }TODO Workflow table entries*/
+                }
                 
             case '1.4.0':
             	// for later updates
