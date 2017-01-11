@@ -237,7 +237,7 @@ abstract class AbstractCaptchaHelper
             }
         }
         $fontPath = implode('/', $relativeModulePathParts) . '/Resources/public/fonts/' . $font . '.ttf';*/
-        $fontPath = 'modules/mu/eternizer-module/Resources/public/fonts/' . $font . '.ttf';
+        $fontPath = 'modules/MU/EternizerModule/Resources/public/fonts/' . $font . '.ttf';
         return $fontPath;
     }
     /**
