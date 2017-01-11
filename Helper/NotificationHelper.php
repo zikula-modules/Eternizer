@@ -26,7 +26,7 @@ class NotificationHelper extends AbstractNotificationHelper
 	/**
 	 * Collects the recipients.
 	 */
-	protected function collectRecipients()
+	/*protected function collectRecipients()
 	{
 		$this->recipients = [];
 	
@@ -53,7 +53,7 @@ class NotificationHelper extends AbstractNotificationHelper
 			// add the admin, too
 			$this->addRecipient(2);
 		}
-	}
+	}*/
 	
 	/**
 	 * 
