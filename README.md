@@ -7,7 +7,7 @@ This module is intended for being used with Zikula 1.4.0 and later.
 
 This version is under development. Do not use on production sites!
 
-For questions and other remarks visit our homepage http://webdesign-in-bremen.com.
+For questions and other remarks visit our homepage http://homepages-mit-zikula.de.
 
-Michael Ueberschaer (kontakt@webdesign-in-bremen.com)
-http://www.webdesign-in-bremen.com
+Michael Ueberschaer (info@homepages-mit-zikula.de)
+
