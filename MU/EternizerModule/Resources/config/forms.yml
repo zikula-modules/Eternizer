@@ -3,42 +3,70 @@ services:
     
     mu_eternizer_module.form.type.entryquicknav:
         class: MU\EternizerModule\Form\Type\QuickNavigation\EntryQuickNavType
-        arguments: ["@translator.default", "@request_stack", "@mu_eternizer_module.listentries_helper"]
+        arguments:
+            - "@translator.default"
+            - "@mu_eternizer_module.listentries_helper"
         tags:
             - { name: form.type }
     
     mu_eternizer_module.form.handler.entry:
         class: MU\EternizerModule\Form\Handler\Entry\EditHandler
-        arguments: ["@service_container", "@translator.default", "@request_stack", "@router"]
+        arguments:
+            - "@kernel"
+            - "@translator.default"
+            - "@form.factory"
+            - "@request_stack"
+            - "@router"
+            - "@logger"
+            - "@zikula_permissions_module.api.permission"
+            - "@zikula_extensions_module.api.variable"
+            - "@zikula_users_module.current_user"
+            - "@zikula_groups_module.group_application_repository"
+            - "@mu_eternizer_module.entity_factory"
+            - "@mu_eternizer_module.controller_helper"
+            - "@mu_eternizer_module.model_helper"
+            - "@mu_eternizer_module.workflow_helper"
+            - "@mu_eternizer_module.hook_helper"
+        calls:
+            - [setLockingApi, ["@?zikula_pagelock_module.api.locking"]]
         tags:
             - { name: form.type }
     
     mu_eternizer_module.form.type.entry:
         class: MU\EternizerModule\Form\Type\EntryType
-        arguments: ["@translator.default", "@mu_eternizer_module.entry_factory", "@mu_eternizer_module.listentries_helper"]
+        arguments:
+            - "@translator.default"
+            - "@mu_eternizer_module.entity_factory"
+            - "@mu_eternizer_module.listentries_helper"
         tags:
             - { name: form.type }
     
     mu_eternizer_module.form.type.deleteentity:
         class: MU\EternizerModule\Form\DeleteEntityType
-        arguments: ["@translator.default"]
+        arguments:
+            - "@translator.default"
         tags:
             - { name: form.type }
     
     mu_eternizer_module.form.type.block.itemlist:
         class: MU\EternizerModule\Block\Form\Type\ItemListBlockType
-        arguments: ["@translator.default"]
+        arguments:
+            - "@translator.default"
         tags:
             - { name: form.type }
     
     mu_eternizer_module.form.type.entryfinder:
         class: MU\EternizerModule\Form\Type\Finder\EntryFinderType
-        arguments: ["@translator.default"]
+        arguments:
+            - "@translator.default"
         tags:
             - { name: form.type }
     
     mu_eternizer_module.form.type.appsettings:
         class: MU\EternizerModule\Form\AppSettingsType
-        arguments: ["@translator.default", "@zikula_extensions_module.api.variable", "@zikula_groups_module.group_repository"]
+        arguments:
+            - "@translator.default"
+            - "@zikula_extensions_module.api.variable"
+            - "@zikula_groups_module.group_repository"
         tags:
             - { name: form.type }

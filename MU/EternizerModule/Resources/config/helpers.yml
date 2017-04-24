@@ -1,36 +1,75 @@
 services:
-    # Helper classes
+    # Helper services
     mu_eternizer_module.controller_helper:
         class: MU\EternizerModule\Helper\ControllerHelper
-        arguments: ["@service_container", "@translator.default", "@session", "@logger"]
+        arguments:
+            - "@request_stack"
+            - "@form.factory"
+            - "@zikula_extensions_module.api.variable"
+            - "@mu_eternizer_module.entity_factory"
+            - "@mu_eternizer_module.model_helper"
     
     mu_eternizer_module.hook_helper:
         class: MU\EternizerModule\Helper\HookHelper
-        arguments: ["@hook_dispatcher"]
+        arguments:
+            - "@hook_dispatcher"
     
     mu_eternizer_module.listentries_helper:
         class: MU\EternizerModule\Helper\ListEntriesHelper
-        arguments: ["@translator.default"]
+        arguments:
+            - "@translator.default"
     
     mu_eternizer_module.model_helper:
         class: MU\EternizerModule\Helper\ModelHelper
-        arguments: ["@service_container"]
+        arguments:
+            - "@mu_eternizer_module.entity_factory"
     
     mu_eternizer_module.notification_helper:
         class: MU\EternizerModule\Helper\NotificationHelper
-        arguments: ["@translator.default", "@session", "@router", "@kernel", "@request_stack", "@zikula_extensions_module.api.variable", "@twig", "@zikula_mailer_module.api.mailer", "@mu_eternizer_module.workflow_helper"]
-       
-    mu_eternizer_module.selection_helper:
-        class: MU\EternizerModule\Helper\SelectionHelper
-        arguments: ["@service_container", "@doctrine.orm.entity_manager", "@translator.default", "@mu_eternizer_module.controller_helper"]
+        arguments:
+            - "@kernel"
+            - "@translator.default"
+            - "@session"
+            - "@router"
+            - "@request_stack"
+            - "@zikula_extensions_module.api.variable"
+            - "@twig"
+            - "@zikula_mailer_module.api.mailer"
+            - "@zikula_groups_module.group_repository"
+            - "@mu_eternizer_module.workflow_helper"
+    
+    mu_eternizer_module.search_helper:
+        class: MU\EternizerModule\Helper\SearchHelper
+        arguments:
+            - "@translator.default"
+            - "@zikula_permissions_module.api.permission"
+            - "@templating.engine.twig"
+            - "@session"
+            - "@request_stack"
+            - "@mu_eternizer_module.entity_factory"
+            - "@mu_eternizer_module.controller_helper"
+        tags:
+            - { name: zikula.searchable_module, bundleName: MUEternizerModule }
     
     mu_eternizer_module.view_helper:
         class: MU\EternizerModule\Helper\ViewHelper
-        arguments: ["@service_container", "@translator.default"]
+        arguments:
+            - "@twig"
+            - "@twig.loader"
+            - "@request_stack"
+            - "@zikula_permissions_module.api.permission"
+            - "@zikula_extensions_module.api.variable"
+            - "@zikula_core.common.theme.pagevars"
+            - "@mu_eternizer_module.controller_helper"
     
     mu_eternizer_module.workflow_helper:
         class: MU\EternizerModule\Helper\WorkflowHelper
-        arguments: ["@service_container", "@translator.default"]
+        arguments:
+            - "@translator.default"
+            - "@logger"
+            - "@zikula_permissions_module.api.permission"
+            - "@mu_eternizer_module.entity_factory"
+            - "@mu_eternizer_module.listentries_helper"
         
     mu_eternizer_module.captcha_helper:
         class: MU\EternizerModule\Helper\CaptchaHelper
