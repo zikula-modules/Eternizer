@@ -13,6 +13,7 @@
 namespace MU\EternizerModule\Helper;
 
 use MU\EternizerModule\Helper\Base\AbstractNotificationHelper;
+use Zikula\UsersModule\Entity\UserEntity;
 use Swift_Message;
 use ModUtil;
 use ServiceUtil;
@@ -26,7 +27,7 @@ class NotificationHelper extends AbstractNotificationHelper
     /**
      * Collects the recipients.
      */
-    protected function collectRecipients()
+    /*protected function collectRecipients()
     {
         $this->recipients = [];
         
@@ -56,14 +57,14 @@ class NotificationHelper extends AbstractNotificationHelper
             // add the admin, too
             $this->addRecipient(2);
         }
-    }
+    }*/
     
     /**
      * Collects data for building the recipients array.
      *
-     * @param $userId Id of treated user
+     * @param UserEntity $user Recipient user record
      */
-    protected function addRecipient($userId)
+   /* protected function addRecipient($userId)
     {
     	$userVars = UserUtil::getVars($userId);
     
@@ -82,7 +83,7 @@ class NotificationHelper extends AbstractNotificationHelper
     	}
     
     	return $recipient;
-    }
+    }*/
 	
 	/**
 	 * 
