@@ -1,9 +1,0 @@
-imports:
-  - { resource: 'linkContainer.yml' }
-  - { resource: 'entityFactories.yml' }
-  - { resource: 'eventSubscriber.yml' }
-  - { resource: 'formFields.yml' }
-  - { resource: 'forms.yml' }
-  - { resource: 'helpers.yml' }
-  - { resource: 'twig.yml' }
-  - { resource: 'logger.yml' }

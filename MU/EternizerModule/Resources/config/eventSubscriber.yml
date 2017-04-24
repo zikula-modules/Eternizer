@@ -1,0 +1,76 @@
+services:
+    # Event subscribers and listeners
+    mu_eternizer_module.entity_lifecycle_listener:
+        class: MU\EternizerModule\Listener\EntityLifecycleListener
+        arguments:
+            - "@service_container"
+        tags:
+            - { name: doctrine.event_subscriber }
+    
+    mu_eternizer_module.kernel_listener:
+        class: MU\EternizerModule\Listener\KernelListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mu_eternizer_module.installer_listener:
+        class: MU\EternizerModule\Listener\InstallerListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mu_eternizer_module.moduledispatch_listener:
+        class: MU\EternizerModule\Listener\ModuleDispatchListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mu_eternizer_module.mailer_listener:
+        class: MU\EternizerModule\Listener\MailerListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mu_eternizer_module.theme_listener:
+        class: MU\EternizerModule\Listener\ThemeListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mu_eternizer_module.userlogin_listener:
+        class: MU\EternizerModule\Listener\UserLoginListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mu_eternizer_module.userlogout_listener:
+        class: MU\EternizerModule\Listener\UserLogoutListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mu_eternizer_module.user_listener:
+        class: MU\EternizerModule\Listener\UserListener
+        arguments:
+            - "@translator.default"
+            - "@mu_eternizer_module.entity_factory"
+            - "@zikula_users_module.current_user"
+            - "@logger"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mu_eternizer_module.userregistration_listener:
+        class: MU\EternizerModule\Listener\UserRegistrationListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mu_eternizer_module.users_listener:
+        class: MU\EternizerModule\Listener\UsersListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mu_eternizer_module.group_listener:
+        class: MU\EternizerModule\Listener\GroupListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mu_eternizer_module.thirdparty_listener:
+        class: MU\EternizerModule\Listener\ThirdPartyListener
+        arguments:
+            - "@mu_eternizer_module.workflow_helper"
+        tags:
+            - { name: kernel.event_subscriber }
+    

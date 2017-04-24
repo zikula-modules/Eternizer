@@ -1,0 +1,9 @@
+services:
+    # Form field types
+    
+    mu_eternizer_module.form.type.field.user:
+        class: MU\EternizerModule\Form\Type\Field\UserType
+        arguments:
+            - "@zikula_users_module.user_repository"
+        tags:
+            - { name: form.type }
