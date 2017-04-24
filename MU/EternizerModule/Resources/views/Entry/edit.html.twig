@@ -1,10 +1,12 @@
 {# purpose of this template: build the form to edit an instance of entry #}
-{% extends routeArea == 'admin' ? 'MUEternizerModule::adminBase.html.twig' : 'MUEternizerModule::base.html.twig' %}
+{% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : (routeArea == 'admin' ? 'adminBase' : 'base') %}
+{% extends 'MUEternizerModule::' ~ baseTemplate ~ '.html.twig' %}
 
 {% block header %}
     {{ parent() }}
-    {{ pageAddAsset('javascript', zasset('@MUEternizerModule:js/MUEternizerModule.EditFunctions.js')) }}
-    {{ pageAddAsset('javascript', zasset('@MUEternizerModule:js/MUEternizerModule.Validation.js')) }}
+    {{ pageAddAsset('javascript', zasset('@MUEternizerModule:js/MUEternizerModule.Validation.js'), 98) }}
+    {{ pageAddAsset('javascript', zasset('@MUEternizerModule:js/MUEternizerModule.EditFunctions.js'), 99) }}
+    {{ pageAddAsset('javascript', asset('typeahead/typeahead.bundle.min.js')) }}
 {% endblock %}
 {% set formposition = getModVar('MUEternizerModule', 'formposition') %}
 
@@ -12,35 +14,28 @@
 {% block admin_page_icon mode == 'create' ? 'plus' : 'pencil-square-o' %}
 {% block content %}
     <div class="mueternizermodule-entry mueternizermodule-edit">
-{% form_theme form with [
-    '@MUEternizerModule/Form/bootstrap_3.html.twig',
-    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
-] %}
+        {% form_theme form with [
+            '@MUEternizerModule/Form/bootstrap_3.html.twig',
+            'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+        ] %}
 
-{% set returnUrl = path('mueternizermodule_entry_view') %}
-{% if routeArea != 'admin' and (formposition == 'above' or formposition == 'below') %}
-{{ form_start(form, {attr: {id: 'entryEditForm'}, action: path('mueternizermodule_entry_edit', { returnTo: returnUrl }) }) }}
-{% else %}
-{{ form_start(form, {attr: {id: 'entryEditForm'} }) }}
-{% endif %}
-{{ form_errors(form) }}
-<fieldset>
-    <legend>{{ __('Content') }}</legend>
-    
+    {% set returnUrl = path('mueternizermodule_entry_view') %}
+    {% if routeArea != 'admin' and (formposition == 'above' or formposition == 'below') %}
+    {{ form_start(form, {attr: {id: 'entryEditForm'}, action: path('mueternizermodule_entry_edit', { returnTo: returnUrl }) }) }}
+    {% else %}
+    {{ form_start(form, {attr: {id: 'entryEditForm'} }) }}
+    {% endif %}
+    {{ form_errors(form) }}
+    <fieldset>
+    <legend>{{ __('Content') }}</legend> 
     <div class="hidden">
         {{ form_row(form.ip) }}
-    </div>
-    
-    {{ form_row(form.name) }}
-    
-    {{ form_row(form.email) }}
-    
-    {{ form_row(form.homepage) }}
-    
-    {{ form_row(form.location) }}
-    
-    {{ form_row(form.text) }}
-    
+    </div>   
+    {{ form_row(form.name) }}   
+    {{ form_row(form.email) }}  
+    {{ form_row(form.homepage) }}   
+    {{ form_row(form.location) }}   
+    {{ form_row(form.text) }}   
     <div class="hidden">
         {{ form_row(form.notes) }}
     </div>
@@ -86,6 +81,16 @@
     {{ form_row(form.additionalNotificationRemarks) }}
 </fieldset>
 
+        {% if form.moderationSpecificCreator is defined %}
+            <fieldset id="moderationFieldsSection">
+                <legend>{{ __('Moderation') }} <i class="fa fa-expand"></i></legend>
+                <div id="moderationFieldsContent">
+                    {{ form_row(form.moderationSpecificCreator) }}
+                    {{ form_row(form.moderationSpecificCreationDate) }}
+                </div>
+            </fieldset>
+        {% endif %}
+
 {# include return control #}
 {% if mode == 'create' %}
     <fieldset>
@@ -109,72 +114,21 @@
 {% endblock %}
 {% block footer %}
     {{ parent() }}
-
     {% set editImage = '<span class="fa fa-pencil-square-o"></span>' %}
-    {% set deleteImage = '<span class="fa fa-trash-o"></span>' %}
-    
+    {% set removeImage = '<span class="fa fa-trash-o"></span>' %}
     
     <script type="text/javascript">
     /* <![CDATA[ */
         
-                var formButtons;
-                var triggerValidation = true;
-        
-                function executeCustomValidationConstraints()
-                {
-                    mUEternizerPerformCustomValidationRules('entry', '{% if mode != 'create' %}{{ entry.id }}{% endif %}');
-                }
-        
-                function triggerFormValidation()
-                {
-                    executeCustomValidationConstraints();
-                    if (!document.getElementById('entryEditForm').checkValidity()) {
-                        // This does not really submit the form,
-                        // but causes the browser to display the error message
-                        jQuery('#entryEditForm').find(':submit').first().click();
-                    }
-                }
-        
-                function handleFormSubmit (event) {
-                    if (triggerValidation) {
-                        triggerFormValidation();
-                        if (!document.getElementById('entryEditForm').checkValidity()) {
-                            event.preventDefault();
-                            return false;
-                        }
-                    }
-        
-                    // hide form buttons to prevent double submits by accident
-                    formButtons.each(function (index) {
-                        jQuery(this).addClass('hidden');
-                    });
-        
-                    return true;
-                }
-        
-                ( function($) {
-                    $(document).ready(function() {
-        
-                        var allFormFields = $('#entryEditForm input, #entryEditForm select, #entryEditForm textarea');
-                        allFormFields.change(executeCustomValidationConstraints);
-        
-                        formButtons = $('#entryEditForm .form-buttons input');
-                        $('.btn-danger').first().bind('click keypress', function (event) {
-                            if (!window.confirm('{{ __('Really delete this entry?') }}')) {
-                                event.preventDefault();
-                            }
-                        });
-                        $('#entryEditForm button[type=submit]').bind('click keypress', function (event) {
-                            triggerValidation = !$(this).attr('formnovalidate');
-                        });
-                        $('#entryEditForm').submit(handleFormSubmit);
-        
-                        {% if mode != 'create' %}
-                            triggerFormValidation();
-                        {% endif %}
-        
-                    });
-                })(jQuery);
+        ( function($) {
+            $(document).ready(function() {
+                // initialise auto completion for user fields
+                {% if form.moderationSpecificCreator is defined %}
+                    mUEternizerInitUserField('mueternizermodule_entry_moderationSpecificCreator', 'getCommonUsersList');
+                {% endif %}
+                mUEternizerInitEditForm('{{ mode }}', '{% if mode != 'create' %}{{ entry.id }}{% endif %}');
+            });
+        })(jQuery);
     /* ]]> */
     </script>
 {% endblock %}
