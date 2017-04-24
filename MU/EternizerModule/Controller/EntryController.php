@@ -124,12 +124,70 @@ class EntryController extends AbstractEntryController
     {
     	// parameter specifying which type of objects we are treating
     	$objectType = 'entry';
+    	$permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_READ;
+    	if (!$this->hasPermission('MUEternizerModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
+    		throw new AccessDeniedException();
+    	}
+    	$templateParameters = [
+    			'routeArea' => $isAdmin ? 'admin' : ''
+    	];
+    	$controllerHelper = $this->get('mu_eternizer_module.controller_helper');
+    	$viewHelper = $this->get('mu_eternizer_module.view_helper');
+    	
+    	$request->query->set('pos', $pos);
+    	
+    	$sortableColumns = new SortableColumns($this->get('router'), 'mueternizermodule_entry_' . ($isAdmin ? 'admin' : '') . 'view', 'sort', 'sortdir');
+    	
+    	$sortableColumns->addColumns([
+    			new Column('workflowState'),
+    			new Column('ip'),
+    			new Column('name'),
+    			new Column('email'),
+    			new Column('homepage'),
+    			new Column('location'),
+    			new Column('text'),
+    			new Column('notes'),
+    			new Column('createdBy'),
+    			new Column('createdDate'),
+    			new Column('updatedBy'),
+    			new Column('updatedDate'),
+    	]);
+    	
+    	#// parameter for used sort order
+    	    $modSortDir = \ModUtil::getVar($this->name, 'order');
+    	    if ($modSortDir != '') {
+    		    if ($modSortDir == 'descending') {
+    			    $sortdir = 'desc';
+    		    } else {
+    			    $sortdir = 'asc';
+    		    }
+    	    } else {
+    	    	if ($sortdir == '') {
+    	    	    $sortdir = 'desc';
+    	    	}
+    	    }
+    	    
+    	$sortableColumns->setOrderBy($sortableColumns->getColumn($sort), strtoupper($sortdir));
+    	
+    	$templateParameters = $controllerHelper->processViewActionParameters($objectType, $sortableColumns, $templateParameters, true);
+    	
+    	foreach ($templateParameters['items'] as $k => $entity) {
+    		$entity->initWorkflow();
+    	}
+    	
+    	// fetch and return the appropriate template
+    	return $viewHelper->processTemplate($objectType, 'view', $templateParameters);
+    	
+    	
+    	
+    	// parameter specifying which type of objects we are treating
+    	/*$objectType = 'entry';
     	$utilArgs = ['controller' => 'entry', 'action' => 'view'];
     	$permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_READ;
     	if (!$this->hasPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
     		throw new AccessDeniedException();
     	}
-    	$repository = $this->get('mu_eternizer_module.' . $objectType . '_factory')->getRepository();
+    	$repository = $this->get('mu_eternizer_module.entity_factory')->getRepository('entry');
     	$repository->setRequest($request);
     	$viewHelper = $this->get('mu_eternizer_module.view_helper');
     	$templateParameters = [
@@ -278,7 +336,7 @@ class EntryController extends AbstractEntryController
     
     	// build RouteUrl instance for display hooks
     	$currentUrlArgs['_locale'] = $request->getLocale();
-    	$currentUrlObject = new RouteUrl('mueternizermodule_entry_' . /*($isAdmin ? 'admin' : '') . */'view', $currentUrlArgs);
+    	$currentUrlObject = new RouteUrl('mueternizermodule_entry_' . /*($isAdmin ? 'admin' : '') . *//*'view', $currentUrlArgs);
     
     	$templateParameters['items'] = $entities;
     	$templateParameters['sort'] = $sort;
@@ -297,7 +355,7 @@ class EntryController extends AbstractEntryController
     	$templateParameters['canBeCreated'] = $modelHelper->canBeCreated($objectType);
     
     	// fetch and return the appropriate template
-    	return $viewHelper->processTemplate($this->get('twig'), $objectType, 'view', $request, $templateParameters);
+    	return $viewHelper->processTemplate($this->get('twig'), $objectType, 'view', $request, $templateParameters);*/
     }
     
     
