@@ -224,7 +224,7 @@
         {% endif %}
         
         {% if showAllEntries != 1 and pager|default %}
-            {{ pager({ rowcount: pager.numitems, limit: pager.itemsperpage, display: 'page', route: 'mueternizermodule_entry_' ~ routeArea ~ 'view'}) }}
+            {{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'mueternizermodule_entry_' ~ routeArea ~ 'view'}) }}
         {% endif %}
         
         {% if formposition == 'below' and routeArea != 'admin' %}
