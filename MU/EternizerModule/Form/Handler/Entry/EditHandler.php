@@ -17,6 +17,8 @@ use MU\EternizerModule\Form\Handler\Entry\Base\AbstractEditHandler;
 use UserUtil;
 use ModUtil;
 use LogUtil;
+use SessionUtil;
+use ServiceUtil;
 
 /**
  * This handler class handles the page events of the Form called by the mUEternizerModule_entry_edit() function.
@@ -34,13 +36,16 @@ class EditHandler extends AbstractEditHandler
      */
     protected function initEntityForEditing()
     {
-        $selectionHelper = $this->container->get('mu_eternizer_module.selection_helper');
-        $entity = $selectionHelper->getEntity($this->objectType, $this->idValues);
+    	$container = \ServiceUtil::getManager();    	
+        //$selectionHelper = $container->get('mu_eternizer_module.selection_helper');
+        $entity = $this->entityFactory->getRepository('entry')->find($this->idValues);
+        //$entity = $selectionHelper->getEntity($this->objectType, $this->idValues);
 
         if (null === $entity) {
             throw new NotFoundHttpException($this->__('No such item.'));
         }
-        $controllerHelper = $this->container->get('mu_eternizer_module.controller_helper');
+
+        $controllerHelper = $container->get('mu_eternizer_module.controller_helper');
         $editEntryAllowed = $controllerHelper->editEntry($entity['id'], $entity['createdBy_id'], $entity['createdDate'], 2);
         
         if ($editEntryAllowed == false && \UserUtil::getVar('uid') != 2) {       	
@@ -51,7 +56,7 @@ class EditHandler extends AbstractEditHandler
         $simpleCaptcha = \ModUtil::getVar('MUEternizerModule', 'simplecaptcha');
         
         // reset captcha
-        $session = $this->container->get('session');
+        $session = $container->get('session');
         if ($simpleCaptcha && $session->has('eternizerCaptcha')) {      
         	$session->del('eternizerCaptcha');
         }
@@ -77,10 +82,12 @@ class EditHandler extends AbstractEditHandler
     	if (\ModUtil::getVar('MUEternizerModule', 'simplecaptcha') == true and !$isAdmin) {
     		$captcha = $this->request->request->getDigits('captcha', 0);
 
-    		$session = $this->container->get('session');
-    		$operands = @unserialize($session->get('eternizerCaptcha'));
-    		
-    		$captchaHelper = $this->container->get('mu_eternizer_module.captcha_helper');
+    		//$session = $this->container->get('session')
+    	    $operands = unserialize(\SessionUtil::getVar('eternizerCaptcha'));
+
+    		//$operands = @unserialize($session->get('eternizerCaptcha'));
+    		$container = \ServiceUtil::getManager();
+    		$captchaHelper = $container->get('mu_eternizer_module.captcha_helper');
     		$captchaValid = $captchaHelper->isCaptchaValid($operands, $captcha);
     		if (false === $captchaValid) {
     			\LogUtil::registerError($this->__('The calculation to prevent spam was incorrect. Please try again.'));
