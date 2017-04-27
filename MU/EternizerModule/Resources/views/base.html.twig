@@ -5,10 +5,12 @@
         {{ polyfill(['forms', 'forms-ext']) }}
     {% endif %}
 {% endblock %}
-
+{% set formposition = getModVar('MUEternizerModule', 'formposition') %}
+{% if 'view' in app.request.get('_route') or ('edit' in app.request.get('_route') and formposition == 'menue') %}
 {% block appTitle %}
     {{ moduleHeader('user', '', '', false, true, false, true) }}
 {% endblock %}
+{% endif %}
 
 {% block titleArea %}
     <h2>{% block title %}{% endblock %}</h2>
