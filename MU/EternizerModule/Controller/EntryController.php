@@ -153,17 +153,17 @@ class EntryController extends AbstractEntryController
     			new Column('updatedDate'),
     	]);
     	
-    	#// parameter for used sort order
-    	    $modSortDir = \ModUtil::getVar($this->name, 'order');
+    	// parameter for used sort order
+    	    $modSortDir = $this->getVar('order');
     	    if ($modSortDir != '') {
     		    if ($modSortDir == 'descending') {
-    			    $sortdir = 'desc';
+    			    $sortdir = 'DESC';
     		    } else {
-    			    $sortdir = 'asc';
+    			    $sortdir = 'ASC';
     		    }
     	    } else {
     	    	if ($sortdir == '') {
-    	    	    $sortdir = 'desc';
+    	    	    $sortdir = 'DESC';
     	    	}
     	    }
     	    

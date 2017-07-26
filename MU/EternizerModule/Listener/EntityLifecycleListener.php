@@ -16,6 +16,7 @@ use MU\EternizerModule\Listener\Base\AbstractEntityLifecycleListener;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use ModUtil;
 use UserUtil;
+use ServiceUtil;
 use Zikula_Request_Http;
 
 /**
@@ -44,7 +45,7 @@ class EntityLifecycleListener extends AbstractEntityLifecycleListener {
 		
 		if (is_object($entity) && $entityId == '') {
 			
-			if (method_exists ( $entity, 'get_objectType' )) {
+			if (method_exists ( $entity, 'get_objectType' ) && $this->isEntityManagedByThisBundle($entity)) {
 				if ($saveIp == true) {
 					$entity->setIp ( $currentIp );
 				}
@@ -91,6 +92,14 @@ class EntityLifecycleListener extends AbstractEntityLifecycleListener {
 						$entity->setState ( 'approved' );
 						break;
 				}
+			}
+			
+			if (method_exists ( $entity, 'get_objectType' )) {
+			if ($entity['email'] != '') {
+				$container = \ServiceUtil::getManager();
+				$notificationHelper = $container->get('mu_eternizer_module.notification_helper');
+
+			}
 			}
 		}
 		
