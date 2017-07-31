@@ -2,12 +2,12 @@ application "Eternizer" {
   vendor "MU"
 	author "Michael Ueberschaer"
 	email "info@homepages-mit-zikula.de"
-	url "http://homepages-mit-zikula.de"
+	url "https://homepages-mit-zikula.de"
 	version "1.4.0"
 	prefix "eternizer"
   generatorSettings {
 		settingsContainer "Einstellungen"
-		targetCoreVersion ZK14
+		targetCoreVersion ZK15
 		generateNewsletterPlugin false generateTagSupport false generateOnlyBaseClasses false
         versionAllGeneratedFiles false
         generatePoweredByBacklinksIntoFooterTemplates false

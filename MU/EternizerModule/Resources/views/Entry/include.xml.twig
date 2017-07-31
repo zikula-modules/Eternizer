@@ -1,5 +1,5 @@
 {# purpose of this template: entries xml inclusion template #}
-<entry id="{{ entry.id }}" createdon="{{ entry.createdDate|localizeddate('medium', 'short') }}" updatedon="{{ entry.updatedDate|localizeddate('medium', 'short') }}">
+<entry id="{{ entry.getId() }}" createdon="{{ entry.createdDate|localizeddate('medium', 'short') }}" updatedon="{{ entry.updatedDate|localizeddate('medium', 'short') }}">
     <id>{{ entry.id }}</id>
     <ip><![CDATA[{{ entry.ip }}]]></ip>
     <name><![CDATA[{{ entry.name }}]]></name>

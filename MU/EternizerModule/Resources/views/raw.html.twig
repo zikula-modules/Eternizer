@@ -5,7 +5,7 @@
     <title>{{ block('pageTitle')|default(block('title')) }}</title>
     <link rel="stylesheet" type="text/css" href="{{ asset('bootstrap/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('bootstrap/css/bootstrap-theme.min.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ app.request.basePath }}/style/core.css" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/core/css/core.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ zasset('@MUEternizerModule:css/style.css') }}" />
     {% if useFinder|default == true %}
         <link rel="stylesheet" type="text/css" href="{{ zasset('@MUEternizerModule:css/finder.css') }}" />
@@ -29,7 +29,6 @@
         {% if 'edit' in app.request.get('_route') %}
             {{ pageAddAsset('javascript', zasset('@MUEternizerModule:js/MUEternizerModule.Validation.js'), 98) }}
             {{ pageAddAsset('javascript', zasset('@MUEternizerModule:js/MUEternizerModule.EditFunctions.js'), 99) }}
-            {{ pageAddAsset('javascript', asset('typeahead/typeahead.bundle.min.js')) }}
         {% endif %}
         {% if 'edit' in app.request.get('_route') or 'config' in app.request.get('_route') %}
             {{ polyfill(['forms', 'forms-ext']) }}

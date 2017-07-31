@@ -1,10 +1,12 @@
 services:
     # Entity factory
     mu_eternizer_module.entity_factory:
-        class: MU\EternizerModule\Entity\Factory\EternizerFactory
+        class: MU\EternizerModule\Entity\Factory\EntityFactory
         arguments:
             - "@doctrine.orm.default_entity_manager"
             - "@mu_eternizer_module.entity_initialiser"
+            - "@mu_eternizer_module.collection_filter_helper"
+    
     # Entity initialiser
     mu_eternizer_module.entity_initialiser:
         class: MU\EternizerModule\Entity\Factory\EntityInitialiser

@@ -1,0 +1,22 @@
+services:
+    mu_eternizer_module.hook_subscriber.filter_hooks.entries:
+        class: MU\EternizerModule\HookSubscriber\EntryFilterHooksSubscriber
+        arguments:
+            - "@translator.default"
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.mueternizermodule.filter_hooks.entries' }
+
+    mu_eternizer_module.hook_subscriber.form_aware_hook.entries:
+        class: MU\EternizerModule\HookSubscriber\EntryFormAwareHookSubscriber
+        arguments:
+            - "@translator.default"
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.mueternizermodule.form_aware_hook.entries' }
+
+    mu_eternizer_module.hook_subscriber.ui_hooks.entries:
+        class: MU\EternizerModule\HookSubscriber\EntryUiHooksSubscriber
+        arguments:
+            - "@translator.default"
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.mueternizermodule.ui_hooks.entries' }
+

@@ -1,5 +1,5 @@
 {# Purpose of this template: Display item information for previewing from other modules #}
-<dl id="entry{{ entry.id }}">
-<dt>{{ entry.getTitleFromDisplayPattern()|notifyFilters('eternizer.filter_hooks.entries.filter') }}</dt>
+<dl id="entry{{ entry.getKey() }}">
+<dt>{{ entry|mueternizermodule_formattedTitle|notifyFilters('eternizer.filter_hooks.entries.filter')|safeHtml }}</dt>
 {% if entry.text is not empty %}<dd>{{ entry.text }}</dd>{% endif %}
 </dl>

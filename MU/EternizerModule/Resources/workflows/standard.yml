@@ -1,0 +1,31 @@
+workflow:
+    workflows:
+        mueternizermodule_standard:
+            type: state_machine
+            marking_store:
+                type: single_state
+                arguments:
+                    - workflowState
+            supports:
+                - MU\EternizerModule\Entity\EntryEntity
+            places:
+                - initial
+                - waiting
+                - approved
+                - deleted
+            transitions:
+                updatewaiting:
+                    from: waiting
+                    to: waiting
+                submit:
+                    from: initial
+                    to: waiting
+                approve:
+                    from: [initial, waiting]
+                    to: approved
+                updateapproved:
+                    from: approved
+                    to: approved
+                delete:
+                    from: [waiting, approved]
+                    to: deleted

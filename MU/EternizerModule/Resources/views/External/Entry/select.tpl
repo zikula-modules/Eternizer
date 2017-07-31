@@ -1,5 +1,6 @@
 {* Purpose of this template: Display a popup selector for Forms and Content integration *}
 {assign var='baseID' value='entry'}
+<div id="itemSelectorInfo" class="hidden" data-base-id="{$baseID}" data-selected-id="{$selectedId|default:0}"></div>
 <div class="row">
     <div class="col-sm-8">
         <div class="form-group">
@@ -7,7 +8,7 @@
             <div class="col-sm-9">
                 <select id="{$baseID}Id" name="id" class="form-control">
                     {foreach item='entry' from=$items}
-                        <option value="{$entry.id}"{if $selectedId eq $entry.id} selected="selected"{/if}>{$entry->getTitleFromDisplayPattern()}</option>
+                        <option value="{$entry->getKey()}"{if $selectedId eq $entry->getKey()} selected="selected"{/if}>{$entry->getIp()}</option>
                     {foreachelse}
                         <option value="0">{gt text='No entries found.'}</option>
                     {/foreach}
@@ -52,18 +53,8 @@
     <div class="col-sm-4">
         <div id="{$baseID}Preview" style="border: 1px dotted #a3a3a3; padding: .2em .5em">
             <p><strong>{gt text='Entry information'}</strong></p>
-            {img id='ajax_indicator' modname='core' set='ajax' src='indicator_circle.gif' alt='' class='hidden'}
+            {img id='ajaxIndicator' modname='core' set='ajax' src='indicator_circle.gif' alt='' class='hidden'}
             <div id="{$baseID}PreviewContainer">&nbsp;</div>
         </div>
     </div>
 </div>
-
-<script type="text/javascript">
-/* <![CDATA[ */
-    ( function($) {
-        $(document).ready(function() {
-            mUEternizerModule.itemSelector.onLoad('{{$baseID}}', {{$selectedId|default:0}});
-        });
-    })(jQuery);
-/* ]]> */
-</script>

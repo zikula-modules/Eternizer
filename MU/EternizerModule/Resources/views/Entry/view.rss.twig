@@ -35,16 +35,16 @@
     </item>
 {% endblock %}
 {% block entry_content %}
-    <title><![CDATA[{% if entry.updatedDate|default %}{{ entry.updatedDate|localizeddate('medium', 'short') }} - {% endif %}{{ entry.getTitleFromDisplayPattern()|notifyFilters('mueternizermodule.filterhook.entries') }}]]></title>
-    <link>{{ url('mueternizermodule_entry_' ~ routeArea ~ 'display', { 'id': entry.id }) }}</link>
-    <guid>{{ url('mueternizermodule_entry_' ~ routeArea ~ 'display', { 'id': entry.id }) }}</guid>
+    <title><![CDATA[{% if entry.updatedDate|default %}{{ entry.updatedDate|localizeddate('medium', 'short') }} - {% endif %}{{ entry|mueternizermodule_formattedTitle|notifyFilters('mueternizermodule.filterhook.entries')|safeHtml }}]]></title>
+    <link>{{ url('mueternizermodule_entry_' ~ routeArea ~ 'display', {'id': entry.getId()}) }}</link>
+    <guid>{{ url('mueternizermodule_entry_' ~ routeArea ~ 'display', {'id': entry.getId()}) }}</guid>
     {% if entry.createdBy|default and entry.createdBy.getUid() > 0 %}
         {% set creatorAttributes = entry.createdBy.getAttributes() %}
         <author>{{ entry.createdBy.getEmail() }} ({{ creatorAttributes.get('realname')|default(creatorAttributes.get('name'))|default(entry.createdBy.getUname()) }})</author>
     {% endif %}
     <description>
         <![CDATA[
-        {{ entry.text|replace({ '<br>': '<br />' }) }}
+        {{ entry.text|replace({'<br>': '<br />'}) }}
         ]]>
     </description>
     {% if entry.createdDate|default %}

@@ -1,9 +1,9 @@
 {# Purpose of this template: Display one certain entry within an external context #}
-<div id="entry{$entry.id}" class="mueternizermodule-external-entry">
+<div id="entry{{ entry.getKey() }}" class="mueternizermodule-external-entry">
 {% if displayMode == 'link' %}
     <p class="mueternizermodule-external-link">
-    <a href="{{ path('mueternizermodule_entry_display', { 'id': entry.id }) }}" title="{{ entry.getTitleFromDisplayPattern()|e('html_attr') }}">
-    {{ entry.getTitleFromDisplayPattern()|notifyFilters('eternizer.filter_hooks.entries.filter') }}
+    <a href="{{ path('mueternizermodule_entry_display', {'id': entry.getId()}) }}" title="{{ entry|mueternizermodule_formattedTitle|e('html_attr') }}">
+    {{ entry|mueternizermodule_formattedTitle|notifyFilters('eternizer.filter_hooks.entries.filter')|safeHtml }}
     </a>
     </p>
 {% endif %}
@@ -11,7 +11,7 @@
     {# for normal users without edit permission show only the actual file per default #}
     {% if displayMode == 'embed' %}
         <p class="mueternizermodule-external-title">
-            <strong>{{ entry.getTitleFromDisplayPattern()|notifyFilters('eternizer.filter_hooks.entries.filter') }}</strong>
+            <strong>{{ entry|mueternizermodule_formattedTitle|notifyFilters('eternizer.filter_hooks.entries.filter')|safeHtml }}</strong>
         </p>
     {% endif %}
 {% endif %}

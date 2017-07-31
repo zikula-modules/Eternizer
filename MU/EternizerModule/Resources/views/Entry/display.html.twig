@@ -1,14 +1,14 @@
 {# purpose of this template: entries display view #}
 {% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : (routeArea == 'admin' ? 'adminBase' : 'base') %}
 {% extends 'MUEternizerModule::' ~ baseTemplate ~ '.html.twig' %}
-{% block pageTitle %}{{ entry.getTitleFromDisplayPattern()|default(__('Entry')) }}{% endblock %}
+{% block pageTitle %}{{ entry|mueternizermodule_formattedTitle|default(__('Entry')) }}{% endblock %}
 {% block title %}
-    {% set templateTitle = entry.getTitleFromDisplayPattern()|default(__('Entry')) %}
-    {{ templateTitle|notifyFilters('mueternizermodule.filter_hooks.entries.filter') }}{% if routeArea == 'admin' %} <small>({{ entry.workflowState|mueternizermodule_objectState(false)|lower }})</small>{% endif %}
-    {% set itemActions = knp_menu_get('MUEternizerModule:ItemActionsMenu:menu', [], { entity: entry, area: routeArea, context: 'display' }) %}
+    {% set templateTitle = entry|mueternizermodule_formattedTitle|default(__('Entry')) %}
+    {{ templateTitle|notifyFilters('mueternizermodule.filter_hooks.entries.filter')|safeHtml }}{% if routeArea == 'admin' %} <small>({{ entry.workflowState|mueternizermodule_objectState(false)|lower }})</small>{% endif %}
+    {% set itemActions = knp_menu_get('MUEternizerModule:ItemActionsMenu:menu', [], {entity: entry, area: routeArea, context: 'display'}) %}
     <div class="dropdown">
-        <a id="itemActions{{ entry.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
-        {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
+        <a id="itemActions{{ entry.getKey() }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
+        {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:actions.html.twig'}) }}
     </div>
 {% endblock %}
 {% block admin_page_icon 'eye' %}
@@ -66,13 +66,13 @@
         
     </dl>
 
-    {{ include('@MUEternizerModule/Helper/includeStandardFieldsDisplay.html.twig', { obj: entry }) }}
+    {{ include('@MUEternizerModule/Helper/includeStandardFieldsDisplay.html.twig', {obj: entry}) }}
 
     {{ block('display_hooks') }}
 </div>
 {% endblock %}
 {% block display_hooks %}
-    {% set hooks = notifyDisplayHooks(eventName='mueternizermodule.ui_hooks.entries.display_view', id=entry.id, urlObject=currentUrlObject) %}
+    {% set hooks = notifyDisplayHooks(eventName='mueternizermodule.ui_hooks.entries.display_view', id=entry.getKey(), urlObject=currentUrlObject) %}
     {% for providerArea, hook in hooks if providerArea != 'provider.scribite.ui_hooks.editor' %}
         <h4>{{ providerArea }}</h4>
         {{ hook }}

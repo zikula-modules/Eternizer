@@ -1,8 +1,8 @@
-<p>{{ __f('Hello %recipient%', { '%recipient%': recipient.name }) }},</p>
+<p>{{ __f('Hello %recipient%', {'%recipient%': recipient.name}) }},</p>
 
-<p>{{ __f('A user changed his entry "%entity%".', { '%entity%': mailData.name }) }}</p>
+<p>{{ __f('A user changed his entry "%entity%".', {'%entity%': mailData.name}) }}</p>
 
-<p>{{ __f("It's new state is: %state%", { '%state%': mailData.newState }) }}</p>
+<p>{{ __f("It's new state is: %state%", {'%state%': mailData.newState}) }}</p>
 
 {% if mailData.remarks is not empty %}
     <p>{{ __('Additional remarks:') }}<br />{{ mailData.remarks|nl2br }}</p>
@@ -13,4 +13,4 @@
     <p>{{ __('Edit the entry:') }} <a href="{{ mailData.editUrl|e('html_attr') }}" title="{{ __('Edit') }}">{{ mailData.editUrl }}</a></p>
 {% endif %}
 
-<p>{{ __f('This mail has been sent automatically by %siteName%.', { '%siteName%': getModVar('ZConfig', 'sitename') }) }}</p>
+<p>{{ __f('This mail has been sent automatically by %siteName%.', {'%siteName%': getModVar('ZConfig', 'sitename')}) }}</p>

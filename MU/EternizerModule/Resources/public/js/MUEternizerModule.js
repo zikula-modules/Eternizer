@@ -59,8 +59,13 @@ function mUEternizerSimpleAlert(beforeElem, title, content, alertId, cssClass)
 function mUEternizerInitMassToggle()
 {
     if (jQuery('.mueternizer-mass-toggle').length > 0) {
-        jQuery('.mueternizer-mass-toggle').click(function (event) {
-            jQuery('.mueternizer-toggle-checkbox').prop('checked', jQuery(this).prop('checked'));
+        jQuery('.mueternizer-mass-toggle').unbind('click').click(function (event) {
+            if (jQuery('.table.fixed-columns').length > 0) {
+                jQuery('.mueternizer-toggle-checkbox').prop('checked', false);
+                jQuery('.table.fixed-columns .mueternizer-toggle-checkbox').prop('checked', jQuery(this).prop('checked'));
+            } else {
+                jQuery('.mueternizer-toggle-checkbox').prop('checked', jQuery(this).prop('checked'));
+            }
         });
     }
 }
@@ -77,7 +82,7 @@ function mUEternizerInitFixedColumns()
         originalTable = jQuery(this);
         fixedTableWidth = 0;
         if (originalTable.find('.fixed-column').length > 0) {
-            fixedColumnsTable = originalTable.clone().insertBefore(originalTable).addClass('fixed-columns');
+            fixedColumnsTable = originalTable.clone().insertBefore(originalTable).addClass('fixed-columns').removeAttr('id');
             originalTable.find('.dropdown').addClass('hidden');
             fixedColumnsTable.find('.dropdown').removeClass('hidden');
             fixedColumnsTable.css('left', originalTable.parent().position().left);
@@ -94,6 +99,7 @@ function mUEternizerInitFixedColumns()
             });
         }
     });
+    mUEternizerInitMassToggle();
 }
 
 /**
@@ -125,7 +131,13 @@ function mUEternizerInitItemActions(context)
 
     containers.find('.dropdown > ul').removeClass('list-inline').addClass(listClasses);
     containers.find('.dropdown > ul a').each(function (index) {
-        jQuery(this).html(jQuery(this).html() + jQuery(this).find('i').first().data('original-title'));
+        var title;
+
+        title = jQuery(this).find('i').first().attr('title');
+        if (title == '') {
+            title = jQuery(this).find('i').first().data('original-title');
+        }
+        jQuery(this).html(jQuery(this).html() + title);
     });
     containers.find('.dropdown > ul a i').addClass('fa-fw');
     containers.find('.dropdown-toggle').removeClass('hidden').dropdown();

@@ -4,6 +4,8 @@ services:
         class: MU\EternizerModule\Listener\EntityLifecycleListener
         arguments:
             - "@service_container"
+            - "@event_dispatcher"
+            - "@logger"
         tags:
             - { name: doctrine.event_subscriber }
     
@@ -71,6 +73,14 @@ services:
         class: MU\EternizerModule\Listener\ThirdPartyListener
         arguments:
             - "@mu_eternizer_module.workflow_helper"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mu_eternizer_module.workflow_events_listener:
+        class: MU\EternizerModule\Listener\WorkflowEventsListener
+        arguments:
+            - "@zikula_permissions_module.api.permission"
+            - "@mu_eternizer_module.notification_helper"
         tags:
             - { name: kernel.event_subscriber }
     

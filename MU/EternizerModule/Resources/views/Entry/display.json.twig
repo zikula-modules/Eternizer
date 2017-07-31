@@ -1,2 +1,2 @@
 {# purpose of this template: entries display json view #}
-{{ entry.toJson() }}
+{{ entry.toArray()|json_encode() }}
