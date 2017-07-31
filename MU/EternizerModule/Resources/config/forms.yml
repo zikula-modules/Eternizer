@@ -41,13 +41,6 @@ services:
         tags:
             - { name: form.type }
     
-    mu_eternizer_module.form.type.deleteentity:
-        class: MU\EternizerModule\Form\DeleteEntityType
-        arguments:
-            - "@translator.default"
-        tags:
-            - { name: form.type }
-    
     mu_eternizer_module.form.type.block.itemlist:
         class: MU\EternizerModule\Block\Form\Type\ItemListBlockType
         arguments:
@@ -62,11 +55,11 @@ services:
         tags:
             - { name: form.type }
     
-    mu_eternizer_module.form.type.appsettings:
-        class: MU\EternizerModule\Form\AppSettingsType
+    mu_eternizer_module.form.type.config:
+        class: MU\EternizerModule\Form\Type\ConfigType
         arguments:
             - "@translator.default"
-            - "@zikula_extensions_module.api.variable"
+            - "@=service('zikula_extensions_module.api.variable').getAll('MUEternizerModule')"
             - "@zikula_groups_module.group_repository"
         tags:
             - { name: form.type }
