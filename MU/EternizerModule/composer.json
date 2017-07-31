@@ -1,14 +1,14 @@
 {
     "name": "mu/eternizer-module",
-    "version": "1.4.0",
+    "version": "1.2.0",
     "description": "Eternizer is a small guestbook module.",
     "type": "zikula-module",
     "license": "LGPL-3.0+",
     "authors": [
         {
             "name": "Michael Ueberschaer",
-            "email": "kontakt@webdesign-in-bremen.com",
-            "homepage": "http://www.webdesign-in-bremen.com",
+            "email": "info@homepages-mit-zikula.de",
+            "homepage": "https://homepages-mit-zikula.de",
             "role": "owner"
         }
     ],
@@ -16,22 +16,20 @@
         "psr-4": { "MU\\EternizerModule\\": "" }
     },
     "require": {
-        "php": ">=5.4.1"
+        "php": ">=5.5.9"
     },
     "suggest": {
     },
     "extra": {
         "zikula": {
-            "core-compatibility": "~1.4.4",
+            "core-compatibility": ">=1.5.0 <3.0",
             "class": "MU\\EternizerModule\\MUEternizerModule",
             "displayname": "Eternizer",
             "url": "eternizer",
             "oldnames": ["Eternizer"],
             "capabilities": {
-                "user": {"route": "mueternizermodule_user_index"},
-                "admin": {"route": "mueternizermodule_admin_index"},
-                "searchable": {"class": "MU\\EternizerModule\\Helper\\SearchHelper"},
-                "hook_subscriber": {"class": "MU\\EternizerModule\\Container\\HookContainer"}
+                "user": {"route": "mueternizermodule_entry_index"},
+                "admin": {"route": "mueternizermodule_entry_adminindex"}
             },
             "securityschema": {
                 "MUEternizerModule::": "::",
