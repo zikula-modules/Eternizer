@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use MU\EternizerModule\Helper\EnvironmentHelper;
 use Zikula\PermissionsModule\Api\PermissionApi;
 
 abstract class AbstractCaptchaHelper
@@ -31,10 +30,6 @@ abstract class AbstractCaptchaHelper
      */
     private $permissionApi;
     /**
-     * @var EnvironmentHelper
-     */
-    private $environmentHelper;
-    /**
      * @var RouterInterface
      */
     private $router;
@@ -48,7 +43,6 @@ abstract class AbstractCaptchaHelper
      * @param TranslatorInterface $translator        TranslatorInterface service instance
      * @param VariableApi         $variableApi       VariableApi service instance
      * @param PermissionApi       $permissionApi     PermissionApi service instance
-     * @param EnvironmentHelper   $environmentHelper EnvironmentHelper service instance
      * @param RouterInterface     $router            RouterInterface service instance
      * @param SessionInterface    $session           SessionInterface service instance
      */
@@ -56,14 +50,12 @@ abstract class AbstractCaptchaHelper
         TranslatorInterface $translator,
         VariableApi $variableApi,
         PermissionApi $permissionApi,
-        EnvironmentHelper $environmentHelper,
         RouterInterface $router,
         SessionInterface $session
     ) {
         $this->translator = $translator;
         $this->variableApi = $variableApi;
         $this->permissionApi = $permissionApi;
-        $this->environmentHelper = $environmentHelper;
         $this->router = $router;
         $this->session = $session;
     }
