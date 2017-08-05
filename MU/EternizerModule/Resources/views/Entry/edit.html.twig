@@ -43,6 +43,9 @@
                 {{ form_row(form.notes) }}
             </div>
             {% set captcha = getModVar('MUEternizerModule', 'simplecaptcha') %}
+            {% if routeArea == 'admin' or (routeArea == '' and captcha == 0) %}
+            <div class="hidden">
+            {% endif %}
             {% if captcha == 1 and routeArea != 'admin' %}
 
             {{ mueternizermodule_simpleCaptcha() }}
@@ -51,7 +54,9 @@
             #}
             {{ form_row(form.captcha) }}
             <span class="help-block">{{ __('(to prevent spam)') }}</span>
+            {% if routeArea == 'admin' or (routeArea == '' and captcha == 0) %}
             </div>
+            {% endif %}
             {% endif %}
         </fieldset>
         
@@ -82,6 +87,7 @@
             </fieldset>
         {% endif %}
         
+        <div class="hidden">
         {# include return control #}
         {% if mode == 'create' %}
             <fieldset>
@@ -89,6 +95,7 @@
                 {{ form_row(form.repeatCreation) }}
             </fieldset>
         {% endif %}
+        </div>
         </div>
         
         {# include possible submit actions #}
