@@ -15,7 +15,7 @@
 {% for entry in items %}
         <div class="etz_entry z-clearfix {{ cycle (['etz_bg1','etz_bg2'], loop.index0) }}">
             <div class="col-md-4 etz_author">
-                <div class="etz_avatar">{#{ mueternizermodule_userAvatar(uid=entry.createdBy.getUid(), rating='g') }#}</div>
+                <div class="etz_avatar">{{ include('@MUEternizerModule/Helper/includeStandardFieldsDisplay2.html.twig', {obj: entry}) }}</div>
                 {% if entry.email is not empty or entry.homepage is not empty or entry.location is not empty %}
                     <dl class="etz_options">
                         {% if entry.email is not empty %}
@@ -50,6 +50,7 @@
                                     {{ guest|safeHtml }}
                                 {% else %}
                                     {% if ownerName is not empty %}
+                                    {% set profileLink = obj.createdBy.getUid()|profileLinkByUserId() %}
                                         {{ ownerName|safeHtml }}
                                      {% else %}
                                         {{ guest|safeHtml }}
