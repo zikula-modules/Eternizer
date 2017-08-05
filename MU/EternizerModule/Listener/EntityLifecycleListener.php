@@ -13,11 +13,35 @@
 namespace MU\EternizerModule\Listener;
 
 use MU\EternizerModule\Listener\Base\AbstractEntityLifecycleListener;
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use ModUtil;
+use MU\EternizerModule\Entity\EntryEntity;
 
 /**
  * Event subscriber implementation class for entity lifecycle events.
  */
 class EntityLifecycleListener extends AbstractEntityLifecycleListener
 {
-    // feel free to enhance this listener by custom actions
+	/**
+	 * The postPersist event occurs for an entity after the entity has been made persistent.
+	 * It will be invoked after the database insert operations. Generated primary key values
+	 * are available in the postPersist event.
+	 *
+	 * @param LifecycleEventArgs $args Event arguments
+	 */
+	public function postPersist(LifecycleEventArgs $args)
+	{
+		parent::postPersist($args);
+		
+		$entity = $args->getObject();
+		$currentIp = $_SERVER["REMOTE_ADDR"];
+		
+		$saveIp = \ModUtil::getVar('MUEternizerModule', 'ipsave');
+		
+        //if ($entity instanceof EntryEntity) {
+            //if ($saveIp == true) {
+		        $entity->setIp($currentIp);
+            //}            	
+        //}
+	}
 }
