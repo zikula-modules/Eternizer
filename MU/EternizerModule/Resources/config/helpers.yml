@@ -1,5 +1,12 @@
 services:
     # Helper services
+    mu_eternizer_module.collection_filter_helper:
+        class: MU\EternizerModule\Helper\CollectionFilterHelper
+        arguments:
+            - "@request_stack"
+            - "@zikula_users_module.current_user"
+            - "@=service('zikula_extensions_module.api.variable').get('MUEternizerModule', 'showOnlyOwnEntries', false)"
+    
     mu_eternizer_module.controller_helper:
         class: MU\EternizerModule\Helper\ControllerHelper
         arguments:
@@ -7,7 +14,14 @@ services:
             - "@form.factory"
             - "@zikula_extensions_module.api.variable"
             - "@mu_eternizer_module.entity_factory"
+            - "@mu_eternizer_module.collection_filter_helper"
             - "@mu_eternizer_module.model_helper"
+    
+    mu_eternizer_module.entity_display_helper:
+        class: MU\EternizerModule\Helper\EntityDisplayHelper
+        arguments:
+            - "@translator.default"
+            - "@mu_eternizer_module.listentries_helper"
     
     mu_eternizer_module.hook_helper:
         class: MU\EternizerModule\Helper\HookHelper
@@ -36,6 +50,7 @@ services:
             - "@twig"
             - "@zikula_mailer_module.api.mailer"
             - "@zikula_groups_module.group_repository"
+            - "@mu_eternizer_module.entity_display_helper"
             - "@mu_eternizer_module.workflow_helper"
     
     mu_eternizer_module.search_helper:
@@ -43,11 +58,11 @@ services:
         arguments:
             - "@translator.default"
             - "@zikula_permissions_module.api.permission"
-            - "@templating.engine.twig"
             - "@session"
             - "@request_stack"
             - "@mu_eternizer_module.entity_factory"
             - "@mu_eternizer_module.controller_helper"
+            - "@mu_eternizer_module.entity_display_helper"
         tags:
             - { name: zikula.searchable_module, bundleName: MUEternizerModule }
     
@@ -66,17 +81,29 @@ services:
         class: MU\EternizerModule\Helper\WorkflowHelper
         arguments:
             - "@translator.default"
+            - "@workflow.registry"
             - "@logger"
             - "@zikula_permissions_module.api.permission"
+            - "@zikula_users_module.current_user"
             - "@mu_eternizer_module.entity_factory"
             - "@mu_eternizer_module.listentries_helper"
-        
+            
     mu_eternizer_module.captcha_helper:
         class: MU\EternizerModule\Helper\CaptchaHelper
         lazy: true
-        arguments: ["@translator.default", "@zikula_extensions_module.api.variable", "@zikula_permissions_module.api.permission", "@mu_eternizer_module.environment_helper", "@jms_i18n_routing.router", "@session"]
-        
+        arguments:
+            - "@translator.default"
+            - "@zikula_extensions_module.api.variable"
+            - "@zikula_permissions_module.api.permission"
+            - "@jms_i18n_routing.router"
+            - "@session"
+            - "@mu_eternizer_module.environment_helper"
+            
     mu_eternizer_module.environment_helper:
         class: MU\EternizerModule\Helper\EnvironmentHelper
         lazy: true
-        arguments: ["@kernel", "@translator.default", "@zikula_extensions_module.api.variable", "@session"]
+        arguments:
+            - "@kernel"
+            - "@translator.default"
+            - "@zikula_extensions_module.api.variable"
+            - "@session"

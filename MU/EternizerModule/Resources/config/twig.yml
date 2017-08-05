@@ -9,6 +9,7 @@ services:
             - "@mu_eternizer_module.workflow_helper"
             - "@mu_eternizer_module.listentries_helper"
             - "@mu_eternizer_module.controller_helper"
+            - "@mu_eternizer_module.captcha_helper"
         public: false
         tags:
             - { name: twig.extension }

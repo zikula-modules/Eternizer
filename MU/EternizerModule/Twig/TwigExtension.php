@@ -20,7 +20,7 @@ use MU\EternizerModule\Helper\ListEntriesHelper;
 use MU\EternizerModule\Helper\EntityDisplayHelper;
 use MU\EternizerModule\Helper\WorkflowHelper;
 use MU\EternizerModule\Helper\ControllerHelper;
-
+use MU\EternizerModule\Helper\CaptchaHelper;
 use ServiceUtil;
 
 /**
@@ -35,6 +35,11 @@ class TwigExtension extends AbstractTwigExtension
     protected $controllerHelper; 
     
     /**
+     * @var CaptchaHelper
+     */
+    protected $captchaHelper;
+    
+    /**
      * TwigExtension constructor.
      *
      * @param TranslatorInterface $translator     Translator service instance
@@ -43,6 +48,7 @@ class TwigExtension extends AbstractTwigExtension
      * @param WorkflowHelper      $workflowHelper WorkflowHelper service instance
      * @param ListEntriesHelper   $listHelper     ListEntriesHelper service instance
      * @param ControllerHelper    $controllerHelper ControllerHelper service instance
+     * @param CaptchaHelper       $captchaHelper   CaptchaHelper service instance
      */
     public function __construct(
     		TranslatorInterface $translator,
@@ -50,7 +56,8 @@ class TwigExtension extends AbstractTwigExtension
     		EntityDisplayHelper $entityDisplayHelper,
     		WorkflowHelper $workflowHelper,
     		ListEntriesHelper $listHelper,
-    		ControllerHelper $controllerHelper)
+    		ControllerHelper $controllerHelper,
+    		CaptchaHelper $captchaHelper)
     {
     	$this->setTranslator($translator);
     	$this->variableApi = $variableApi;
@@ -58,6 +65,7 @@ class TwigExtension extends AbstractTwigExtension
     	$this->workflowHelper = $workflowHelper;
     	$this->listHelper = $listHelper;
     	$this->controllerHelper = $controllerHelper;
+    	$this->captchaHelper = $captchaHelper;
     }
      
      /** Returns a list of custom Twig functions.
@@ -115,8 +123,5 @@ class TwigExtension extends AbstractTwigExtension
     {
     	return $this->captchaHelper->createCaptcha($font, $size, $bgColour, $fgColour);
     }
-    
-    protected function setControllerHelper (ControllerHelper $controllerHelper) {
-    	$this->controllerHelper = $controllerHelper;
-    }
+
 }

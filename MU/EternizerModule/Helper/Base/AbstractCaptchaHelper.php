@@ -14,6 +14,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
+use MU\EternizerModule\Helper\EnvironmentHelper;
 
 abstract class AbstractCaptchaHelper
 {
@@ -38,6 +39,10 @@ abstract class AbstractCaptchaHelper
      */
     private $session;
     /**
+     * @var EnvironmentHelper;
+     */
+    private $environmentHelper;
+    /**
      * TwigExtension constructor.
      *
      * @param TranslatorInterface $translator        TranslatorInterface service instance
@@ -51,13 +56,15 @@ abstract class AbstractCaptchaHelper
         VariableApi $variableApi,
         PermissionApi $permissionApi,
         RouterInterface $router,
-        SessionInterface $session
+        SessionInterface $session,
+    	EnvironmentHelper $environmentHelper
     ) {
         $this->translator = $translator;
         $this->variableApi = $variableApi;
         $this->permissionApi = $permissionApi;
         $this->router = $router;
         $this->session = $session;
+        $this->environmentHelper = $environmentHelper;
     }
     /**
      * Determines whether the spam check is active.
