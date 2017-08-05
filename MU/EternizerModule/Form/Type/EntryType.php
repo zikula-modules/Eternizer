@@ -14,10 +14,32 @@ namespace MU\EternizerModule\Form\Type;
 
 use MU\EternizerModule\Form\Type\Base\AbstractEntryType;
 
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+
 /**
  * Entry editing form type implementation class.
  */
 class EntryType extends AbstractEntryType
 {
-    // feel free to extend the entry editing form type class here
+	/**
+	 * Adds basic entity fields.
+	 *
+	 * @param FormBuilderInterface $builder The form builder
+	 * @param array                $options The options
+	 */
+	public function addEntityFields(FormBuilderInterface $builder, array $options)
+	{
+    parent::addEntityFields($builder, $options);
+    $builder->add('captcha', TextType::class, [
+    		'label' => $this->__('Please solve this calculation') . ':',
+    		'empty_data' => '',
+    		'attr' => [
+    				'maxlength' => 15,
+    				'class' => '',
+    				'title' => $this->__('Enter the correct number!')
+    		],
+    		'required' => false,
+    ]);
+    }
 }
