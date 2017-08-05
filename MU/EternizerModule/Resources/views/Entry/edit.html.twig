@@ -44,17 +44,18 @@
             </div>
             {% set captcha = getModVar('MUEternizerModule', 'simplecaptcha') %}
             {% if captcha == 1 and routeArea != 'admin' %}
-            <div class="form-group">
-            <label for="eternizerMath" class="control-label required col-sm-3">{{ __('Please solve this calculation') }}</label>
-            <div class="col-sm-9">
+            {#<div class="form-group">#}
+            {#<label for="eternizerMath" class="control-label required col-sm-3">{{ __('Please solve this calculation') }}</label>#}
+            {#<div class="col-sm-9">#}
             {{ mueternizermodule_simpleCaptcha() }}
             {# example for custom arguments:
                 mueternizermodule_simpleCaptcha(font='arial', size=20, bgColour='ffffff', fgColour='0000ff')
             #}
-            <input id="eternizer_captcha" class="form-control" name="captcha" type="text" size="5" maxlength="5" value="" />
+            {{ form_row(form.captcha) }}
+            {#<input id="mueternizermodule_entry_captcha" class="form-control" name="mueternizermodule_entry_captcha" type="text" size="5" maxlength="5" value="" />#}
             <span class="help-block">{{ __('(to prevent spam)') }}</span>
             </div>
-            </div>
+            {#</div>#}
             {% endif %}
         </fieldset>
         
