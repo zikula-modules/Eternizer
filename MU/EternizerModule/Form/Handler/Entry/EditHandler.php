@@ -37,7 +37,7 @@ class EditHandler extends AbstractEditHandler
     {
     	$container = \ServiceUtil::getManager();    	
         //$selectionHelper = $container->get('mu_eternizer_module.selection_helper');
-        $entity = $this->entityFactory->getRepository('entry')->find($this->idValues);
+        $entity = $this->entityFactory->getRepository('entry')->selectById($this->idValue);
         //$entity = $selectionHelper->getEntity($this->objectType, $this->idValues);
 
         if (null === $entity) {
@@ -60,8 +60,6 @@ class EditHandler extends AbstractEditHandler
         	$session->del('eternizerCaptcha');
         }
         
-        $entity->initWorkflow();
-        
         return $entity;
     } 
     
@@ -78,8 +76,10 @@ class EditHandler extends AbstractEditHandler
     {
     	$routeArea = array_key_exists('routeArea', $this->templateParameters) ? $this->templateParameters['routeArea'] : '';
     	$isAdmin = $routeArea == 'admin';
-    	if (\ModUtil::getVar('MUEternizerModule', 'simplecaptcha') == true and !$isAdmin) {
-    		$captcha = $this->request->request->getDigits('captcha', 0);
+    	if (\ModUtil::getVar('MUEternizerModule', 'simplecaptcha') == 1 and !$isAdmin) {
+
+    		$formData = $this->request->request->getDigits('mueternizermodule_entry', 0);
+    		$captcha = $formData['captcha'];
 
     		//$session = $this->container->get('session')
     	    $operands = unserialize(\SessionUtil::getVar('eternizerCaptcha'));
