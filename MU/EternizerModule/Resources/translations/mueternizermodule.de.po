@@ -1,0 +1,862 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"X-Generator: Poedit 2.0.2\n"
+
+msgid "%name%"
+msgstr "%name%"
+
+msgid "(to prevent spam)"
+msgstr "(um Spam zu vermeiden)"
+
+msgid "10"
+msgstr "10"
+
+msgid "100"
+msgstr "100"
+
+msgid "15"
+msgstr "15"
+
+msgid "20"
+msgstr "20"
+
+msgid "30"
+msgstr "30"
+
+msgid "5"
+msgstr "5"
+
+msgid "50"
+msgstr "50"
+
+#, fuzzy
+msgid "A direct feed showing the list of entries"
+msgstr "A direct feed showing the list of entries"
+
+#, fuzzy
+msgid "A user changed his entry \"%entity%\"."
+msgstr "A user changed his entry \"%entity%\"."
+
+msgid "Above"
+msgstr "Oberhalb"
+
+msgid "Absolute url to the entry"
+msgstr "Absolute Url zum Eintrag"
+
+msgid "Actions"
+msgstr "Aktionen"
+
+msgid "Additional remarks"
+msgstr "Zusätzliche Bemerkungen"
+
+msgid "Additional remarks:"
+msgstr "Zusätzliche Bemerkungen:"
+
+msgid "All"
+msgstr "Alle"
+
+msgid "All except approved"
+msgstr "Alle ausgenommen freigegebene"
+
+msgid "All except waiting"
+msgstr "Alle ausgenommen wartende"
+
+msgid "Amount"
+msgstr "Anzahl"
+
+#, fuzzy
+msgid "An error occurred while creating the cache directory at %s."
+msgstr "An error occurred while creating the cache directory at %s."
+
+#, fuzzy
+msgid "An error was encountered while creating the tables for the %s module."
+msgstr "An error was encountered while creating the tables for the %s module."
+
+msgid "Approve"
+msgstr "Freigeben"
+
+msgid "Approved"
+msgstr "Freigegeben"
+
+msgid "Ascending"
+msgstr "Ascending"
+
+msgid "Back to overview"
+msgstr "Zur Übersicht"
+
+msgid "Back to paginated view"
+msgstr "Zurück zur Seitenansicht"
+
+msgid "Backend"
+msgstr "Backend"
+
+msgid "Below"
+msgstr "Unterhalb"
+
+msgid "Cancel"
+msgstr "Abbrechen"
+
+msgid "Change selection"
+msgstr "Auswahl ändern"
+
+msgid "Choose action"
+msgstr "Auswahlaktion"
+
+msgid "Choose the enabled finder types."
+msgstr "Wähle die aktivierten Finder Typen."
+
+msgid "Choose the formposition."
+msgstr "Wähle die Position für das Formular."
+
+msgid "Choose the moderate."
+msgstr "Wähle den Modus der Moderation."
+
+#, fuzzy
+msgid "Choose the moderation group for entries."
+msgstr "Choose the moderation group for entries."
+
+msgid "Choose the order."
+msgstr "Wähle die Reihenfolge."
+
+msgid "Comment:"
+msgstr "Kommentar:"
+
+msgid "Communication"
+msgstr "Kommunikation"
+
+msgid "Configuration"
+msgstr "Einstellungen"
+
+msgid "Confirmation prompt"
+msgstr "Sicherheitsabfrage"
+
+msgid "Content"
+msgstr "Inhalt"
+
+msgid "Content has been approved and is available online."
+msgstr "Inhalt wurde freigegeben und ist nun online verfügbar."
+
+msgid "Content has been deleted"
+msgstr "Inhalt wurde gelöscht."
+
+msgid "Content has been submitted and waits for approval."
+msgstr "Inhalt wurde eingereicht und wartet auf Freigabe."
+
+msgid "Content has been updated"
+msgstr "Inhalt wurde aktualisiert."
+
+#, fuzzy
+msgid "Could not create .htaccess file in %s, please refer to the manual before using the module!"
+msgstr "Could not create .htaccess file in %s, please refer to the manual before using the module!"
+
+msgid "Could not inform other persons about your amendments, because the Mailer module is not available - please contact an administrator about that!"
+msgstr "Konnte andere Personen nicht informieren, weil das Mailer Module nicht erreichbar ist - bitte kontakte den Administrator!"
+
+msgid "Create another item after save"
+msgstr "Erstelle ein weiteres Element nach dem Speichern"
+
+#, fuzzy
+msgid "Create entry"
+msgstr "Create entry"
+
+msgid "Created by %user"
+msgstr "Erstellt von %user"
+
+msgid "Created by %user on %date"
+msgstr "Erstellt von %user am %date"
+
+msgid "Created on %date"
+msgstr "Erstellt am %date"
+
+msgid "Creation"
+msgstr "Erstellung"
+
+msgid "Creation and update"
+msgstr "Erstellung und Aktualisierung"
+
+msgid "Creation date"
+msgstr "Erstelldatum"
+
+msgid "Creator"
+msgstr "Ersteller"
+
+msgid "Custom template"
+msgstr "Benutzer Template"
+
+msgid "Default"
+msgstr "Standard"
+
+msgid "Delete"
+msgstr "Löschen"
+
+msgid "Delete content permanently."
+msgstr "Inhalt dauerhaft löschen."
+
+#, fuzzy
+msgid "Delete entry"
+msgstr "Delete entry"
+
+#, fuzzy
+msgid "Delete this entry"
+msgstr "Delete this entry"
+
+msgid "Deleted"
+msgstr "Gelöscht"
+
+msgid "Descending"
+msgstr "Descending"
+
+msgid "Details"
+msgstr "Details"
+
+#, fuzzy
+msgid "Display list of MUEternizerModule objects."
+msgstr "Display list of MUEternizerModule objects."
+
+#, fuzzy
+msgid "Display or link a single MUEternizerModule object."
+msgstr "Display or link a single MUEternizerModule object."
+
+#, fuzzy
+msgid "Do you really want to delete this entry: \"%name%\" ?"
+msgstr "Do you really want to delete this entry: \"%name%\" ?"
+
+msgid "Doctrine Exception"
+msgstr "Doctrine Ausnahme"
+
+msgid "Doctrine Exception: "
+msgstr "Doctrine Ausnahme:"
+
+#, fuzzy
+msgid "Done! Entry created."
+msgstr "Done! Entry created."
+
+#, fuzzy
+msgid "Done! Entry deleted."
+msgstr "Done! Entry deleted."
+
+#, fuzzy
+msgid "Done! Entry updated."
+msgstr "Done! Entry updated."
+
+msgid "Done! Item created."
+msgstr "Erledigt! Element erstellt."
+
+msgid "Done! Item deleted."
+msgstr "Erledigt! Element gelöscht."
+
+msgid "Done! Item updated."
+msgstr "Erledigt! Element aktualisiert."
+
+msgid "Done! Module configuration updated."
+msgstr "Erledigt. Konfiguration aktualisiert."
+
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#, fuzzy
+msgid "Edit entries workflow"
+msgstr "Edit entries workflow"
+
+#, fuzzy
+msgid "Edit entry"
+msgstr "Edit entry"
+
+#, fuzzy
+msgid "Edit the entry:"
+msgstr "Edit the entry:"
+
+#, fuzzy
+msgid "Edit this entry"
+msgstr "Edit this entry"
+
+#, fuzzy
+msgid "Edit workflow for entries"
+msgstr "Edit workflow for entries"
+
+#, fuzzy
+msgid "Edit your entry:"
+msgstr "Edit your entry:"
+
+#, fuzzy
+msgid "Editentries"
+msgstr "Editentries"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Enabled finder types"
+msgstr "Aktive Finder Typen"
+
+msgid "Enter any additions about your changes"
+msgstr "Gib Ergänzungen zu Deinen Änderungen ein"
+
+msgid "Enter any additions about your content"
+msgstr "Gib Ergänzungen zu Deinem Inhalt ein"
+
+#, fuzzy
+msgid "Enter the correct number!"
+msgstr "Enter the correct number!"
+
+#, fuzzy
+msgid "Enter the email of the entry"
+msgstr "Enter the email of the entry"
+
+#, fuzzy
+msgid "Enter the entry entries per page."
+msgstr "Enter the entry entries per page."
+
+#, fuzzy
+msgid "Enter the homepage of the entry"
+msgstr "Enter the homepage of the entry"
+
+#, fuzzy
+msgid "Enter the ip of the entry"
+msgstr "Enter the ip of the entry"
+
+#, fuzzy
+msgid "Enter the location of the entry"
+msgstr "Enter the location of the entry"
+
+#, fuzzy
+msgid "Enter the name of the entry"
+msgstr "Enter the name of the entry"
+
+#, fuzzy
+msgid "Enter the notes of the entry"
+msgstr "Enter the notes of the entry"
+
+#, fuzzy
+msgid "Enter the period."
+msgstr "Enter the period."
+
+#, fuzzy
+msgid "Enter the text of the entry"
+msgstr "Enter the text of the entry"
+
+#, fuzzy
+msgid "Entries"
+msgstr "Entries"
+
+#, fuzzy
+msgid "Entries list"
+msgstr "Entries list"
+
+#, fuzzy
+msgid "Entries pending approval"
+msgstr "Entries pending approval"
+
+#, fuzzy
+msgid "Entry"
+msgstr "Entry"
+
+#, fuzzy
+msgid "Entry entries per page"
+msgstr "Entry entries per page"
+
+#, fuzzy
+msgid "Entry filter hooks subscriber"
+msgstr "Entry filter hooks subscriber"
+
+#, fuzzy
+msgid "Entry form aware subscriber"
+msgstr "Entry form aware subscriber"
+
+#, fuzzy
+msgid "Entry list"
+msgstr "Entry list"
+
+#, fuzzy
+msgid "Entry ui hooks subscriber"
+msgstr "Entry ui hooks subscriber"
+
+msgid "Error! Could not determine workflow actions."
+msgstr "Fehler! Konnte die Workflow Aktion nicht beenden."
+
+msgid "Error! Creation attempt failed."
+msgstr "Fehler! Versuch der Erstellung gescheitert."
+
+msgid "Error! Deletion attempt failed."
+msgstr "Fehler! Versuch der Löschung gescheitert."
+
+msgid "Error! Invalid object type received."
+msgstr "Fehler! Ungültiger Objekttyp angefordert."
+
+#, fuzzy
+msgid "Error! It is not allowed to delete this entry."
+msgstr "Error! It is not allowed to delete this entry."
+
+msgid "Error! Update attempt failed."
+msgstr "Fehler! Versuch der Aktualisierung gescheitert."
+
+msgid "Error: Invalid editor context given for external controller action."
+msgstr "Fehler! Ungültiger Editor-Kontext für einen externen Controller."
+
+#, fuzzy
+msgid "Eternizer Backend"
+msgstr "Eternizer Backend"
+
+#, fuzzy
+msgid "Eternizer cache directory does not contain the required .htaccess file - Captchas have been disabled."
+msgstr "Eternizer cache directory does not contain the required .htaccess file - Captchas have been disabled."
+
+#, fuzzy
+msgid "Eternizer cache directory does not exist or is not writable - Captchas have been disabled."
+msgstr "Eternizer cache directory does not exist or is not writable - Captchas have been disabled."
+
+msgid "Example"
+msgstr "Beispiel"
+
+msgid "Filter"
+msgstr "Filter"
+
+msgid "Filter (expert option)"
+msgstr "Filter (Optionen für Experten)"
+
+msgid "Formposition"
+msgstr "Formularposition"
+
+msgid "Frontend"
+msgstr "Frontend"
+
+msgid "Guests"
+msgstr "Gäste"
+
+msgid "Hello %recipient%"
+msgstr "Hallo %recipient%"
+
+#, fuzzy
+msgid "Here we can decide how long a user may edit his entry; input of hours"
+msgstr "Here we can decide how long a user may edit his entry; input of hours"
+
+msgid "Here you can assign moderation groups for enhanced workflow actions."
+msgstr "Hier kannst Du Moderatorengruppen für erweiterte Workflowaktionen zuweisen."
+
+msgid "Here you can choose a custom creation date"
+msgstr "Hier kannst Du ein eigenes Erstelldatum auswählen"
+
+msgid "Here you can choose a user which will be set as creator"
+msgstr "Hier kannst Du einen Benutzer als Ersteller festlegen"
+
+msgid "Here you can configure parameters for list views."
+msgstr "Hier kannst Du Parameter für die Listenansicht einstellen."
+
+msgid "Here you can inspect and amend the existing workflows."
+msgstr "Hier kannst Du den existierenden Workflow betrachten und abändern."
+
+msgid "Here you can manage all basic settings for this application."
+msgstr "Hier kannst Du die Grundeinstellungen für dieses Modul verwalten."
+
+msgid "Homepage"
+msgstr "Homepage"
+
+msgid "Hooks"
+msgstr "Hooks"
+
+msgid "ID of entry"
+msgstr "ID des Eintrags"
+
+msgid "If you change this please save the block once to reload the parameters below."
+msgstr "Wenn Du dies änderst, speichere den Block erneut, um die Parameter neu zu laden."
+
+msgid "Initial"
+msgstr "Initial"
+
+msgid "Integration"
+msgstr "Integration"
+
+msgid "Invalid user identifier received."
+msgstr "Ungültige Benutzerkennung erkannt."
+
+msgid "Ip"
+msgstr "Ip"
+
+msgid "Ipsave"
+msgstr "Ip Speicherung"
+
+msgid "It's new state is: %state%"
+msgstr "Sein neuer Status ist: %state%"
+
+msgid "Last update"
+msgstr "Letzte Aktualisierung"
+
+msgid "Latest entries"
+msgstr "Letzte Einträge"
+
+#, fuzzy
+msgid "Link own entries on account page"
+msgstr "Link own entries on account page"
+
+#, fuzzy
+msgid "Link to the entry:"
+msgstr "Link to the entry:"
+
+msgid "Link to your entry:"
+msgstr "Link zu Deinem Eintrag:"
+
+msgid "List views"
+msgstr "Listensicht"
+
+msgid "Location"
+msgstr "Location"
+
+msgid "MUEternizerModule detail view"
+msgstr "MUEternizerModule Detail Ansicht"
+
+#, fuzzy
+msgid "MUEternizerModule items"
+msgstr "MUEternizerModule items"
+
+#, fuzzy
+msgid "MUEternizerModule list view"
+msgstr "MUEternizerModule list view"
+
+#, fuzzy
+msgid "Mailer module is not available - unable to send emails!"
+msgstr "Mailer module is not available - unable to send emails!"
+
+msgid "Manage settings for this application"
+msgstr "Einstellungen für Blogging vornehmen"
+
+#, fuzzy
+msgid "Math"
+msgstr "Math"
+
+#, fuzzy
+msgid "Menue"
+msgstr "Menue"
+
+#, fuzzy
+msgid "Moderate"
+msgstr "Moderate"
+
+msgid "Moderation"
+msgstr "Moderation"
+
+#, fuzzy
+msgid "Moderation group for entries"
+msgstr "Moderation group for entries"
+
+#, fuzzy
+msgid "My entries"
+msgstr "My entries"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "New content has been submitted"
+msgstr "Neuer Inhalt wurde eingereicht"
+
+#, fuzzy
+msgid "New entry"
+msgstr "New entry"
+
+msgid "Newest"
+msgstr "Aktuellste"
+
+msgid "No entries found."
+msgstr "Keine Einträge gefunden."
+
+msgid "No item selected."
+msgstr "Kein Element ausgewählt."
+
+msgid "No such item found."
+msgstr "Kein solches Element gefunden."
+
+msgid "No such item."
+msgstr "Kein solches Element."
+
+msgid "Note: this value must not exceed %amount% characters."
+msgstr "Beachte: Dieser Wert darf nicht mehr als %amount% Zeichen beinhalten."
+
+#, fuzzy
+msgid "Notes"
+msgstr "Notes"
+
+msgid "Nothing"
+msgstr "Nichts"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Object type"
+msgstr "Objekttyp"
+
+#, fuzzy
+msgid "One entry is waiting for approval.|%amount% entries are waiting for approval."
+msgstr "One entry is waiting for approval.|%amount% entries are waiting for approval."
+
+msgid "Only digits are allowed."
+msgstr "Nur Ziffern sind erlaubt."
+
+msgid "Only item titles"
+msgstr "Nur Elementtitlel"
+
+msgid "Open preview page"
+msgstr "Vorschau öffnen"
+
+msgid "Operation cancelled."
+msgstr "Aktion abgebrochen."
+
+msgid "Order"
+msgstr "Reihenfolge"
+
+msgid "Page size"
+msgstr "Seitengröße"
+
+msgid "Paste as"
+msgstr "Einfügen als"
+
+msgid "Period"
+msgstr "Periode"
+
+msgid "Please solve this calculation"
+msgstr "Bitte löse diese Rechenaufgabe"
+
+msgid "Preview"
+msgstr "Vorschau"
+
+msgid "Quick navigation"
+msgstr "Schnellnavigation"
+
+msgid "Random"
+msgstr "Zufall"
+
+msgid "Read more"
+msgstr "Mehr lesen"
+
+msgid "Relative link to the entry"
+msgstr "Relativer Link zum Eintrag"
+
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+msgid "Return control"
+msgstr "Weiterleitungskontrolle"
+
+msgid "Reuse"
+msgstr "Wiederverwenden"
+
+msgid "Reuse for new entry"
+msgstr "Für neuen Eintrag wiederverwenden"
+
+msgid "Search"
+msgstr "Suche"
+
+msgid "Search and select entry"
+msgstr "Eintrag suchen und auswählen"
+
+msgid "Search for"
+msgstr "Search for"
+
+msgid "Send an email"
+msgstr "Email senden"
+
+msgid "Send private message to %userName%"
+msgstr "Private Nacchricht an %userName% senden"
+
+msgid "Settings"
+msgstr "Einstellungen"
+
+msgid "Show all entries"
+msgstr "Zeige alle Einträge"
+
+msgid "Shows all items except these which are approved"
+msgstr "Alle Elemente zeigen außer die, die freigegeben sind"
+
+msgid "Shows all items except these which are waiting"
+msgstr "Alle Elemente zeigen außer die, die warten"
+
+msgid "Simplecaptcha"
+msgstr "Simplecaptcha"
+
+msgid "Sorry, but an error occured during the %action% action."
+msgstr "Entschuldigung, aber ein Fehler ist während der %action% entstanden."
+
+msgid "Sorry, but an error occured during the %action% action. Please apply the changes again!"
+msgstr "Entschuldigung, aber ein Fehler ist während der %action% Aktion aufgetreten. Bitte stimme den Änderungen erneut zu!"
+
+#, fuzzy
+msgid "Sorry, but you can not create the entry yet as other items are required which must be created before!"
+msgstr "Sorry, but you can not create the entry yet as other items are required which must be created before!"
+
+msgid "Sort by"
+msgstr "Sortierung nach"
+
+msgid "Sort by %s"
+msgstr "Sortierung anhand von %s"
+
+msgid "Sort direction"
+msgstr "Richtung der Sortierung"
+
+msgid "Sorting"
+msgstr "Sortierung"
+
+msgid "State"
+msgstr "Status"
+
+msgid "Submit"
+msgstr "Abschicken"
+
+msgid "Submit and approve"
+msgstr "Abschicken und Freigeben"
+
+#, fuzzy
+msgid "Successfully created the cache directory with a .htaccess file in it."
+msgstr "Successfully created the cache directory with a .htaccess file in it."
+
+msgid "Switch to administration area."
+msgstr "Zum Backend wechseln."
+
+msgid "Switch to user area."
+msgstr "Zum Frontend wechseln."
+
+msgid "Template"
+msgstr "Template"
+
+msgid "Text"
+msgstr "Text"
+
+#, fuzzy
+msgid "The amount of entries shown per page"
+msgstr "The amount of entries shown per page"
+
+#, fuzzy
+msgid "The calculation to prevent spam was incorrect. Please try again."
+msgstr "The calculation to prevent spam was incorrect. Please try again."
+
+#, fuzzy
+msgid "The editentries option."
+msgstr "The editentries option."
+
+msgid "The ipsave option."
+msgstr "Option zur Speicherung von Ip's."
+
+#, fuzzy
+msgid "The link own entries on account page option."
+msgstr "The link own entries on account page option."
+
+msgid "The maximum amount of items to be shown."
+msgstr "Maximale Anzahl anzuzeigender Elemente."
+
+#, fuzzy
+msgid "The simplecaptcha option."
+msgstr "The simplecaptcha option."
+
+msgid "The value \"%value%\" is not allowed for the \"%property%\" property."
+msgstr "Der Wert \"%value%\" ist nicht erlaubt für die \"%property%\" Eigenschaft."
+
+#, fuzzy
+msgid "There are no image function available - Captchas have been disabled."
+msgstr "There are no image function available - Captchas have been disabled."
+
+msgid "These options allow you to configure integration aspects."
+msgstr "Diese Option erlaubt es Integrationsaspekte zu konfigurieren."
+
+msgid "These remarks (like a reason for deny) are not stored, but added to any notification emails send to the creator."
+msgstr "Diese Bemerkungen (wie z.B. ein Grund für eine Ablehnung) werden nicht gespeichert, sondern an den Ersteller per email versandt."
+
+msgid "These remarks (like questions about conformance) are not stored, but added to any notification emails send to our moderators."
+msgstr "Diese Bemerkungen (wie z.B. Fragen zur Übereinstimmung) werden nicht gespeichert, sondern an unsere Moderatoren per email versandt."
+
+msgid "This mail has been sent automatically by %siteName%."
+msgstr "Diese mail wurde automatisch von %siteName% versendet."
+
+msgid "Update"
+msgstr "Aktualisieren"
+
+msgid "Update configuration"
+msgstr "Einstellungen aktualisieren"
+
+msgid "Update content and approve for immediate publishing."
+msgstr "Inhalt aktualisieren und freigeben für direkte Veröffentlichung."
+
+msgid "Update date"
+msgstr "Aktualisierungsdatum"
+
+msgid "Updated by %user"
+msgstr "Aktualisiert von %user"
+
+msgid "Updated by %user on %date"
+msgstr "Aktualisiert von %user am %date"
+
+msgid "Updated on %date"
+msgstr "Aktualisiert am %date"
+
+msgid "Updated on %s"
+msgstr "Aktualisiert am %s"
+
+msgid "Updater"
+msgstr "Aktualisierer"
+
+msgid "Used to determine moderator user accounts for sending email notifications."
+msgstr "Nutzbar zur Bestimmung von Moderator Benutzerbereichen für die Versendung von mails."
+
+msgid "Variables"
+msgstr "Variablen"
+
+msgid "View detail page"
+msgstr "Detail Ansicht ansehen"
+
+msgid "Visit this page"
+msgstr "Seite besuchen"
+
+msgid "Waiting"
+msgstr "Wartend"
+
+#, fuzzy
+msgid "We will review your submit as soon as possible"
+msgstr "We will review your submit as soon as possible"
+
+#, fuzzy
+msgid "We will review your submit as soon as possible."
+msgstr "We will review your submit as soon as possible."
+
+#, fuzzy
+msgid "Welcome to the entry section of the Eternizer application."
+msgstr "Welcome to the entry section of the Eternizer application."
+
+#, fuzzy
+msgid "Whether to add a link to entries of the current user on his account page"
+msgstr "Whether to add a link to entries of the current user on his account page"
+
+msgid "Which sections are supported in the Finder component (used by Scribite plug-ins)."
+msgstr "Welche Bereiche im Finder (genutzt vom Scribite Plugin) unterstützt werden sollen."
+
+msgid "With description"
+msgstr "Mit Beschreibung"
+
+msgid "With selected entries"
+msgstr "Die gewählten Einträge"
+
+msgid "Workflow state"
+msgstr "Workflow Status"
+
+msgid "Workflows"
+msgstr "Workflows"
+
+#, fuzzy
+msgid "Your entry \"%entity%\" has been changed."
+msgstr "Your entry \"%entity%\" has been changed."
+
+msgid "Your submission has been deleted"
+msgstr "Deine Einreichung wurde gelöscht"
+
+msgid "Your submission has been updated"
+msgstr "Deine Einreichung wurde aktualisiert"
+
+#, fuzzy
+msgid "created on %s"
+msgstr "created on %s"
+
+msgid "entries"
+msgstr "Einträge"
