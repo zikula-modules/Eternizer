@@ -17,7 +17,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -111,16 +110,6 @@ abstract class AbstractConfigType extends AbstractType
     public function addVariablesFields(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('mail', TextType::class, [
-                'label' => $this->__('Mail') . ':',
-                'required' => false,
-                'data' => isset($this->moduleVars['mail']) ? $this->moduleVars['mail'] : '',
-                'empty_data' => '',
-                'attr' => [
-                    'maxlength' => 255,
-                    'title' => $this->__('Enter the mail.')
-                ],
-            ])
             ->add('order', ChoiceType::class, [
                 'label' => $this->__('Order') . ':',
                 'data' => isset($this->moduleVars['order']) ? $this->moduleVars['order'] : '',

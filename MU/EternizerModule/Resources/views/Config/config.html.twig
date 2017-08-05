@@ -11,26 +11,26 @@
         {{ form_start(form) }}
         <div class="zikula-bootstrap-tab-container">
             <ul class="nav nav-tabs">
-            {% set tabTitle = __('Variables') %}
-            <li role="presentation" class="active">
-                <a id="vars1Tab" href="#tab1" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
-            </li>
-            {% set tabTitle = __('Moderation') %}
-            <li role="presentation">
-                <a id="vars2Tab" href="#tab2" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
-            </li>
-            {% set tabTitle = __('List views') %}
-            <li role="presentation">
-                <a id="vars3Tab" href="#tab3" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
-            </li>
-            {% set tabTitle = __('Integration') %}
-            <li role="presentation">
-                <a id="vars4Tab" href="#tab4" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
-            </li>
-            {% set tabTitle = __('Workflows') %}
-            <li role="presentation">
-                <a id="workflowsTab" href="#tabWorkflows" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
-            </li>
+                {% set tabTitle = __('Variables') %}
+                <li role="presentation" class="active">
+                    <a id="vars1Tab" href="#tab1" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
+                </li>
+                {% set tabTitle = __('Moderation') %}
+                <li role="presentation">
+                    <a id="vars2Tab" href="#tab2" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
+                </li>
+                {% set tabTitle = __('List views') %}
+                <li role="presentation">
+                    <a id="vars3Tab" href="#tab3" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
+                </li>
+                {% set tabTitle = __('Integration') %}
+                <li role="presentation">
+                    <a id="vars4Tab" href="#tab4" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
+                </li>
+                {% set tabTitle = __('Workflows') %}
+                <li role="presentation">
+                    <a id="workflowsTab" href="#tabWorkflows" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
+                </li>
             </ul>
 
             {{ form_errors(form) }}
@@ -42,7 +42,6 @@
                     
                         <p class="alert alert-info">{{ __('Here you can manage all basic settings for this application.') }}</p>
                     
-                        {{ form_row(form.mail) }}
                         {{ form_row(form.order) }}
                         {{ form_row(form.moderate) }}
                         {{ form_row(form.formposition) }}
