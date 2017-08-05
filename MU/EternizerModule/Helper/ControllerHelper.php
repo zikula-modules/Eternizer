@@ -36,6 +36,7 @@ class ControllerHelper extends AbstractControllerHelper
 	public function EditEntry($entryid, $createdBy, $createdDate,  $kind = 1)
 	{
 		$createdDate = $createdDate->getTimestamp();
+		$userid = \UserUtil::getVar('uid');
 		 
 		// get the actual time
 		$actualTime = \DateUtil::getDatetime();
@@ -45,9 +46,7 @@ class ControllerHelper extends AbstractControllerHelper
 		$diffTime = \DateUtil::getDatetimeDiff($createdDate, $actualTime);
 		$diffTimeHours = $diffTime['d'] * 24 + $diffTime['h'];
 		
-		if (UserUtil::isLoggedIn() == true) {
-			$userid = \UserUtil::getVar('uid');
-		} else {
+		if (UserUtil::isLoggedIn() == false) {
 			$out = '';
 		}
 		
