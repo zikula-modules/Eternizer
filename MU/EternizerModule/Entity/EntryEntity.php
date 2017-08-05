@@ -57,6 +57,4 @@ class EntryEntity extends BaseEntity
 			$this->captcha = intval($captcha);
 		}
 	}
-	
-    // feel free to add your own methods here
 }
