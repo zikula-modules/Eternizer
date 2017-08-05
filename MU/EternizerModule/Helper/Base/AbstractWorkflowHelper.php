@@ -64,13 +64,13 @@ abstract class AbstractWorkflowHelper
     /**
      * WorkflowHelper constructor.
      *
-     * @param TranslatorInterface $translator        Translator service instance
-     * @param Registry            $registry          Workflow registry service instance
-     * @param LoggerInterface     $logger            Logger service instance
-     * @param PermissionApiInterface       $permissionApi     PermissionApi service instance
+     * @param TranslatorInterface     $translator        Translator service instance
+     * @param Registry                $registry          Workflow registry service instance
+     * @param LoggerInterface         $logger            Logger service instance
+     * @param PermissionApiInterface  $permissionApi     PermissionApi service instance
      * @param CurrentUserApiInterface $currentUserApi    CurrentUserApi service instance
-     * @param EntityFactory       $entityFactory     EntityFactory service instance
-     * @param ListEntriesHelper   $listEntriesHelper ListEntriesHelper service instance
+     * @param EntityFactory           $entityFactory     EntityFactory service instance
+     * @param ListEntriesHelper       $listEntriesHelper ListEntriesHelper service instance
      *
      * @return void
      */

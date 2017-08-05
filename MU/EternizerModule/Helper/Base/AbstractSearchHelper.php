@@ -71,7 +71,7 @@ abstract class AbstractSearchHelper implements SearchableInterface
      * SearchHelper constructor.
      *
      * @param TranslatorInterface $translator          Translator service instance
-     * @param PermissionApiInterface    $permissionApi   PermissionApi service instance
+     * @param PermissionApiInterface $permissionApi    PermissionApi service instance
      * @param SessionInterface    $session             Session service instance
      * @param RequestStack        $requestStack        RequestStack service instance
      * @param EntityFactory       $entityFactory       EntityFactory service instance

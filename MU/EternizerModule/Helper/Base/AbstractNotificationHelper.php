@@ -131,9 +131,9 @@ abstract class AbstractNotificationHelper
      * @param SessionInterface          $session             Session service instance
      * @param Routerinterface           $router              Router service instance
      * @param RequestStack              $requestStack        RequestStack service instance
-     * @param VariableApiInterface          $variableApi     VariableApi service instance
+     * @param VariableApiInterface      $variableApi         VariableApi service instance
      * @param Twig_Environment          $twig                Twig service instance
-     * @param MailerApiInterface            $mailerApi       MailerApi service instance
+     * @param MailerApiInterface        $mailerApi           MailerApi service instance
      * @param GroupRepositoryInterface  $groupRepository     GroupRepository service instance
      * @param EntityDisplayHelper       $entityDisplayHelper EntityDisplayHelper service instance
      * @param WorkflowHelper            $workflowHelper      WorkflowHelper service instance
@@ -198,7 +198,8 @@ abstract class AbstractNotificationHelper
         $this->action = $args['action'];
         $this->entity = $args['entity'];
     
-        $this->collectRecipients();
+        $debug = isset($args['debug']) && $args['debug'];
+        $this->collectRecipients($debug);
     
         if (!count($this->recipients)) {
             return true;
@@ -219,8 +220,10 @@ abstract class AbstractNotificationHelper
     
     /**
      * Collects the recipients.
+     *
+     * @param boolean $debug Whether to add the admin or not
      */
-    protected function collectRecipients()
+    protected function collectRecipients($debug = false)
     {
         $this->recipients = [];
     
@@ -247,7 +250,7 @@ abstract class AbstractNotificationHelper
             $this->addRecipient();
         }
     
-        if (isset($args['debug']) && $args['debug']) {
+        if ($debug) {
             // add the admin, too
             $this->addRecipient(UsersConstant::USER_ID_ADMIN);
         }

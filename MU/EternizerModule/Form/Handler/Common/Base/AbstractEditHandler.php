@@ -230,7 +230,7 @@ abstract class AbstractEditHandler
      * @param RequestStack              $requestStack     RequestStack service instance
      * @param RouterInterface           $router           Router service instance
      * @param LoggerInterface           $logger           Logger service instance
-     * @param PermissionApiInterface             $permissionApi    PermissionApi service instance
+     * @param PermissionApiInterface    $permissionApi    PermissionApi service instance
      * @param VariableApiInterface      $variableApi      VariableApi service instance
      * @param CurrentUserApiInterface   $currentUserApi   CurrentUserApi service instance
      * @param GroupApplicationRepository $groupApplicationRepository GroupApplicationRepository service instance.

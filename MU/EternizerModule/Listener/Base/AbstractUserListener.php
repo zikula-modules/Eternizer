@@ -49,10 +49,10 @@ abstract class AbstractUserListener implements EventSubscriberInterface
     /**
      * UserListener constructor.
      *
-     * @param TranslatorInterface $translator    Translator service instance
-     * @param EntityFactory       $entityFactory EntityFactory service instance
+     * @param TranslatorInterface     $translator     Translator service instance
+     * @param EntityFactory           $entityFactory  EntityFactory service instance
      * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
-     * @param LoggerInterface     $logger        Logger service instance
+     * @param LoggerInterface         $logger         Logger service instance
      *
      * @return void
      */

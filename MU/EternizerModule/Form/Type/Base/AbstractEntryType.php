@@ -53,8 +53,8 @@ abstract class AbstractEntryType extends AbstractType
      * EntryType constructor.
      *
      * @param TranslatorInterface $translator    Translator service instance
-     * @param EntityFactory       $entityFactory EntityFactory service instance
-     * @param ListEntriesHelper   $listHelper    ListEntriesHelper service instance
+     * @param EntityFactory $entityFactory EntityFactory service instance
+     * @param ListEntriesHelper $listHelper ListEntriesHelper service instance
      */
     public function __construct(
         TranslatorInterface $translator,

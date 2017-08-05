@@ -10,7 +10,8 @@
 {% if routeArea != 'admin' %}
 <div id="eternizer">
 {% if formposition == 'above' %}
-{{ mueternizermodule_showEditForm() }}
+    {{ mueternizermodule_showEditForm() }}
+    <br style="clear: both;" />
 {% endif %}
 {% for entry in items %}
         <div class="etz_entry z-clearfix {{ cycle (['etz_bg1','etz_bg2'], loop.index0) }}">
@@ -50,7 +51,7 @@
                                     {{ guest|safeHtml }}
                                 {% else %}
                                     {% if ownerName is not empty %}
-                                    {% set profileLink = obj.createdBy.getUid()|profileLinkByUserId() %}
+                                    {% set profileLink = entry.createdBy.getUid()|profileLinkByUserId() %}
                                         {{ ownerName|safeHtml }}
                                      {% else %}
                                         {{ guest|safeHtml }}
@@ -93,17 +94,20 @@
                 </div>
             </div>
         </div>
+        
         {% else %}
         <tr class="z-datatableempty">
             <td class="z-left" colspan="9">{{ __('No entries found.') }}</td>
         </tr>
 		{% endfor %}
+
 		{% if formposition == 'below' %}
-		<br style="clear: both;" />
-        {{ mueternizermodule_showEditForm() }}
+            <br style="clear: both;" />	
+            {{ mueternizermodule_showEditForm() }}
         {% endif %}
 		</div>
-		{% endif %}
+        
+    {% endif %}
 		
 		
     {% if routeArea == 'admin' %}
