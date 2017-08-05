@@ -1,6 +1,6 @@
 {# purpose of this template: entries list view #}
 {% extends routeArea == 'admin' ? 'MUEternizerModule::adminBase.html.twig' : 'MUEternizerModule::base.html.twig' %}
-{% block title __('Entry list') %}
+{% block title own ? __('My entries') : __('Entries list') %}
 {% block admin_page_icon 'list-alt' %}
 {% block content %}
 <div class="mueternizermodule-entry mueternizermodule-view">
@@ -15,7 +15,7 @@
 {% for entry in items %}
         <div class="etz_entry z-clearfix {{ cycle (['etz_bg1','etz_bg2'], loop.index0) }}">
             <div class="col-md-4 etz_author">
-                <div class="etz_avatar">{{ mueternizermodule_userAvatar(uid=entry.createdBy.getUid(), rating='g') }}</div>
+                <div class="etz_avatar">{#{ mueternizermodule_userAvatar(uid=entry.createdBy.getUid(), rating='g') }#}</div>
                 {% if entry.email is not empty or entry.homepage is not empty or entry.location is not empty %}
                     <dl class="etz_options">
                         {% if entry.email is not empty %}
@@ -62,9 +62,9 @@
 					{% set itemActions = knp_menu_get('MUEternizerModule:ItemActionsMenu:menu', [], { entity: entry, area: routeArea, context: 'view' }) %}
                     <div class="etz_action">
                         {% if itemActions|length > 0 %}
-						{% set userid = mueternizermodule_userVar('uid') %}
+						{#% set userid = mueternizermodule_userVar('uid') %#}
 						{% set editentries = getModVar('MUEternizerModule', 'editentries') %}
-                            {% if entry.createdBy.getUid() == userid and entry.createdBy.getUid() > 1 and editentries == 1 %}
+                            {% if entry.createdBy.getUid() == 2 and entry.createdBy.getUid() > 1 and editentries == 1 %}
                             <div class="eternizer-user-entry-edit">{% set out = mueternizermodule_editEntry(entry.id, entry.createdBy.getUid(), entry.createdDate) %}{{ out|raw }}</div>
                                 {#% for option in itemActions %}
                                     <a href="{{ option.url }}" title="{{ option.linkTitle|e('html_attr') }}" role="menuitem" tabindex="-1" class="fa fa-{{ option.icon }}">{{ option.linkText }}</a>
@@ -97,6 +97,9 @@
             <td class="z-left" colspan="9">{{ __('No entries found.') }}</td>
         </tr>
 		{% endfor %}
+		{% if formposition == 'below' %}
+        {{ mueternizermodule_showEditForm() }}
+        {% endif %}
 		</div>
 		{% endif %}
 		
@@ -116,6 +119,7 @@
                 {% if routeArea == 'admin' %}
                     <col id="cSelect" />
                 {% endif %}
+                <col id="cItemActions" />
                 {% if routeArea == 'admin' %}
                 <col id="cWorkflowState" />
                 {% endif %}
@@ -126,15 +130,15 @@
                 <col id="cLocation" />
                 <col id="cText" />
                 <col id="cNotes" />
-                <col id="cItemActions" />
             </colgroup>
             <thead>
             <tr>
                 {% if routeArea == 'admin' %}
-                    <th id="hSelect" scope="col" class="text-center">
-                        <input type="checkbox" id="toggleEntries" />
+                    <th id="hSelect" scope="col" class="{% if items|length > 0 %}fixed-column {% endif %}text-center z-w02">
+                        <input type="checkbox" class="mueternizer-mass-toggle" />
                     </th>
                 {% endif %}
+                <th id="hItemActions" scope="col" class="{% if items|length > 0 %}fixed-column {% endif %}z-order-unsorted z-w02">{{ __('Actions') }}</th>
                 {% if routeArea == 'admin' %}
                 <th id="hWorkflowState" scope="col" class="text-left">
                     <a href="{{ sort.workflowState.url }}" title="{{ __f('Sort by %s', {'%s': 'state'}) }}" class="{{ sort.workflowState.class }}">{{ __('State') }}</a>
@@ -161,7 +165,6 @@
                 <th id="hNotes" scope="col" class="text-left">
                     <a href="{{ sort.notes.url }}" title="{{ __f('Sort by %s', {'%s': 'notes'}) }}" class="{{ sort.notes.class }}">{{ __('Notes') }}</a>
                 </th>
-                <th id="hItemActions" scope="col" class="text-right z-order-unsorted">{{ __('Actions') }}</th>
             </tr>
             </thead>
             <tbody>
@@ -169,10 +172,17 @@
         {% for entry in items %}
             <tr>
                 {% if routeArea == 'admin' %}
-                    <td headers="hSelect" class="text-center">
-                        <input type="checkbox" name="items[]" value="{{ entry.id }}" class="entries-checkbox" />
+                    <td headers="hSelect" class="fixed-column text-center z-w02">
+                        <input type="checkbox" name="items[]" value="{{ entry.getKey() }}" class="mueternizer-toggle-checkbox" />
                     </td>
                 {% endif %}
+                <td id="itemActions{{ entry.getKey() }}" headers="hItemActions" class="fixed-column actions nowrap z-w02">
+                    {% set itemActions = knp_menu_get('MUEternizerModule:ItemActionsMenu:menu', [], {entity: entry, area: routeArea, context: 'view'}) %}
+                    <div class="dropdown">
+                        <a id="itemActions{{ entry.getKey() }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
+                        {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:actions.html.twig'}) }}
+                    </div>
+                </td>
                 {% if routeArea == 'admin' %}<td headers="hWorkflowState" class="text-left nowrap">
                     {{ entry.workflowState|mueternizermodule_objectState }}
                 </td>
@@ -180,7 +190,7 @@
                     {{ entry.ip }}
                 </td>
                 <td headers="hName" class="text-left">
-                    <a href="{{ path('mueternizermodule_entry_' ~ routeArea ~ 'display', { 'id': entry.id }) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ entry.name|notifyFilters('mueternizermodule.filterhook.entries') }}</a>
+                    <a href="{{ path('mueternizermodule_entry_' ~ routeArea ~ 'display', {'id': entry.getId()}) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ entry.name|notifyFilters('mueternizermodule.filterhook.entries')|safeHtml }}</a>
                 </td>
                 <td headers="hEmail" class="text-center">
                     {% if entry.email is not empty %}
@@ -196,18 +206,10 @@
                     {{ entry.location }}
                 </td>
                 <td headers="hText" class="text-left">
-                    {{ entry.text|safeHtml }}
+                    {{ entry.text|striptags|truncate(50) }}
                 </td>
                 <td headers="hNotes" class="text-left">
-                    {{ entry.notes|safeHtml }}
-                </td>
-                <td id="itemActions{{ entry.id }}" headers="hItemActions" class="actions text-right nowrap z-w02">
-                    {% set itemActions = knp_menu_get('MUEternizerModule:ItemActionsMenu:menu', [], { entity: entry, area: routeArea, context: 'view' }) %}
-                    <div class="dropdown">
-                        <a id="itemActions{{ entry.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
-                        
-                        {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
-                    </div>
+                    {{ entry.notes|striptags|truncate(50) }}
                 </td>
             </tr>
         {% else %}
@@ -223,21 +225,16 @@
         </div>
         {% endif %}
         
-        {% if showAllEntries != 1 and pager|default %}
-            {{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'mueternizermodule_entry_' ~ routeArea ~ 'view'}) }}
+        {% if all != 1 and pager|default %}
+            {{ pager({rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'mueternizermodule_entry_' ~ routeArea ~ 'view'}) }}
         {% endif %}
-        
-        {% if formposition == 'below' and routeArea != 'admin' %}
-            {{ mueternizermodule_showEditForm() }}
-        {% endif %}
-        
     {% if routeArea == 'admin' %}
             <fieldset>
                 <label for="mUEternizerModuleAction" class="col-sm-3 control-label">{{ __('With selected entries') }}</label>
                 <div class="col-sm-6">
                     <select id="mUEternizerModuleAction" name="action" class="form-control input-sm">
                         <option value="">{{ __('Choose action') }}</option>
-                    <option value="approve" title="{{ __('Update content and approve for immediate publishing.') }}">{{ __('Approve') }}</option>
+                        <option value="approve" title="{{ __('Update content and approve for immediate publishing.') }}">{{ __('Approve') }}</option>
                         <option value="delete" title="{{ __('Delete content permanently.') }}">{{ __('Delete') }}</option>
                     </select>
                 </div>
@@ -253,19 +250,21 @@
 </div>
 {% endblock %}
 {% block page_nav_links %}
-    {% if canBeCreated %}
-        {% if hasPermission('MUEternizerModule:Entry:', '::', 'ACCESS_COMMENT') %}
-            {% set createTitle = __('Create entry') %}
-            <a href="{{ path('mueternizermodule_entry_' ~ routeArea ~ 'edit') }}" title="{{ createTitle|e('html_attr') }}" class="fa fa-plus">{{ createTitle }}</a>
+    <p>
+        {% if canBeCreated %}
+            {% if hasPermission('MUEternizerModule:Entry:', '::', 'ACCESS_COMMENT') %}
+                {% set createTitle = __('Create entry') %}
+                <a href="{{ path('mueternizermodule_entry_' ~ routeArea ~ 'edit') }}" title="{{ createTitle|e('html_attr') }}" class="fa fa-plus">{{ createTitle }}</a>
+            {% endif %}
         {% endif %}
-    {% endif %}
-    {% if showAllEntries == 1 %}
-        {% set linkTitle = __('Back to paginated view') %}
-        <a href="{{ path('mueternizermodule_entry_' ~ routeArea ~ 'view') }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
-    {% else %}
-        {% set linkTitle = __('Show all entries') %}
-        <a href="{{ path('mueternizermodule_entry_' ~ routeArea ~ 'view', { all: 1 }) }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
-    {% endif %}
+        {% if all == 1 %}
+            {% set linkTitle = __('Back to paginated view') %}
+            <a href="{{ path('mueternizermodule_entry_' ~ routeArea ~ 'view') }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
+        {% else %}
+            {% set linkTitle = __('Show all entries') %}
+            <a href="{{ path('mueternizermodule_entry_' ~ routeArea ~ 'view', {all: 1}) }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
+        {% endif %}
+    </p>
 {% endblock %}
 {% block display_hooks %}
     
@@ -276,30 +275,4 @@
             {{ hook }}
         {% endfor %}
     {% endif % #}
-{% endblock %}
-{% block footer %}
-    {{ parent() }}
-
-    <script type="text/javascript">
-    /* <![CDATA[ */
-        ( function($) {
-            $(document).ready(function() {
-                $('.mueternizermodule-entry .dropdown > ul').removeClass('list-inline').addClass('list-unstyled dropdown-menu dropdown-menu-right');
-                $('.mueternizermodule-entry .dropdown > ul a').each(function (index) {
-                    $(this).html($(this).html() + $(this).find('i').first().data('original-title'));
-                });
-                $('.mueternizermodule-entry .dropdown > ul a i').addClass('fa-fw');
-                $('.mueternizermodule-entry .dropdown-toggle').removeClass('hidden').dropdown();
-                {% if routeArea == 'admin' %}
-                    {# init the "toggle all" functionality #}
-                    if ($('#toggleEntries').length > 0) {
-                        $('#toggleEntries').click(function (event) {
-                            $('.entries-checkbox').prop('checked', $(this).prop('checked'));
-                        });
-                    }
-                {% endif %}
-            });
-        })(jQuery);
-    /* ]]> */
-    </script>
 {% endblock %}

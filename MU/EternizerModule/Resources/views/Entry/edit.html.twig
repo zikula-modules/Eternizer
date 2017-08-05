@@ -43,7 +43,7 @@
                 {{ form_row(form.notes) }}
             </div>
             {% set captcha = getModVar('MUEternizerModule', 'simplecaptcha') %}
-            {% if captcha and routeArea != 'admin' %}
+            {% if captcha == 1 and routeArea != 'admin' %}
             <div class="form-group">
             <label for="eternizerMath" class="control-label required col-sm-3">{{ __('Please solve this calculation') }}</label>
             <div class="col-sm-9">
@@ -53,9 +53,9 @@
             #}
             <input id="eternizer_captcha" class="form-control" name="captcha" type="text" size="5" maxlength="5" value="" />
             <span class="help-block">{{ __('(to prevent spam)') }}</span>
-        </div>
-    </div>
-    {% endif %}
+            </div>
+            </div>
+            {% endif %}
         </fieldset>
         
         {% if mode != 'create' %}
@@ -74,7 +74,7 @@
             <legend>{{ __('Communication') }}</legend>
             {{ form_row(form.additionalNotificationRemarks) }}
         </fieldset>
-        
+        <div class="hidden">
         {% if form.moderationSpecificCreator is defined %}
             <fieldset id="moderationFieldsSection">
                 <legend>{{ __('Moderation') }} <i class="fa fa-expand"></i></legend>
@@ -92,6 +92,7 @@
                 {{ form_row(form.repeatCreation) }}
             </fieldset>
         {% endif %}
+        </div>
         
         {# include possible submit actions #}
         <div class="form-group form-buttons">
