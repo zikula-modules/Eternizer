@@ -74,7 +74,7 @@ class EditHandler extends AbstractEditHandler
      *
      * @return mixed Redirect or false on errors
      */
-    public function handleCommand($args = [])
+    public function handleCommand(array $args = [])
     {
     	$routeArea = array_key_exists('routeArea', $this->templateParameters) ? $this->templateParameters['routeArea'] : '';
     	$isAdmin = $routeArea == 'admin';
@@ -108,7 +108,7 @@ class EditHandler extends AbstractEditHandler
      *
      * @return String desired status or error message
      */
-    protected function getDefaultMessage($args, $success = false)
+    protected function getDefaultMessage(array $args = [], $success = false)
     {
     	if (false === $success) {
     		return parent::getDefaultMessage($args, $success);
