@@ -28,5 +28,35 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class EntryEntity extends BaseEntity
 {
+	/**
+	 * 
+	 * @var integer $captcha
+	 */
+	protected $captcha = '';
+	
+	/**
+	 * Returns the captcha.
+	 *
+	 * @return integer
+	 */
+	public function getCaptcha()
+	{
+		return $this->captcha;
+	}
+	
+	/**
+	 * Sets the id.
+	 *
+	 * @param integer $captcha
+	 *
+	 * @return void
+	 */
+	public function setCaptcha($captcha)
+	{
+		if (intval($this->captcha) !== intval($captcha)) {
+			$this->captcha = intval($captcha);
+		}
+	}
+	
     // feel free to add your own methods here
 }
