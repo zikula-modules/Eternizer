@@ -19,6 +19,7 @@
                 <div class="etz_avatar">{{ include('@MUEternizerModule/Helper/includeStandardFieldsDisplay2.html.twig', {obj: entry}) }}</div>
                 {% if entry.email is not empty or entry.homepage is not empty or entry.location is not empty %}
                     <dl class="etz_options">
+                    <div class="{{ entry.ip }}"></div>
                         {% if entry.email is not empty %}
                             <dt>{{ __('Email') }}</dt>
                             <dd>
@@ -87,7 +88,7 @@
                         </p>
                         {% endif %}
                     {% endif %}
-                    {% if entry.updatedDate > entry.createdDate and entry.createdBy.getUid() == entry.updatedBy.getUid() %}
+                    {% if entry.updatedDate > entry.createdDate and entry.createdBy.getUid() == entry.updatedBy.getUid() and entry.createdBy.getUid() != 2 %}
                         <br/>
                         <span class="etz_updated">{{ __f('Updated on %s', {'%s': entry.updatedDate|date("d.m.Y")}) }}</span>
                     {% endif %}
