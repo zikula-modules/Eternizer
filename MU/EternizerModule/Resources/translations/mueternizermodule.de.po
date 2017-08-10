@@ -38,13 +38,11 @@ msgstr "5"
 msgid "50"
 msgstr "50"
 
-#, fuzzy
 msgid "A direct feed showing the list of entries"
-msgstr "A direct feed showing the list of entries"
+msgstr "Feed, eine Liste der Einträge anzeigend"
 
-#, fuzzy
 msgid "A user changed his entry \"%entity%\"."
-msgstr "A user changed his entry \"%entity%\"."
+msgstr "Ein Benutzer änderte seinen Eintrag \"%entity%\"."
 
 msgid "Above"
 msgstr "Oberhalb"
@@ -120,9 +118,8 @@ msgstr "Wähle die Position für das Formular."
 msgid "Choose the moderate."
 msgstr "Wähle den Modus der Moderation."
 
-#, fuzzy
 msgid "Choose the moderation group for entries."
-msgstr "Choose the moderation group for entries."
+msgstr "Wähle die Gruppe zur Moderation von Einträgen."
 
 msgid "Choose the order."
 msgstr "Wähle die Reihenfolge."
@@ -164,9 +161,8 @@ msgstr "Konnte andere Personen nicht informieren, weil das Mailer Module nicht e
 msgid "Create another item after save"
 msgstr "Erstelle ein weiteres Element nach dem Speichern"
 
-#, fuzzy
 msgid "Create entry"
-msgstr "Create entry"
+msgstr "Eintrag erstellen"
 
 msgid "Created by %user"
 msgstr "Erstellt von %user"
@@ -201,13 +197,11 @@ msgstr "Löschen"
 msgid "Delete content permanently."
 msgstr "Inhalt dauerhaft löschen."
 
-#, fuzzy
 msgid "Delete entry"
-msgstr "Delete entry"
+msgstr "Eintrag löschen"
 
-#, fuzzy
 msgid "Delete this entry"
-msgstr "Delete this entry"
+msgstr "Diesen Eintrag löschen"
 
 msgid "Deleted"
 msgstr "Gelöscht"
