@@ -56,7 +56,7 @@ class ControllerHelper extends AbstractControllerHelper
 				// generate an auth key to use in urls
 				$csrftoken = \SecurityUtil::generateCsrfToken($serviceManager, true);
 		
-				$url = \ModUtil::url('MUEternizerModule', 'entry', 'edit', array('id' => $entryid, 'token' => $csrftoken));
+				$url = \ModUtil::url('MUEternizerModule', 'entry', 'edit', array('id' => $entryid));
 				$title = __('You have permissions to edit this issue!');
 				$out = "<a title='{$title}' id='eternizer-user-entry-edit-creater' href='{$url}'>
 				<i class='fa fa-pencil-square-o' aria-hidden='true'></i>
