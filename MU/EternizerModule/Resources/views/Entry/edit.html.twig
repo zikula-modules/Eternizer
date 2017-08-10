@@ -24,7 +24,11 @@
         ] %}
         {% set returnUrl = path('mueternizermodule_entry_view') %}
         {% if routeArea != 'admin' and (formposition == 'above' or formposition == 'below') %}
+        {% if mode == 'create' %}
         {{ form_start(form, {attr: {id: 'entryEditForm'}, action: path('mueternizermodule_entry_edit', { returnTo: returnUrl }) }) }}
+        {% else %}
+        {{ form_start(form, {attr: {id: 'entryEditForm'} }) }}
+        {% endif %}
         {% else %}
         {{ form_start(form, {attr: {id: 'entryEditForm'} }) }}
         {% endif %}
@@ -39,24 +43,28 @@
             {{ form_row(form.homepage) }}
             {{ form_row(form.location) }}
             {{ form_row(form.text) }}
-            <div class="hidden">
-                {{ form_row(form.notes) }}
-            </div>
-            {% set captcha = getModVar('MUEternizerModule', 'simplecaptcha') %}
-            {% if routeArea == 'admin' or (routeArea == '' and captcha == 0) %}
-            <div class="hidden">
+            {% if routeArea == '' %}
+                <div class="hidden">
             {% endif %}
+            {{ form_row(form.notes) }}
+            {% if routeArea == '' %}
+                </div>
+            {% endif %}
+
+            {% set captcha = getModVar('MUEternizerModule', 'simplecaptcha') %}
             {% if captcha == 1 and routeArea != 'admin' %}
 
             {{ mueternizermodule_simpleCaptcha() }}
             {# example for custom arguments:
                 mueternizermodule_simpleCaptcha(font='arial', size=20, bgColour='ffffff', fgColour='0000ff')
             #}
+            {% endif %}
+            {% if routeArea == 'admin' or (routeArea == '' and captcha == 0) %}
+            <div class="hidden">
+            {% endif %}
             {{ form_row(form.captcha) }}
-            <span class="help-block">{{ __('(to prevent spam)') }}</span>
             {% if routeArea == 'admin' or (routeArea == '' and captcha == 0) %}
             </div>
-            {% endif %}
             {% endif %}
         </fieldset>
         
@@ -86,6 +94,7 @@
                 </div>
             </fieldset>
         {% endif %}
+        </div>
         
         <div class="hidden">
         {# include return control #}
