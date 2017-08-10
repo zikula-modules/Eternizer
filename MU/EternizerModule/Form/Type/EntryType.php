@@ -34,6 +34,7 @@ class EntryType extends AbstractEntryType
     $builder->add('captcha', TextType::class, [
     		'label' => $this->__('Please solve this calculation') . ':',
     		'empty_data' => '',
+    		'help' => $this->__('To prevent spam'),
     		'attr' => [
     				'maxlength' => 15,
     				'class' => '',
