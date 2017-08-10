@@ -47,8 +47,9 @@ class EditHandler extends AbstractEditHandler
         $controllerHelper = $container->get('mu_eternizer_module.controller_helper');
         $editEntryAllowed = $controllerHelper->editEntry($entity['id'], $entity['createdBy_id'], $entity['createdDate'], 2);
         
-        if ($editEntryAllowed == false && \UserUtil::getVar('uid') != 2) {       	
-        	return \System::redirect('/eternizer/entries/view');
+        if ($editEntryAllowed == false && \UserUtil::getVar('uid') != 2) {
+        	$url = $this->router->generate('mueternizermodule_entry_view');
+        	return \System::redirect($url);
         }
         
         // prepare captcha  
