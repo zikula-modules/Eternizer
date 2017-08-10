@@ -135,10 +135,13 @@ class EternizerModuleInstaller extends AbstractEternizerModuleInstaller
 	        $this->updateHookNamesFor14();
 	 
 	        // update module name in the workflows table
-	        $this->updateWorkflowsFor14();
+	        //$this->updateWorkflowsFor14(); not needed
 	 
 	        // try to create the cache directory
 	        $this->createCacheDirectory();
+	        
+	        // remove obsolete persisted hooks from the database
+	        $this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
 
 	        // update the database schema
 	        try {
