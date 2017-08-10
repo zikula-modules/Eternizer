@@ -212,7 +212,7 @@ abstract class AbstractCaptchaHelper
             $finalWidth  = $imageData[0];
             $finalHeight = $imageData[1];
         }
-        return '<img src="' . $this->router->generate('home') . $imagePath . '" alt="' . $this->translator->__('Math') . '" width="' . $finalWidth . '" height="' . $finalHeight . '" />';
+        return '<div class="col-sm-3"></div><div class="col-sm-9"><img src="' . $this->router->generate('home') . $imagePath . '" alt="' . $this->translator->__('Math') . '" width="' . $finalWidth . '" height="' . $finalHeight . '" /></div>';
     }
     /**
      * Returns the path to a given font.
