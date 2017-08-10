@@ -15,6 +15,8 @@ namespace MU\EternizerModule\Listener;
 use MU\EternizerModule\Listener\Base\AbstractEntityLifecycleListener;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use ModUtil;
+use UserUtil;
+use MU\EternizerModule\Entity\EntryEntity;
 
 /**
  * Event subscriber implementation class for entity lifecycle events.
@@ -36,13 +38,14 @@ class EntityLifecycleListener extends AbstractEntityLifecycleListener
 		$currentIp = $_SERVER["REMOTE_ADDR"];
 		
 		$saveIp = \ModUtil::getVar('MUEternizerModule', 'ipsave');
+
 		$moderation = \ModUtil::getVar('MUEternizerModule', 'moderate');
 		$userId = \UserUtil::getVar('uid');
 		$groupIds = \UserUtil::getGroupsForUser($userId);
 		
-        //if (method_exists($entity, 'get_objectType')) {
+        if ($entity instanceof EntryEntity) {
             if ($saveIp == 1) {
-		        $entity->setIp(10);
+		        $entity->setIp($currentIp);
             }
             switch ($moderation) {
         	case 'all':
@@ -62,6 +65,6 @@ class EntityLifecycleListener extends AbstractEntityLifecycleListener
         		break;
             }     		
             	
-        //}
+        }
 	}
 }
