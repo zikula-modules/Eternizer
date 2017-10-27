@@ -1,18 +1,15 @@
 CKEDITOR.plugins.add('mueternizermodule', {
     requires: 'popup',
-    lang: 'en,nl,de',
     init: function (editor) {
         editor.addCommand('insertMUEternizerModule', {
             exec: function (editor) {
-                var url = Routing.generate('mueternizermodule_external_finder', { objectType: 'entry', editor: 'ckeditor' });
-                // call method in MUEternizerModule.Finder.js and provide current editor
-                MUEternizerModuleFinderCKEditor(editor, url);
+                MUEternizerModuleFinderOpenPopup(editor, 'ckeditor');
             }
         });
         editor.ui.addButton('mueternizermodule', {
-            label: editor.lang.mueternizermodule.title,
+            label: 'Eternizer',
             command: 'insertMUEternizerModule',
-            icon: this.path.replace('scribite/CKEditor/mueternizermodule', 'public/images') + 'admin.png'
+            icon: this.path.replace('scribite/CKEditor/mueternizermodule', 'images') + 'admin.png'
         });
     }
 });

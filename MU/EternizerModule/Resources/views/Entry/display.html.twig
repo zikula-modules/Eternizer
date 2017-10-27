@@ -33,7 +33,7 @@
             <dt>{{ __('Email') }}</dt>
             <dd>{% if entry.email is not empty %}
             {% if not isQuickView %}
-            <a href="mailto:{{ entry.email|protectMail }}" title="{{ __('Send an email') }}" class="fa fa-envelope"></a>
+            <a href="mailto:{{ entry.email|protectMail }}" title="{{ __('Send an email') }}"><i class="fa fa-envelope"></i></a>
             {% else %}
                 {{ entry.email|protectMail }}
             {% endif %}
@@ -44,7 +44,7 @@
             <dt>{{ __('Homepage') }}</dt>
             <dd>{% if entry.homepage is not empty %}
             {% if not isQuickView %}
-            <a href="{{ entry.homepage }}" title="{{ __('Visit this page') }}" class="fa fa-external-link-square"></a>
+            <a href="{{ entry.homepage }}" title="{{ __('Visit this page') }}"><i class="fa fa-external-link-square"></i></a>
             {% else %}
                 {{ entry.homepage }}
             {% endif %}
@@ -72,9 +72,10 @@
 </div>
 {% endblock %}
 {% block display_hooks %}
-    {% set hooks = notifyDisplayHooks(eventName='mueternizermodule.ui_hooks.entries.display_view', id=entry.getKey(), urlObject=currentUrlObject) %}
-    {% for providerArea, hook in hooks if providerArea != 'provider.scribite.ui_hooks.editor' %}
-        <h4>{{ providerArea }}</h4>
-        {{ hook }}
-    {% endfor %}
+    {% set hooks = notifyDisplayHooks(eventName='mueternizermodule.ui_hooks.entries.display_view', id=entry.getKey(), urlObject=currentUrlObject, outputAsArray=true) %}
+    {% if hooks is iterable and hooks|length > 0 %}
+        {% for area, hook in hooks %}
+            <div class="z-displayhook" data-area="{{ area|e('html_attr') }}">{{ hook }}</div>
+        {% endfor %}
+    {% endif %}
 {% endblock %}

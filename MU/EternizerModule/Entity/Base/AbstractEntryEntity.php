@@ -61,8 +61,10 @@ abstract class AbstractEntryEntity extends EntityAccess
     protected $workflowState = 'initial';
     
     /**
-     * @ORM\Column(length=15, nullable=true)
-     * @Assert\Length(min="0", max="15")
+     * @ORM\Column(length=40, nullable=true)
+     * @Assert\Regex(pattern="/\s/", match=false, message="This value must not contain space chars.")
+     * @Assert\Length(min="0", max="40")
+     * @Assert\Ip(version="all")
      * @var string $ip
      */
     protected $ip = '';

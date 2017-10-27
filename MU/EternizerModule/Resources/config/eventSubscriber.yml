@@ -72,6 +72,8 @@ services:
     mu_eternizer_module.thirdparty_listener:
         class: MU\EternizerModule\Listener\ThirdPartyListener
         arguments:
+            - "@filesystem"
+            - "@request_stack"
             - "@mu_eternizer_module.workflow_helper"
         tags:
             - { name: kernel.event_subscriber }

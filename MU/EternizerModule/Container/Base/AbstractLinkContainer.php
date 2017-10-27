@@ -152,7 +152,7 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
             $links[] = [
                 'url' => $this->router->generate('mueternizermodule_entry_' . $routeArea . 'view'),
                 'text' => $this->__('Entries', 'mueternizermodule'),
-                'title' => $this->__('Entry list', 'mueternizermodule')
+                'title' => $this->__('Entries list', 'mueternizermodule')
             ];
         }
         if ($routeArea == 'admin' && $this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {

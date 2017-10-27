@@ -17,6 +17,8 @@ use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use ModUtil;
 use UserUtil;
 use MU\EternizerModule\Entity\EntryEntity;
+use Symfony\Component\EventDispatcher\Event;
+
 
 /**
  * Event subscriber implementation class for entity lifecycle events.
@@ -35,7 +37,7 @@ class EntityLifecycleListener extends AbstractEntityLifecycleListener
 		parent::postPersist($args);
 		
 		$entity = $args->getObject();
-		$currentIp = $_SERVER["REMOTE_ADDR"];
+		//$currentIp = $_SERVER["REMOTE_ADDR"];
 		
 		$saveIp = \ModUtil::getVar('MUEternizerModule', 'ipsave');
 
@@ -44,7 +46,7 @@ class EntityLifecycleListener extends AbstractEntityLifecycleListener
 		$groupIds = \UserUtil::getGroupsForUser($userId);
 		
         if ($entity instanceof EntryEntity) {
-            if ($saveIp == 1) {
+            if ($saveIp == '') {
 		        $entity->setIp($currentIp);
             }
             switch ($moderation) {

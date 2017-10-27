@@ -1,6 +1,6 @@
 {# Purpose of this template: Display entries within an external context #}
 {% for entry in items %}
     <h3>{{ entry|mueternizermodule_formattedTitle }}</h3>
-    <p><a href="{{ path('mueternizermodule_entry_display', {'id': entry.getId()}) }}">{{ __('Read more') }}</a>
+    <p><a href="{{ path('mueternizermodule_entry_display', {'id': entry.getId()}) }}" title="{{ __('Read more')|e('html_attr') }}">{{ __('Read more') }}</a>
     </p>
 {% endfor %}

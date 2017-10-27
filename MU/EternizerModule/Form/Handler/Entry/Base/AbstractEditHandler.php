@@ -126,7 +126,8 @@ abstract class AbstractEditHandler extends EditHandler
         $objectIsPersisted = $args['commandName'] != 'delete' && !($this->templateParameters['mode'] == 'create' && $args['commandName'] == 'cancel');
     
         if (null !== $this->returnTo) {
-            $isDisplayOrEditPage = substr($this->returnTo, -7) == 'display' || substr($this->returnTo, -4) == 'edit';
+            $refererParts = explode('/', $this->returnTo);
+            $isDisplayOrEditPage = $refererParts[count($refererParts)-1] == $this->idValue;
             if (!$isDisplayOrEditPage || $objectIsPersisted) {
                 // return to referer
                 return $this->returnTo;
@@ -163,6 +164,10 @@ abstract class AbstractEditHandler extends EditHandler
             if ($this->form->get($action['id'])->isClicked()) {
                 $args['commandName'] = $action['id'];
             }
+        }
+        if ($this->templateParameters['mode'] == 'create' && $this->form->get('submitrepeat')->isClicked()) {
+            $args['commandName'] = 'submit';
+            $this->repeatCreateAction = true;
         }
         if ($this->form->get('cancel')->isClicked()) {
             $args['commandName'] = 'cancel';

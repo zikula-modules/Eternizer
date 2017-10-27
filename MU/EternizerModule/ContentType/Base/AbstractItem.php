@@ -39,6 +39,11 @@ abstract class AbstractItem extends \Content_AbstractContentType implements Cont
     protected $displayMode;
     
     /**
+     * @var string
+     */
+    protected $customTemplate;
+    
+    /**
      * Item constructor.
      */
     public function __construct()
@@ -104,6 +109,7 @@ abstract class AbstractItem extends \Content_AbstractContentType implements Cont
     
         $this->id = isset($data['id']) ? $data['id'] : null;
         $this->displayMode = isset($data['displayMode']) ? $data['displayMode'] : 'embed';
+        $this->customTemplate = isset($data['customTemplate']) ? $data['customTemplate'] : null;
     }
     
     /**
@@ -117,7 +123,7 @@ abstract class AbstractItem extends \Content_AbstractContentType implements Cont
             return '';
         }
     
-        $controllerReference = new ControllerReference('MUEternizerModule:External:display', $this->getDisplayArguments());
+        $controllerReference = new ControllerReference('MUEternizerModule:External:display', $this->getDisplayArguments(), ['template' => $this->customTemplate]);
     
         return $this->container->get('fragment.handler')->render($controllerReference, 'inline', []);
     }
@@ -135,7 +141,7 @@ abstract class AbstractItem extends \Content_AbstractContentType implements Cont
     }
     
     /**
-     * Returns common arguments for display data selection with the external api.
+     * Returns common arguments for displaying the selected object using the external controller.
      *
      * @return array Display arguments
      */
@@ -159,7 +165,8 @@ abstract class AbstractItem extends \Content_AbstractContentType implements Cont
         return [
             'objectType' => 'entry',
             'id' => null,
-            'displayMode' => 'embed'
+            'displayMode' => 'embed',
+            'customTemplate' => null
         ];
     }
     

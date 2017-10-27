@@ -132,14 +132,8 @@ abstract class AbstractEternizerModuleInstaller extends AbstractExtensionInstall
      */
     protected function updateModVarsTo14()
     {
-        $dbName = $this->getDbName();
         $conn = $this->getConnection();
-    
-        $conn->executeQuery("
-            UPDATE $dbName.module_vars
-            SET modname = 'MUEternizerModule'
-            WHERE modname = 'Eternizer';
-        ");
+        $conn->update('module_vars', ['modname' => 'MUEternizerModule'], ['modname' => 'Eternizer']);
     }
     
     /**
@@ -148,14 +142,7 @@ abstract class AbstractEternizerModuleInstaller extends AbstractExtensionInstall
     protected function updateExtensionInfoFor14()
     {
         $conn = $this->getConnection();
-        $dbName = $this->getDbName();
-    
-        $conn->executeQuery("
-            UPDATE $dbName.modules
-            SET name = 'MUEternizerModule',
-                directory = 'MU/EternizerModule'
-            WHERE name = 'Eternizer';
-        ");
+        $conn->update('modules', ['name' => 'MUEternizerModule', 'directory' => 'MU/EternizerModule'], ['name' => 'Eternizer']);
     }
     
     /**
@@ -164,12 +151,10 @@ abstract class AbstractEternizerModuleInstaller extends AbstractExtensionInstall
     protected function renamePermissionsFor14()
     {
         $conn = $this->getConnection();
-        $dbName = $this->getDbName();
-    
         $componentLength = strlen('Eternizer') + 1;
     
         $conn->executeQuery("
-            UPDATE $dbName.group_perms
+            UPDATE group_perms
             SET component = CONCAT('MUEternizerModule', SUBSTRING(component, $componentLength))
             WHERE component LIKE 'Eternizer%';
         ");
@@ -181,7 +166,6 @@ abstract class AbstractEternizerModuleInstaller extends AbstractExtensionInstall
     protected function renameTablesFor14()
     {
         $conn = $this->getConnection();
-        $dbName = $this->getDbName();
     
         $oldPrefix = 'eternizer_';
         $oldPrefixLength = strlen($oldPrefix);
@@ -198,8 +182,8 @@ abstract class AbstractEternizerModuleInstaller extends AbstractExtensionInstall
             $newTableName = str_replace($oldPrefix, $newPrefix, $tableName);
     
             $conn->executeQuery("
-                RENAME TABLE $dbName.$tableName
-                TO $dbName.$newTableName;
+                RENAME TABLE $tableName
+                TO $newTableName;
             ");
         }
     }
@@ -218,49 +202,32 @@ abstract class AbstractEternizerModuleInstaller extends AbstractExtensionInstall
     protected function updateHookNamesFor14()
     {
         $conn = $this->getConnection();
-        $dbName = $this->getDbName();
     
-        $conn->executeQuery("
-            UPDATE $dbName.hook_area
-            SET owner = 'MUEternizerModule'
-            WHERE owner = 'Eternizer';
-        ");
+        $conn->update('hook_area', ['owner' => 'MUEternizerModule'], ['owner' => 'Eternizer']);
     
         $componentLength = strlen('subscriber.eternizer') + 1;
         $conn->executeQuery("
-            UPDATE $dbName.hook_area
+            UPDATE hook_area
             SET areaname = CONCAT('subscriber.mueternizermodule', SUBSTRING(areaname, $componentLength))
             WHERE areaname LIKE 'subscriber.eternizer%';
         ");
     
-        $conn->executeQuery("
-            UPDATE $dbName.hook_binding
-            SET sowner = 'MUEternizerModule'
-            WHERE sowner = 'Eternizer';
-        ");
+        $conn->update('hook_binding', ['sowner' => 'MUEternizerModule'], ['sowner' => 'Eternizer']);
     
-        $conn->executeQuery("
-            UPDATE $dbName.hook_runtime
-            SET sowner = 'MUEternizerModule'
-            WHERE sowner = 'Eternizer';
-        ");
+        $conn->update('hook_runtime', ['sowner' => 'MUEternizerModule'], ['sowner' => 'Eternizer']);
     
         $componentLength = strlen('eternizer') + 1;
         $conn->executeQuery("
-            UPDATE $dbName.hook_runtime
+            UPDATE hook_runtime
             SET eventname = CONCAT('mueternizermodule', SUBSTRING(eventname, $componentLength))
             WHERE eventname LIKE 'eternizer%';
         ");
     
-        $conn->executeQuery("
-            UPDATE $dbName.hook_subscriber
-            SET owner = 'MUEternizerModule'
-            WHERE owner = 'Eternizer';
-        ");
+        $conn->update('hook_subscriber', ['owner' => 'MUEternizerModule'], ['owner' => 'Eternizer']);
     
         $componentLength = strlen('eternizer') + 1;
         $conn->executeQuery("
-            UPDATE $dbName.hook_subscriber
+            UPDATE hook_subscriber
             SET eventname = CONCAT('mueternizermodule', SUBSTRING(eventname, $componentLength))
             WHERE eventname LIKE 'eternizer%';
         ");
@@ -272,13 +239,8 @@ abstract class AbstractEternizerModuleInstaller extends AbstractExtensionInstall
     protected function updateWorkflowsFor14()
     {
         $conn = $this->getConnection();
-        $dbName = $this->getDbName();
-    
-        $conn->executeQuery("
-            UPDATE $dbName.workflows
-            SET module = 'MUEternizerModule'
-            WHERE module = 'Eternizer';
-        ");
+        $conn->update('workflows', ['module' => 'MUEternizerModule'], ['module' => 'Eternizer']);
+        $conn->update('workflows', ['obj_table' => 'EntryEntity'], ['module' => 'MUEternizerModule', 'obj_table' => 'entry']);
     }
     
     /**
@@ -289,19 +251,8 @@ abstract class AbstractEternizerModuleInstaller extends AbstractExtensionInstall
     protected function getConnection()
     {
         $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
-        $connection = $entityManager->getConnection();
     
-        return $connection;
-    }
-    
-    /**
-     * Returns the name of the default system database.
-     *
-     * @return string the database name
-     */
-    protected function getDbName()
-    {
-        return $this->container->getParameter('database_name');
+        return $entityManager->getConnection();
     }
     
     /**

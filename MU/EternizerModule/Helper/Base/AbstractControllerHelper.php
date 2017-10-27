@@ -15,6 +15,8 @@ namespace MU\EternizerModule\Helper\Base;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\RouteUrl;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -27,6 +29,8 @@ use MU\EternizerModule\Helper\ModelHelper;
  */
 abstract class AbstractControllerHelper
 {
+    use TranslatorTrait;
+
     /**
      * @var Request
      */
@@ -60,6 +64,7 @@ abstract class AbstractControllerHelper
     /**
      * ControllerHelper constructor.
      *
+     * @param TranslatorInterface $translator      Translator service instance
      * @param RequestStack        $requestStack    RequestStack service instance
      * @param FormFactoryInterface $formFactory    FormFactory service instance
      * @param VariableApiInterface $variableApi     VariableApi service instance
@@ -68,6 +73,7 @@ abstract class AbstractControllerHelper
      * @param ModelHelper         $modelHelper     ModelHelper service instance
      */
     public function __construct(
+        TranslatorInterface $translator,
         RequestStack $requestStack,
         FormFactoryInterface $formFactory,
         VariableApiInterface $variableApi,
@@ -75,12 +81,23 @@ abstract class AbstractControllerHelper
         CollectionFilterHelper $collectionFilterHelper,
         ModelHelper $modelHelper
     ) {
+        $this->setTranslator($translator);
         $this->request = $requestStack->getCurrentRequest();
         $this->formFactory = $formFactory;
         $this->variableApi = $variableApi;
         $this->entityFactory = $entityFactory;
         $this->collectionFilterHelper = $collectionFilterHelper;
         $this->modelHelper = $modelHelper;
+    }
+
+    /**
+     * Sets the translator.
+     *
+     * @param TranslatorInterface $translator Translator service instance
+     */
+    public function setTranslator(/*TranslatorInterface */$translator)
+    {
+        $this->translator = $translator;
     }
 
     /**
@@ -184,19 +201,21 @@ abstract class AbstractControllerHelper
                     $sort = $fieldValue;
                 } elseif ($fieldName == 'sortdir' && !empty($fieldValue)) {
                     $sortdir = $fieldValue;
-                } else {
+                } elseif (false === stripos($fieldName, 'thumbRuntimeOptions')) {
                     // set filter as query argument, fetched inside repository
                     $request->query->set($fieldName, $fieldValue);
                 }
             }
         }
         $sortableColumns->setOrderBy($sortableColumns->getColumn($sort), strtoupper($sortdir));
+        $resultsPerPage = $templateParameters['num'];
     
         $urlParameters = $templateParameters;
         foreach ($urlParameters as $parameterName => $parameterValue) {
-            if (false !== stripos($parameterName, 'thumbRuntimeOptions')) {
-                unset($urlParameters[$parameterName]);
+            if (false === stripos($parameterName, 'thumbRuntimeOptions')) {
+                continue;
             }
+            unset($urlParameters[$parameterName]);
         }
     
         $sort = $sortableColumns->getSortColumn()->getName();

@@ -216,9 +216,6 @@ abstract class AbstractWorkflowHelper
             case 'submit':
                 $buttonClass = 'success';
                 break;
-            case 'update':
-                $buttonClass = 'success';
-                break;
             case 'approve':
                 $buttonClass = '';
                 break;
@@ -226,6 +223,10 @@ abstract class AbstractWorkflowHelper
                 $buttonClass = 'danger';
                 break;
         }
+    
+        if ($buttonClass == '' && substr($actionId, 0, 6) == 'update') {
+            $buttonClass = 'success';
+    	}
     
         if (empty($buttonClass)) {
             $buttonClass = 'default';
@@ -259,14 +260,13 @@ abstract class AbstractWorkflowHelper
         try {
             $workflow->apply($entity, $actionId);
     
-            //$entityManager->transactional(function($entityManager) {
             if ($actionId == 'delete') {
                 $entityManager->remove($entity);
             } else {
                 $entityManager->persist($entity);
             }
             $entityManager->flush();
-            //});
+    
             $result = true;
             if ($actionId == 'delete') {
                 $this->logger->notice('{app}: User {user} deleted an entity.', $logArgs);
