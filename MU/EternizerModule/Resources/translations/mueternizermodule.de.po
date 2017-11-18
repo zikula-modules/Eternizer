@@ -9,7 +9,7 @@ msgstr ""
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
-"X-Generator: Poedit 2.0.2\n"
+"X-Generator: Poedit 2.0.3\n"
 
 msgid "%name%"
 msgstr "%name%"
@@ -71,9 +71,8 @@ msgstr "Alle ausgenommen wartende"
 msgid "Amount"
 msgstr "Anzahl"
 
-#, fuzzy
 msgid "An error occurred while creating the cache directory at %s."
-msgstr "An error occurred while creating the cache directory at %s."
+msgstr "Während der Erstellung des Cacheordner trat ein Fehler bei  %s auf."
 
 #, fuzzy
 msgid "An error was encountered while creating the tables for the %s module."
@@ -86,7 +85,7 @@ msgid "Approved"
 msgstr "Freigegeben"
 
 msgid "Ascending"
-msgstr "Ascending"
+msgstr "Aufsteigend"
 
 msgid "Back to overview"
 msgstr "Zur Übersicht"
@@ -143,17 +142,16 @@ msgid "Content has been approved and is available online."
 msgstr "Inhalt wurde freigegeben und ist nun online verfügbar."
 
 msgid "Content has been deleted"
-msgstr "Inhalt wurde gelöscht."
+msgstr "Inhalt wurde gelöscht"
 
 msgid "Content has been submitted and waits for approval."
 msgstr "Inhalt wurde eingereicht und wartet auf Freigabe."
 
 msgid "Content has been updated"
-msgstr "Inhalt wurde aktualisiert."
+msgstr "Inhalt wurde aktualisiert"
 
-#, fuzzy
 msgid "Could not create .htaccess file in %s, please refer to the manual before using the module!"
-msgstr "Could not create .htaccess file in %s, please refer to the manual before using the module!"
+msgstr "Konnte die  .htaccess Datei in %s nicht erstellen, bitte versuche dies manuell nachzuholen!"
 
 msgid "Could not inform other persons about your amendments, because the Mailer module is not available - please contact an administrator about that!"
 msgstr "Konnte andere Personen nicht informieren, weil das Mailer Module nicht erreichbar ist - bitte kontakte den Administrator!"
@@ -172,6 +170,9 @@ msgstr "Erstellt von %user am %date"
 
 msgid "Created on %date"
 msgstr "Erstellt am %date"
+
+msgid "created on %s"
+msgstr "schrieb am %s"
 
 msgid "Creation"
 msgstr "Erstellung"
@@ -207,7 +208,7 @@ msgid "Deleted"
 msgstr "Gelöscht"
 
 msgid "Descending"
-msgstr "Descending"
+msgstr "Absteigend"
 
 msgid "Details"
 msgstr "Details"
@@ -220,9 +221,8 @@ msgstr "Display list of MUEternizerModule objects."
 msgid "Display or link a single MUEternizerModule object."
 msgstr "Display or link a single MUEternizerModule object."
 
-#, fuzzy
 msgid "Do you really want to delete this entry: \"%name%\" ?"
-msgstr "Do you really want to delete this entry: \"%name%\" ?"
+msgstr "Möchtest Du den Eintrag \"%name%\" wirklich löschen ?"
 
 msgid "Doctrine Exception"
 msgstr "Doctrine Ausnahme"
@@ -230,17 +230,17 @@ msgstr "Doctrine Ausnahme"
 msgid "Doctrine Exception: "
 msgstr "Doctrine Ausnahme:"
 
-#, fuzzy
 msgid "Done! Entry created."
-msgstr "Done! Entry created."
+msgstr "Erledigt! Eintrag erstellt."
 
-#, fuzzy
+msgid "Done! Entry created.We will review your submit as soon as possible."
+msgstr "Erledigt! Eintrag erstellt. Wir werden diesen so schnell wie möglich prüfen."
+
 msgid "Done! Entry deleted."
-msgstr "Done! Entry deleted."
+msgstr "Erledigt! Eintrag gelöscht."
 
-#, fuzzy
 msgid "Done! Entry updated."
-msgstr "Done! Entry updated."
+msgstr "Erledigt! Eintrag aktualisiert."
 
 msgid "Done! Item created."
 msgstr "Erledigt! Element erstellt."
@@ -261,9 +261,8 @@ msgstr "Bearbeiten"
 msgid "Edit entries workflow"
 msgstr "Edit entries workflow"
 
-#, fuzzy
 msgid "Edit entry"
-msgstr "Edit entry"
+msgstr "Eintrag bearbeiten"
 
 #, fuzzy
 msgid "Edit the entry:"
@@ -277,13 +276,11 @@ msgstr "Edit this entry"
 msgid "Edit workflow for entries"
 msgstr "Edit workflow for entries"
 
-#, fuzzy
 msgid "Edit your entry:"
-msgstr "Edit your entry:"
+msgstr "Bearbeite Deinen Eintrag::"
 
-#, fuzzy
 msgid "Editentries"
-msgstr "Editentries"
+msgstr "Einträge bearbeiten"
 
 msgid "Email"
 msgstr "Email"
@@ -297,9 +294,8 @@ msgstr "Gib Ergänzungen zu Deinen Änderungen ein"
 msgid "Enter any additions about your content"
 msgstr "Gib Ergänzungen zu Deinem Inhalt ein"
 
-#, fuzzy
 msgid "Enter the correct number!"
-msgstr "Enter the correct number!"
+msgstr "Gib die korrekte Nummer ein!"
 
 #, fuzzy
 msgid "Enter the email of the entry"
@@ -317,9 +313,8 @@ msgstr "Enter the homepage of the entry"
 msgid "Enter the ip of the entry"
 msgstr "Enter the ip of the entry"
 
-#, fuzzy
 msgid "Enter the location of the entry"
-msgstr "Enter the location of the entry"
+msgstr "Gib deinen Standort ein"
 
 #, fuzzy
 msgid "Enter the name of the entry"
@@ -329,33 +324,27 @@ msgstr "Enter the name of the entry"
 msgid "Enter the notes of the entry"
 msgstr "Enter the notes of the entry"
 
-#, fuzzy
 msgid "Enter the period."
-msgstr "Enter the period."
+msgstr "Zeitraum eingeben."
 
 #, fuzzy
 msgid "Enter the text of the entry"
 msgstr "Enter the text of the entry"
 
-#, fuzzy
 msgid "Entries"
-msgstr "Entries"
+msgstr "Einträge"
 
-#, fuzzy
 msgid "Entries list"
-msgstr "Entries list"
+msgstr "Liste der Einträge"
 
-#, fuzzy
 msgid "Entries pending approval"
-msgstr "Entries pending approval"
+msgstr "Auf Freigabe wartende Einträge"
 
-#, fuzzy
 msgid "Entry"
-msgstr "Entry"
+msgstr "Eintrag"
 
-#, fuzzy
 msgid "Entry entries per page"
-msgstr "Entry entries per page"
+msgstr "Einträge pro Seite"
 
 #, fuzzy
 msgid "Entry filter hooks subscriber"
@@ -365,9 +354,8 @@ msgstr "Entry filter hooks subscriber"
 msgid "Entry form aware subscriber"
 msgstr "Entry form aware subscriber"
 
-#, fuzzy
 msgid "Entry list"
-msgstr "Entry list"
+msgstr "Eintragsliste"
 
 #, fuzzy
 msgid "Entry ui hooks subscriber"
@@ -385,9 +373,8 @@ msgstr "Fehler! Versuch der Löschung gescheitert."
 msgid "Error! Invalid object type received."
 msgstr "Fehler! Ungültiger Objekttyp angefordert."
 
-#, fuzzy
 msgid "Error! It is not allowed to delete this entry."
-msgstr "Error! It is not allowed to delete this entry."
+msgstr "Fehler! Es ist nicht erlaubt, diesen Eintrag zu löschen."
 
 msgid "Error! Update attempt failed."
 msgstr "Fehler! Versuch der Aktualisierung gescheitert."
@@ -395,17 +382,14 @@ msgstr "Fehler! Versuch der Aktualisierung gescheitert."
 msgid "Error: Invalid editor context given for external controller action."
 msgstr "Fehler! Ungültiger Editor-Kontext für einen externen Controller."
 
-#, fuzzy
 msgid "Eternizer Backend"
 msgstr "Eternizer Backend"
 
-#, fuzzy
 msgid "Eternizer cache directory does not contain the required .htaccess file - Captchas have been disabled."
-msgstr "Eternizer cache directory does not contain the required .htaccess file - Captchas have been disabled."
+msgstr "Der Eternizer Cache-Ordner hat nicht die erforderliche .htaccess Datei - Captchas wurden deaktiviert."
 
-#, fuzzy
 msgid "Eternizer cache directory does not exist or is not writable - Captchas have been disabled."
-msgstr "Eternizer cache directory does not exist or is not writable - Captchas have been disabled."
+msgstr "Der Eternizer Cache Ordner existiert nicht oder hat keine Schreibrechte - Captchas wurden deaktiviert."
 
 msgid "Example"
 msgstr "Beispiel"
@@ -428,9 +412,8 @@ msgstr "Gäste"
 msgid "Hello %recipient%"
 msgstr "Hallo %recipient%"
 
-#, fuzzy
 msgid "Here we can decide how long a user may edit his entry; input of hours"
-msgstr "Here we can decide how long a user may edit his entry; input of hours"
+msgstr "Hier ist einstellbar, wie lange registrierte Nutzer ihre Einträge bearbeiten dürfen; Eingabe in Stunden"
 
 msgid "Here you can assign moderation groups for enhanced workflow actions."
 msgstr "Hier kannst Du Moderatorengruppen für erweiterte Workflowaktionen zuweisen."
@@ -486,13 +469,11 @@ msgstr "Letzte Aktualisierung"
 msgid "Latest entries"
 msgstr "Letzte Einträge"
 
-#, fuzzy
 msgid "Link own entries on account page"
-msgstr "Link own entries on account page"
+msgstr "Eigene Einträge im Account verlinken"
 
-#, fuzzy
 msgid "Link to the entry:"
-msgstr "Link to the entry:"
+msgstr "Link zum Eintrag:"
 
 msgid "Link to your entry:"
 msgstr "Link zu Deinem Eintrag:"
@@ -501,7 +482,7 @@ msgid "List views"
 msgstr "Listensicht"
 
 msgid "Location"
-msgstr "Location"
+msgstr "Standort"
 
 msgid "MUEternizerModule detail view"
 msgstr "MUEternizerModule Detail Ansicht"
@@ -514,35 +495,29 @@ msgstr "MUEternizerModule items"
 msgid "MUEternizerModule list view"
 msgstr "MUEternizerModule list view"
 
-#, fuzzy
 msgid "Mailer module is not available - unable to send emails!"
-msgstr "Mailer module is not available - unable to send emails!"
+msgstr "Das Mailer Module ist nicht verfügbar - nicht möglich, mail zu senden!"
 
 msgid "Manage settings for this application"
 msgstr "Einstellungen für Blogging vornehmen"
 
-#, fuzzy
 msgid "Math"
 msgstr "Math"
 
-#, fuzzy
 msgid "Menue"
-msgstr "Menue"
+msgstr "Menü"
 
-#, fuzzy
 msgid "Moderate"
-msgstr "Moderate"
+msgstr "Moderation"
 
 msgid "Moderation"
 msgstr "Moderation"
 
-#, fuzzy
 msgid "Moderation group for entries"
-msgstr "Moderation group for entries"
+msgstr "Gruppe für Moderatoren"
 
-#, fuzzy
 msgid "My entries"
-msgstr "My entries"
+msgstr "Meine Einträge"
 
 msgid "Name"
 msgstr "Name"
@@ -550,9 +525,8 @@ msgstr "Name"
 msgid "New content has been submitted"
 msgstr "Neuer Inhalt wurde eingereicht"
 
-#, fuzzy
 msgid "New entry"
-msgstr "New entry"
+msgstr "Neuer Eintrag"
 
 msgid "Newest"
 msgstr "Aktuellste"
@@ -572,9 +546,8 @@ msgstr "Kein solches Element."
 msgid "Note: this value must not exceed %amount% characters."
 msgstr "Beachte: Dieser Wert darf nicht mehr als %amount% Zeichen beinhalten."
 
-#, fuzzy
 msgid "Notes"
-msgstr "Notes"
+msgstr "Hinweise"
 
 msgid "Nothing"
 msgstr "Nichts"
@@ -679,9 +652,8 @@ msgstr "Entschuldigung, aber ein Fehler ist während der %action% entstanden."
 msgid "Sorry, but an error occured during the %action% action. Please apply the changes again!"
 msgstr "Entschuldigung, aber ein Fehler ist während der %action% Aktion aufgetreten. Bitte stimme den Änderungen erneut zu!"
 
-#, fuzzy
 msgid "Sorry, but you can not create the entry yet as other items are required which must be created before!"
-msgstr "Sorry, but you can not create the entry yet as other items are required which must be created before!"
+msgstr "Sorry, aber Du kannst keinen Eintrag erstellen solange andere erforderliche Elemente nicht vorhanden sind!"
 
 msgid "Sort by"
 msgstr "Sortierung nach"
@@ -704,9 +676,11 @@ msgstr "Abschicken"
 msgid "Submit and approve"
 msgstr "Abschicken und Freigeben"
 
-#, fuzzy
+msgid "Submit and repeat"
+msgstr "Abschicken und Wiederholen"
+
 msgid "Successfully created the cache directory with a .htaccess file in it."
-msgstr "Successfully created the cache directory with a .htaccess file in it."
+msgstr "Cache Ordner erfolgreich mit einer .htaccess Datei erstellt."
 
 msgid "Switch to administration area."
 msgstr "Zum Backend wechseln."
@@ -720,17 +694,15 @@ msgstr "Template"
 msgid "Text"
 msgstr "Text"
 
-#, fuzzy
 msgid "The amount of entries shown per page"
-msgstr "The amount of entries shown per page"
+msgstr "Die Anzahl der Einträge pro Seite"
 
 #, fuzzy
 msgid "The calculation to prevent spam was incorrect. Please try again."
 msgstr "The calculation to prevent spam was incorrect. Please try again."
 
-#, fuzzy
 msgid "The editentries option."
-msgstr "The editentries option."
+msgstr "Option Bearbeitung von Einträgen."
 
 msgid "The ipsave option."
 msgstr "Option zur Speicherung von Ip's."
@@ -807,13 +779,8 @@ msgstr "Seite besuchen"
 msgid "Waiting"
 msgstr "Wartend"
 
-#, fuzzy
 msgid "We will review your submit as soon as possible"
-msgstr "We will review your submit as soon as possible"
-
-#, fuzzy
-msgid "We will review your submit as soon as possible."
-msgstr "We will review your submit as soon as possible."
+msgstr "Wir werden Deine Einreichung so schnell wie möglich überprüfen."
 
 #, fuzzy
 msgid "Welcome to the entry section of the Eternizer application."
@@ -838,6 +805,9 @@ msgstr "Workflow Status"
 msgid "Workflows"
 msgstr "Workflows"
 
+msgid "You have permissions to edit this issue!"
+msgstr "Du darfst diesen Eintrag bearbeiten!"
+
 #, fuzzy
 msgid "Your entry \"%entity%\" has been changed."
 msgstr "Your entry \"%entity%\" has been changed."
@@ -847,10 +817,6 @@ msgstr "Deine Einreichung wurde gelöscht"
 
 msgid "Your submission has been updated"
 msgstr "Deine Einreichung wurde aktualisiert"
-
-#, fuzzy
-msgid "created on %s"
-msgstr "created on %s"
 
 msgid "entries"
 msgstr "Einträge"
