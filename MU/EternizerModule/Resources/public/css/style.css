@@ -180,11 +180,8 @@ input.validation-failed, textarea.validation-failed {
 
 #eternizer .etz_entry .etz_updated {
     font-size: 0.85em;
-    font-weight: bold;
-    margin: 10px 0 0 0;
-    witdh: 100%;
+    margin: 10px 0 0 10px;
     position: relative;
-    display: block;
 }
 
 #eternizer .etz_entry .etz_body .ezt_info .etz_title {
