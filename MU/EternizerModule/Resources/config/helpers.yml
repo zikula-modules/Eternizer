@@ -88,6 +88,7 @@ services:
             - "@zikula_users_module.current_user"
             - "@mu_eternizer_module.entity_factory"
             - "@mu_eternizer_module.listentries_helper"
+            - "@zikula_extensions_module.api.variable"
             
     mu_eternizer_module.captcha_helper:
         class: MU\EternizerModule\Helper\CaptchaHelper

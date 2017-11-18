@@ -59,7 +59,6 @@ services:
         class: MU\EternizerModule\Form\Type\ConfigType
         arguments:
             - "@translator.default"
-            - "@=service('zikula_extensions_module.api.variable').getAll('MUEternizerModule')"
-            - "@zikula_groups_module.group_repository"
+            - "@mu_eternizer_module.listentries_helper"
         tags:
             - { name: form.type }
