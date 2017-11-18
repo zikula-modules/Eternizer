@@ -37,18 +37,12 @@ class EntityLifecycleListener extends AbstractEntityLifecycleListener
 		parent::postPersist($args);
 		
 		$entity = $args->getObject();
-		//$currentIp = $_SERVER["REMOTE_ADDR"];
-		
-		$saveIp = \ModUtil::getVar('MUEternizerModule', 'ipsave');
 
 		$moderation = \ModUtil::getVar('MUEternizerModule', 'moderate');
 		$userId = \UserUtil::getVar('uid');
 		$groupIds = \UserUtil::getGroupsForUser($userId);
 		
         if ($entity instanceof EntryEntity) {
-            if ($saveIp == '') {
-		        $entity->setIp($currentIp);
-            }
             switch ($moderation) {
         	case 'all':
         		if ($userId != 2) {
