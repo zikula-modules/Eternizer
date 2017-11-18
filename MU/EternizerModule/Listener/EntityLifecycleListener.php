@@ -13,54 +13,12 @@
 namespace MU\EternizerModule\Listener;
 
 use MU\EternizerModule\Listener\Base\AbstractEntityLifecycleListener;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use ModUtil;
-use UserUtil;
-use MU\EternizerModule\Entity\EntryEntity;
 use Symfony\Component\EventDispatcher\Event;
-
 
 /**
  * Event subscriber implementation class for entity lifecycle events.
  */
 class EntityLifecycleListener extends AbstractEntityLifecycleListener
 {
-	/**
-	 * The postPersist event occurs for an entity after the entity has been made persistent.
-	 * It will be invoked after the database insert operations. Generated primary key values
-	 * are available in the postPersist event.
-	 *
-	 * @param LifecycleEventArgs $args Event arguments
-	 */
-	public function postPersist(LifecycleEventArgs $args)
-	{
-		parent::postPersist($args);
-		
-		$entity = $args->getObject();
-
-		$moderation = \ModUtil::getVar('MUEternizerModule', 'moderate');
-		$userId = \UserUtil::getVar('uid');
-		$groupIds = \UserUtil::getGroupsForUser($userId);
-		
-        if ($entity instanceof EntryEntity) {
-            switch ($moderation) {
-        	case 'all':
-        		if ($userId != 2) {
-        		    $entity->setWorkflowState('waiting');
-        		} else {
-        			$entity->setWorkflowState('approved');
-        		}
-        		break;
-        	case 'guests':
-        		if ($userId == 1) {
-        			$entity->setWorkflowState('waiting');
-        		}
-        		break;
-        	case 'nothing':
-        		    $entity->setWorkflowState('approved');
-        		break;
-            }     		
-            	
-        }
-	}
+    // feel free to enhance this listener by custom actions
 }

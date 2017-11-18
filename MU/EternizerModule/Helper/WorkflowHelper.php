@@ -102,6 +102,29 @@ class WorkflowHelper extends AbstractWorkflowHelper
             		$currentIp = $_SERVER["REMOTE_ADDR"];
             		$entity->setIp($currentIp);
             	}
+            	if ($actionId == 'submit') {
+            		$moderation = $this->variableApi->get('MUEternizerModule', 'moderate');
+            		$userId = $this->currentUserApi->get('uid');
+            		switch ($moderation) {
+            			case 'all':
+            				if ($userId != 2) {
+            					$entity->setWorkflowState('waiting');
+            				} else {
+            					$entity->setWorkflowState('approved');
+            				}
+            				break;
+            			case 'guests':
+            				if ($userId == 1) {
+            					$entity->setWorkflowState('waiting');
+            				} else {
+            					$entity->setWorkflowState('approved');
+            				}
+            				break;
+            			case 'nothing':
+            				$entity->setWorkflowState('approved');
+            				break;
+            		}
+            	}
                 $entityManager->persist($entity);
             }
             $entityManager->flush();
