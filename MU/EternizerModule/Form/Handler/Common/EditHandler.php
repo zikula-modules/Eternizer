@@ -20,19 +20,5 @@ use MU\EternizerModule\Form\Handler\Common\Base\AbstractEditHandler;
  */
 abstract class EditHandler extends AbstractEditHandler
 {
-    /**
-     * Initialise existing entity for editing.
-     *
-     * @return EntityAccess|null Desired entity instance or null
-     */
-    protected function initEntityForEditing()
-    {
-    	$entity = parent::initEntityForEditing();
-    	$currentuser = $this->currentUserApi->get('uid');
-    	if ($currentuser == $entity->getCreatedBy()->getUid()) {
-            return $entity;
-    	} else {
-    		return false;
-    	}
-    }
+
 }

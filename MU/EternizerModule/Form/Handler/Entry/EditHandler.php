@@ -35,19 +35,20 @@ class EditHandler extends AbstractEditHandler
      */
     protected function initEntityForEditing()
     {
-    	$container = \ServiceUtil::getManager();    	
-        //$selectionHelper = $container->get('mu_eternizer_module.selection_helper');
+    	$container = \ServiceUtil::getManager();  
+    	$currentUserApi = $container->get('zikula_users_module.current_user');
+    	$currentUser = $currentUserApi->get('uid');
+
         $entity = $this->entityFactory->getRepository('entry')->selectById($this->idValue);
-        //$entity = $selectionHelper->getEntity($this->objectType, $this->idValues);
 
         if (null === $entity) {
             throw new NotFoundHttpException($this->__('No such item.'));
         }
 
         $controllerHelper = $container->get('mu_eternizer_module.controller_helper');
-        $editEntryAllowed = $controllerHelper->editEntry($entity['id'], $entity['createdBy_id'], $entity['createdDate'], 2);
+        $editEntryAllowed = $controllerHelper->editEntry($entity['id'], $entity->getCreatedBy()->getUid(), $entity['createdDate'], 2);
         
-        if ($editEntryAllowed == false && \UserUtil::getVar('uid') != 2) {
+        if (($editEntryAllowed == false || $currentUser < 2) && $this->templateParameters['routeArea'] != 'admin') {
         	$url = $this->router->generate('mueternizermodule_entry_view');
         	return \System::redirect($url);
         }
@@ -59,6 +60,10 @@ class EditHandler extends AbstractEditHandler
         $session = $container->get('session');
         if ($simpleCaptcha && $session->has('eternizerCaptcha')) {      
         	$session->del('eternizerCaptcha');
+        }
+        
+        if ($currentUser != $entity->getCreatedBy()->getUid() && $this->templateParameters['routeArea'] != 'admin') {
+        	return false;
         }
         
         return $entity;
