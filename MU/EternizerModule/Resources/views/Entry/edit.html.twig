@@ -38,9 +38,15 @@
             <div class="hidden">
                 {{ form_row(form.ip) }}
             </div>
+            {#% if uid > 1 %}
+            <div class="hidden">
+            {% endif %#}
             {{ form_row(form.name) }}
             {{ form_row(form.email) }}
             {{ form_row(form.homepage) }}
+            {#% if uid > 1 %}
+            </div>
+            {% endif %#}
             {{ form_row(form.location) }}
             {{ form_row(form.text) }}
             {% if routeArea == '' %}
@@ -96,22 +102,14 @@
         {% endif %}
         </div>
         
-        <div class="hidden">
-        {# include return control #}
-        {% if mode == 'create' %}
-            <fieldset>
-                <legend>{{ __('Return control') }}</legend>
-                {{ form_row(form.repeatCreation) }}
-            </fieldset>
-        {% endif %}
-        </div>
-        </div>
-        
         {# include possible submit actions #}
         <div class="form-group form-buttons">
             <div class="col-sm-offset-3 col-sm-9">
                 {% for action in actions %}
                     {{ form_widget(attribute(form, action.id)) }}
+                    {% if mode == 'create' and action.id == 'submit' and form.submitrepeat is defined %}
+                        {{ form_widget(attribute(form, 'submitrepeat')) }}
+                    {% endif %}
                 {% endfor %}
                 {{ form_widget(form.reset) }}
                 {{ form_widget(form.cancel) }}
