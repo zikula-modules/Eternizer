@@ -62,7 +62,10 @@
                                     {% endif %}
                                 {% endif %}
                             {% endif %}
-							{{ __f('created on %s', {'%s': entry.createdDate|date("d.m.Y H:i:s")}) }}
+							{{ __f('created on %s', {'%s': entry.createdDate|date("d.m.Y H:i")}) }}
+							{% if entry.updatedDate > entry.createdDate and entry.createdBy.getUid() == entry.updatedBy.getUid() and entry.createdBy.getUid() != 2 %}
+                                <span class="etz_updated"> | {{ __f('Updated on %s', {'%s': entry.updatedDate|date("d.m.Y H:i")}) }}</span>
+                            {% endif %}
                         </div>
                     </div>
 					{% set itemActions = knp_menu_get('MUEternizerModule:ItemActionsMenu:menu', [], { entity: entry, area: routeArea, context: 'view' }) %}
@@ -90,10 +93,6 @@
                             {{ entry.notes|safeHtml }}
                         </p>
                         {% endif %}
-                    {% endif %}
-                    {% if entry.updatedDate > entry.createdDate and entry.createdBy.getUid() == entry.updatedBy.getUid() and entry.createdBy.getUid() != 2 %}
-                        <br/>
-                        <span class="etz_updated">{{ __f('Updated on %s', {'%s': entry.updatedDate|date("d.m.Y")}) }}</span>
                     {% endif %}
                 </div>
             </div>
