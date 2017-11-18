@@ -7,10 +7,9 @@
         <h3 class="standard-fields">{{ __('Creation and update') }}</h3>
     {% endif %#}
     <dl class="propertylist">
-    {% if obj.createdBy|default and obj.createdBy.getUid() > 0 %}
-
+    {#% if obj.createdBy|default and obj.createdBy.getUid() > 1 %#}
         <dd class="avatar">{{ userAvatar(obj.createdBy.getUid(), {rating: 'g'}) }}</dd>
-    {% endif %}
+    {#% endif %#}
 
     </dl>
     {% if tabs|default(false) == true %}
