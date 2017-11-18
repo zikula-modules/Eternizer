@@ -294,6 +294,39 @@ class EntryController extends AbstractEntryController
     }
     
     /**
+     * This method includes the common implementation code for adminEdit() and edit().
+     */
+    protected function editInternal(Request $request, $isAdmin = false)
+    {
+    	// parameter specifying which type of objects we are treating
+    	$objectType = 'entry';
+    	$permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_EDIT;
+    	if (!$this->hasPermission('MUEternizerModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
+    		throw new AccessDeniedException();
+    	}
+    	$templateParameters = [
+    			'routeArea' => $isAdmin ? 'admin' : ''
+    	];
+    
+    	$controllerHelper = $this->get('mu_eternizer_module.controller_helper');
+    	$templateParameters = $controllerHelper->processEditActionParameters($objectType, $templateParameters);
+    
+    	// delegate form processing to the form handler
+    	$formHandler = $this->get('mu_eternizer_module.form.handler.entry');
+    	$result = $formHandler->processForm($templateParameters);
+    	if ($result instanceof RedirectResponse) {
+    		return $result;
+    	}
+    
+    	$templateParameters = $formHandler->getTemplateParameters();
+    	$currentUser = $this->get('zikula_users_module.current_user');
+    	$templateParameters['uid'] = $currentUser->get('uid');
+    
+    	// fetch and return the appropriate template
+    	return $this->get('mu_eternizer_module.view_helper')->processTemplate($objectType, 'edit', $templateParameters);
+    }
+    
+    /**
      * This method includes the common implementation code for adminView() and view().
      */
     protected function viewInternal(Request $request, $sort, $sortdir, $pos, $num, $isAdmin = false)
@@ -311,7 +344,7 @@ class EntryController extends AbstractEntryController
     	$viewHelper = $this->get('mu_eternizer_module.view_helper');
     	
     	// parameter for used sort order
-    	$modSortDir = $this->getVar('order');
+    	$modSortDir = $this->getVar('orderOfEntries');
     	if ($modSortDir != '') {
     		if ($modSortDir == 'descending') {
     			$sortdir = 'DESC';
@@ -348,6 +381,8 @@ class EntryController extends AbstractEntryController
     	]);
     	
     
+    	$currentUser = $this->get('zikula_users_module.current_user');
+    	$templateParameters['uid'] = $currentUser->get('uid');
     	$templateParameters = $controllerHelper->processViewActionParameters($objectType, $sortableColumns, $templateParameters, true);
     
     
