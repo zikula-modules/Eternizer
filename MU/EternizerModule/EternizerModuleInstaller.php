@@ -114,6 +114,14 @@ class EternizerModuleInstaller extends AbstractEternizerModuleInstaller
 		        $this->setVar('entryEntriesPerPage', 10);
 	        }
 	        $this->delVar('pagesize');
+	        
+	        $order = $this->getVar('order', 'descending');
+	        if ($order != '') {
+	        	$this->setVar('orderOfEntries', $order);
+	        } else {
+	        	$this->setVar('orderOfEntries', 'descending');
+	        }
+	        $this->delVar('order');
 	 
 	        $this->setVar('moderationGroupForEntries', 2);
 	        $this->addFlash('status', __('The group of adminstrators will get emails now, if someone submit an entry. The setting variable for an email was deleted! You are able to change the group of moderators in the settings of this module'));
