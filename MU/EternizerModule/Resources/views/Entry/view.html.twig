@@ -19,7 +19,6 @@
                 <div class="etz_avatar">{{ include('@MUEternizerModule/Helper/includeStandardFieldsDisplay2.html.twig', {obj: entry}) }}</div>
                 {% if entry.email is not empty or entry.homepage is not empty or entry.location is not empty %}
                     <dl class="etz_options">
-                    <div class="{{ entry.ip }}"></div>
                         {% if entry.email is not empty %}
                             <dt>{{ __('Email') }}</dt>
                             <dd>
@@ -43,7 +42,7 @@
                 <div class="etz_info">
                     <div class="etz_title">
                         <div class="etz_name">
-                            {% if entry.name is not empty %}
+                            {% if entry.name is not empty and uid == 1 %}
                                 <span class="etz_attr">{{ entry.name|safeHtml }}</span>
                             {% else %}
 							{% set guest = getModVar('ZikulaUsersModule', 'anonymous') %}
@@ -53,7 +52,11 @@
                                 {% else %}
                                     {% if ownerName is not empty %}
                                     {% set profileLink = entry.createdBy.getUid()|profileLinkByUserId() %}
+                                    {% if profileLink is not empty %}
+                                        {{ profileLink|raw }}
+                                    {% else %}
                                         {{ ownerName|safeHtml }}
+                                    {% endif %}
                                      {% else %}
                                         {{ guest|safeHtml }}
                                     {% endif %}
@@ -67,7 +70,7 @@
                         {% if itemActions|length > 0 %}
 						{#% set userid = mueternizermodule_userVar('uid') %#}
 						{% set editentries = getModVar('MUEternizerModule', 'editentries') %}
-                            {% if entry.createdBy.getUid() == 2 and entry.createdBy.getUid() > 1 and editentries == 1 %}
+                            {% if entry.createdBy.getUid() == uid and entry.createdBy.getUid() > 1 and editentries == 1 %}
                             <div class="eternizer-user-entry-edit">{% set out = mueternizermodule_editEntry(entry.id, entry.createdBy.getUid(), entry.createdDate) %}{{ out|raw }}</div>
                                 {#% for option in itemActions %}
                                     <a href="{{ option.url }}" title="{{ option.linkTitle|e('html_attr') }}" role="menuitem" tabindex="-1" class="fa fa-{{ option.icon }}">{{ option.linkText }}</a>
