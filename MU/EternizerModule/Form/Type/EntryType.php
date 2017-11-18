@@ -28,7 +28,7 @@ class EntryType extends AbstractEntryType
 	 * @param FormBuilderInterface $builder The form builder
 	 * @param array                $options The options
 	 */
-	public function addEntityFields(FormBuilderInterface $builder, array $options)
+	public function addEntityFields(FormBuilderInterface $builder, array $options = [])
 	{
     parent::addEntityFields($builder, $options);
     $builder->add('captcha', TextType::class, [
