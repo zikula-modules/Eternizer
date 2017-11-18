@@ -234,7 +234,7 @@ abstract class AbstractSearchHelper implements SearchableInterface
     /**
      * Returns list of supported search types.
      *
-     * @return array
+     * @return array List of search types
      */
     protected function getSearchTypes()
     {
@@ -269,13 +269,13 @@ abstract class AbstractSearchHelper implements SearchableInterface
      * Construct a QueryBuilder Where orX|andX Expr instance.
      *
      * @param QueryBuilder $qb
-     * @param array $words the words to query for
-     * @param array $fields
+     * @param string[] $words  List of words to query for
+     * @param string[] $fields List of fields to include into query
      * @param string $searchtype AND|OR|EXACT
      *
      * @return null|Composite
      */
-    protected function formatWhere(QueryBuilder $qb, array $words, array $fields, $searchtype = 'AND')
+    protected function formatWhere(QueryBuilder $qb, array $words = [], array $fields = [], $searchtype = 'AND')
     {
         if (empty($words) || empty($fields)) {
             return null;

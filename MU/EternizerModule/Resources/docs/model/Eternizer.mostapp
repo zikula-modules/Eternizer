@@ -62,35 +62,42 @@ application "Eternizer" {
 			}
 			variables {
 				varContainer "Variables" {
-					vars {
-                listVar "order" {
-							items {
-								listVarItem default "descending",
-								listVarItem "ascending"
-							}
-						},
-						listVar "moderate" {
-							items {
-								listVarItem "nothing",
-								listVarItem default "guests",
-								listVarItem "all"
-							}
-						},
-						listVar "formposition" {
-							value ""
-							items {
-								listVarItem "above",
-								listVarItem "below",
-                        listVarItem default "menue"
-							}
-						},
-						boolVar "ipsave" { value "0" } ,
-						boolVar "editentries" { value "0" } ,
-						intVar "period" {
-							documentation "Here we can decide how long a user may edit his entry; input of hours"
-						value "" } ,
-						boolVar "simplecaptcha"
-					{ value "0" } }
-				}
-			}
-			}
+					sortOrder 1
+            fields {
+                list "orderOfEntries" {
+                    items {
+                        listItem "Ascending" ( "ascending" ),
+                        listItem "Descending" ( "descending" )
+                    }
+                },
+                list "moderate" {
+                    items {
+                        listItem "Nothing" ( "nothing" ),
+                        listItem "Guests" ( "guests" ),
+                        listItem "All" ( "all" )
+                    }
+                },
+                list "formposition" {
+                    items {
+                        listItem "Above" ( "above" ),
+                        listItem "Below" ( "below" ),
+                        listItem "Menue" ( "menue" )
+                    }
+                },
+                boolean "ipsave" {
+                    mandatory false
+                },
+                boolean "editentries" {
+                    mandatory false
+                },
+                integer "period" {
+                    defaultValue "0"
+                    mandatory false
+                },
+                boolean "simplecaptcha" {
+                    mandatory false
+                }
+            }
+        }
+    }
+}

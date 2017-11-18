@@ -1,15 +1,13 @@
 'use strict';
 
-function mUEternizerCapitaliseFirstLetter(string)
-{
+function mUEternizerCapitaliseFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.substring(1);
 }
 
 /**
  * Initialise the quick navigation form in list views.
  */
-function mUEternizerInitQuickNavigation()
-{
+function mUEternizerInitQuickNavigation() {
     var quickNavForm;
     var objectType;
 
@@ -34,8 +32,7 @@ function mUEternizerInitQuickNavigation()
 /**
  * Simulates a simple alert using bootstrap.
  */
-function mUEternizerSimpleAlert(anchorElement, title, content, alertId, cssClass)
-{
+function mUEternizerSimpleAlert(anchorElement, title, content, alertId, cssClass) {
     var alertBox;
 
     alertBox = ' \
@@ -56,8 +53,7 @@ function mUEternizerSimpleAlert(anchorElement, title, content, alertId, cssClass
 /**
  * Initialises the mass toggle functionality for admin view pages.
  */
-function mUEternizerInitMassToggle()
-{
+function mUEternizerInitMassToggle() {
     if (jQuery('.mueternizer-mass-toggle').length > 0) {
         jQuery('.mueternizer-mass-toggle').unbind('click').click(function (event) {
             if (jQuery('.table.fixed-columns').length > 0) {
@@ -73,10 +69,9 @@ function mUEternizerInitMassToggle()
 /**
  * Initialises fixed table columns.
  */
-function mUEternizerInitFixedColumns()
-{
+function mUEternizerInitFixedColumns() {
     jQuery('.table.fixed-columns').remove();
-    jQuery('.table').each(function() {
+    jQuery('.table').each(function () {
         var originalTable, fixedColumnsTable, fixedTableWidth;
 
         originalTable = jQuery(this);
@@ -105,8 +100,7 @@ function mUEternizerInitFixedColumns()
 /**
  * Creates a dropdown menu for the item actions.
  */
-function mUEternizerInitItemActions(context)
-{
+function mUEternizerInitItemActions(context) {
     var containerSelector;
     var containers;
     var listClasses;
@@ -143,7 +137,7 @@ function mUEternizerInitItemActions(context)
     containers.find('.dropdown-toggle').removeClass('hidden').dropdown();
 }
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
     var isViewPage;
     var isDisplayPage;
 

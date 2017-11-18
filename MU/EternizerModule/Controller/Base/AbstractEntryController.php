@@ -151,6 +151,15 @@ abstract class AbstractEntryController extends AbstractController
         
         $templateParameters = $controllerHelper->processViewActionParameters($objectType, $sortableColumns, $templateParameters, true);
         
+        // filter by permissions
+        $filteredEntities = [];
+        foreach ($templateParameters['items'] as $entry) {
+            if (!$this->hasPermission('MUEternizerModule:' . ucfirst($objectType) . ':', $entry->getKey() . '::', $permLevel)) {
+                continue;
+            }
+            $filteredEntities[] = $entry;
+        }
+        $templateParameters['items'] = $filteredEntities;
         
         // fetch and return the appropriate template
         return $viewHelper->processTemplate($objectType, 'view', $templateParameters);
@@ -201,6 +210,10 @@ abstract class AbstractEntryController extends AbstractController
         // create identifier for permission check
         $instanceId = $entry->getKey();
         if (!$this->hasPermission('MUEternizerModule:' . ucfirst($objectType) . ':', $instanceId . '::', $permLevel)) {
+            throw new AccessDeniedException();
+        }
+        
+        if ($entry->getWorkflowState() != 'approved' && !$this->hasPermission('MUEternizerModule:' . ucfirst($objectType) . ':', $instanceId . '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
         
@@ -445,7 +458,7 @@ abstract class AbstractEntryController extends AbstractController
      * This method includes the common implementation code for adminHandleSelectedEntriesAction() and handleSelectedEntriesAction().
      *
      * @param Request $request Current request instance
-     * @param Boolean $isAdmin Whether the admin area is used or not
+     * @param boolean $isAdmin Whether the admin area is used or not
      */
     protected function handleSelectedEntriesActionInternal(Request $request, $isAdmin = false)
     {

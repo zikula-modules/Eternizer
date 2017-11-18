@@ -373,7 +373,7 @@ abstract class AbstractNotificationHelper
     /**
      * Collects data used by the email templates.
      *
-     * @return array
+     * @return array Email template data
      */
     protected function prepareEmailData()
     {
@@ -393,15 +393,13 @@ abstract class AbstractNotificationHelper
         $displayUrl = $hasDisplayAction ? $this->router->generate($routePrefix . 'display', $urlArgs, true) : '';
         $editUrl = $hasEditAction ? $this->router->generate($routePrefix . 'edit', $urlArgs, true) : '';
     
-        $emailData = [
+        return [
             'name' => $this->entityDisplayHelper->getFormattedTitle($this->entity),
             'newState' => $stateInfo['text'],
             'remarks' => $remarks,
             'displayUrl' => $displayUrl,
             'editUrl' => $editUrl
         ];
-    
-        return $emailData;
     }
     
     /**

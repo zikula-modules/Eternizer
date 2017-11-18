@@ -12,17 +12,20 @@
 
 namespace MU\EternizerModule\Form\Type\Base;
 
-use Symfony\Component\Form\AbstractType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
-use Zikula\GroupsModule\Constant as GroupsConstant;
-use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
+use MU\EternizerModule\Form\Type\Field\MultiListType;
+use MU\EternizerModule\AppSettings;
+use MU\EternizerModule\Helper\ListEntriesHelper;
 
 /**
  * Configuration form type base class.
@@ -32,34 +35,22 @@ abstract class AbstractConfigType extends AbstractType
     use TranslatorTrait;
 
     /**
-     * @var array
+     * @var ListEntriesHelper
      */
-    protected $moduleVars;
+    protected $listHelper;
 
     /**
      * ConfigType constructor.
      *
-     * @param TranslatorInterface      $translator      Translator service instance
-     * @param object                   $moduleVars      Existing module vars
-     * @param GroupRepositoryInterface $groupRepository GroupRepository service instance
+     * @param TranslatorInterface $translator Translator service instance
+     * @param ListEntriesHelper $listHelper ListEntriesHelper service instance
      */
     public function __construct(
         TranslatorInterface $translator,
-        $moduleVars,
-        GroupRepositoryInterface $groupRepository
+        ListEntriesHelper $listHelper
     ) {
         $this->setTranslator($translator);
-        $this->moduleVars = $moduleVars;
-
-        // prepare group selector values
-        foreach (['moderationGroupForEntries'] as $groupFieldName) {
-            $groupId = intval($this->moduleVars[$groupFieldName]);
-            if ($groupId < 1) {
-                // fallback to admin group
-                $groupId = GroupsConstant::GROUP_ID_ADMIN;
-            }
-            $this->moduleVars[$groupFieldName] = $groupRepository->find($groupId);
-        }
+        $this->listHelper = $listHelper;
     }
 
     /**
@@ -82,23 +73,7 @@ abstract class AbstractConfigType extends AbstractType
         $this->addListViewsFields($builder, $options);
         $this->addIntegrationFields($builder, $options);
 
-        $builder
-            ->add('save', SubmitType::class, [
-                'label' => $this->__('Update configuration'),
-                'icon' => 'fa-check',
-                'attr' => [
-                    'class' => 'btn btn-success'
-                ]
-            ])
-            ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
-                'icon' => 'fa-times',
-                'attr' => [
-                    'class' => 'btn btn-default',
-                    'formnovalidate' => 'formnovalidate'
-                ]
-            ])
-        ;
+        $this->addSubmitButtons($builder, $options);
     }
 
     /**
@@ -107,90 +82,113 @@ abstract class AbstractConfigType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addVariablesFields(FormBuilderInterface $builder, array $options)
+    public function addVariablesFields(FormBuilderInterface $builder, array $options = [])
     {
-        $builder
-            ->add('order', ChoiceType::class, [
-                'label' => $this->__('Order') . ':',
-                'data' => isset($this->moduleVars['order']) ? $this->moduleVars['order'] : '',
-                'empty_data' => '',
-                'attr' => [
-                    'title' => $this->__('Choose the order.')
-                ],'choices' => [
-                    $this->__('Descending') => 'descending',
-                    $this->__('Ascending') => 'ascending'
-                ],
-                'choices_as_values' => true,
-                'multiple' => false
-            ])
-            ->add('moderate', ChoiceType::class, [
-                'label' => $this->__('Moderate') . ':',
-                'data' => isset($this->moduleVars['moderate']) ? $this->moduleVars['moderate'] : '',
-                'empty_data' => '',
-                'attr' => [
-                    'title' => $this->__('Choose the moderate.')
-                ],'choices' => [
-                    $this->__('Nothing') => 'nothing',
-                    $this->__('Guests') => 'guests',
-                    $this->__('All') => 'all'
-                ],
-                'choices_as_values' => true,
-                'multiple' => false
-            ])
-            ->add('formposition', ChoiceType::class, [
-                'label' => $this->__('Formposition') . ':',
-                'data' => isset($this->moduleVars['formposition']) ? $this->moduleVars['formposition'] : '',
-                'empty_data' => '',
-                'attr' => [
-                    'title' => $this->__('Choose the formposition.')
-                ],'choices' => [
-                    $this->__('Above') => 'above',
-                    $this->__('Below') => 'below',
-                    $this->__('Menue') => 'menue'
-                ],
-                'choices_as_values' => true,
-                'multiple' => false
-            ])
-            ->add('ipsave', CheckboxType::class, [
-                'label' => $this->__('Ipsave') . ':',
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['ipsave']) ? $this->moduleVars['ipsave'] : false),
-                'attr' => [
-                    'title' => $this->__('The ipsave option.')
-                ],
-            ])
-            ->add('editentries', CheckboxType::class, [
-                'label' => $this->__('Editentries') . ':',
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['editentries']) ? $this->moduleVars['editentries'] : false),
-                'attr' => [
-                    'title' => $this->__('The editentries option.')
-                ],
-            ])
-            ->add('period', IntegerType::class, [
-                'label' => $this->__('Period') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Here we can decide how long a user may edit his entry; input of hours')
-                ],
-                'help' => $this->__('Here we can decide how long a user may edit his entry; input of hours'),
-                'required' => false,
-                'data' => isset($this->moduleVars['period']) ? intval($this->moduleVars['period']) : intval(),
-                'empty_data' => intval(''),
-                'attr' => [
-                    'maxlength' => 255,
-                    'title' => $this->__('Enter the period.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0
-            ])
-            ->add('simplecaptcha', CheckboxType::class, [
-                'label' => $this->__('Simplecaptcha') . ':',
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['simplecaptcha']) ? $this->moduleVars['simplecaptcha'] : false),
-                'attr' => [
-                    'title' => $this->__('The simplecaptcha option.')
-                ],
-            ])
-        ;
+        
+        $listEntries = $this->listHelper->getEntries('appSettings', 'orderOfEntries');
+        $choices = [];
+        $choiceAttributes = [];
+        foreach ($listEntries as $entry) {
+            $choices[$entry['text']] = $entry['value'];
+            $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
+        }
+        $builder->add('orderOfEntries', ChoiceType::class, [
+            'label' => $this->__('Order of entries') . ':',
+            'empty_data' => '',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('Choose the order of entries.')
+            ],
+            'required' => true,
+            'choices' => $choices,
+            'choices_as_values' => true,
+            'choice_attr' => $choiceAttributes,
+            'multiple' => false,
+            'expanded' => false
+        ]);
+        
+        $listEntries = $this->listHelper->getEntries('appSettings', 'moderate');
+        $choices = [];
+        $choiceAttributes = [];
+        foreach ($listEntries as $entry) {
+            $choices[$entry['text']] = $entry['value'];
+            $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
+        }
+        $builder->add('moderate', ChoiceType::class, [
+            'label' => $this->__('Moderate') . ':',
+            'empty_data' => '',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('Choose the moderate.')
+            ],
+            'required' => true,
+            'choices' => $choices,
+            'choices_as_values' => true,
+            'choice_attr' => $choiceAttributes,
+            'multiple' => false,
+            'expanded' => false
+        ]);
+        
+        $listEntries = $this->listHelper->getEntries('appSettings', 'formposition');
+        $choices = [];
+        $choiceAttributes = [];
+        foreach ($listEntries as $entry) {
+            $choices[$entry['text']] = $entry['value'];
+            $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
+        }
+        $builder->add('formposition', ChoiceType::class, [
+            'label' => $this->__('Formposition') . ':',
+            'empty_data' => '',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('Choose the formposition.')
+            ],
+            'required' => true,
+            'choices' => $choices,
+            'choices_as_values' => true,
+            'choice_attr' => $choiceAttributes,
+            'multiple' => false,
+            'expanded' => false
+        ]);
+        
+        $builder->add('ipsave', CheckboxType::class, [
+            'label' => $this->__('Ipsave') . ':',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('The ipsave option')
+            ],
+            'required' => false,
+        ]);
+        
+        $builder->add('editentries', CheckboxType::class, [
+            'label' => $this->__('Editentries') . ':',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('The editentries option')
+            ],
+            'required' => false,
+        ]);
+        
+        $builder->add('period', IntegerType::class, [
+            'label' => $this->__('Period') . ':',
+            'empty_data' => '0',
+            'attr' => [
+                'maxlength' => 11,
+                'class' => '',
+                'title' => $this->__('Enter the period.') . ' ' . $this->__('Only digits are allowed.')
+            ],
+            'required' => false,
+            'scale' => 0
+        ]);
+        
+        $builder->add('simplecaptcha', CheckboxType::class, [
+            'label' => $this->__('Simplecaptcha') . ':',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('The simplecaptcha option')
+            ],
+            'required' => false,
+        ]);
     }
 
     /**
@@ -199,26 +197,28 @@ abstract class AbstractConfigType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addModerationFields(FormBuilderInterface $builder, array $options)
+    public function addModerationFields(FormBuilderInterface $builder, array $options = [])
     {
-        $builder
-            ->add('moderationGroupForEntries', EntityType::class, [
-                'label' => $this->__('Moderation group for entries') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Used to determine moderator user accounts for sending email notifications.')
-                ],
-                'help' => $this->__('Used to determine moderator user accounts for sending email notifications.'),
-                'data' => isset($this->moduleVars['moderationGroupForEntries']) ? $this->moduleVars['moderationGroupForEntries'] : '',
-                'attr' => [
-                    'maxlength' => 255,
-                    'title' => $this->__('Choose the moderation group for entries.')
-                ],// Zikula core should provide a form type for this to hide entity details
-                'class' => 'ZikulaGroupsModule:GroupEntity',
-                'choice_label' => 'name',
-                'choice_value' => 'gid'
-            ])
-        ;
+        
+        $builder->add('moderationGroupForEntries', EntityType::class, [
+            'label' => $this->__('Moderation group for entries') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Used to determine moderator user accounts for sending email notifications.')
+            ],
+            'help' => $this->__('Used to determine moderator user accounts for sending email notifications.'),
+            'empty_data' => '2',
+            'attr' => [
+                'maxlength' => 255,
+                'class' => '',
+                'title' => $this->__('Choose the moderation group for entries')
+            ],
+            'required' => true,
+            // Zikula core should provide a form type for this to hide entity details
+            'class' => 'ZikulaGroupsModule:GroupEntity',
+            'choice_label' => 'name',
+            'choice_value' => 'gid'
+        ]);
     }
 
     /**
@@ -227,38 +227,39 @@ abstract class AbstractConfigType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addListViewsFields(FormBuilderInterface $builder, array $options)
+    public function addListViewsFields(FormBuilderInterface $builder, array $options = [])
     {
-        $builder
-            ->add('entryEntriesPerPage', IntegerType::class, [
-                'label' => $this->__('Entry entries per page') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('The amount of entries shown per page')
-                ],
-                'help' => $this->__('The amount of entries shown per page'),
-                'required' => false,
-                'data' => isset($this->moduleVars['entryEntriesPerPage']) ? intval($this->moduleVars['entryEntriesPerPage']) : intval(10),
-                'empty_data' => intval('10'),
-                'attr' => [
-                    'maxlength' => 255,
-                    'title' => $this->__('Enter the entry entries per page.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0
-            ])
-            ->add('linkOwnEntriesOnAccountPage', CheckboxType::class, [
-                'label' => $this->__('Link own entries on account page') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Whether to add a link to entries of the current user on his account page')
-                ],
-                'help' => $this->__('Whether to add a link to entries of the current user on his account page'),
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['linkOwnEntriesOnAccountPage']) ? $this->moduleVars['linkOwnEntriesOnAccountPage'] : true),
-                'attr' => [
-                    'title' => $this->__('The link own entries on account page option.')
-                ],
-            ])
-        ;
+        
+        $builder->add('entryEntriesPerPage', IntegerType::class, [
+            'label' => $this->__('Entry entries per page') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('The amount of entries shown per page')
+            ],
+            'help' => $this->__('The amount of entries shown per page'),
+            'empty_data' => '10',
+            'attr' => [
+                'maxlength' => 11,
+                'class' => '',
+                'title' => $this->__('Enter the entry entries per page.') . ' ' . $this->__('Only digits are allowed.')
+            ],
+            'required' => true,
+            'scale' => 0
+        ]);
+        
+        $builder->add('linkOwnEntriesOnAccountPage', CheckboxType::class, [
+            'label' => $this->__('Link own entries on account page') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Whether to add a link to entries of the current user on his account page')
+            ],
+            'help' => $this->__('Whether to add a link to entries of the current user on his account page'),
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('The link own entries on account page option')
+            ],
+            'required' => false,
+        ]);
     }
 
     /**
@@ -267,27 +268,69 @@ abstract class AbstractConfigType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addIntegrationFields(FormBuilderInterface $builder, array $options)
+    public function addIntegrationFields(FormBuilderInterface $builder, array $options = [])
     {
-        $builder
-            ->add('enabledFinderTypes', ChoiceType::class, [
-                'label' => $this->__('Enabled finder types') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Which sections are supported in the Finder component (used by Scribite plug-ins).')
-                ],
-                'help' => $this->__('Which sections are supported in the Finder component (used by Scribite plug-ins).'),
-                'data' => isset($this->moduleVars['enabledFinderTypes']) ? $this->moduleVars['enabledFinderTypes'] : '',
-                'empty_data' => '',
-                'attr' => [
-                    'title' => $this->__('Choose the enabled finder types.')
-                ],'choices' => [
-                    $this->__('Entry') => 'entry'
-                ],
-                'choices_as_values' => true,
-                'multiple' => true
-            ])
-        ;
+        
+        $listEntries = $this->listHelper->getEntries('appSettings', 'enabledFinderTypes');
+        $choices = [];
+        $choiceAttributes = [];
+        foreach ($listEntries as $entry) {
+            $choices[$entry['text']] = $entry['value'];
+            $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
+        }
+        $builder->add('enabledFinderTypes', MultiListType::class, [
+            'label' => $this->__('Enabled finder types') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Which sections are supported in the Finder component (used by Scribite plug-ins).')
+            ],
+            'help' => $this->__('Which sections are supported in the Finder component (used by Scribite plug-ins).'),
+            'empty_data' => '',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('Choose the enabled finder types.')
+            ],
+            'required' => false,
+            'placeholder' => $this->__('Choose an option'),
+            'choices' => $choices,
+            'choices_as_values' => true,
+            'choice_attr' => $choiceAttributes,
+            'multiple' => true,
+            'expanded' => false
+        ]);
+    }
+
+    /**
+     * Adds submit buttons.
+     *
+     * @param FormBuilderInterface $builder The form builder
+     * @param array                $options The options
+     */
+    public function addSubmitButtons(FormBuilderInterface $builder, array $options = [])
+    {
+        $builder->add('save', SubmitType::class, [
+            'label' => $this->__('Update configuration'),
+            'icon' => 'fa-check',
+            'attr' => [
+                'class' => 'btn btn-success'
+            ]
+        ]);
+        $builder->add('reset', ResetType::class, [
+            'label' => $this->__('Reset'),
+            'icon' => 'fa-refresh',
+            'attr' => [
+                'class' => 'btn btn-default',
+                'formnovalidate' => 'formnovalidate'
+            ]
+        ]);
+        $builder->add('cancel', SubmitType::class, [
+            'label' => $this->__('Cancel'),
+            'icon' => 'fa-times',
+            'attr' => [
+                'class' => 'btn btn-default',
+                'formnovalidate' => 'formnovalidate'
+            ]
+        ]);
     }
 
     /**
@@ -296,5 +339,17 @@ abstract class AbstractConfigType extends AbstractType
     public function getBlockPrefix()
     {
         return 'mueternizermodule_config';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver
+            ->setDefaults([
+                // define class for underlying data
+                'data_class' => AppSettings::class,
+            ]);
     }
 }

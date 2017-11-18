@@ -295,7 +295,7 @@ abstract class AbstractEditHandler
      *
      * @throws RuntimeException Thrown if the workflow actions can not be determined
      */
-    public function processForm(array $templateParameters)
+    public function processForm(array $templateParameters = [])
     {
         $this->templateParameters = $templateParameters;
     
@@ -578,8 +578,8 @@ abstract class AbstractEditHandler
     /**
      * Get success or error message for default operations.
      *
-     * @param array   $args    arguments from handleCommand method
-     * @param Boolean $success true if this is a success, false for default error
+     * @param array   $args    List of arguments from handleCommand method
+     * @param boolean $success Becomes true if this is a success, false for default error
      *
      * @return String desired status or error message
      */
@@ -616,8 +616,8 @@ abstract class AbstractEditHandler
     /**
      * Add success or error message to session.
      *
-     * @param array   $args    arguments from handleCommand method
-     * @param Boolean $success true if this is a success, false for default error
+     * @param array   $args    List of arguments from handleCommand method
+     * @param boolean $success Becomes true if this is a success, false for default error
      *
      * @throws RuntimeException Thrown if executing the workflow action fails
      */
@@ -666,9 +666,9 @@ abstract class AbstractEditHandler
     /**
      * This method executes a certain workflow action.
      *
-     * @param array $args Arguments from handleCommand method
+     * @param array $args List of arguments from handleCommand method
      *
-     * @return bool Whether everything worked well or not
+     * @return boolean Whether everything worked well or not
      */
     public function applyAction(array $args = [])
     {
@@ -679,7 +679,7 @@ abstract class AbstractEditHandler
     /**
      * Prepares properties related to advanced workflows.
      *
-     * @param bool $enterprise Whether the enterprise workflow is used instead of the standard workflow
+     * @param boolean $enterprise Whether the enterprise workflow is used instead of the standard workflow
      *
      * @return array List of additional form options
      */

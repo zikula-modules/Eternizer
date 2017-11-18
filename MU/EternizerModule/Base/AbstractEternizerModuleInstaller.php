@@ -43,17 +43,17 @@ abstract class AbstractEternizerModuleInstaller extends AbstractExtensionInstall
         }
     
         // set up all our vars with initial values
-        $this->setVar('order',  'descending' );
-        $this->setVar('moderate',  'guests' );
-        $this->setVar('formposition',  'menue' );
+        $this->setVar('orderOfEntries', '');
+        $this->setVar('moderate', '');
+        $this->setVar('formposition', '');
         $this->setVar('ipsave', false);
         $this->setVar('editentries', false);
         $this->setVar('period', 0);
         $this->setVar('simplecaptcha', false);
-        $this->setVar('moderationGroupForEntries', '2');
-        $this->setVar('entryEntriesPerPage', '10');
+        $this->setVar('moderationGroupForEntries', 2);
+        $this->setVar('entryEntriesPerPage', 10);
         $this->setVar('linkOwnEntriesOnAccountPage', true);
-        $this->setVar('enabledFinderTypes', [ 'entry' ]);
+        $this->setVar('enabledFinderTypes', 'entry');
     
         // initialisation successful
         return true;
@@ -285,7 +285,7 @@ abstract class AbstractEternizerModuleInstaller extends AbstractExtensionInstall
     /**
      * Build array with all entity classes for MUEternizerModule.
      *
-     * @return array list of class names
+     * @return string[] List of class names
      */
     protected function listEntityClasses()
     {

@@ -7,8 +7,7 @@ mUEternizerModule.itemSelector.items = {};
 mUEternizerModule.itemSelector.baseId = 0;
 mUEternizerModule.itemSelector.selectedId = 0;
 
-mUEternizerModule.itemSelector.onLoad = function (baseId, selectedId)
-{
+mUEternizerModule.itemSelector.onLoad = function (baseId, selectedId) {
     mUEternizerModule.itemSelector.baseId = baseId;
     mUEternizerModule.itemSelector.selectedId = selectedId;
 
@@ -26,15 +25,13 @@ mUEternizerModule.itemSelector.onLoad = function (baseId, selectedId)
     mUEternizerModule.itemSelector.getItemList();
 };
 
-mUEternizerModule.itemSelector.onParamChanged = function ()
-{
+mUEternizerModule.itemSelector.onParamChanged = function () {
     jQuery('#ajaxIndicator').removeClass('hidden');
 
     mUEternizerModule.itemSelector.getItemList();
 };
 
-mUEternizerModule.itemSelector.getItemList = function ()
-{
+mUEternizerModule.itemSelector.getItemList = function () {
     var baseId;
     var params;
 
@@ -51,7 +48,7 @@ mUEternizerModule.itemSelector.getItemList = function ()
         params[catidsMain] = jQuery('#' + baseId + '_catidsMain').val();
     }
 
-    jQuery.getJSON(Routing.generate('mueternizermodule_ajax_getitemlistfinder'), params, function( data ) {
+    jQuery.getJSON(Routing.generate('mueternizermodule_ajax_getitemlistfinder'), params, function (data) {
         var baseId;
 
         baseId = mUEternizerModule.itemSelector.baseId;
@@ -62,8 +59,7 @@ mUEternizerModule.itemSelector.getItemList = function ()
     });
 };
 
-mUEternizerModule.itemSelector.updateItemDropdownEntries = function ()
-{
+mUEternizerModule.itemSelector.updateItemDropdownEntries = function () {
     var baseId, itemSelector, items, i, item;
 
     baseId = mUEternizerModule.itemSelector.baseId;
@@ -81,8 +77,7 @@ mUEternizerModule.itemSelector.updateItemDropdownEntries = function ()
     }
 };
 
-mUEternizerModule.itemSelector.updatePreview = function ()
-{
+mUEternizerModule.itemSelector.updatePreview = function () {
     var baseId, items, selectedElement, i;
 
     baseId = mUEternizerModule.itemSelector.baseId;
@@ -111,8 +106,7 @@ mUEternizerModule.itemSelector.updatePreview = function ()
     }
 };
 
-mUEternizerModule.itemSelector.onItemChanged = function ()
-{
+mUEternizerModule.itemSelector.onItemChanged = function () {
     var baseId, itemSelector, preview;
 
     baseId = mUEternizerModule.itemSelector.baseId;
@@ -123,7 +117,7 @@ mUEternizerModule.itemSelector.onItemChanged = function ()
     mUEternizerModule.itemSelector.selectedId = jQuery('#' + baseId + 'Id').val();
 };
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
     var infoElem;
 
     infoElem = jQuery('#itemSelectorInfo');

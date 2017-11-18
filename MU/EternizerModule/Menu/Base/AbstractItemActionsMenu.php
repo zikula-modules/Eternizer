@@ -42,11 +42,11 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
      * Builds the menu.
      *
      * @param FactoryInterface $factory Menu factory
-     * @param array            $options Additional options
+     * @param array            $options List of additional options
      *
      * @return MenuItem The assembled menu
      */
-    public function menu(FactoryInterface $factory, array $options)
+    public function menu(FactoryInterface $factory, array $options = [])
     {
         $menu = $factory->createItem('itemActions');
         if (!isset($options['entity']) || !isset($options['area']) || !isset($options['context'])) {
@@ -71,41 +71,46 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
             $routePrefix = 'mueternizermodule_entry_';
         
             if ($routeArea == 'admin') {
-                $menu->addChild($this->__('Preview'), [
+                $title = $this->__('Preview', 'mueternizermodule');
+                $menu->addChild($title, [
                     'route' => $routePrefix . 'display',
                     'routeParameters' => $entity->createUrlArgs()
                 ])->setAttribute('icon', 'fa fa-search-plus');
-                $menu[$this->__('Preview')]->setLinkAttribute('target', '_blank');
-                $menu[$this->__('Preview')]->setLinkAttribute('title', $this->__('Open preview page'));
+                $menu[$title]->setLinkAttribute('target', '_blank');
+                $menu[$title]->setLinkAttribute('title', $this->__('Open preview page', 'mueternizermodule'));
             }
             if ($context != 'display') {
-                $menu->addChild($this->__('Details'), [
+                $title = $this->__('Details', 'mueternizermodule');
+                $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'display',
                     'routeParameters' => $entity->createUrlArgs()
                 ])->setAttribute('icon', 'fa fa-eye');
-                $menu[$this->__('Details')]->setLinkAttribute('title', str_replace('"', '', $entityDisplayHelper->getFormattedTitle($entity)));
+                $menu[$title]->setLinkAttribute('title', str_replace('"', '', $entityDisplayHelper->getFormattedTitle($entity)));
             }
             if ($permissionApi->hasPermission($component, $instance, ACCESS_EDIT)) {
-                $menu->addChild($this->__('Edit'), [
+                $title = $this->__('Edit', 'mueternizermodule');
+                $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'edit',
                     'routeParameters' => $entity->createUrlArgs()
                 ])->setAttribute('icon', 'fa fa-pencil-square-o');
-                $menu[$this->__('Edit')]->setLinkAttribute('title', $this->__('Edit this entry'));
-                $menu->addChild($this->__('Reuse'), [
+                $menu[$title]->setLinkAttribute('title', $this->__('Edit this entry', 'mueternizermodule'));
+                $title = $this->__('Reuse', 'mueternizermodule');
+                $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'edit',
                     'routeParameters' => ['astemplate' => $entity->getKey()]
                 ])->setAttribute('icon', 'fa fa-files-o');
-                $menu[$this->__('Reuse')]->setLinkAttribute('title', $this->__('Reuse for new entry'));
+                $menu[$title]->setLinkAttribute('title', $this->__('Reuse for new entry', 'mueternizermodule'));
             }
             if ($permissionApi->hasPermission($component, $instance, ACCESS_DELETE)) {
-                $menu->addChild($this->__('Delete'), [
+                $title = $this->__('Delete', 'mueternizermodule');
+                $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'delete',
                     'routeParameters' => $entity->createUrlArgs()
                 ])->setAttribute('icon', 'fa fa-trash-o');
-                $menu[$this->__('Delete')]->setLinkAttribute('title', $this->__('Delete this entry'));
+                $menu[$title]->setLinkAttribute('title', $this->__('Delete this entry', 'mueternizermodule'));
             }
             if ($context == 'display') {
-                $title = $this->__('Back to overview');
+                $title = $this->__('Back to overview', 'mueternizermodule');
                 $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'view'
                 ])->setAttribute('icon', 'fa fa-reply');

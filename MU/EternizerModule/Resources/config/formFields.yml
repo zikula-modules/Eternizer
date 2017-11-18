@@ -1,2 +1,9 @@
 services:
     # Form field types
+    
+    mu_eternizer_module.form.type.field.multilist:
+        class: MU\EternizerModule\Form\Type\Field\MultiListType
+        arguments:
+            - "@mu_eternizer_module.listentries_helper"
+        tags:
+            - { name: form.type }

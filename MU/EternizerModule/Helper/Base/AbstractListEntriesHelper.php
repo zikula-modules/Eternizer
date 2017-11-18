@@ -137,6 +137,22 @@ abstract class AbstractListEntriesHelper
                         break;
                 }
                 break;
+            case 'appSettings':
+                switch ($fieldName) {
+                    case 'orderOfEntries':
+                        $result = false;
+                        break;
+                    case 'moderate':
+                        $result = false;
+                        break;
+                    case 'formposition':
+                        $result = false;
+                        break;
+                    case 'enabledFinderTypes':
+                        $result = true;
+                        break;
+                }
+                break;
         }
     
         return $result;
@@ -163,6 +179,22 @@ abstract class AbstractListEntriesHelper
                 switch ($fieldName) {
                     case 'workflowState':
                         $entries = $this->getWorkflowStateEntriesForEntry();
+                        break;
+                }
+                break;
+            case 'appSettings':
+                switch ($fieldName) {
+                    case 'orderOfEntries':
+                        $entries = $this->getOrderOfEntriesEntriesForAppSettings();
+                        break;
+                    case 'moderate':
+                        $entries = $this->getModerateEntriesForAppSettings();
+                        break;
+                    case 'formposition':
+                        $entries = $this->getFormpositionEntriesForAppSettings();
+                        break;
+                    case 'enabledFinderTypes':
+                        $entries = $this->getEnabledFinderTypesEntriesForAppSettings();
                         break;
                 }
                 break;
@@ -207,6 +239,117 @@ abstract class AbstractListEntriesHelper
             'title'   => $this->__('Shows all items except these which are approved'),
             'image'   => '',
             'default' => false
+        ];
+    
+        return $states;
+    }
+    
+    /**
+     * Get 'order of entries' list entries.
+     *
+     * @return array Array with desired list entries
+     */
+    public function getOrderOfEntriesEntriesForAppSettings()
+    {
+        $states = [];
+        $states[] = [
+            'value'   => 'ascending',
+            'text'    => $this->__('Ascending'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => 'descending',
+            'text'    => $this->__('Descending'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+    
+        return $states;
+    }
+    
+    /**
+     * Get 'moderate' list entries.
+     *
+     * @return array Array with desired list entries
+     */
+    public function getModerateEntriesForAppSettings()
+    {
+        $states = [];
+        $states[] = [
+            'value'   => 'nothing',
+            'text'    => $this->__('Nothing'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => 'guests',
+            'text'    => $this->__('Guests'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => 'all',
+            'text'    => $this->__('All'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+    
+        return $states;
+    }
+    
+    /**
+     * Get 'formposition' list entries.
+     *
+     * @return array Array with desired list entries
+     */
+    public function getFormpositionEntriesForAppSettings()
+    {
+        $states = [];
+        $states[] = [
+            'value'   => 'above',
+            'text'    => $this->__('Above'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => 'below',
+            'text'    => $this->__('Below'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => 'menue',
+            'text'    => $this->__('Menue'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+    
+        return $states;
+    }
+    
+    /**
+     * Get 'enabled finder types' list entries.
+     *
+     * @return array Array with desired list entries
+     */
+    public function getEnabledFinderTypesEntriesForAppSettings()
+    {
+        $states = [];
+        $states[] = [
+            'value'   => 'entry',
+            'text'    => $this->__('Entry'),
+            'title'   => '',
+            'image'   => '',
+            'default' => true
         ];
     
         return $states;

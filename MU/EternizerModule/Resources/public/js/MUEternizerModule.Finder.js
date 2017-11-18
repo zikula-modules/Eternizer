@@ -7,8 +7,7 @@ var currentMUEternizerModuleInput = null;
  * Returns the attributes used for the popup window. 
  * @return {String}
  */
-function getMUEternizerModulePopupAttributes()
-{
+function getMUEternizerModulePopupAttributes() {
     var pWidth, pHeight;
 
     pWidth = screen.width * 0.75;
@@ -20,8 +19,7 @@ function getMUEternizerModulePopupAttributes()
 /**
  * Open a popup window with the finder triggered by an editor button.
  */
-function MUEternizerModuleFinderOpenPopup(editor, editorName)
-{
+function MUEternizerModuleFinderOpenPopup(editor, editorName) {
     var popupUrl;
 
     // Save editor for access in selector window
@@ -41,8 +39,7 @@ var mUEternizerModule = {};
 
 mUEternizerModule.finder = {};
 
-mUEternizerModule.finder.onLoad = function (baseId, selectedId)
-{
+mUEternizerModule.finder.onLoad = function (baseId, selectedId) {
     if (jQuery('#mUEternizerModuleSelectorForm').length < 1) {
         return;
     }
@@ -57,13 +54,11 @@ mUEternizerModule.finder.onLoad = function (baseId, selectedId)
     });
 };
 
-mUEternizerModule.finder.onParamChanged = function ()
-{
+mUEternizerModule.finder.onParamChanged = function () {
     jQuery('#mUEternizerModuleSelectorForm').submit();
 };
 
-mUEternizerModule.finder.handleCancel = function (event)
-{
+mUEternizerModule.finder.handleCancel = function (event) {
     var editor;
 
     event.preventDefault();
@@ -82,8 +77,7 @@ mUEternizerModule.finder.handleCancel = function (event)
 };
 
 
-function mUEternizerGetPasteSnippet(mode, itemId)
-{
+function mUEternizerGetPasteSnippet(mode, itemId) {
     var quoteFinder;
     var itemPath;
     var itemUrl;
@@ -117,8 +111,7 @@ function mUEternizerGetPasteSnippet(mode, itemId)
 
 
 // User clicks on "select item" button
-mUEternizerModule.finder.selectItem = function (itemId)
-{
+mUEternizerModule.finder.selectItem = function (itemId) {
     var editor, html;
 
     html = mUEternizerGetPasteSnippet('html', itemId);
@@ -144,12 +137,11 @@ mUEternizerModule.finder.selectItem = function (itemId)
     mUEternizerClosePopup();
 };
 
-function mUEternizerClosePopup()
-{
+function mUEternizerClosePopup() {
     window.opener.focus();
     window.close();
 }
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
     mUEternizerModule.finder.onLoad();
 });

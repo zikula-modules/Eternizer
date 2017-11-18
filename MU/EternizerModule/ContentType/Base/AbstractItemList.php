@@ -147,7 +147,7 @@ abstract class AbstractItemList extends \Content_AbstractContentType implements 
     
         // create query
         $orderBy = $this->container->get('mu_eternizer_module.model_helper')->resolveSortParameter($this->objectType, $this->sorting);
-        $qb = $repository->genericBaseQuery($this->filter, $orderBy);
+        $qb = $repository->getListQueryBuilder($this->filter, $orderBy);
     
         // get objects from database
         $currentPage = 1;

@@ -1,6 +1,5 @@
 {# purpose of this template: general base layout #}
 {% block header %}
-    {{ pageAddAsset('javascript', zasset('@MUEternizerModule:js/MUEternizerModule.js')) }}
 {% endblock %}
 
 {% block appTitle %}
@@ -19,4 +18,5 @@
 {% block content %}{% endblock %}
 
 {% block footer %}
+    {{ pageAddAsset('javascript', zasset('@MUEternizerModule:js/MUEternizerModule.js')) }}
 {% endblock %}
