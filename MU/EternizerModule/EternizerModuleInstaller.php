@@ -49,10 +49,7 @@ class EternizerModuleInstaller extends AbstractEternizerModuleInstaller
      * @throws RuntimeException Thrown if database tables can not be updated
      */
     public function upgrade($oldVersion)
-    { 
-    
-        $logger = $this->container->get('logger');
-    
+    {    
         // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '1.0a':
@@ -150,6 +147,8 @@ class EternizerModuleInstaller extends AbstractEternizerModuleInstaller
 	        
 	        // remove obsolete persisted hooks from the database
 	        $this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
+	        
+	        $logger = $this->container->get('logger');
 
 	        // update the database schema
 	        try {
