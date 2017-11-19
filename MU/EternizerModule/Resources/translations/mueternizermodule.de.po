@@ -74,9 +74,8 @@ msgstr "Anzahl"
 msgid "An error occurred while creating the cache directory at %s."
 msgstr "Während der Erstellung des Cacheordner trat ein Fehler bei  %s auf."
 
-#, fuzzy
 msgid "An error was encountered while creating the tables for the %s module."
-msgstr "An error was encountered while creating the tables for the %s module."
+msgstr "Ein Fehler ist beim Erstellen der Tabellen für das Modul %s aufgetreten."
 
 msgid "Approve"
 msgstr "Freigeben"
@@ -213,13 +212,11 @@ msgstr "Absteigend"
 msgid "Details"
 msgstr "Details"
 
-#, fuzzy
 msgid "Display list of MUEternizerModule objects."
-msgstr "Display list of MUEternizerModule objects."
+msgstr "Detailansicht Liste von MUEternizerModule Objekten."
 
-#, fuzzy
 msgid "Display or link a single MUEternizerModule object."
-msgstr "Display or link a single MUEternizerModule object."
+msgstr "Zeige oder verlinke MUEternizerModule Objekt."
 
 msgid "Do you really want to delete this entry: \"%name%\" ?"
 msgstr "Möchtest Du den Eintrag \"%name%\" wirklich löschen ?"
@@ -257,24 +254,20 @@ msgstr "Erledigt. Konfiguration aktualisiert."
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#, fuzzy
 msgid "Edit entries workflow"
-msgstr "Edit entries workflow"
+msgstr "Workflow bearbeiten"
 
 msgid "Edit entry"
 msgstr "Eintrag bearbeiten"
 
-#, fuzzy
 msgid "Edit the entry:"
-msgstr "Edit the entry:"
+msgstr "Eintrag bearbeiten:"
 
-#, fuzzy
 msgid "Edit this entry"
-msgstr "Edit this entry"
+msgstr "Bearbeite den Eintrag"
 
-#, fuzzy
 msgid "Edit workflow for entries"
-msgstr "Edit workflow for entries"
+msgstr "Workflow für Einträge bearbeiten"
 
 msgid "Edit your entry:"
 msgstr "Bearbeite Deinen Eintrag::"
@@ -297,39 +290,32 @@ msgstr "Gib Ergänzungen zu Deinem Inhalt ein"
 msgid "Enter the correct number!"
 msgstr "Gib die korrekte Nummer ein!"
 
-#, fuzzy
 msgid "Enter the email of the entry"
-msgstr "Enter the email of the entry"
+msgstr "Gib die mail Adresse zum Eintrag ein"
 
-#, fuzzy
 msgid "Enter the entry entries per page."
-msgstr "Enter the entry entries per page."
+msgstr "Gib die Anzahl pro Seite ein."
 
-#, fuzzy
 msgid "Enter the homepage of the entry"
-msgstr "Enter the homepage of the entry"
+msgstr "Gib die Homepage zum Eintrag ein"
 
-#, fuzzy
 msgid "Enter the ip of the entry"
-msgstr "Enter the ip of the entry"
+msgstr "Gib die Ip ein"
 
 msgid "Enter the location of the entry"
 msgstr "Gib deinen Standort ein"
 
-#, fuzzy
 msgid "Enter the name of the entry"
-msgstr "Enter the name of the entry"
+msgstr "Gib den Namen des Eintrags ein"
 
-#, fuzzy
 msgid "Enter the notes of the entry"
-msgstr "Enter the notes of the entry"
+msgstr "Gib die Hinweise für diesen Eintrag ein"
 
 msgid "Enter the period."
 msgstr "Zeitraum eingeben."
 
-#, fuzzy
 msgid "Enter the text of the entry"
-msgstr "Enter the text of the entry"
+msgstr "Gib den Text für Deinen Eintrag ein"
 
 msgid "Entries"
 msgstr "Einträge"
@@ -346,20 +332,17 @@ msgstr "Eintrag"
 msgid "Entry entries per page"
 msgstr "Einträge pro Seite"
 
-#, fuzzy
 msgid "Entry filter hooks subscriber"
-msgstr "Entry filter hooks subscriber"
+msgstr "Eintrag filter hooks subscriber"
 
-#, fuzzy
 msgid "Entry form aware subscriber"
-msgstr "Entry form aware subscriber"
+msgstr "Eintrag form aware subscriber"
 
 msgid "Entry list"
 msgstr "Eintragsliste"
 
-#, fuzzy
 msgid "Entry ui hooks subscriber"
-msgstr "Entry ui hooks subscriber"
+msgstr "Eintrag ui hooks subscriber"
 
 msgid "Error! Could not determine workflow actions."
 msgstr "Fehler! Konnte die Workflow Aktion nicht beenden."
@@ -487,13 +470,11 @@ msgstr "Standort"
 msgid "MUEternizerModule detail view"
 msgstr "MUEternizerModule Detail Ansicht"
 
-#, fuzzy
 msgid "MUEternizerModule items"
-msgstr "MUEternizerModule items"
+msgstr "MUEternizerModule Elemente"
 
-#, fuzzy
 msgid "MUEternizerModule list view"
-msgstr "MUEternizerModule list view"
+msgstr "MUEternizerModule Übersicht"
 
 msgid "Mailer module is not available - unable to send emails!"
 msgstr "Das Mailer Module ist nicht verfügbar - nicht möglich, mail zu senden!"
@@ -558,9 +539,8 @@ msgstr "OK"
 msgid "Object type"
 msgstr "Objekttyp"
 
-#, fuzzy
 msgid "One entry is waiting for approval.|%amount% entries are waiting for approval."
-msgstr "One entry is waiting for approval.|%amount% entries are waiting for approval."
+msgstr "Ein Eintrag wartet auf Freigabe.|%amont% Einträge warten auf Freigabe."
 
 msgid "Only digits are allowed."
 msgstr "Nur Ziffern sind erlaubt."
@@ -697,9 +677,8 @@ msgstr "Text"
 msgid "The amount of entries shown per page"
 msgstr "Die Anzahl der Einträge pro Seite"
 
-#, fuzzy
 msgid "The calculation to prevent spam was incorrect. Please try again."
-msgstr "The calculation to prevent spam was incorrect. Please try again."
+msgstr "Die Berechnung zur Spam Vermeidung war falsch. Versuche es erneut."
 
 msgid "The editentries option."
 msgstr "Option Bearbeitung von Einträgen."
@@ -707,23 +686,20 @@ msgstr "Option Bearbeitung von Einträgen."
 msgid "The ipsave option."
 msgstr "Option zur Speicherung von Ip's."
 
-#, fuzzy
 msgid "The link own entries on account page option."
-msgstr "The link own entries on account page option."
+msgstr "Option zur Verlinkung eigener Einträge im Account."
 
 msgid "The maximum amount of items to be shown."
 msgstr "Maximale Anzahl anzuzeigender Elemente."
 
-#, fuzzy
 msgid "The simplecaptcha option."
-msgstr "The simplecaptcha option."
+msgstr "Option zum Simple Captcha."
 
 msgid "The value \"%value%\" is not allowed for the \"%property%\" property."
 msgstr "Der Wert \"%value%\" ist nicht erlaubt für die \"%property%\" Eigenschaft."
 
-#, fuzzy
 msgid "There are no image function available - Captchas have been disabled."
-msgstr "There are no image function available - Captchas have been disabled."
+msgstr "Es gibt keine Bildfunktion - Captchas wurden deaktiviert."
 
 msgid "These options allow you to configure integration aspects."
 msgstr "Diese Option erlaubt es Integrationsaspekte zu konfigurieren."
@@ -780,15 +756,13 @@ msgid "Waiting"
 msgstr "Wartend"
 
 msgid "We will review your submit as soon as possible"
-msgstr "Wir werden Deine Einreichung so schnell wie möglich überprüfen."
+msgstr "Wir werden Deine Einreichung so schnell wie möglich überprüfen"
 
-#, fuzzy
 msgid "Welcome to the entry section of the Eternizer application."
-msgstr "Welcome to the entry section of the Eternizer application."
+msgstr "Willkommen zum Bereich für Einträge in Eternizer."
 
-#, fuzzy
 msgid "Whether to add a link to entries of the current user on his account page"
-msgstr "Whether to add a link to entries of the current user on his account page"
+msgstr "Ob ein Link zu eigenen Einträgen im Account hinzugefügt werden soll"
 
 msgid "Which sections are supported in the Finder component (used by Scribite plug-ins)."
 msgstr "Welche Bereiche im Finder (genutzt vom Scribite Plugin) unterstützt werden sollen."
@@ -808,9 +782,8 @@ msgstr "Workflows"
 msgid "You have permissions to edit this issue!"
 msgstr "Du darfst diesen Eintrag bearbeiten!"
 
-#, fuzzy
 msgid "Your entry \"%entity%\" has been changed."
-msgstr "Your entry \"%entity%\" has been changed."
+msgstr "Dein Eintrag \"%entity%\" wurde geändert."
 
 msgid "Your submission has been deleted"
 msgstr "Deine Einreichung wurde gelöscht"
