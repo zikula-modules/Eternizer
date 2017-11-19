@@ -95,8 +95,8 @@ class LinkContainer extends AbstractLinkContainer
 							'title' => $this->__('Entry list', 'mueternizermodule')
 					];
 				}
-				if (in_array('entry', $allowedObjectTypes)
-						&& $this->permissionApi->hasPermission($this->getBundleName() . ':Entry:', '::', $permLevel)  && \ModUtil::getVar('MUEternizerModule', 'formposition') == 'menue') {
+				if ($routeArea != 'admin' && in_array('entry', $allowedObjectTypes)
+						&& $this->permissionApi->hasPermission($this->getBundleName() . ':Entry:', '::', ACCESS_EDIT)  && \ModUtil::getVar('MUEternizerModule', 'formposition') == 'menue') {
 							$links[] = [
 									'url' => $this->router->generate('mueternizermodule_entry_edit'),
 									'text' => $this->__('New entry'),
