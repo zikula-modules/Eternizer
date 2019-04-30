@@ -13,12 +13,7 @@
 namespace MU\EternizerModule\Form\Handler\Entry;
 
 use MU\EternizerModule\Form\Handler\Entry\Base\AbstractEditHandler;
-
-use UserUtil;
-use ModUtil;
-use LogUtil;
-use SessionUtil;
-use ServiceUtil;
+use MU\EternizerModule\Helper\CaptchaHelper;
 
 /**
  * This handler class handles the page events of the Form called by the mUEternizerModule_entry_edit() function.
@@ -26,6 +21,11 @@ use ServiceUtil;
  */
 class EditHandler extends AbstractEditHandler
 {
+    /**
+     * @var CaptchaHelper
+     */
+    protected $captchaHelper;
+
     /**
      * Initialise existing entity for editing.
      *
@@ -35,40 +35,36 @@ class EditHandler extends AbstractEditHandler
      */
     protected function initEntityForEditing()
     {
-    	$container = \ServiceUtil::getManager();  
-    	$currentUserApi = $container->get('zikula_users_module.current_user');
-    	$currentUser = $currentUserApi->get('uid');
+        $currentUser = $this->currentUserApi->get('uid');
 
         $entity = $this->entityFactory->getRepository('entry')->selectById($this->idValue);
-
         if (null === $entity) {
             throw new NotFoundHttpException($this->__('No such item.'));
         }
 
-        $controllerHelper = $container->get('mu_eternizer_module.controller_helper');
-        $editEntryAllowed = $controllerHelper->editEntry($entity['id'], $entity->getCreatedBy()->getUid(), $entity['createdDate'], 2);
-        
+        $editEntryAllowed = $this->controllerHelper->editEntry($entity['id'], $entity->getCreatedBy()->getUid(), $entity->getCreatedDate(), 2);
         if (($editEntryAllowed == false || $currentUser < 2) && $this->templateParameters['routeArea'] != 'admin') {
-        	$url = $this->router->generate('mueternizermodule_entry_view');
-        	return \System::redirect($url);
+            $url = $this->router->generate('mueternizermodule_entry_view');
+
+            return new RedirectResponse($url);
         }
         
         // prepare captcha  
-        $simpleCaptcha = \ModUtil::getVar('MUEternizerModule', 'simplecaptcha');
-        
+        $simpleCaptcha = $this->variableApi->get('MUEternizerModule', 'simplecaptcha');
+
         // reset captcha
-        $session = $container->get('session');
+        $session = $this->request->getSession();
         if ($simpleCaptcha && $session->has('eternizerCaptcha')) {      
-        	$session->del('eternizerCaptcha');
+            $session->del('eternizerCaptcha');
         }
-        
+
         if ($currentUser != $entity->getCreatedBy()->getUid() && $this->templateParameters['routeArea'] != 'admin') {
-        	return false;
+            return false;
         }
-        
+
         return $entity;
     } 
-    
+
     /**
      * Command event handler.
      *
@@ -80,30 +76,24 @@ class EditHandler extends AbstractEditHandler
      */
     public function handleCommand(array $args = [])
     {
-    	$routeArea = array_key_exists('routeArea', $this->templateParameters) ? $this->templateParameters['routeArea'] : '';
-    	$isAdmin = $routeArea == 'admin';
-    	if (\ModUtil::getVar('MUEternizerModule', 'simplecaptcha') == 1 and !$isAdmin) {
+        $routeArea = array_key_exists('routeArea', $this->templateParameters) ? $this->templateParameters['routeArea'] : '';
+        $isAdmin = $routeArea == 'admin';
+        if ($this->variableApi->get('MUEternizerModule', 'simplecaptcha') == 1 and !$isAdmin) {
+            $formData = $this->request->request->getDigits('mueternizermodule_entry', 0);
+            $captcha = $formData['captcha'];
 
-    		$formData = $this->request->request->getDigits('mueternizermodule_entry', 0);
-    		$captcha = $formData['captcha'];
+            $session = $this->request->getSession();
+            $operands = unserialize($session->get('eternizerCaptcha'));
 
-    		//$session = $this->container->get('session')
-    	    $operands = unserialize(\SessionUtil::getVar('eternizerCaptcha'));
+            $captchaValid = $this->captchaHelper->isCaptchaValid($operands, $captcha);
+            if (false === $captchaValid) {
+                $session->getFlashBag()->add('error', $this->__('The calculation to prevent spam was incorrect. Please try again.'));
 
-    		//$operands = @unserialize($session->get('eternizerCaptcha'));
-    		$container = \ServiceUtil::getManager();
-    		$captchaHelper = $container->get('mu_eternizer_module.captcha_helper');
-    		$captchaValid = $captchaHelper->isCaptchaValid($operands, $captcha);
-    		if (false === $captchaValid) {
-    			\LogUtil::registerError($this->__('The calculation to prevent spam was incorrect. Please try again.'));
-    			return false;
-    			//$controller->addFlash('error', $this->__('The calculation to prevent spam was incorrect. Please try again.'));
-    			//$hasError = true;
-    		}
-    	}
-    	
-    	return parent::handleCommand($args);
+                return false;
+            }
+        }
 
+        return parent::handleCommand($args);
     }
     
     /**
@@ -116,41 +106,46 @@ class EditHandler extends AbstractEditHandler
      */
     protected function getDefaultMessage(array $args = [], $success = false)
     {
-    	if (false === $success) {
-    		return parent::getDefaultMessage($args, $success);
-    	}
-    
-    	$message = '';
-    	switch ($args['commandName']) {
-    		case 'submit':
-    			if ($this->templateParameters['mode'] == 'create') {
-    				// get the actual user
-    				$userId = \UserUtil::getVar('uid');
-    				$message = $this->__('Done! Entry created.');
-    				// get moderate modvar
-    				$moderation = ModUtil::getVar('MUEternizerModule', 'moderate');
-    				if ($moderation == 'all') {					
-    					if ($userId != 2) {
-    					    $message .= $this->__('We will review your submit as soon as possible.');
-    					}
-    				}
-    				if ($moderation == 'guests') {
-    					if ($userId <= 1) {
-    						$message .= $this->__('We will review your submit as soon as possible');
-    					}
-    				}
-    			} else {
-    				$message = $this->__('Done! Entry updated.');
-    			}
-    			break;
-    		case 'delete':
-    			$message = $this->__('Done! Entry deleted.');
-    			break;
-    		default:
-    			$message = $this->__('Done! Entry updated.');
-    			break;
-    	}
-    
-    	return $message;
+        if (false === $success) {
+            return parent::getDefaultMessage($args, $success);
+        }
+
+        $message = '';
+        switch ($args['commandName']) {
+            case 'submit':
+                if ($this->templateParameters['mode'] == 'create') {
+                    // get the actual user
+                    $userId = $this->currentUserApi->get('uid');
+                    $message = $this->__('Done! Entry created.');
+                    // get moderate modvar
+                    $moderation = $this->variableApi->get('MUEternizerModule', 'moderate');
+                    if ($moderation == 'all') {					
+                        if ($userId != 2) {
+                            $message .= $this->__('We will review your submit as soon as possible.');
+                        }
+                    }
+                    if ($moderation == 'guests') {
+                        if ($userId <= 1) {
+                            $message .= $this->__('We will review your submit as soon as possible');
+                        }
+                    }
+                } else {
+                    $message = $this->__('Done! Entry updated.');
+                }
+                break;
+            case 'delete':
+                $message = $this->__('Done! Entry deleted.');
+                break;
+            default:
+                $message = $this->__('Done! Entry updated.');
+                break;
+        }
+
+        return $message;
+    }
+
+    public function setCaptchaHelper(CaptchaHelper $captchaHelper)
+    {
+        $this->captchaHelper = $captchaHelper;
     }
 }

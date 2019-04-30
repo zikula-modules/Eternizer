@@ -13,7 +13,9 @@
 namespace MU\EternizerModule\Twig;
 
 use MU\EternizerModule\Twig\Base\AbstractTwigExtension;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
+use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use MU\EternizerModule\Helper\ListEntriesHelper;
@@ -21,17 +23,15 @@ use MU\EternizerModule\Helper\EntityDisplayHelper;
 use MU\EternizerModule\Helper\WorkflowHelper;
 use MU\EternizerModule\Helper\ControllerHelper;
 use MU\EternizerModule\Helper\CaptchaHelper;
-use ServiceUtil;
 
 /**
  * Twig extension implementation class.
  */
 class TwigExtension extends AbstractTwigExtension
 {
-	/**
-	 * @var ControllerHelper
-	 */
-    
+    /**
+     * @var ControllerHelper
+     */
     protected $controllerHelper; 
     
     /**
@@ -43,6 +43,8 @@ class TwigExtension extends AbstractTwigExtension
      * TwigExtension constructor.
      *
      * @param TranslatorInterface $translator     Translator service instance
+     * @param RequestStack        $requestStack    RequestStack service instance
+     * @param FragmentHandler     $fragmentHandler FragmentHandler service instance
      * @param VariableApiInterface $variableApi    VariableApi service instance
      * @param EntityDisplayHelper $entityDisplayHelper EntityDisplayHelper service instance
      * @param WorkflowHelper      $workflowHelper WorkflowHelper service instance
@@ -51,21 +53,25 @@ class TwigExtension extends AbstractTwigExtension
      * @param CaptchaHelper       $captchaHelper   CaptchaHelper service instance
      */
     public function __construct(
-    		TranslatorInterface $translator,
-    		VariableApiInterface $variableApi,
-    		EntityDisplayHelper $entityDisplayHelper,
-    		WorkflowHelper $workflowHelper,
-    		ListEntriesHelper $listHelper,
-    		ControllerHelper $controllerHelper,
-    		CaptchaHelper $captchaHelper)
-    {
-    	$this->setTranslator($translator);
-    	$this->variableApi = $variableApi;
-    	$this->entityDisplayHelper = $entityDisplayHelper;
-    	$this->workflowHelper = $workflowHelper;
-    	$this->listHelper = $listHelper;
-    	$this->controllerHelper = $controllerHelper;
-    	$this->captchaHelper = $captchaHelper;
+        TranslatorInterface $translator,
+        RequestStack $requestStack,
+        FragmentHandler $fragmentHandler,
+        VariableApiInterface $variableApi,
+        EntityDisplayHelper $entityDisplayHelper,
+        WorkflowHelper $workflowHelper,
+        ListEntriesHelper $listHelper,
+        ControllerHelper $controllerHelper,
+        CaptchaHelper $captchaHelper
+    ) {
+        $this->setTranslator($translator);
+        $this->requestStack = $requestStack;
+        $this->fragmentHandler = $fragmentHandler;
+        $this->variableApi = $variableApi;
+        $this->entityDisplayHelper = $entityDisplayHelper;
+        $this->workflowHelper = $workflowHelper;
+        $this->listHelper = $listHelper;
+        $this->controllerHelper = $controllerHelper;
+        $this->captchaHelper = $captchaHelper;
     }
      
      /** Returns a list of custom Twig functions.
@@ -74,24 +80,22 @@ class TwigExtension extends AbstractTwigExtension
      */
     public function getFunctions()
     {
-    	$functions = parent::getFunctions();
-    	$functions[] = new \Twig_SimpleFunction('mueternizermodule_showEditForm', [$this, 'showEditForm'], ['is_safe' => ['html']]);
-    	$functions[] = new \Twig_SimpleFunction('mueternizermodule_editEntry', [$this, 'editEntry']);
-    	$functions[] = new \Twig_SimpleFunction('mueternizermodule_simpleCaptcha', [$this, 'simpleCaptcha'], ['is_safe' => ['html']]);
-    	
-    	return $functions;
+        $functions = parent::getFunctions();
+        $functions[] = new \Twig_SimpleFunction('mueternizermodule_showEditForm', [$this, 'showEditForm'], ['is_safe' => ['html']]);
+        $functions[] = new \Twig_SimpleFunction('mueternizermodule_editEntry', [$this, 'editEntry']);
+        $functions[] = new \Twig_SimpleFunction('mueternizermodule_simpleCaptcha', [$this, 'simpleCaptcha'], ['is_safe' => ['html']]);
+        
+        return $functions;
     }
     
     public function showEditForm()
     {
-    	$request = \ServiceUtil::get('request_stack')->getMasterRequest();
-    	$request->attributes->set('_zkModule', 'MUEternizerModule');
+        $request = $this->requestStack->getMasterRequest();
+        $request->attributes->set('_zkModule', 'MUEternizerModule');
     
-    	$fragmentHandler = \ServiceUtil::get('fragment.handler');
+        $ref = new ControllerReference('MUEternizerModule:Entry:edit');
     
-    	$ref = new ControllerReference('MUEternizerModule:Entry:edit');
-    
-    	return $fragmentHandler->render($ref, 'inline', []);
+        return $this->fragmentHandler->render($ref, 'inline', []);
     }
     
     /**
@@ -99,9 +103,9 @@ class TwigExtension extends AbstractTwigExtension
      *
      * @return string The output of the plugin
      */
-    public function editEntry($entryid, $createdUserId, $createdDate,  $kind = 1)
+    public function editEntry($entryid, $createdUserId, $createdDate, $kind = 1)
     {
-    	$out = $this->controllerHelper->EditEntry($entryid, $createdUserId, $createdDate,  $kind = 1);
+        $out = $this->controllerHelper->EditEntry($entryid, $createdUserId, $createdDate, $kind);
 
         return $out;
     }
@@ -121,7 +125,7 @@ class TwigExtension extends AbstractTwigExtension
      */
     public function simpleCaptcha($font = 'quickhand', $size = 14, $bgColour = 'ffffff', $fgColour = '000000')
     {
-    	return $this->captchaHelper->createCaptcha($font, $size, $bgColour, $fgColour);
+        return $this->captchaHelper->createCaptcha($font, $size, $bgColour, $fgColour);
     }
 
 }

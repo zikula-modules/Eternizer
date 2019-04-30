@@ -7,7 +7,7 @@
     {{ templateTitle|notifyFilters('mueternizermodule.filter_hooks.entries.filter')|safeHtml }}{% if routeArea == 'admin' %} <small>({{ entry.workflowState|mueternizermodule_objectState(false)|lower }})</small>{% endif %}
     {% set itemActions = knp_menu_get('MUEternizerModule:ItemActionsMenu:menu', [], {entity: entry, area: routeArea, context: 'display'}) %}
     <div class="dropdown">
-        <a id="itemActions{{ entry.getKey() }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
+        <a id="itemActions{{ entry.getKey() }}DropDownToggle" role="button" data-toggle="dropdown" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
         {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:actions.html.twig'}) }}
     </div>
 {% endblock %}

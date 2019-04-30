@@ -13,12 +13,7 @@
 namespace MU\EternizerModule\Helper;
 
 use MU\EternizerModule\Helper\Base\AbstractControllerHelper;
-
-use \DateUtil;
-use \ModUtil;
-use \UserUtil;
-use \SecurityUtil;
-use \ServiceUtil;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 /**
  * Helper implementation class for controller layer methods.
@@ -26,52 +21,66 @@ use \ServiceUtil;
 class ControllerHelper extends AbstractControllerHelper
 {
     /**
-     * 
+     * @var CurrentUserApiInterface
+     */
+    protected $currentUserApi;
+
+    /**
      * @param int     $entryid
      * @param int     $createdUserId
      * @param int     $createdDate
      * @param int     $kind
      * @return string|boolean
      */
-	public function EditEntry($entryid, $createdBy, $createdDate,  $kind = 1)
-	{
-		$createdDate = $createdDate->getTimestamp();
-		$userid = \UserUtil::getVar('uid');
-		 
-		// get the actual time
-		$actualTime = \DateUtil::getDatetime();
-		// get modvar editTime
-		$editTime = \ModUtil::getVar('MUEternizerModule', 'period');
-		
-		$diffTime = \DateUtil::getDatetimeDiff($createdDate, $actualTime);
-		$diffTimeHours = $diffTime['d'] * 24 + $diffTime['h'];
-		
-		if (UserUtil::isLoggedIn() == false) {
-			$out = '';
-		}
-		
-		if ($createdBy == $userid && ($diffTimeHours < $editTime) ) {
-			if ($kind == 1) {
-				$serviceManager = \ServiceUtil::getManager();
-				// generate an auth key to use in urls
-				$csrftoken = \SecurityUtil::generateCsrfToken($serviceManager, true);
-		
-				$url = \ModUtil::url('MUEternizerModule', 'entry', 'edit', array('id' => $entryid));
-				$title = __('You have permissions to edit this issue!');
-				$out = "<a title='{$title}' id='eternizer-user-entry-edit-creater' href='{$url}'>
-				<i class='fa fa-pencil-square-o' aria-hidden='true'></i>
-				</a>";
-			} else {
-				$out = true;
-		
-			}
-		} else {
-			if ($kind == 1) {
-				$out = '';
-			} else {
-				$out = false;
-			}
-		}
-		return $out;
-	}
+    public function EditEntry($entryid, $createdBy, $createdDate, $kind = 1)
+    {
+        $userid = $this->currentUserApi->get('uid');
+
+        // get the actual time
+        $actualTime = new \DateTime();
+        // get modvar editTime
+        $editTime = $this->variableApi->get('MUEternizerModule', 'period');
+
+        $diffTime = $actualTime->diff($createdDate);
+        $diffTimeHours = $diffTime->d * 24 + $diffTime->h;
+
+        if (false == $this->currentUserApi->isLoggedIn()) {
+            $out = '';
+        }
+
+        if ($createdBy == $userid && $diffTimeHours < $editTime) {
+            if ($kind == 1) {
+                // TODO
+                /*
+                $serviceManager = \ServiceUtil::getManager();
+                // generate an auth key to use in urls
+                $csrftoken = \SecurityUtil::generateCsrfToken($serviceManager, true);
+
+                $url = \ModUtil::url('MUEternizerModule', 'entry', 'edit', array('id' => $entryid));
+                $title = __('You have permissions to edit this issue!');
+                $out = "
+                    <a title=\"{$title}\" id=\"eternizer-user-entry-edit-creater\" href=\"{$url}\">
+                    <i class=\"fa fa-pencil-square-o\" aria-hidden=\"true\"></i>
+                    </a>
+                ";*/
+                $out = '';
+            } else {
+                $out = true;
+        
+            }
+        } else {
+            if ($kind == 1) {
+                $out = '';
+            } else {
+                $out = false;
+            }
+        }
+
+        return $out;
+    }
+
+    public function setCurrentUserApi(CurrentUserApiInterface $currentUserApi)
+    {
+        $this->currentUserApi = $currentUserApi;
+    }
 }

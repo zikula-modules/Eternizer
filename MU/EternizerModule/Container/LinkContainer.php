@@ -21,97 +21,97 @@ use Zikula\Core\LinkContainer\LinkContainerInterface;
  */
 class LinkContainer extends AbstractLinkContainer
 {
-	/**
-	 * Returns available header links.
-	 *
-	 * @param string $type The type to collect links for
-	 *
-	 * @return array Array of header links
-	 */
-	public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
-	{
-		$contextArgs = ['api' => 'linkContainer', 'action' => 'getLinks'];
-		$allowedObjectTypes = $this->controllerHelper->getObjectTypes('api', $contextArgs);
-	
-		$permLevel = LinkContainerInterface::TYPE_ADMIN == $type ? ACCESS_ADMIN : ACCESS_READ;
-	
-		// Create an array of links to return
-		$links = [];
-	
-		if (LinkContainerInterface::TYPE_ACCOUNT == $type) {
-			if (!$this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_OVERVIEW)) {
-				return $links;
-			}
-	
-			if (true === $this->variableApi->get('MUEternizerModule', 'linkOwnEntriesOnAccountPage', true)) {
-				$objectType = 'entry';
-				if ($this->permissionApi->hasPermission($this->getBundleName() . ':' . ucfirst($objectType) . ':', '::', ACCESS_READ)) {
-					$links[] = [
-							'url' => $this->router->generate('mueternizermodule_' . strtolower($objectType) . '_view', ['own' => 1]),
-							'text' => $this->__('My entries', 'mueternizermodule'),
-							'icon' => 'list-alt'
-					];
-				}
-			}
-	
-			if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
-				$links[] = [
-						'url' => $this->router->generate('mueternizermodule_entry_adminindex'),
-						'text' => $this->__('Eternizer Backend', 'mueternizermodule'),
-						'icon' => 'wrench'
-				];
-			}
-	
-	
-			return $links;
-		}
-	
-		$routeArea = LinkContainerInterface::TYPE_ADMIN == $type ? 'admin' : '';
-		if (LinkContainerInterface::TYPE_ADMIN == $type) {
-			if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
-				$links[] = [
-						'url' => $this->router->generate('mueternizermodule_entry_index'),
-						'text' => $this->__('Frontend', 'mueternizermodule'),
-						'title' => $this->__('Switch to user area.', 'mueternizermodule'),
-						'icon' => 'home'
-				];
-			}
-		} else {
-			if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
-				$links[] = [
-						'url' => $this->router->generate('mueternizermodule_entry_adminindex'),
-						'text' => $this->__('Backend', 'mueternizermodule'),
-						'title' => $this->__('Switch to administration area.', 'mueternizermodule'),
-						'icon' => 'wrench'
-				];
-			}
-		}
-	
-		if (in_array('entry', $allowedObjectTypes)
-				&& $this->permissionApi->hasPermission($this->getBundleName() . ':Entry:', '::', $permLevel)) {
-					$links[] = [
-							'url' => $this->router->generate('mueternizermodule_entry_' . $routeArea . 'view'),
-							'text' => $this->__('Entries', 'mueternizermodule'),
-							'title' => $this->__('Entry list', 'mueternizermodule')
-					];
-				}
-				if ($routeArea != 'admin' && in_array('entry', $allowedObjectTypes)
-						&& $this->permissionApi->hasPermission($this->getBundleName() . ':Entry:', '::', ACCESS_EDIT)  && \ModUtil::getVar('MUEternizerModule', 'formposition') == 'menue') {
-							$links[] = [
-									'url' => $this->router->generate('mueternizermodule_entry_edit'),
-									'text' => $this->__('New entry'),
-									'title' => $this->__('Create entry')
-							];
-						}
-				if ($routeArea == 'admin' && $this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
-					$links[] = [
-							'url' => $this->router->generate('mueternizermodule_config_config'),
-							'text' => $this->__('Configuration', 'mueternizermodule'),
-							'title' => $this->__('Manage settings for this application', 'mueternizermodule'),
-							'icon' => 'wrench'
-					];
-				}
-	
-				return $links;
-	}
+    /**
+     * Returns available header links.
+     *
+     * @param string $type The type to collect links for
+     *
+     * @return array Array of header links
+     */
+    public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
+    {
+        $contextArgs = ['api' => 'linkContainer', 'action' => 'getLinks'];
+        $allowedObjectTypes = $this->controllerHelper->getObjectTypes('api', $contextArgs);
+    
+        $permLevel = LinkContainerInterface::TYPE_ADMIN == $type ? ACCESS_ADMIN : ACCESS_READ;
+    
+        // Create an array of links to return
+        $links = [];
+    
+        if (LinkContainerInterface::TYPE_ACCOUNT == $type) {
+            if (!$this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_OVERVIEW)) {
+                return $links;
+            }
+    
+            if (true === $this->variableApi->get('MUEternizerModule', 'linkOwnEntriesOnAccountPage', true)) {
+                $objectType = 'entry';
+                if ($this->permissionApi->hasPermission($this->getBundleName() . ':' . ucfirst($objectType) . ':', '::', ACCESS_READ)) {
+                    $links[] = [
+                            'url' => $this->router->generate('mueternizermodule_' . strtolower($objectType) . '_view', ['own' => 1]),
+                            'text' => $this->__('My entries', 'mueternizermodule'),
+                            'icon' => 'list-alt'
+                    ];
+                }
+            }
+    
+            if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
+                $links[] = [
+                        'url' => $this->router->generate('mueternizermodule_entry_adminindex'),
+                        'text' => $this->__('Eternizer Backend', 'mueternizermodule'),
+                        'icon' => 'wrench'
+                ];
+            }
+    
+    
+            return $links;
+        }
+    
+        $routeArea = LinkContainerInterface::TYPE_ADMIN == $type ? 'admin' : '';
+        if (LinkContainerInterface::TYPE_ADMIN == $type) {
+            if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
+                $links[] = [
+                        'url' => $this->router->generate('mueternizermodule_entry_index'),
+                        'text' => $this->__('Frontend', 'mueternizermodule'),
+                        'title' => $this->__('Switch to user area.', 'mueternizermodule'),
+                        'icon' => 'home'
+                ];
+            }
+        } else {
+            if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
+                $links[] = [
+                        'url' => $this->router->generate('mueternizermodule_entry_adminindex'),
+                        'text' => $this->__('Backend', 'mueternizermodule'),
+                        'title' => $this->__('Switch to administration area.', 'mueternizermodule'),
+                        'icon' => 'wrench'
+                ];
+            }
+        }
+    
+        if (in_array('entry', $allowedObjectTypes)
+                && $this->permissionApi->hasPermission($this->getBundleName() . ':Entry:', '::', $permLevel)) {
+                    $links[] = [
+                            'url' => $this->router->generate('mueternizermodule_entry_' . $routeArea . 'view'),
+                            'text' => $this->__('Entries', 'mueternizermodule'),
+                            'title' => $this->__('Entry list', 'mueternizermodule')
+                    ];
+                }
+                if ($routeArea != 'admin' && in_array('entry', $allowedObjectTypes)
+                        && $this->permissionApi->hasPermission($this->getBundleName() . ':Entry:', '::', ACCESS_EDIT)  && $this->variableApi->get('MUEternizerModule', 'formposition') == 'menue') {
+                            $links[] = [
+                                    'url' => $this->router->generate('mueternizermodule_entry_edit'),
+                                    'text' => $this->__('New entry'),
+                                    'title' => $this->__('Create entry')
+                            ];
+                        }
+                if ($routeArea == 'admin' && $this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
+                    $links[] = [
+                            'url' => $this->router->generate('mueternizermodule_config_config'),
+                            'text' => $this->__('Configuration', 'mueternizermodule'),
+                            'title' => $this->__('Manage settings for this application', 'mueternizermodule'),
+                            'icon' => 'wrench'
+                    ];
+                }
+    
+                return $links;
+    }
 }

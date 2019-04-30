@@ -42,12 +42,13 @@
                 <div class="etz_info">
                     <div class="etz_title">
                         <div class="etz_name">
-                            {% if entry.name is not empty and uid == 1 %}
+                            {#% if entry.name is not empty and uid == 1 %#}
+                            {% if entry.name is not empty %}
                                 <span class="etz_attr">{{ entry.name|safeHtml }}</span>
                             {% else %}
-							{% set guest = getModVar('ZikulaUsersModule', 'anonymous') %}
-							{% set ownerName = entry.createdBy.getUname() %}
-                                {% if ownerName is empty %}							
+                                {% set guest = getModVar('ZikulaUsersModule', 'anonymous') %}
+                                {% set ownerName = entry.createdBy|default ? entry.createdBy.getUname() : '' %}
+                                {% if ownerName is empty %}
                                     {{ guest|safeHtml }}
                                 {% else %}
                                     {% if ownerName is not empty %}
@@ -62,19 +63,19 @@
                                     {% endif %}
                                 {% endif %}
                             {% endif %}
-							{{ __f('created on %s', {'%s': entry.createdDate|date("d.m.Y H:i")}) }}
-							{% if entry.updatedDate > entry.createdDate and entry.createdBy.getUid() == entry.updatedBy.getUid() and entry.createdBy.getUid() != 2 %}
+                            {{ __f('created on %s', {'%s': entry.createdDate|date("d.m.Y H:i")}) }}
+                            {#% if entry.updatedDate > entry.createdDate and entry.createdBy.getUid() == entry.updatedBy.getUid() and entry.createdBy.getUid() != 2 %}
                                 <span class="etz_updated"> | {{ __f('Updated on %s', {'%s': entry.updatedDate|date("d.m.Y H:i")}) }}</span>
-                            {% endif %}
+                            {% endif %#}
                         </div>
                     </div>
-					{% set itemActions = knp_menu_get('MUEternizerModule:ItemActionsMenu:menu', [], { entity: entry, area: routeArea, context: 'view' }) %}
+                    {% set itemActions = knp_menu_get('MUEternizerModule:ItemActionsMenu:menu', [], { entity: entry, area: routeArea, context: 'view' }) %}
                     <div class="etz_action">
                         {% if itemActions|length > 0 %}
-						{#% set userid = mueternizermodule_userVar('uid') %#}
-						{% set editentries = getModVar('MUEternizerModule', 'editentries') %}
-                            {% if entry.createdBy.getUid() == uid and entry.createdBy.getUid() > 1 and editentries == 1 %}
-                            <div class="eternizer-user-entry-edit">{% set out = mueternizermodule_editEntry(entry.id, entry.createdBy.getUid(), entry.createdDate) %}{{ out|raw }}</div>
+                            {#% set userid = mueternizermodule_userVar('uid') %#}
+                            {% set editentries = getModVar('MUEternizerModule', 'editentries') %}
+                            {% if entry.createdBy|default and entry.createdBy.getUid() == uid and entry.createdBy.getUid() > 1 and editentries == 1 %}
+                                <div class="eternizer-user-entry-edit">{% set out = mueternizermodule_editEntry(entry.id, entry.createdBy.getUid(), entry.createdDate) %}{{ out|raw }}</div>
                                 {#% for option in itemActions %}
                                     <a href="{{ option.url }}" title="{{ option.linkTitle|e('html_attr') }}" role="menuitem" tabindex="-1" class="fa fa-{{ option.icon }}">{{ option.linkText }}</a>
                                 {% endfor %#}
@@ -83,8 +84,7 @@
                     </div>
                 </div>
                 <div class="etz_content">
-				     {{ entry.text }}
-                    {#{ entry.text|notifyFilters:'eternizer.filter_hooks.entries.filter'|safeHtml|nl2br }#}
+                    {{ entry.text|notifyFilters('eternizer.filter_hooks.entries.filter')|safeHtml|nl2br }}
                     {% if entry.notes is not empty %}
                         {% if entry.updatedBy.getUid() == entry.createdBy.getUid() %}
                         <p style="margin-top: 2em;" class="entry-comment">
@@ -102,17 +102,15 @@
         <tr class="z-datatableempty">
             <td class="z-left" colspan="9">{{ __('No entries found.') }}</td>
         </tr>
-		{% endfor %}
+        {% endfor %}
 
-		{% if formposition == 'below' %}
+        {% if formposition == 'below' %}
             <br style="clear: both;" />	
             {{ mueternizermodule_showEditForm() }}
         {% endif %}
-		</div>
-        
+        </div>
     {% endif %}
-		
-		
+
     {% if routeArea == 'admin' %}
     {{ block('page_nav_links') }}
 
@@ -143,11 +141,11 @@
             <thead>
             <tr>
                 {% if routeArea == 'admin' %}
-                    <th id="hSelect" scope="col" class="{% if items|length > 0 %}fixed-column {% endif %}text-center z-w02">
+                    <th id="hSelect" scope="col" class="text-center z-w02">
                         <input type="checkbox" class="mueternizer-mass-toggle" />
                     </th>
                 {% endif %}
-                <th id="hItemActions" scope="col" class="{% if items|length > 0 %}fixed-column {% endif %}z-order-unsorted z-w02">{{ __('Actions') }}</th>
+                <th id="hItemActions" scope="col" class="z-order-unsorted z-w02">{{ __('Actions') }}</th>
                 {% if routeArea == 'admin' %}
                 <th id="hWorkflowState" scope="col" class="text-left">
                     <a href="{{ sort.workflowState.url }}" title="{{ __f('Sort by %s', {'%s': 'state'}) }}" class="{{ sort.workflowState.class }}">{{ __('State') }}</a>
@@ -181,14 +179,14 @@
         {% for entry in items %}
             <tr>
                 {% if routeArea == 'admin' %}
-                    <td headers="hSelect" class="fixed-column text-center z-w02">
+                    <td headers="hSelect" class="text-center z-w02">
                         <input type="checkbox" name="items[]" value="{{ entry.getKey() }}" class="mueternizer-toggle-checkbox" />
                     </td>
                 {% endif %}
-                <td id="itemActions{{ entry.getKey() }}" headers="hItemActions" class="fixed-column actions nowrap z-w02">
+                <td id="itemActions{{ entry.getKey() }}" headers="hItemActions" class="actions nowrap z-w02">
                     {% set itemActions = knp_menu_get('MUEternizerModule:ItemActionsMenu:menu', [], {entity: entry, area: routeArea, context: 'view'}) %}
                     <div class="dropdown">
-                        <a id="itemActions{{ entry.getKey() }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
+                        <a id="itemActions{{ entry.getKey() }}DropDownToggle" role="button" data-toggle="dropdown" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
                         {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:actions.html.twig'}) }}
                     </div>
                 </td>

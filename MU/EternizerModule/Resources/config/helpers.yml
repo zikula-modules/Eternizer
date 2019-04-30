@@ -17,6 +17,8 @@ services:
             - "@mu_eternizer_module.entity_factory"
             - "@mu_eternizer_module.collection_filter_helper"
             - "@mu_eternizer_module.model_helper"
+        calls:
+            - [setCurrentUserApi, ["@zikula_users_module.current_user"]]
     
     mu_eternizer_module.entity_display_helper:
         class: MU\EternizerModule\Helper\EntityDisplayHelper

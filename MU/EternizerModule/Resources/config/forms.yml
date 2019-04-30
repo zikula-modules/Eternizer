@@ -29,6 +29,7 @@ services:
             - "@mu_eternizer_module.hook_helper"
         calls:
             - [setLockingApi, ["@?zikula_pagelock_module.api.locking"]]
+            - [setCaptchaHelper, ["@mu_eternizer_module.captcha_helper"]]
         tags:
             - { name: form.type }
     

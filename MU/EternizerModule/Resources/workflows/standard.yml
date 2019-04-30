@@ -1,4 +1,4 @@
-workflow:
+framework:
     workflows:
         mueternizermodule_standard:
             type: state_machine

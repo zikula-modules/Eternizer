@@ -4,6 +4,8 @@ services:
         class: MU\EternizerModule\Twig\TwigExtension
         arguments:
             - "@translator.default"
+            - "@request_stack"
+            - "@fragment.handler"
             - "@zikula_extensions_module.api.variable"
             - "@mu_eternizer_module.entity_display_helper"
             - "@mu_eternizer_module.workflow_helper"
