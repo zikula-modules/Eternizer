@@ -99,11 +99,12 @@
         </div>
         
         {% else %}
-        <tr class="z-datatableempty">
-            <td class="z-left" colspan="9">{{ __('No entries found.') }}</td>
-        </tr>
+        <p class="z-datatableempty">{{ __('No entries found.') }}</p>
         {% endfor %}
 
+        {% if all != 1 and pager|default %}
+            {{ pager({rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'mueternizermodule_entry_' ~ routeArea ~ 'view'}) }}
+        {% endif %}
         {% if formposition == 'below' %}
             <br style="clear: both;" />	
             {{ mueternizermodule_showEditForm() }}
@@ -232,10 +233,10 @@
         </div>
         {% endif %}
         
+    {% if routeArea == 'admin' %}
         {% if all != 1 and pager|default %}
             {{ pager({rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'mueternizermodule_entry_' ~ routeArea ~ 'view'}) }}
         {% endif %}
-    {% if routeArea == 'admin' %}
             <fieldset>
                 <label for="mUEternizerModuleAction" class="col-sm-3 control-label">{{ __('With selected entries') }}</label>
                 <div class="col-sm-6">
